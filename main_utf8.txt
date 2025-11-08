@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -57,18 +57,6 @@
       flex-direction: column;
       gap: 24px;
       position: relative;
-    }
-
-    .app::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.08;
-      background-image: 
-        repeating-linear-gradient(90deg, rgba(180, 200, 220, 0.12) 0 1px, transparent 1px 24px),
-        repeating-linear-gradient(0deg, rgba(180, 200, 220, 0.10) 0 1px, transparent 1px 24px);
-      mask-image: radial-gradient(80% 60% at 50% 10%, black, transparent 80%);
     }
 
     .page-header {
@@ -131,17 +119,12 @@
       box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
       border-color: rgba(0, 229, 255, 0.35);
       background: rgba(10, 16, 21, 0.7);
-      will-change: background, box-shadow;
     }
 
     .weapon-card:hover {
       border-color: rgba(0, 229, 255, 0.25);
       box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
       background: rgba(10, 16, 21, 0.62);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; }
     }
 
     .weapon-card.favorite {
@@ -371,11 +354,11 @@
     .progress .knob {
       position: absolute;
       top: 50%;
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 0 3px rgba(0, 229, 255, 0.25);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.25);
       transform: translate(-50%, -50%);
       transition: left 120ms ease;
       pointer-events: none;
@@ -813,18 +796,18 @@
     <section class="weapon-card" tabindex="0">
       <div class="weapon-header" draggable="true">
         <button class="drag-handle" type="button" title="Drag to reorder" aria-label="Drag to reorder" draggable="true">
-          <span aria-hidden="true">&#9776;</span>
+          <span aria-hidden="true">â‹®â‹®</span>
         </button>
         <button class="favorite-toggle" type="button" aria-pressed="false" title="Toggle favorite">
-          <span aria-hidden="true">&#9734;</span>
+          <span aria-hidden="true">â˜†</span>
         </button>
         <div class="weapon-header-text" tabindex="0" role="button" aria-label="Toggle collapse" aria-expanded="true">
           <div class="weapon-name"></div>
           <div class="weapon-subtitle">Mastery Loadout Progression</div>
-          <button class="chevron-toggle" type="button" aria-label="Toggle collapse" aria-expanded="true">&rsaquo;</button>
+          <button class="chevron-toggle" type="button" aria-label="Toggle collapse" aria-expanded="true">â€º</button>
           <div class="header-controls">
             <span class="header-level" aria-live="polite">LEVEL 1</span>
-            <span class="header-sep" aria-hidden="true">&bull;</span>
+            <span class="header-sep" aria-hidden="true">â€¢</span>
             <button class="level-button level-down" type="button" aria-label="Decrease level">-</button>
             <div class="progress" role="slider" aria-valuemin="1" aria-valuemax="40" aria-valuenow="1">
               <div class="knob"></div>
@@ -844,7 +827,7 @@
       </div>
       <div class="weapon-body">
         <div class="level-controls">
-          <button class="level-button level-down" type="button" aria-label="Decrease level">-</button>
+          <button class="level-button level-down" type="button" aria-label="Decrease level">âˆ’</button>
           <div class="progress" role="slider" aria-valuemin="1" aria-valuemax="40" aria-valuenow="1">
             <div class="knob"></div>
           </div>
@@ -1124,19 +1107,12 @@
         }
 
         this.cardEl.addEventListener('keydown', (event) => {
-          const step = event.shiftKey ? 5 : 1;
           if (event.key === 'ArrowLeft') {
             event.preventDefault();
-            this.setLevel(this.state.level - step);
+            this.setLevel(this.state.level - 1);
           } else if (event.key === 'ArrowRight') {
             event.preventDefault();
-            this.setLevel(this.state.level + step);
-          } else if (event.key === 'Home') {
-            event.preventDefault();
-            this.setLevel(this.minLevel);
-          } else if (event.key === 'End') {
-            event.preventDefault();
-            this.setLevel(this.maxLevel);
+            this.setLevel(this.state.level + 1);
           }
         });
 
@@ -1179,18 +1155,17 @@
         renderWeaponList();
       }
 
-                  applyFavoriteUI() {
+      applyFavoriteUI() {
         if (this.cardEl) this.cardEl.classList.toggle('favorite', this.state.favorite);
         if (this.favoriteBtn) this.favoriteBtn.setAttribute('aria-pressed', this.state.favorite ? 'true' : 'false');
         if (this.favoriteIcon) {
-          this.favoriteIcon.textContent = this.state.favorite ? '\u2605' : '\u2606';
+          this.favoriteIcon.textContent = this.state.favorite ? 'â˜…' : 'â˜†';
         }
         if (this.favoriteText) {
           this.favoriteText.textContent = this.state.favorite ? 'Favorited' : 'Favorite';
         }
-        if (this.favoriteBtn) {
-          this.favoriteBtn.title = this.state.favorite ? 'Unfavorite' : 'Favorite';
-        }
+        if (this.favoriteIcon) { this.favoriteIcon.textContent = this.state.favorite ? 'â˜…' : 'â˜†'; }
+        if (this.favoriteBtn) { this.favoriteBtn.title = this.state.favorite ? 'Unfavorite' : 'Favorite'; }
       }
 
       toggleCollapse() {
@@ -1359,7 +1334,7 @@
         if (typeof data.pts === 'number') {
           const separator = document.createElement('span');
           separator.className = 'meta-separator';
-          separator.textContent = '\u2022';
+          separator.textContent = 'â€¢';
           meta.appendChild(separator);
 
           const pts = this.createApDisplay(data.pts);
@@ -1614,8 +1589,7 @@
             const prev = previous[slot];
             const prevName = prev ? prev.name : 'Previous attachment';
             const prevNameDisplay = toUpperSafe(prevName);
-            // Normalize corrupted separators in some encodings
-            heading.textContent = `${slotName} \u2014 Removed`;
+            heading.textContent = `${slotName} â€¢ Removed`;
             const detail = document.createElement('div');
             detail.className = 'change-detail';
             detail.textContent = `${prevNameDisplay} removed at Level ${level}.`;
@@ -1633,8 +1607,7 @@
               ? fallbackPrev.name
               : 'Baseline';
             const changeLevel = Number.isFinite(change.unlockLevel) ? change.unlockLevel : level;
-            // Normalize corrupted separators in some encodings
-            heading.textContent = `${slotName} \u2014 Level ${changeLevel}`;
+            heading.textContent = `${slotName} â€¢ Level ${changeLevel}`;
             const detail = document.createElement('div');
             detail.className = 'change-detail';
 
@@ -1644,7 +1617,7 @@
 
             const arrow = document.createElement('span');
             arrow.className = 'change-arrow';
-            arrow.textContent = '\u2192';
+            arrow.textContent = 'â†’';
 
             const nextSpan = document.createElement('span');
             nextSpan.className = 'change-next';
@@ -2208,7 +2181,7 @@
     const weaponConfigs = [
       {
         id: 'kord-6p67',
-        name: 'KORD 6P67 • Assault Rifle',
+        name: 'KORD 6P67 â€¢ Assault Rifle',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -2227,7 +2200,7 @@
       },
       {
         id: 'pw5a3',
-        name: 'PW5A3 • SMG',
+        name: 'PW5A3 â€¢ SMG',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -2246,7 +2219,7 @@
       },
       {
         id: 'rpkm',
-        name: 'RPKM • Light Machine Gun',
+        name: 'RPKM â€¢ Light Machine Gun',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
