@@ -1728,100 +1728,67 @@
       }
     };
     const PW5A3_BASELINE = {
-      core: { name: 'PW5A3 FACTORY FRAME', pts: 5, type: 'Core', unlockLevel: 1 },
-      barrel: { name: '330MM LIGHT BARREL', pts: 10, type: 'Barrel', unlockLevel: 1 },
-      ammunition: { name: 'STANDARD ISSUE', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      optic: { name: 'IRON SIGHTS', pts: 0, type: 'Optic', unlockLevel: 1 },
-      stock: { name: 'MINIMALIST STOCK', pts: 5, type: 'Stock', unlockLevel: 1 }
+      barrel: { name: '225MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
+      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
+      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      magazine: { name: '30 RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
+      optic: { name: 'IRON SIGHTS', pts: 0, type: 'Optic', unlockLevel: 1 }
     };
 
     const PW5A3_CHANGES = {
       3: {
-        optic: {
-          name: 'MICRO RED DOT',
+        underbarrel: {
+          name: 'Alloy Vertical',
           pts: 5,
-          type: 'Optic',
+          type: 'Underbarrel',
           unlockLevel: 3,
           replaced: [
-            { name: 'IRON SIGHTS', pts: 0, type: 'Optic', unlockLevel: 1 }
+            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
           ]
         }
       },
       5: {
-        barrel: {
-          name: '380MM PRECISION BARREL',
-          pts: 12,
-          type: 'Barrel',
+        magazine: {
+          name: '30RND FAST MAG',
+          pts: 10,
+          type: 'Magazine',
           unlockLevel: 5,
           replaced: [
-            { name: '330MM LIGHT BARREL', pts: 10, type: 'Barrel', unlockLevel: 1 }
+            { name: '30 RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 }
           ]
         }
       },
-      7: {
-        stock: {
-          name: 'PRECISION STOCK',
-          pts: 8,
-          type: 'Stock',
-          unlockLevel: 7,
+      6: {
+        underbarrel: {
+          name: 'RIBBED VERTICAL',
+          pts: 10,
+          type: 'Underbarrel',
+          unlockLevel: 6,
           replaced: [
-            { name: 'MINIMALIST STOCK', pts: 5, type: 'Stock', unlockLevel: 1 }
+            { name: 'Alloy Vertical', pts: 5, type: 'Underbarrel', unlockLevel: 3 }
           ]
         }
       },
-      10: {
-        ammunition: {
-          name: 'HIGH VELOCITY',
-          pts: 8,
-          type: 'Ammunition',
-          unlockLevel: 10,
-          replaced: [
-            { name: 'STANDARD ISSUE', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
+      9: {
+        muzzle: {
+          name: 'STANDARD SUPPRESSOR',
+          pts: 20,
+          type: 'Muzzle',
+          unlockLevel: 9
         }
       },
       12: {
-        core: {
-          name: 'REINFORCED FRAME',
-          pts: 6,
-          type: 'Core',
-          unlockLevel: 12,
-          replaced: [
-            { name: 'PW5A3 FACTORY FRAME', pts: 5, type: 'Core', unlockLevel: 1 }
-          ]
-        }
-      },
-      15: {
-        muzzle: {
-          name: 'FLASH HIDER',
-          pts: 6,
-          type: 'Muzzle',
-          unlockLevel: 15
-        }
-      },
-      18: {
-        stock: null
-      },
-      20: {
-        optic: {
-          name: 'HYBRID 2.0X',
-          pts: 7,
-          type: 'Optic',
-          unlockLevel: 20,
-          replaced: [
-            { name: 'MICRO RED DOT', pts: 5, type: 'Optic', unlockLevel: 3 }
-          ]
-        }
-      },
-      25: {
         barrel: {
-          name: 'EXTENDED PRECISION BARREL',
-          pts: 14,
+          name: '245mm Custom',
+          pts: 15,
           type: 'Barrel',
-          unlockLevel: 25,
-          replaced: [
-            { name: '380MM PRECISION BARREL', pts: 12, type: 'Barrel', unlockLevel: 5 }
-          ]
+          unlockLevel: 12
+        },
+        ergonomics: {
+          name: 'Improved Mag Catch',
+          pts: 5,
+          type: 'Ergonomics',
+          unlockLevel: 12
         }
       }
     };
