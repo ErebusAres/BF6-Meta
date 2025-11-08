@@ -1219,10 +1219,9 @@
       }
 
       createPlaceholderCard() {
-        const card = document.createElement('div');
-        card.className = 'slot-card empty';
-        card.textContent = 'No attachment equipped.';
-        return card;
+        // Placeholder no longer renders a visible box; return an empty fragment
+        const frag = document.createDocumentFragment();
+        return frag;
       }
       computeState(level) {
         const snapshot = {};
@@ -1299,6 +1298,7 @@
           label.className = 'slot-label';
           label.textContent = this.getSlotLabel(slot);
           wrapper.appendChild(label);
+          let hasCard = false;
 
           const change = diff.hasOwnProperty(slot) ? diff[slot] : undefined;
 
@@ -1316,10 +1316,10 @@
                 });
                 if (oldCard) {
                   wrapper.appendChild(oldCard);
+                  hasCard = true;
                 }
               } else {
-                const placeholder = this.createPlaceholderCard();
-                wrapper.appendChild(placeholder);
+                // No previous attachment; do not render a placeholder box
               }
             } else {
               const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
@@ -1361,6 +1361,7 @@
                 oldCard = this.createCard(oldCardData, { old: true, level: oldLevel });
                 if (oldCard) {
                   wrapper.appendChild(oldCard);
+                  hasCard = true;
                 }
               }
 
@@ -1371,6 +1372,7 @@
               });
               if (newCard) {
                 wrapper.appendChild(newCard);
+                hasCard = true;
               }
               if (oldCard && newCard) {
                 arrowPairs.push({ oldEl: oldCard, newEl: newCard });
@@ -1388,14 +1390,16 @@
               });
               if (card) {
                 wrapper.appendChild(card);
+                hasCard = true;
               }
             } else {
-              const placeholder = this.createPlaceholderCard();
-              wrapper.appendChild(placeholder);
+              // No current attachment; do not render a placeholder box
             }
           }
 
-          this.slotsEl.appendChild(wrapper);
+          if (hasCard) {
+            this.slotsEl.appendChild(wrapper);
+          }
         }
 
         this.arrowLayerEl.innerHTML = '';
