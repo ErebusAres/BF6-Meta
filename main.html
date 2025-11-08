@@ -16,7 +16,7 @@
       --text-muted: #95a3b1;
       --danger: #ff6b6b;
       --card-padding: 14px;
-      --indent: 44px;
+      --indent: 60px;
       --card-radius: 8px;
       --transition: 160ms ease;
       --max-level: 40;
@@ -168,41 +168,6 @@
       pointer-events: none;
     }
 
-    .legend-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      color: var(--text-muted);
-      font-size: 13px;
-    }
-
-    .legend-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(22, 31, 39, 0.92);
-      border: 1px solid rgba(60, 74, 85, 0.6);
-      font-weight: 500;
-      color: rgba(177, 191, 203, 0.85);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .legend-tag.ap {
-      color: var(--accent);
-      background: rgba(107, 239, 138, 0.12);
-      border-color: rgba(107, 239, 138, 0.45);
-    }
-
-    .legend-tag img {
-      width: 16px;
-      height: 16px;
-      object-fit: contain;
-    }
-
     main {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
@@ -248,22 +213,68 @@
 
     .ap-total {
       display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
     }
 
-    .ap-total img {
+    .ap-readout {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(177, 191, 203, 0.95);
+    }
+
+    .ap-readout img {
       width: 18px;
       height: 18px;
       object-fit: contain;
     }
 
-    .ap-total span {
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(177, 191, 203, 0.95);
+    .ap-readout .ap-value {
+      color: var(--text);
+    }
+
+    .ap-readout .ap-max {
+      color: rgba(132, 145, 156, 0.75);
+    }
+
+    .ap-meter {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ap-cell {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(15, 22, 28, 0.92);
+      border: 1px solid rgba(41, 54, 65, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition), border-color var(--transition), opacity var(--transition);
+    }
+
+    .ap-cell img {
+      width: 18px;
+      height: 18px;
+      filter: grayscale(1) brightness(0.55);
+      opacity: 0.45;
+    }
+
+    .ap-cell.filled {
+      background: rgba(28, 36, 43, 0.95);
+      border-color: rgba(96, 110, 122, 0.9);
+    }
+
+    .ap-cell.filled img {
+      filter: grayscale(1) brightness(0.95);
+      opacity: 0.9;
     }
 
     .slots {
@@ -361,10 +372,51 @@
     }
 
     .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
       font-size: 11px;
-      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.78);
+    }
+
+    .card-meta .meta-type {
+      letter-spacing: 0.18em;
+    }
+
+    .card-meta .meta-separator {
+      opacity: 0.6;
+      letter-spacing: 0.18em;
+    }
+
+    .ap-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(60, 74, 85, 0.55);
+      background: rgba(18, 26, 32, 0.88);
+      letter-spacing: 0.1em;
+      text-transform: none;
+      font-weight: 600;
+      color: rgba(205, 217, 226, 0.95);
+    }
+
+    .ap-chip img {
+      width: 14px;
+      height: 14px;
+      filter: grayscale(1) brightness(0.8);
+      opacity: 0.9;
+    }
+
+    .ap-chip span {
+      letter-spacing: 0.1em;
+    }
+
+    .slot-card.old .ap-chip {
+      opacity: 0.7;
     }
 
     .card-level {
@@ -590,13 +642,6 @@
         padding: 20px;
       }
 
-      .legend-row {
-        font-size: 12px;
-      }
-
-      .legend-tag {
-        padding: 5px 10px;
-      }
     }
   </style>
 </head>
@@ -618,22 +663,18 @@
         <button class="level-button" id="levelUp" aria-label="Increase level">+</button>
       </div>
       <div class="level-display" id="levelDisplay">Select a level to inspect attachment changes.</div>
-      <div class="legend-row">
-        <span class="legend-tag ap"><img src="https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png" alt="AP" />AP Budget</span>
-        <span class="legend-tag">Playstyle: Adaptive Control</span>
-        <span class="legend-tag">Suppressed Ready</span>
-        <span class="legend-tag">Optic Variants</span>
-        <span class="legend-tag">Magazine 30 RND</span>
-        <span class="legend-tag">Rapid Fire 1 Challenge</span>
-      </div>
     </header>
     <main>
       <section class="attachments-panel">
         <div class="attachments-header">
           <h2>Attachments</h2>
           <div class="ap-total" id="apTotal">
-            <img src="https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png" alt="AP" />
-            <span>0 / 100</span>
+            <div class="ap-meter" id="apMeter"></div>
+            <div class="ap-readout">
+              <img src="https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png" alt="Attachment Points" />
+              <span class="ap-value" id="apValue">0</span>
+              <span class="ap-max">/ 100</span>
+            </div>
           </div>
         </div>
         <div class="slots" id="slots"></div>
@@ -663,6 +704,7 @@
     const INDENT = 44;
     const CARD_PAD = 14;
     const ARROW_STROKE = 3;
+    const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
 
     const baseline = {
       1: { name: '415MM FACTORY', pts: 10, type: 'Barrel' },
@@ -694,7 +736,8 @@
     };
 
     const slotsEl = document.getElementById('slots');
-    const apTotalEl = document.getElementById('apTotal');
+    const apMeterEl = document.getElementById('apMeter');
+    const apValueEl = document.getElementById('apValue');
     const levelPillEl = document.getElementById('levelPill');
     const levelDisplayEl = document.getElementById('levelDisplay');
     const levelDownBtn = document.getElementById('levelDown');
@@ -837,6 +880,44 @@
       return `${pts}`;
     }
 
+    function ensureApMeterCells() {
+      if (!apMeterEl || apMeterEl.children.length) return;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 10; i++) {
+        const cell = document.createElement('span');
+        cell.className = 'ap-cell';
+        const icon = document.createElement('img');
+        icon.src = AP_ICON;
+        icon.alt = 'Attachment Points';
+        cell.appendChild(icon);
+        frag.appendChild(cell);
+      }
+      apMeterEl.appendChild(frag);
+    }
+
+    function updateApMeter(total) {
+      ensureApMeterCells();
+      if (!apMeterEl) return;
+      const cells = Array.from(apMeterEl.children);
+      const filled = Math.floor(total / 10);
+      cells.forEach((cell, index) => {
+        cell.classList.toggle('filled', index < filled);
+      });
+    }
+
+    function createApChip(value) {
+      const chip = document.createElement('span');
+      chip.className = 'ap-chip';
+      const icon = document.createElement('img');
+      icon.src = AP_ICON;
+      icon.alt = 'Attachment Points';
+      chip.appendChild(icon);
+      const text = document.createElement('span');
+      text.textContent = formatPts(value);
+      chip.appendChild(text);
+      return chip;
+    }
+
     function createCard(data, options = {}) {
       if (!data) return null;
       const card = document.createElement('div');
@@ -860,8 +941,19 @@
       const meta = document.createElement('div');
       meta.className = 'card-meta';
       const typeText = data.type ? data.type.toUpperCase() : '';
-      const ptsText = `${formatPts(data.pts)} AP`;
-      meta.textContent = typeText ? `${typeText} • ${ptsText}` : ptsText;
+      if (typeText) {
+        const typeSpan = document.createElement('span');
+        typeSpan.className = 'meta-type';
+        typeSpan.textContent = typeText;
+        meta.appendChild(typeSpan);
+      }
+      if (typeText) {
+        const separator = document.createElement('span');
+        separator.className = 'meta-separator';
+        separator.textContent = '•';
+        meta.appendChild(separator);
+      }
+      meta.appendChild(createApChip(data.pts));
       info.appendChild(meta);
 
       top.appendChild(info);
@@ -1086,7 +1178,10 @@
           total += value.pts;
         }
       }
-      apTotalEl.querySelector('span').textContent = `${total} / 100`;
+      if (apValueEl) {
+        apValueEl.textContent = `${total}`;
+      }
+      updateApMeter(total);
       return total;
     }
 
