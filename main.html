@@ -7,20 +7,20 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0f1418;
-      --panel: #161d23;
-      --panel-border: #1f2a32;
+      --bg: #05090d;
+      --panel: #0f161c;
+      --panel-border: #1c252f;
       --accent: #6bef8a;
-      --accent-soft: rgba(107, 239, 138, 0.2);
+      --accent-soft: rgba(107, 239, 138, 0.16);
       --text: #f5f8fa;
-      --text-muted: #9aa8b4;
+      --text-muted: #95a3b1;
       --danger: #ff6b6b;
-      --card-padding: 12px;
+      --card-padding: 14px;
       --indent: 44px;
-      --card-radius: 10px;
+      --card-radius: 8px;
       --transition: 160ms ease;
       --max-level: 40;
-      --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
       --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -30,24 +30,24 @@
 
     body {
       margin: 0;
-      background: radial-gradient(circle at top, rgba(107, 239, 138, 0.1), transparent 55%), var(--bg);
+      background: linear-gradient(180deg, rgba(12, 22, 30, 0.85) 0%, rgba(5, 9, 13, 0.9) 60%, rgba(5, 9, 13, 1) 100%), var(--bg);
       color: var(--text);
       font-family: var(--font);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 32px;
+      padding: 40px;
     }
 
     .app {
-      width: min(1120px, 100%);
-      background: rgba(18, 24, 30, 0.95);
-      border-radius: 16px;
-      padding: 32px;
+      width: min(1040px, 100%);
+      background: rgba(10, 16, 21, 0.95);
+      border-radius: 18px;
+      padding: 32px 36px;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
       position: relative;
     }
 
@@ -127,10 +127,10 @@
 
     .progress {
       position: relative;
-      height: 18px;
+      height: 14px;
       border-radius: 999px;
-      background: rgba(33, 43, 52, 0.9);
-      border: 1px solid rgba(80, 94, 106, 0.45);
+      background: rgba(22, 32, 40, 0.9);
+      border: 1px solid rgba(60, 74, 85, 0.6);
       overflow: hidden;
       cursor: pointer;
       display: grid;
@@ -146,7 +146,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: rgba(107, 239, 138, 0.22);
+      background: rgba(107, 239, 138, 0.32);
       opacity: 0;
       transition: opacity var(--transition);
     }
@@ -158,11 +158,11 @@
     .progress .knob {
       position: absolute;
       top: 50%;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 0 4px rgba(107, 239, 138, 0.3);
+      box-shadow: 0 0 0 4px rgba(107, 239, 138, 0.25);
       transform: translate(-50%, -50%);
       transition: left 120ms ease;
       pointer-events: none;
@@ -183,119 +183,152 @@
       gap: 6px;
       padding: 6px 12px;
       border-radius: 999px;
-      background: rgba(51, 63, 75, 0.6);
-      border: 1px solid rgba(80, 94, 106, 0.45);
+      background: rgba(22, 31, 39, 0.92);
+      border: 1px solid rgba(60, 74, 85, 0.6);
       font-weight: 500;
-      color: var(--text-muted);
+      color: rgba(177, 191, 203, 0.85);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
     .legend-tag.ap {
-      color: var(--text);
-      background: rgba(107, 239, 138, 0.1);
-      border-color: rgba(107, 239, 138, 0.35);
+      color: var(--accent);
+      background: rgba(107, 239, 138, 0.12);
+      border-color: rgba(107, 239, 138, 0.45);
     }
 
     .legend-tag img {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       object-fit: contain;
     }
 
     main {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(260px, 280px);
-      gap: 24px;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .side-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-self: stretch;
     }
 
     .attachments-panel {
-      background: var(--panel);
-      border-radius: 14px;
-      border: 1px solid var(--panel-border);
-      padding: 20px;
+      background: linear-gradient(180deg, rgba(19, 27, 34, 0.9), rgba(13, 21, 27, 0.95));
+      border-radius: 16px;
+      border: 1px solid rgba(37, 49, 59, 0.65);
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 22px;
       position: relative;
       overflow: hidden;
+      flex: 1;
     }
 
     .attachments-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
+      border-bottom: 1px solid rgba(54, 69, 82, 0.35);
+      padding-bottom: 14px;
     }
 
     .attachments-header h2 {
       margin: 0;
-      font-size: 18px;
+      font-size: 16px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
     }
 
     .ap-total {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
+      gap: 6px;
+      font-size: 13px;
       font-weight: 600;
     }
 
     .ap-total img {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       object-fit: contain;
+    }
+
+    .ap-total span {
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(177, 191, 203, 0.95);
     }
 
     .slots {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 12px;
       position: relative;
     }
 
     .slot-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       position: relative;
     }
 
     .slot-label {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .slot-card {
       position: relative;
-      background: rgba(33, 43, 52, 0.9);
+      background: rgba(16, 24, 30, 0.92);
       border-radius: var(--card-radius);
-      border: 1px solid rgba(60, 74, 85, 0.7);
+      border: 1px solid rgba(45, 58, 70, 0.7);
       padding: var(--card-padding);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
     }
 
     .slot-card.changed {
-      border-color: rgba(107, 239, 138, 0.65);
-      box-shadow: inset 0 0 0 1px rgba(107, 239, 138, 0.2), 0 10px 24px rgba(107, 239, 138, 0.12);
-      background: rgba(40, 60, 50, 0.85);
+      border-color: rgba(107, 239, 138, 0.7);
+      box-shadow: inset 0 0 0 1px rgba(107, 239, 138, 0.35), 0 10px 28px rgba(107, 239, 138, 0.18);
+      background: rgba(29, 47, 38, 0.92);
     }
 
     .slot-card.old {
-      background: rgba(18, 24, 30, 0.85);
-      border-color: rgba(44, 55, 63, 0.8);
+      background: rgba(10, 16, 21, 0.85);
+      border-color: rgba(34, 43, 51, 0.9);
       color: var(--text-muted);
     }
 
     .slot-card.old .card-title {
       text-decoration: line-through;
       text-decoration-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .slot-card.removed {
+      border-color: rgba(255, 107, 107, 0.45);
+      background: rgba(35, 20, 24, 0.9);
+    }
+
+    .slot-card.removed .card-level {
+      border-color: rgba(255, 107, 107, 0.5);
+      color: rgba(255, 160, 160, 0.9);
     }
 
     .slot-card.empty {
@@ -312,33 +345,60 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .card-title {
       font-size: 15px;
       font-weight: 600;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.02em;
     }
 
-    .card-pts {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .card-pts img {
-      width: 16px;
-      height: 16px;
-    }
-
-    .card-type {
-      font-size: 12px;
+    .card-meta {
+      font-size: 11px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(154, 168, 180, 0.8);
+      color: rgba(177, 191, 203, 0.78);
+    }
+
+    .card-level {
+      margin-left: auto;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(78, 95, 110, 0.6);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(177, 191, 203, 0.86);
+      white-space: nowrap;
+    }
+
+    .slot-card.changed .card-level {
+      border-color: rgba(107, 239, 138, 0.6);
+      background: rgba(107, 239, 138, 0.12);
+      color: var(--accent);
+    }
+
+    .slot-card.old .card-level {
+      border-color: rgba(78, 95, 110, 0.35);
+      color: rgba(120, 136, 151, 0.9);
+    }
+
+    .card-status {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 107, 107, 0.75);
+    }
+
+    .slot-card.removed .card-status {
+      color: rgba(255, 160, 160, 0.85);
     }
 
     .arrow-layer {
@@ -355,43 +415,77 @@
     }
 
     .changes-panel {
-      background: rgba(18, 24, 30, 0.8);
+      background: rgba(13, 20, 26, 0.92);
       border-radius: 14px;
-      border: 1px solid rgba(60, 74, 85, 0.7);
-      padding: 18px;
+      border: 1px solid rgba(41, 54, 65, 0.7);
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      font-size: 14px;
+      gap: 14px;
+      font-size: 13px;
     }
 
     .changes-panel h3 {
       margin: 0;
-      font-size: 15px;
+      font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
+      letter-spacing: 0.16em;
+      color: rgba(148, 161, 173, 0.9);
     }
 
     .change-row {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      padding: 10px 12px;
+      gap: 6px;
+      padding: 12px;
       border-radius: 10px;
-      background: rgba(28, 36, 44, 0.85);
-      border: 1px solid rgba(60, 74, 85, 0.55);
+      background: rgba(22, 31, 39, 0.92);
+      border: 1px solid rgba(60, 74, 85, 0.5);
     }
 
-    .change-row strong {
+    .change-heading {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(148, 161, 173, 0.9);
+    }
+
+    .change-detail {
+      font-size: 13px;
       color: var(--text);
+      display: flex;
+      align-items: center;
+    }
+
+    .change-detail .change-arrow {
+      color: rgba(148, 161, 173, 0.9);
+      margin: 0 6px;
+    }
+
+    .change-detail .change-prev {
+      color: rgba(148, 161, 173, 0.85);
+    }
+
+    .change-detail .change-next {
+      color: var(--accent);
+    }
+
+    .changes-empty {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px dashed rgba(60, 74, 85, 0.6);
+      color: rgba(148, 161, 173, 0.85);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
     }
 
     .sidebar {
-      background: rgba(18, 24, 30, 0.8);
+      background: rgba(13, 20, 26, 0.92);
       border-radius: 14px;
-      border: 1px solid rgba(60, 74, 85, 0.7);
-      padding: 18px;
+      border: 1px solid rgba(41, 54, 65, 0.7);
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -481,6 +575,10 @@
       main {
         grid-template-columns: 1fr;
       }
+
+      .side-column {
+        width: 100%;
+      }
     }
 
     @media (max-width: 720px) {
@@ -539,21 +637,23 @@
           </div>
         </div>
         <div class="slots" id="slots"></div>
-        <div class="changes-panel" id="changesPanel">
+      </section>
+      <aside class="side-column">
+        <section class="changes-panel" id="changesPanel">
           <h3>Changes at this Level</h3>
           <div class="changes-empty">No changes unlocked at this level.</div>
-        </div>
-      </section>
-      <aside class="sidebar" id="dataSidebar">
-        <div class="sidebar-header">
-          <h3>Debug Data</h3>
-          <button class="collapse-toggle" id="sidebarToggle" type="button"></button>
-        </div>
-        <div class="copy-row">
-          <button id="copyState" type="button">Copy JSON</button>
-          <span class="copy-feedback" id="copyFeedback">Copied!</span>
-        </div>
-        <pre id="stateDump"></pre>
+        </section>
+        <section class="sidebar" id="dataSidebar">
+          <div class="sidebar-header">
+            <h3>Debug Data</h3>
+            <button class="collapse-toggle" id="sidebarToggle" type="button"></button>
+          </div>
+          <div class="copy-row">
+            <button id="copyState" type="button">Copy JSON</button>
+            <span class="copy-feedback" id="copyFeedback">Copied!</span>
+          </div>
+          <pre id="stateDump"></pre>
+        </section>
       </aside>
     </main>
   </div>
@@ -561,7 +661,7 @@
     const SLOT_TYPE = { 1: 'Barrel', 2: 'Underbarrel', 3: 'Ammunition', 4: 'Muzzle', 5: 'Right Accessory', 6: 'Magazine', 7: 'Scope' };
 
     const INDENT = 44;
-    const CARD_PAD = 12;
+    const CARD_PAD = 14;
     const ARROW_STROKE = 3;
 
     const baseline = {
@@ -649,7 +749,12 @@
     function computeState(level) {
       const snapshot = {};
       for (const [slot, data] of Object.entries(baseline)) {
-        snapshot[slot] = data ? { ...data } : null;
+        if (data) {
+          const unlockLevel = data.unlockLevel ?? 1;
+          snapshot[slot] = { ...data, unlockLevel };
+        } else {
+          snapshot[slot] = null;
+        }
       }
       const sortedLevels = Object.keys(changes)
         .map(Number)
@@ -661,7 +766,8 @@
           if (payload === null) {
             snapshot[slot] = null;
           } else {
-            snapshot[slot] = { ...payload };
+            const unlockLevel = payload.unlockLevel ?? changeLevel;
+            snapshot[slot] = { ...payload, unlockLevel };
           }
         }
       }
@@ -669,8 +775,18 @@
     }
 
     function diffAtLevel(level) {
-      if (!changes[level]) return {};
-      return { ...changes[level] };
+      const changeSet = changes[level];
+      if (!changeSet) return {};
+      const diff = {};
+      for (const [slot, payload] of Object.entries(changeSet)) {
+        if (payload === null) {
+          diff[slot] = null;
+        } else {
+          const unlockLevel = payload.unlockLevel ?? level;
+          diff[slot] = { ...payload, unlockLevel };
+        }
+      }
+      return diff;
     }
 
     function clampLevel(level) {
@@ -728,31 +844,48 @@
       if (options.old) card.classList.add('old');
       if (options.changed) card.classList.add('changed');
       if (options.indented) card.classList.add('indented');
+      if (options.removed) card.classList.add('removed');
 
       const top = document.createElement('div');
       top.className = 'card-top';
+
+      const info = document.createElement('div');
+      info.className = 'card-info';
+
       const title = document.createElement('div');
       title.className = 'card-title';
       title.textContent = data.name;
-      top.appendChild(title);
+      info.appendChild(title);
 
-      const pts = document.createElement('div');
-      pts.className = 'card-pts';
-      const icon = document.createElement('img');
-      icon.src = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
-      icon.alt = 'AP';
-      pts.appendChild(icon);
-      const ptsValue = document.createElement('span');
-      ptsValue.textContent = formatPts(data.pts);
-      pts.appendChild(ptsValue);
-      top.appendChild(pts);
+      const meta = document.createElement('div');
+      meta.className = 'card-meta';
+      const typeText = data.type ? data.type.toUpperCase() : '';
+      const ptsText = `${formatPts(data.pts)} AP`;
+      meta.textContent = typeText ? `${typeText} • ${ptsText}` : ptsText;
+      info.appendChild(meta);
 
-      const type = document.createElement('div');
-      type.className = 'card-type';
-      type.textContent = data.type || '';
+      top.appendChild(info);
+
+      const unlockLevel = options.level ?? options.unlockLevel ?? data.unlockLevel;
+      const hideLevel = options.hideLevel ?? false;
+      if (!hideLevel && unlockLevel && unlockLevel > 1) {
+        const levelPill = document.createElement('div');
+        levelPill.className = 'card-level';
+        levelPill.textContent = `Level ${unlockLevel}`;
+        top.appendChild(levelPill);
+      }
 
       card.appendChild(top);
-      card.appendChild(type);
+
+      if (options.removed) {
+        const status = document.createElement('div');
+        status.className = 'card-status';
+        status.textContent = options.removalLevel
+          ? `Removed at Level ${options.removalLevel}`
+          : 'Removed';
+        card.appendChild(status);
+      }
+
       return card;
     }
 
@@ -830,16 +963,25 @@
           const previousData = previous[slot];
           if (change === null) {
             if (previousData) {
-              const oldCard = createCard(previousData, { old: true });
+              const oldCard = createCard(previousData, {
+                old: true,
+                removed: true,
+                removalLevel: level,
+                level
+              });
               wrapper.appendChild(oldCard);
             }
           } else {
             let oldCard = null;
             if (previousData) {
-              oldCard = createCard(previousData, { old: true });
+              oldCard = createCard(previousData, { old: true, level });
               wrapper.appendChild(oldCard);
             }
-            const newCard = createCard(change, { changed: true, indented: true });
+            const newCard = createCard(change, {
+              changed: true,
+              indented: true,
+              level: change.unlockLevel ?? level
+            });
             wrapper.appendChild(newCard);
             if (oldCard) {
               arrowPairs.push({ oldEl: oldCard, newEl: newCard });
@@ -850,7 +992,11 @@
           if (currentData) {
             const prevData = previous[slot];
             const changed = prevData ? prevData.name !== currentData.name : level > MIN_LEVEL;
-            const card = createCard(currentData, { changed });
+            const card = createCard(currentData, {
+              changed,
+              level: currentData.unlockLevel,
+              hideLevel: currentData.unlockLevel ? currentData.unlockLevel > level : false
+            });
             wrapper.appendChild(card);
           }
         }
@@ -883,15 +1029,46 @@
         const row = document.createElement('div');
         row.className = 'change-row';
         const slotName = SLOT_TYPE[slot] || `Slot ${slot}`;
+        const heading = document.createElement('div');
+        heading.className = 'change-heading';
+
         if (change === null) {
           const prev = previous[slot];
           const prevName = prev ? prev.name : 'Previous attachment';
-          row.innerHTML = `<strong>${slotName}</strong><span>${prevName} removed.</span>`;
+          heading.textContent = `${slotName.toUpperCase()} • Removed`;
+          const detail = document.createElement('div');
+          detail.className = 'change-detail';
+          detail.textContent = `${prevName} removed at Level ${level}.`;
+          row.appendChild(heading);
+          row.appendChild(detail);
         } else {
           const prev = previous[slot];
           const prevName = prev ? prev.name : 'Baseline';
-          row.innerHTML = `<strong>${slotName} • ${change.type}</strong><span>${prevName} → ${change.name}</span>`;
+          const changeLevel = change.unlockLevel ?? level;
+          heading.textContent = `${slotName.toUpperCase()} • Level ${changeLevel}`;
+          const detail = document.createElement('div');
+          detail.className = 'change-detail';
+
+          const prevSpan = document.createElement('span');
+          prevSpan.className = 'change-prev';
+          prevSpan.textContent = prevName;
+
+          const arrow = document.createElement('span');
+          arrow.className = 'change-arrow';
+          arrow.textContent = '→';
+
+          const nextSpan = document.createElement('span');
+          nextSpan.className = 'change-next';
+          nextSpan.textContent = change.name;
+
+          detail.appendChild(prevSpan);
+          detail.appendChild(arrow);
+          detail.appendChild(nextSpan);
+
+          row.appendChild(heading);
+          row.appendChild(detail);
         }
+
         container.appendChild(row);
       }
     }
