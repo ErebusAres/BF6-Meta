@@ -1838,6 +1838,100 @@
         }
       }
     };
+    const RPKM_BASELINE = {
+      // 590MM FACTORY
+      barrel: { name: '590MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
+      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
+      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      magazine: { name: '40 RND MAGAZINE', pts: 25, type: 'Magazine', unlockLevel: 28 },
+      muzzle: { name: 'LIGHTENED SUPPRESSOR', pts: 30, type: 'Muzzle', unlockLevel: 28 },
+      scope: { name: 'MINI FLEX 1.00X', pts: 10, type: 'Scope', unlockLevel: 28 }
+    };
+    const RPKM_CHANGES = {
+      2: { 
+        scope: {
+          name: 'RO-M 1.75x',
+          pts: 10,
+          type: 'Scope',
+          unlockLevel: 2,
+          replaced: [
+            { name: 'MINI FLEX 1.00X', pts: 10, type: 'Scope', unlockLevel: 28 }
+          ]
+        }
+      },
+      4: {
+        underbarrel: {
+          name: 'ALLOY VERTICAL',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 4,
+          replaced: [
+            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
+          ]
+        }
+      },
+      5: {
+        rightAccessory: {
+          name: '5 MW RED',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 5
+        }
+      },
+      6: {
+        underbarrel: {
+          name: 'RIBBED VERTICAL',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 6,
+          replaced: [
+            { name: 'ALLOY VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 4 }
+          ]
+        }
+      },
+      8: {
+        leftAccessory: {
+          name: 'flashlight',
+          pts: 10,
+          type: 'Left Accessory',
+          unlockLevel: 8
+        }
+      },
+      9: {
+        underbarrel: {
+          name: 'Folding stubby',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 9,
+          replaced: [
+            { name: 'RIBBED VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 6 }
+          ]
+        }
+      }, 
+      12: {
+        rightAccessory: {
+          name: '5 MW GREEN',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 12,
+          replaced: [
+            { name: '5 MW RED', pts: 10, type: 'Right Accessory', unlockLevel: 5 }
+          ]
+        }
+      }, 
+      18: {
+        underbarrel: {
+          name: 'Slim Angled',
+          pts: 25,
+          type: 'Underbarrel',
+          unlockLevel: 18,
+          replaced: [
+            { name: 'Folding stubby', pts: 20, type: 'Underbarrel', unlockLevel: 9 }
+          ]
+        },
+        leftAccessory: null
+      }
+    };
     const weaponConfigs = [
       {
         id: 'kord-6p67',
