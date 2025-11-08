@@ -549,32 +549,6 @@
       letter-spacing: 0.18em;
     }
 
-    .ap-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(60, 74, 85, 0.55);
-      background: rgba(18, 26, 32, 0.88);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      font-weight: 600;
-      color: rgba(205, 217, 226, 0.95);
-      align-self: flex-start;
-    }
-
-    .ap-chip img {
-      width: 10px;
-      height: 10px;
-      filter: grayscale(1) brightness(0.85);
-      opacity: 0.9;
-    }
-
-    .ap-chip span {
-      letter-spacing: 0.08em;
-    }
-
     .ap-inline {
       display: inline-flex;
       align-items: center;
@@ -593,7 +567,7 @@
       opacity: 0.85;
     }
 
-    .slot-card.old .ap-chip {
+    .slot-card.old .ap-inline {
       opacity: 0.7;
     }
 
@@ -781,20 +755,39 @@
     document.documentElement.style.setProperty('--indent', `${INDENT}px`);
     document.documentElement.style.setProperty('--card-padding', `${CARD_PAD}px`);
 
+    const toUpperSafe = (value) => (typeof value === 'string' ? value.toUpperCase() : value);
+
     function normalizeReplaced(replaced) {
       if (!replaced) return [];
       const array = Array.isArray(replaced) ? replaced : [replaced];
       return array
         .map((entry) => {
           if (typeof entry === 'string') {
-            return { name: entry };
+            return { name: toUpperSafe(entry) };
           }
           if (entry && typeof entry === 'object') {
-            return { ...entry };
+            const normalized = { ...entry };
+            if (normalized.name) normalized.name = toUpperSafe(normalized.name);
+            if (normalized.type) normalized.type = toUpperSafe(normalized.type);
+            return normalized;
           }
           return null;
         })
         .filter(Boolean);
+    }
+
+    function normalizeEntry(payload, unlockLevel) {
+      if (!payload || typeof payload !== 'object') return null;
+      const entry = { ...payload };
+      if (unlockLevel !== undefined) {
+        entry.unlockLevel = unlockLevel;
+      }
+      if (entry.name) entry.name = toUpperSafe(entry.name);
+      if (entry.type) entry.type = toUpperSafe(entry.type);
+      if (entry.replaced) {
+        entry.replaced = normalizeReplaced(entry.replaced);
+      }
+      return entry;
     }
 
     const storage = (() => {
@@ -857,6 +850,9 @@
         this.maxLevel = Number.isFinite(config.maxLevel) ? config.maxLevel : 40;
         this.apMax = Number.isFinite(config.apMax) ? config.apMax : 100;
         this.slotLabels = { ...(config.slotLabels || {}) };
+        for (const key of Object.keys(this.slotLabels)) {
+          this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
+        }
         this.baseline = config.baseline || {};
         this.changes = config.changes || {};
         this.slotKeys = this.buildSlotKeys();
@@ -885,7 +881,7 @@
             seen.add(stringKey);
           }
           if (label && !this.slotLabels[stringKey]) {
-            this.slotLabels[stringKey] = label;
+            this.slotLabels[stringKey] = toUpperSafe(label);
           }
         };
 
@@ -913,10 +909,10 @@
 
       getSlotLabel(slotKey) {
         const label = this.slotLabels[String(slotKey)];
-        if (label) return label;
+        if (typeof label === 'string') return label;
         const snapshot = this.baseline[slotKey];
-        if (snapshot && snapshot.type) return snapshot.type;
-        return `Slot ${slotKey}`;
+        if (snapshot && snapshot.type) return toUpperSafe(snapshot.type);
+        return `SLOT ${slotKey}`;
       }
 
       clampLevel(level) {
@@ -947,7 +943,7 @@
         this.slotsEl = this.cardEl.querySelector('.slots');
         this.changesPanelEl = this.cardEl.querySelector('.changes-panel');
 
-        this.weaponNameEl.textContent = this.config.name;
+        this.weaponNameEl.textContent = toUpperSafe(this.config.name || this.id);
         this.apMaxEl.textContent = `/${this.apMax}`;
 
         this.progressBarEl.style.setProperty('--max-level', this.maxLevel - this.minLevel + 1);
@@ -1141,17 +1137,16 @@
         });
       }
 
-      createApDisplay(value, options = {}) {
+      createApDisplay(value) {
         if (!Number.isFinite(value)) return null;
-        const variant = options.variant === 'inline' ? 'inline' : 'chip';
         const wrapper = document.createElement('span');
-        wrapper.className = variant === 'inline' ? 'ap-inline' : 'ap-chip';
+        wrapper.className = 'ap-inline';
         const icon = document.createElement('img');
         icon.src = AP_ICON;
         icon.alt = 'Attachment Points';
         wrapper.appendChild(icon);
         const text = document.createElement('span');
-        text.textContent = value > 0 ? `+${value}` : `${value}`;
+        text.textContent = `${value}`;
         wrapper.appendChild(text);
         return wrapper;
       }
@@ -1177,14 +1172,14 @@
 
         const title = document.createElement('div');
         title.className = 'card-title';
-        title.textContent = data.name;
+        title.textContent = toUpperSafe(data.name);
         info.appendChild(title);
 
         const meta = document.createElement('div');
         meta.className = 'card-meta';
         const type = document.createElement('span');
         type.className = 'meta-type';
-        type.textContent = data.type || 'Attachment';
+        type.textContent = toUpperSafe(data.type || 'ATTACHMENT');
         meta.appendChild(type);
 
         if (typeof data.pts === 'number') {
@@ -1193,7 +1188,7 @@
           separator.textContent = '•';
           meta.appendChild(separator);
 
-          const pts = this.createApDisplay(data.pts, { variant: 'inline' });
+          const pts = this.createApDisplay(data.pts);
           if (pts) {
             pts.classList.add('meta-pts');
             meta.appendChild(pts);
@@ -1248,7 +1243,10 @@
           if (!data) continue;
           const slotKey = String(slot);
           const unlockLevel = Number.isFinite(data.unlockLevel) ? data.unlockLevel : this.minLevel;
-          snapshot[slotKey] = { ...data, unlockLevel };
+          const entry = normalizeEntry(data, unlockLevel);
+          if (entry) {
+            snapshot[slotKey] = entry;
+          }
         }
 
         const sortedLevels = Object.keys(this.changes || {})
@@ -1266,11 +1264,10 @@
               snapshot[slotKey] = null;
             } else {
               const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : changeLevel;
-              const entry = { ...payload, unlockLevel };
-              if (entry.replaced) {
-                entry.replaced = normalizeReplaced(entry.replaced);
+              const entry = normalizeEntry(payload, unlockLevel);
+              if (entry) {
+                snapshot[slotKey] = entry;
               }
-              snapshot[slotKey] = entry;
             }
           }
         }
@@ -1288,11 +1285,10 @@
             diff[slotKey] = null;
           } else {
             const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : level;
-            const entry = { ...payload, unlockLevel };
-            if (entry.replaced) {
-              entry.replaced = normalizeReplaced(entry.replaced);
+            const entry = normalizeEntry(payload, unlockLevel);
+            if (entry) {
+              diff[slotKey] = entry;
             }
-            diff[slotKey] = entry;
           }
         }
         return diff;
@@ -1359,6 +1355,13 @@
                   oldLevel = Number.isFinite(match.unlockLevel)
                     ? match.unlockLevel
                     : oldCardData.unlockLevel ?? level;
+                  const normalized = normalizeEntry(
+                    oldCardData,
+                    Number.isFinite(oldCardData.unlockLevel) ? oldCardData.unlockLevel : oldLevel
+                  );
+                  if (normalized) {
+                    oldCardData = normalized;
+                  }
                 }
               }
 
@@ -1430,17 +1433,18 @@
         for (const [slot, change] of entries) {
           const row = document.createElement('div');
           row.className = 'change-row';
-          const slotName = this.getSlotLabel(slot) || `Slot ${slot}`;
+          const slotName = this.getSlotLabel(slot) || `SLOT ${slot}`;
           const heading = document.createElement('div');
           heading.className = 'change-heading';
 
           if (change === null) {
             const prev = previous[slot];
             const prevName = prev ? prev.name : 'Previous attachment';
-            heading.textContent = `${slotName.toUpperCase()} • Removed`;
+            const prevNameDisplay = toUpperSafe(prevName);
+            heading.textContent = `${slotName} • Removed`;
             const detail = document.createElement('div');
             detail.className = 'change-detail';
-            detail.textContent = `${prevName} removed at Level ${level}.`;
+            detail.textContent = `${prevNameDisplay} removed at Level ${level}.`;
             row.appendChild(heading);
             row.appendChild(detail);
           } else {
@@ -1455,13 +1459,13 @@
               ? fallbackPrev.name
               : 'Baseline';
             const changeLevel = Number.isFinite(change.unlockLevel) ? change.unlockLevel : level;
-            heading.textContent = `${slotName.toUpperCase()} • Level ${changeLevel}`;
+            heading.textContent = `${slotName} • Level ${changeLevel}`;
             const detail = document.createElement('div');
             detail.className = 'change-detail';
 
             const prevSpan = document.createElement('span');
             prevSpan.className = 'change-prev';
-            prevSpan.textContent = prevName;
+            prevSpan.textContent = toUpperSafe(prevName);
 
             const arrow = document.createElement('span');
             arrow.className = 'change-arrow';
@@ -1469,7 +1473,7 @@
 
             const nextSpan = document.createElement('span');
             nextSpan.className = 'change-next';
-            nextSpan.textContent = change.name;
+            nextSpan.textContent = toUpperSafe(change.name);
 
             detail.appendChild(prevSpan);
             detail.appendChild(arrow);
