@@ -15,9 +15,9 @@
       --text: #f5f8fa;
       --text-muted: #95a3b1;
       --danger: #ff6b6b;
-      --card-padding: 14px;
-      --indent: 44px;
-      --card-radius: 8px;
+      --card-padding: 12px;
+      --indent: 36px;
+      --card-radius: 7px;
       --transition: 160ms ease;
       --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
       --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -41,55 +41,55 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 40px;
+      padding: 24px;
     }
 
     .app {
-      width: min(1120px, 100%);
+      width: min(980px, 100%);
       background: rgba(10, 16, 21, 0.95);
-      border-radius: 18px;
-      padding: 32px 36px;
+      border-radius: 16px;
+      padding: 24px 28px;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      gap: 32px;
+      gap: 24px;
       position: relative;
     }
 
     .page-header {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .page-title {
-      font-size: clamp(28px, 5vw, 36px);
+      font-size: clamp(24px, 4vw, 32px);
       font-weight: 700;
       letter-spacing: 0.02em;
       margin: 0;
     }
 
     .page-subtitle {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-muted);
       margin: 0;
-      max-width: 720px;
+      max-width: 660px;
     }
 
     .weapon-list {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 18px;
     }
 
     .weapon-card {
       background: rgba(13, 20, 26, 0.92);
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid rgba(37, 49, 59, 0.65);
       display: flex;
       flex-direction: column;
-      padding: 20px 22px;
-      gap: 18px;
+      padding: 16px 18px;
+      gap: 14px;
       transition: box-shadow var(--transition), border-color var(--transition);
       position: relative;
       outline: none;
@@ -113,25 +113,25 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
     }
 
     .weapon-header-text {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
       flex: 1 1 auto;
-      min-width: 180px;
+      min-width: 160px;
     }
 
     .weapon-name {
-      font-size: clamp(22px, 4vw, 30px);
+      font-size: clamp(20px, 3.6vw, 26px);
       font-weight: 700;
       letter-spacing: 0.02em;
     }
 
     .weapon-subtitle {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -142,9 +142,9 @@
       color: var(--accent);
       border: 1px solid rgba(107, 239, 138, 0.35);
       border-radius: 999px;
-      padding: 6px 16px;
+      padding: 5px 12px;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       white-space: nowrap;
@@ -156,9 +156,9 @@
       border: 1px solid rgba(60, 74, 85, 0.55);
       background: rgba(18, 26, 32, 0.88);
       color: var(--text);
-      border-radius: 12px;
-      padding: 8px 12px;
-      font-size: 13px;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -193,7 +193,7 @@
     .weapon-body {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
     .weapon-card.collapsed .weapon-body {
@@ -208,13 +208,13 @@
     }
 
     .level-button {
-      width: 40px;
+      width: 36px;
       aspect-ratio: 1;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid var(--panel-border);
       background: var(--panel);
       color: var(--text);
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 600;
       cursor: pointer;
       transition: transform var(--transition), border-color var(--transition), background var(--transition);
@@ -232,7 +232,7 @@
     }
 
     .level-display {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-muted);
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -240,7 +240,7 @@
 
     .progress {
       position: relative;
-      height: 14px;
+      height: 12px;
       border-radius: 999px;
       background: rgba(22, 32, 40, 0.9);
       border: 1px solid rgba(60, 74, 85, 0.6);
@@ -271,11 +271,11 @@
     .progress .knob {
       position: absolute;
       top: 50%;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 0 4px rgba(107, 239, 138, 0.25);
+      box-shadow: 0 0 0 3px rgba(107, 239, 138, 0.25);
       transform: translate(-50%, -50%);
       transition: left 120ms ease;
       pointer-events: none;
@@ -283,26 +283,26 @@
 
     .weapon-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
-      gap: 28px;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+      gap: 22px;
       align-items: flex-start;
     }
 
     .side-column {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
       align-self: stretch;
     }
 
     .attachments-panel {
       background: linear-gradient(180deg, rgba(19, 27, 34, 0.9), rgba(13, 21, 27, 0.95));
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid rgba(37, 49, 59, 0.65);
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 18px;
       position: relative;
       overflow: hidden;
       flex: 1;
@@ -313,12 +313,12 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(54, 69, 82, 0.35);
-      padding-bottom: 14px;
+      padding-bottom: 12px;
     }
 
     .attachments-header h2 {
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--text-muted);
@@ -326,26 +326,21 @@
 
     .ap-total {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
       gap: 10px;
+      flex-wrap: nowrap;
     }
 
     .ap-readout {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      gap: 4px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.95);
-    }
-
-    .ap-readout img {
-      width: 18px;
-      height: 18px;
-      object-fit: contain;
+      white-space: nowrap;
     }
 
     .ap-readout .ap-value {
@@ -358,12 +353,14 @@
 
     .ap-meter {
       display: flex;
-      gap: 6px;
+      gap: 4px;
+      align-items: center;
     }
 
     .ap-cell {
-      width: 28px;
-      height: 28px;
+      position: relative;
+      width: 24px;
+      height: 24px;
       border-radius: 6px;
       background: rgba(15, 22, 28, 0.92);
       border: 1px solid rgba(41, 54, 65, 0.7);
@@ -371,23 +368,72 @@
       align-items: center;
       justify-content: center;
       transition: background var(--transition), border-color var(--transition), opacity var(--transition);
+      overflow: hidden;
     }
 
-    .ap-cell img {
+    .ap-cell .ap-icon {
+      position: relative;
       width: 18px;
       height: 18px;
-      filter: grayscale(1) brightness(0.55);
-      opacity: 0.45;
+      display: block;
     }
 
-    .ap-cell.filled {
+    .ap-cell .ap-icon img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(1) brightness(0.55);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .ap-cell.half .ap-icon img,
+    .ap-cell.full .ap-icon img {
+      filter: grayscale(0.2) brightness(0.9);
+      opacity: 0.75;
+    }
+
+    .ap-cell.full .ap-icon img {
+      opacity: 0.95;
+      filter: grayscale(0) brightness(1.05);
+    }
+
+    .ap-cell .ap-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(107, 239, 138, 0.9), rgba(107, 239, 138, 0.65));
+      opacity: 0;
+      transition: opacity var(--transition);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .ap-cell .ap-fill.first {
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    .ap-cell .ap-fill.second {
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
+
+    .ap-cell.half {
+      background: rgba(22, 30, 37, 0.95);
+      border-color: rgba(71, 89, 103, 0.85);
+    }
+
+    .ap-cell.half .ap-fill.first {
+      opacity: 0.9;
+    }
+
+    .ap-cell.full {
       background: rgba(28, 36, 43, 0.95);
       border-color: rgba(96, 110, 122, 0.9);
     }
 
-    .ap-cell.filled img {
-      filter: grayscale(1) brightness(0.95);
-      opacity: 0.9;
+    .ap-cell.full .ap-fill {
+      opacity: 0.95;
     }
 
     .slots {
@@ -424,7 +470,7 @@
       padding: var(--card-padding);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
     }
 
@@ -469,17 +515,17 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .card-info {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .card-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.02em;
     }
@@ -487,9 +533,9 @@
     .card-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.78);
     }
@@ -506,12 +552,12 @@
     .ap-chip {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
+      gap: 4px;
+      padding: 2px 6px;
       border-radius: 999px;
       border: 1px solid rgba(60, 74, 85, 0.55);
       background: rgba(18, 26, 32, 0.88);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: none;
       font-weight: 600;
       color: rgba(205, 217, 226, 0.95);
@@ -519,8 +565,8 @@
     }
 
     .ap-chip img {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       filter: grayscale(1) brightness(0.8);
       opacity: 0.9;
     }
@@ -557,9 +603,9 @@
     }
 
     .card-description {
-      font-size: 13px;
+      font-size: 12px;
       color: rgba(173, 187, 198, 0.85);
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .arrow-layer {
@@ -575,18 +621,18 @@
 
     .changes-panel {
       background: rgba(16, 24, 30, 0.92);
-      border-radius: 14px;
+      border-radius: 12px;
       border: 1px solid rgba(45, 58, 70, 0.7);
-      padding: 18px 20px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       min-height: 0;
     }
 
     .changes-panel h3 {
       margin: 0;
-      font-size: 15px;
+      font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
@@ -595,11 +641,11 @@
     .change-row {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
 
     .change-heading {
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.9);
@@ -608,8 +654,8 @@
     .change-detail {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      gap: 6px;
+      font-size: 12px;
       color: rgba(148, 161, 173, 0.85);
     }
 
@@ -691,7 +737,6 @@
               <div class="ap-total">
                 <div class="ap-meter"></div>
                 <div class="ap-readout">
-                  <img src="https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png" alt="Attachment Points" />
                   <span class="ap-value">0</span>
                   <span class="ap-max"></span>
                 </div>
@@ -711,8 +756,8 @@
   </template>
   <script>
     const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
-    const INDENT = 44;
-    const CARD_PAD = 14;
+    const INDENT = 36;
+    const CARD_PAD = 12;
     const ARROW_STROKE = 3;
 
     document.documentElement.style.setProperty('--indent', `${INDENT}px`);
@@ -748,6 +793,792 @@
               order: Array.isArray(parsed.order) ? parsed.order : []
             };
           }
+        }
+      } catch (error) {
+        console.warn('Failed to read saved state', error);
+      }
+
+      function save() {
+        try {
+          localStorage.setItem(KEY, JSON.stringify(data));
+        } catch (error) {
+          console.warn('Failed to persist state', error);
+        }
+      }
+
+      function ensureWeapon(id) {
+        if (!data.weapons[id]) {
+          data.weapons[id] = {};
+          save();
+        }
+      }
+
+      return {
+        getWeaponState(id) {
+          ensureWeapon(id);
+          return { ...data.weapons[id] };
+        },
+        updateWeaponState(id, patch) {
+          ensureWeapon(id);
+          data.weapons[id] = { ...data.weapons[id], ...patch };
+          save();
+        },
+        getOrder() {
+          return Array.isArray(data.order) ? [...data.order] : [];
+        },
+        setOrder(order) {
+          if (!Array.isArray(order)) return;
+          data.order = [...order];
+          save();
+        }
+      };
+    })();
+
+    let currentDraggedId = null;
+
+    class WeaponTracker {
+      constructor(config) {
+        this.config = config;
+        this.id = config.id;
+        this.minLevel = Number.isFinite(config.minLevel) ? config.minLevel : 1;
+        this.maxLevel = Number.isFinite(config.maxLevel) ? config.maxLevel : 40;
+        this.apMax = Number.isFinite(config.apMax) ? config.apMax : 100;
+        this.slotLabels = { ...(config.slotLabels || {}) };
+        this.baseline = config.baseline || {};
+        this.changes = config.changes || {};
+        this.slotKeys = this.buildSlotKeys();
+
+        const saved = storage.getWeaponState(this.id);
+        const defaultLevel = Number.isFinite(config.initialLevel) ? config.initialLevel : this.minLevel;
+        this.state = {
+          level: this.clampLevel(Number.isFinite(saved.level) ? saved.level : defaultLevel),
+          collapsed: Boolean(saved.collapsed),
+          favorite: Boolean(saved.favorite)
+        };
+
+        this.arrowLayerEl = document.createElement('div');
+        this.arrowLayerEl.className = 'arrow-layer';
+      }
+
+      buildSlotKeys() {
+        const order = [];
+        const seen = new Set();
+
+        const addKey = (key, label) => {
+          if (key === undefined || key === null) return;
+          const stringKey = String(key);
+          if (!seen.has(stringKey)) {
+            order.push(stringKey);
+            seen.add(stringKey);
+          }
+          if (label && !this.slotLabels[stringKey]) {
+            this.slotLabels[stringKey] = label;
+          }
+        };
+
+        if (Array.isArray(this.config.slotOrder)) {
+          this.config.slotOrder.forEach((slot) => addKey(slot));
+        }
+
+        for (const [slot, data] of Object.entries(this.baseline || {})) {
+          addKey(slot, data && data.type ? data.type : undefined);
+        }
+
+        for (const changeSet of Object.values(this.changes || {})) {
+          if (!changeSet || typeof changeSet !== 'object') continue;
+          for (const [slot, payload] of Object.entries(changeSet)) {
+            if (payload && typeof payload === 'object' && payload.type) {
+              addKey(slot, payload.type);
+            } else {
+              addKey(slot);
+            }
+          }
+        }
+
+        return order;
+      }
+
+      getSlotLabel(slotKey) {
+        const label = this.slotLabels[String(slotKey)];
+        if (label) return label;
+        const snapshot = this.baseline[slotKey];
+        if (snapshot && snapshot.type) return snapshot.type;
+        return `Slot ${slotKey}`;
+      }
+
+      clampLevel(level) {
+        const value = Math.round(level);
+        return Math.max(this.minLevel, Math.min(this.maxLevel, value));
+      }
+
+      mount(template) {
+        const fragment = template.content.cloneNode(true);
+        this.cardEl = fragment.querySelector('.weapon-card');
+        this.cardEl.dataset.weaponId = this.id;
+
+        this.dragHandleBtn = this.cardEl.querySelector('.drag-handle');
+        this.favoriteBtn = this.cardEl.querySelector('.favorite-toggle');
+        this.favoriteIcon = this.favoriteBtn.querySelector('span[aria-hidden="true"]');
+        this.favoriteText = this.favoriteBtn.querySelector('.favorite-text');
+        this.collapseBtn = this.cardEl.querySelector('.collapse-toggle');
+        this.weaponNameEl = this.cardEl.querySelector('.weapon-name');
+        this.levelPillEl = this.cardEl.querySelector('.level-pill');
+        this.levelDisplayEl = this.cardEl.querySelector('.level-display');
+        this.progressBarEl = this.cardEl.querySelector('.progress');
+        this.progressKnobEl = this.cardEl.querySelector('.knob');
+        this.levelDownBtn = this.cardEl.querySelector('.level-down');
+        this.levelUpBtn = this.cardEl.querySelector('.level-up');
+        this.apMeterEl = this.cardEl.querySelector('.ap-meter');
+        this.apValueEl = this.cardEl.querySelector('.ap-value');
+        this.apMaxEl = this.cardEl.querySelector('.ap-max');
+        this.slotsEl = this.cardEl.querySelector('.slots');
+        this.changesPanelEl = this.cardEl.querySelector('.changes-panel');
+
+        this.weaponNameEl.textContent = this.config.name;
+        this.apMaxEl.textContent = `/${this.apMax}`;
+
+        this.progressBarEl.style.setProperty('--max-level', this.maxLevel - this.minLevel + 1);
+        this.progressBarEl.setAttribute('aria-valuemin', String(this.minLevel));
+        this.progressBarEl.setAttribute('aria-valuemax', String(this.maxLevel));
+
+        this.levelDownBtn.addEventListener('click', () => this.setLevel(this.state.level - 1));
+        this.levelUpBtn.addEventListener('click', () => this.setLevel(this.state.level + 1));
+        this.progressBarEl.addEventListener('click', (event) => this.handleProgressClick(event));
+        this.favoriteBtn.addEventListener('click', () => this.toggleFavorite());
+        this.collapseBtn.addEventListener('click', () => this.toggleCollapse());
+
+        this.dragHandleBtn.addEventListener('dragstart', (event) => this.handleDragStart(event));
+        this.dragHandleBtn.addEventListener('dragend', () => this.handleDragEnd());
+
+        this.cardEl.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            this.setLevel(this.state.level - 1);
+          } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            this.setLevel(this.state.level + 1);
+          }
+        });
+
+        this.applyFavoriteUI();
+        this.applyCollapseState();
+        this.updateProgressUI(this.state.level);
+        this.render();
+
+        this.cardEl.remove();
+      }
+      attach(container) {
+        if (!this.cardEl) return;
+        container.appendChild(this.cardEl);
+      }
+
+      isFavorite() {
+        return Boolean(this.state.favorite);
+      }
+
+      handleDragStart(event) {
+        if (currentDraggedId && currentDraggedId !== this.id) {
+          event.preventDefault();
+          return;
+        }
+        currentDraggedId = this.id;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', this.id);
+        this.cardEl.classList.add('dragging');
+      }
+
+      handleDragEnd() {
+        this.cardEl.classList.remove('dragging');
+        currentDraggedId = null;
+      }
+
+      toggleFavorite() {
+        this.state.favorite = !this.state.favorite;
+        storage.updateWeaponState(this.id, { favorite: this.state.favorite });
+        this.applyFavoriteUI();
+        renderWeaponList();
+      }
+
+      applyFavoriteUI() {
+        this.cardEl.classList.toggle('favorite', this.state.favorite);
+        this.favoriteBtn.setAttribute('aria-pressed', this.state.favorite ? 'true' : 'false');
+        if (this.favoriteIcon) {
+          this.favoriteIcon.textContent = this.state.favorite ? '★' : '☆';
+        }
+        if (this.favoriteText) {
+          this.favoriteText.textContent = this.state.favorite ? 'Favorited' : 'Favorite';
+        }
+      }
+
+      toggleCollapse() {
+        this.state.collapsed = !this.state.collapsed;
+        storage.updateWeaponState(this.id, { collapsed: this.state.collapsed });
+        this.applyCollapseState();
+        if (!this.state.collapsed) {
+          this.renderSlots(this.state.level);
+          this.renderChanges(this.state.level);
+        }
+      }
+
+      applyCollapseState() {
+        this.cardEl.classList.toggle('collapsed', this.state.collapsed);
+        this.collapseBtn.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
+        this.collapseBtn.textContent = this.state.collapsed ? 'Show' : 'Hide';
+      }
+
+      setLevel(level) {
+        const next = this.clampLevel(level);
+        if (next === this.state.level) return;
+        this.state.level = next;
+        storage.updateWeaponState(this.id, { level: next });
+        this.render();
+      }
+
+      handleProgressClick(event) {
+        const rect = this.progressBarEl.getBoundingClientRect();
+        const ratio = rect.width > 0 ? (event.clientX - rect.left) / rect.width : 0;
+        const level = Math.round(ratio * (this.maxLevel - this.minLevel)) + this.minLevel;
+        this.setLevel(level);
+      }
+
+      ensureProgressSegments() {
+        const desired = this.maxLevel - this.minLevel + 1;
+        const existing = this.progressBarEl.querySelectorAll('.segment').length;
+        if (existing === desired) return;
+        this.progressBarEl.querySelectorAll('.segment').forEach((segment) => segment.remove());
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < desired; i++) {
+          const segment = document.createElement('div');
+          segment.className = 'segment';
+          frag.appendChild(segment);
+        }
+        this.progressBarEl.insertBefore(frag, this.progressKnobEl);
+      }
+
+      updateProgressUI(level) {
+        this.ensureProgressSegments();
+        const segments = this.progressBarEl.querySelectorAll('.segment');
+        const index = level - this.minLevel;
+        segments.forEach((segment, idx) => {
+          if (idx <= index) {
+            segment.classList.add('active');
+          } else {
+            segment.classList.remove('active');
+          }
+        });
+        const denominator = Math.max(1, this.maxLevel - this.minLevel);
+        const percent = denominator === 0 ? 0 : ((level - this.minLevel) / denominator) * 100;
+        this.progressKnobEl.style.left = `${percent}%`;
+        this.progressBarEl.setAttribute('aria-valuenow', String(level));
+      }
+
+      ensureApMeterCells() {
+        if (!this.apMeterEl || this.apMeterEl.children.length) return;
+        const cellCount = Math.max(1, Math.round(this.apMax / 10));
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < cellCount; i++) {
+          const cell = document.createElement('span');
+          cell.className = 'ap-cell';
+          const iconWrapper = document.createElement('span');
+          iconWrapper.className = 'ap-icon';
+
+          const icon = document.createElement('img');
+          icon.src = AP_ICON;
+          icon.alt = 'Attachment Points';
+          iconWrapper.appendChild(icon);
+
+          const firstFill = document.createElement('span');
+          firstFill.className = 'ap-fill first';
+          iconWrapper.appendChild(firstFill);
+
+          const secondFill = document.createElement('span');
+          secondFill.className = 'ap-fill second';
+          iconWrapper.appendChild(secondFill);
+
+          cell.appendChild(iconWrapper);
+          frag.appendChild(cell);
+        }
+        this.apMeterEl.appendChild(frag);
+      }
+
+      updateApMeter(total) {
+        this.ensureApMeterCells();
+        if (!this.apMeterEl) return;
+        const cells = Array.from(this.apMeterEl.children);
+        if (!cells.length) return;
+        if (this.apMax <= 0) {
+          cells.forEach((cell) => cell.classList.remove('half', 'full'));
+          return;
+        }
+        const cappedTotal = Math.max(0, Math.min(total, this.apMax));
+        const perCell = this.apMax / cells.length;
+        cells.forEach((cell, index) => {
+          const cellMin = perCell * index;
+          const cellMax = cellMin + perCell;
+          const amountInCell = Math.max(0, Math.min(cappedTotal, cellMax) - cellMin);
+          const halfThreshold = perCell / 2;
+          const isFull = amountInCell >= perCell - 0.01;
+          const isHalf = !isFull && amountInCell >= halfThreshold - 0.01;
+          cell.classList.remove('half', 'full');
+          if (isFull) {
+            cell.classList.add('full');
+          } else if (isHalf) {
+            cell.classList.add('half');
+          }
+        });
+      }
+
+      createApChip(value) {
+        const chip = document.createElement('span');
+        chip.className = 'ap-chip';
+        const icon = document.createElement('img');
+        icon.src = AP_ICON;
+        icon.alt = 'Attachment Points';
+        chip.appendChild(icon);
+        const text = document.createElement('span');
+        text.textContent = `${value}`;
+        chip.appendChild(text);
+        return chip;
+      }
+
+      createCard(data, options = {}) {
+        if (!data) return null;
+        const card = document.createElement('div');
+        card.className = 'slot-card';
+        if (options.old) card.classList.add('old');
+        if (options.changed) card.classList.add('changed');
+        if (options.indented) card.classList.add('indented');
+        if (options.removed) card.classList.add('removed');
+
+        const top = document.createElement('div');
+        top.className = 'card-top';
+
+        const info = document.createElement('div');
+        info.className = 'card-info';
+
+        const title = document.createElement('div');
+        title.className = 'card-title';
+        title.textContent = data.name;
+        info.appendChild(title);
+
+        const meta = document.createElement('div');
+        meta.className = 'card-meta';
+        const type = document.createElement('span');
+        type.className = 'meta-type';
+        type.textContent = data.type || 'Attachment';
+        meta.appendChild(type);
+
+        if (typeof data.pts === 'number') {
+          const separator = document.createElement('span');
+          separator.className = 'meta-separator';
+          separator.textContent = '•';
+          meta.appendChild(separator);
+
+          const pts = document.createElement('span');
+          pts.className = 'meta-pts';
+          pts.textContent = `${data.pts} AP`;
+          meta.appendChild(pts);
+        }
+
+        info.appendChild(meta);
+        top.appendChild(info);
+
+        const levelBadge = document.createElement('div');
+        levelBadge.className = 'card-level';
+        const displayLevel = options.level ?? data.unlockLevel;
+        if (options.hideLevel) {
+          levelBadge.textContent = 'Unlocked';
+        } else if (displayLevel) {
+          levelBadge.textContent = `Level ${displayLevel}`;
+        } else {
+          levelBadge.textContent = 'Unlocked';
+        }
+        top.appendChild(levelBadge);
+
+        card.appendChild(top);
+
+        if (typeof data.description === 'string' && data.description.trim()) {
+          const description = document.createElement('div');
+          description.className = 'card-description';
+          description.textContent = data.description.trim();
+          card.appendChild(description);
+        }
+
+        if (typeof data.pts === 'number' && data.pts !== 0) {
+          const chip = this.createApChip(data.pts);
+          card.appendChild(chip);
+        }
+
+        return card;
+      }
+
+      createPlaceholderCard() {
+        const card = document.createElement('div');
+        card.className = 'slot-card empty';
+        card.textContent = 'No attachment equipped.';
+        return card;
+      }
+      computeState(level) {
+        const snapshot = {};
+        for (const slot of this.slotKeys) {
+          snapshot[slot] = null;
+        }
+
+        for (const [slot, data] of Object.entries(this.baseline || {})) {
+          if (!data) continue;
+          const slotKey = String(slot);
+          const unlockLevel = Number.isFinite(data.unlockLevel) ? data.unlockLevel : this.minLevel;
+          snapshot[slotKey] = { ...data, unlockLevel };
+        }
+
+        const sortedLevels = Object.keys(this.changes || {})
+          .map((value) => Number(value))
+          .filter((value) => !Number.isNaN(value))
+          .sort((a, b) => a - b);
+
+        for (const changeLevel of sortedLevels) {
+          if (changeLevel > level) break;
+          const changeSet = this.changes[changeLevel];
+          if (!changeSet || typeof changeSet !== 'object') continue;
+          for (const [slot, payload] of Object.entries(changeSet)) {
+            const slotKey = String(slot);
+            if (payload === null) {
+              snapshot[slotKey] = null;
+            } else {
+              const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : changeLevel;
+              const entry = { ...payload, unlockLevel };
+              if (entry.replaced) {
+                entry.replaced = normalizeReplaced(entry.replaced);
+              }
+              snapshot[slotKey] = entry;
+            }
+          }
+        }
+
+        return snapshot;
+      }
+
+      diffAtLevel(level) {
+        const changeSet = this.changes[level];
+        if (!changeSet || typeof changeSet !== 'object') return {};
+        const diff = {};
+        for (const [slot, payload] of Object.entries(changeSet)) {
+          const slotKey = String(slot);
+          if (payload === null) {
+            diff[slotKey] = null;
+          } else {
+            const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : level;
+            const entry = { ...payload, unlockLevel };
+            if (entry.replaced) {
+              entry.replaced = normalizeReplaced(entry.replaced);
+            }
+            diff[slotKey] = entry;
+          }
+        }
+        return diff;
+      }
+
+      renderSlots(level) {
+        this.slotsEl.innerHTML = '';
+        const current = this.computeState(level);
+        const previous = this.computeState(Math.max(this.minLevel - 1, level - 1));
+        const diff = this.diffAtLevel(level);
+        const arrowPairs = [];
+
+        for (const slot of this.slotKeys) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'slot-wrapper';
+          const label = document.createElement('div');
+          label.className = 'slot-label';
+          label.textContent = this.getSlotLabel(slot);
+          wrapper.appendChild(label);
+
+          const change = diff.hasOwnProperty(slot) ? diff[slot] : undefined;
+
+          if (change !== undefined) {
+            const previousData = previous[slot];
+            if (change === null) {
+              if (previousData) {
+                const oldLevel = Number.isFinite(previousData.unlockLevel)
+                  ? previousData.unlockLevel
+                  : level;
+                const oldCard = this.createCard(previousData, {
+                  old: true,
+                  removed: true,
+                  level: oldLevel
+                });
+                if (oldCard) {
+                  wrapper.appendChild(oldCard);
+                }
+              } else {
+                const placeholder = this.createPlaceholderCard();
+                wrapper.appendChild(placeholder);
+              }
+            } else {
+              const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
+              let oldCardData = previousData ? { ...previousData } : null;
+              let oldLevel = oldCardData && Number.isFinite(oldCardData.unlockLevel)
+                ? oldCardData.unlockLevel
+                : level;
+
+              if (replacedMeta.length) {
+                const match = oldCardData
+                  ? replacedMeta.find((entry) => entry.name === oldCardData.name)
+                  : replacedMeta[0];
+                if (match) {
+                  if (oldCardData) {
+                    oldCardData = { ...oldCardData, ...match };
+                  } else {
+                    oldCardData = {
+                      name: match.name || 'Previous attachment',
+                      pts: match.pts ?? 0,
+                      type: match.type || this.getSlotLabel(slot),
+                      unlockLevel: Number.isFinite(match.unlockLevel) ? match.unlockLevel : level
+                    };
+                  }
+                  oldLevel = Number.isFinite(match.unlockLevel)
+                    ? match.unlockLevel
+                    : oldCardData.unlockLevel ?? level;
+                }
+              }
+
+              let oldCard = null;
+              if (oldCardData) {
+                oldCard = this.createCard(oldCardData, { old: true, level: oldLevel });
+                if (oldCard) {
+                  wrapper.appendChild(oldCard);
+                }
+              }
+
+              const newCard = this.createCard(change, {
+                changed: true,
+                indented: Boolean(oldCard),
+                level: Number.isFinite(change.unlockLevel) ? change.unlockLevel : level
+              });
+              if (newCard) {
+                wrapper.appendChild(newCard);
+              }
+              if (oldCard && newCard) {
+                arrowPairs.push({ oldEl: oldCard, newEl: newCard });
+              }
+            }
+          } else {
+            const currentData = current[slot];
+            if (currentData) {
+              const prevData = previous[slot];
+              const changed = prevData ? prevData.name !== currentData.name : level > this.minLevel;
+              const card = this.createCard(currentData, {
+                changed,
+                level: currentData.unlockLevel,
+                hideLevel: currentData.unlockLevel ? currentData.unlockLevel > level : false
+              });
+              if (card) {
+                wrapper.appendChild(card);
+              }
+            } else {
+              const placeholder = this.createPlaceholderCard();
+              wrapper.appendChild(placeholder);
+            }
+          }
+
+          this.slotsEl.appendChild(wrapper);
+        }
+
+        this.arrowLayerEl.innerHTML = '';
+        this.slotsEl.appendChild(this.arrowLayerEl);
+        requestAnimationFrame(() => this.drawArrows(arrowPairs));
+      }
+
+      renderChanges(level) {
+        const diff = this.diffAtLevel(level);
+        const previous = this.computeState(Math.max(this.minLevel - 1, level - 1));
+        const container = this.changesPanelEl;
+        container.innerHTML = '';
+        const title = document.createElement('h3');
+        title.textContent = 'Changes at this Level';
+        container.appendChild(title);
+
+        const entries = Object.entries(diff);
+        if (!entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'changes-empty';
+          empty.textContent = 'No changes unlocked at this level.';
+          container.appendChild(empty);
+          return;
+        }
+
+        for (const [slot, change] of entries) {
+          const row = document.createElement('div');
+          row.className = 'change-row';
+          const slotName = this.getSlotLabel(slot) || `Slot ${slot}`;
+          const heading = document.createElement('div');
+          heading.className = 'change-heading';
+
+          if (change === null) {
+            const prev = previous[slot];
+            const prevName = prev ? prev.name : 'Previous attachment';
+            heading.textContent = `${slotName.toUpperCase()} • Removed`;
+            const detail = document.createElement('div');
+            detail.className = 'change-detail';
+            detail.textContent = `${prevName} removed at Level ${level}.`;
+            row.appendChild(heading);
+            row.appendChild(detail);
+          } else {
+            const prev = previous[slot];
+            const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
+            const fallbackPrev = prev
+              ? null
+              : replacedMeta.find((entry) => entry && entry.name) || replacedMeta[0] || null;
+            const prevName = prev
+              ? prev.name
+              : fallbackPrev && fallbackPrev.name
+              ? fallbackPrev.name
+              : 'Baseline';
+            const changeLevel = Number.isFinite(change.unlockLevel) ? change.unlockLevel : level;
+            heading.textContent = `${slotName.toUpperCase()} • Level ${changeLevel}`;
+            const detail = document.createElement('div');
+            detail.className = 'change-detail';
+
+            const prevSpan = document.createElement('span');
+            prevSpan.className = 'change-prev';
+            prevSpan.textContent = prevName;
+
+            const arrow = document.createElement('span');
+            arrow.className = 'change-arrow';
+            arrow.textContent = '→';
+
+            const nextSpan = document.createElement('span');
+            nextSpan.className = 'change-next';
+            nextSpan.textContent = change.name;
+
+            detail.appendChild(prevSpan);
+            detail.appendChild(arrow);
+            detail.appendChild(nextSpan);
+
+            row.appendChild(heading);
+            row.appendChild(detail);
+          }
+
+          container.appendChild(row);
+        }
+      }
+
+      updateAp(level) {
+        const snapshot = this.computeState(level);
+        let total = 0;
+        for (const value of Object.values(snapshot)) {
+          if (value && typeof value.pts === 'number') {
+            total += value.pts;
+          }
+        }
+        if (this.apValueEl) {
+          const clamped = Math.max(0, Math.min(total, this.apMax));
+          this.apValueEl.textContent = `${Math.round(clamped)}`;
+        }
+        this.updateApMeter(total);
+        return total;
+      }
+
+      drawArrows(pairs) {
+        this.arrowLayerEl.innerHTML = '';
+        if (!pairs.length) return;
+        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#6bef8a';
+
+        for (const pair of pairs) {
+          if (!pair.oldEl || !pair.newEl) continue;
+          const startY = this.offsetWithinContainer(pair.oldEl) + pair.oldEl.offsetHeight;
+          const endY = this.offsetWithinContainer(pair.newEl) + pair.newEl.offsetHeight / 2;
+          const vertical = Math.max(0, endY - startY);
+          const height = vertical + 16;
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.classList.add('arrow-svg');
+          svg.setAttribute('width', INDENT + CARD_PAD);
+          svg.setAttribute('height', height);
+          svg.style.left = `${CARD_PAD}px`;
+          svg.style.top = `${startY}px`;
+
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', `M1 1 v${vertical} h${INDENT}`);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', accent.trim() || '#6bef8a');
+          path.setAttribute('stroke-width', ARROW_STROKE);
+          path.setAttribute('stroke-linejoin', 'round');
+          path.setAttribute('stroke-linecap', 'round');
+
+          const arrowHead = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const arrowSize = 6;
+          const tipX = INDENT;
+          const tipY = vertical + 1;
+          arrowHead.setAttribute('d', `M${tipX - arrowSize} ${tipY - arrowSize} L${tipX} ${tipY} L${tipX - arrowSize} ${tipY + arrowSize}`);
+          arrowHead.setAttribute('fill', 'none');
+          arrowHead.setAttribute('stroke', accent.trim() || '#6bef8a');
+          arrowHead.setAttribute('stroke-width', ARROW_STROKE);
+          arrowHead.setAttribute('stroke-linecap', 'round');
+          arrowHead.setAttribute('stroke-linejoin', 'round');
+
+          svg.appendChild(path);
+          svg.appendChild(arrowHead);
+          this.arrowLayerEl.appendChild(svg);
+        }
+      }
+
+      offsetWithinContainer(element) {
+        if (!element) return 0;
+        let offset = 0;
+        let node = element;
+        const container = this.slotsEl;
+        while (node && node !== container) {
+          offset += node.offsetTop || 0;
+          node = node.offsetParent;
+        }
+        return offset;
+      }
+
+      render() {
+        const level = this.state.level;
+        this.levelPillEl.textContent = `Level ${level}`;
+        this.levelDisplayEl.textContent = `Viewing mastery unlocks at level ${level}.`;
+        this.levelDownBtn.disabled = level === this.minLevel;
+        this.levelUpBtn.disabled = level === this.maxLevel;
+        this.updateProgressUI(level);
+        this.updateAp(level);
+        if (!this.state.collapsed) {
+          this.renderSlots(level);
+          this.renderChanges(level);
+        }
+      }
+
+      refreshLayout() {
+        if (this.state.collapsed) return;
+        this.renderSlots(this.state.level);
+      }
+    }
+    const KORD_BASELINE = {
+      1: { name: '415MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
+      2: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
+      3: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      4: { name: 'SINGLE-PORT BRAKE', pts: 5, type: 'Muzzle', unlockLevel: 1 },
+      6: { name: '30 RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
+      7: { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
+    };
+
+    const KORD_CHANGES = {
+      2: {
+        5: {
+          name: 'FLASHLIGHT',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 2
+        }
+      },
+      3: {
+        2: {
+          name: 'ALLOY VERTICAL',
+          pts: 20,
+          type: 'Underbarrel',
+          replaced: [
+            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
+          ]
         }
       } catch (error) {
         console.warn('Failed to read saved state', error);
