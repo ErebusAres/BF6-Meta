@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BF6 KORD Mastery Loadout Tracker</title>
+  <title>BF6 Mastery Loadout Tracker</title>
   <style>
     :root {
       color-scheme: dark;
@@ -15,11 +15,10 @@
       --text: #f5f8fa;
       --text-muted: #95a3b1;
       --danger: #ff6b6b;
-      --card-padding: 14px;
-      --indent: 44px;
-      --card-radius: 8px;
+      --card-padding: 12px;
+      --indent: 36px;
+      --card-radius: 7px;
       --transition: 160ms ease;
-      --max-level: 40;
       --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
       --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
@@ -30,61 +29,175 @@
 
     body {
       margin: 0;
-      background: linear-gradient(180deg, rgba(12, 22, 30, 0.85) 0%, rgba(5, 9, 13, 0.9) 60%, rgba(5, 9, 13, 1) 100%), var(--bg);
+      background: linear-gradient(
+          180deg,
+          rgba(12, 22, 30, 0.85) 0%,
+          rgba(5, 9, 13, 0.9) 60%,
+          rgba(5, 9, 13, 1) 100%
+        ),
+        var(--bg);
       color: var(--text);
       font-family: var(--font);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 40px;
+      padding: 24px;
     }
 
     .app {
-      width: min(1040px, 100%);
+      width: min(980px, 100%);
       background: rgba(10, 16, 21, 0.95);
-      border-radius: 18px;
-      padding: 32px 36px;
+      border-radius: 16px;
+      padding: 24px 28px;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 24px;
       position: relative;
     }
 
-    header {
+    .page-header {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px;
     }
 
-    .title-row {
+    .page-title {
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0;
+      max-width: 660px;
+    }
+
+    .weapon-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .weapon-card {
+      background: rgba(13, 20, 26, 0.92);
+      border-radius: 14px;
+      border: 1px solid rgba(37, 49, 59, 0.65);
+      display: flex;
+      flex-direction: column;
+      padding: 16px 18px;
+      gap: 14px;
+      transition: box-shadow var(--transition), border-color var(--transition);
+      position: relative;
+      outline: none;
+    }
+
+    .weapon-card:focus-visible {
+      box-shadow: 0 0 0 2px rgba(107, 239, 138, 0.6);
+    }
+
+    .weapon-card.dragging {
+      opacity: 0.7;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .weapon-card.favorite {
+      border-color: rgba(107, 239, 138, 0.55);
+      box-shadow: 0 0 0 1px rgba(107, 239, 138, 0.25), 0 16px 36px rgba(107, 239, 138, 0.14);
+    }
+
+    .weapon-header {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
+    }
+
+    .weapon-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1 1 auto;
+      min-width: 160px;
     }
 
     .weapon-name {
-      font-size: clamp(24px, 4vw, 32px);
+      font-size: clamp(20px, 3.6vw, 26px);
       font-weight: 700;
       letter-spacing: 0.02em;
     }
 
-    .subtitle {
-      font-size: 14px;
+    .weapon-subtitle {
+      font-size: 12px;
       color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
     .level-pill {
-      background: rgba(107, 239, 138, 0.1);
+      background: rgba(107, 239, 138, 0.12);
       color: var(--accent);
       border: 1px solid rgba(107, 239, 138, 0.35);
       border-radius: 999px;
-      padding: 6px 16px;
+      padding: 5px 12px;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .favorite-toggle,
+    .collapse-toggle,
+    .drag-handle {
+      border: 1px solid rgba(60, 74, 85, 0.55);
+      background: rgba(18, 26, 32, 0.88);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition), border-color var(--transition), color var(--transition);
+    }
+
+    .drag-handle {
+      cursor: grab;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .favorite-toggle:hover,
+    .collapse-toggle:hover,
+    .drag-handle:hover {
+      background: rgba(107, 239, 138, 0.12);
+      border-color: rgba(107, 239, 138, 0.35);
+    }
+
+    .favorite-toggle[aria-pressed="true"] {
+      background: rgba(107, 239, 138, 0.18);
+      border-color: rgba(107, 239, 138, 0.5);
+      color: var(--accent);
+    }
+
+    .weapon-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .weapon-card.collapsed .weapon-body {
+      display: none;
     }
 
     .level-controls {
@@ -95,13 +208,13 @@
     }
 
     .level-button {
-      width: 40px;
+      width: 36px;
       aspect-ratio: 1;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid var(--panel-border);
       background: var(--panel);
       color: var(--text);
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 600;
       cursor: pointer;
       transition: transform var(--transition), border-color var(--transition), background var(--transition);
@@ -119,7 +232,7 @@
     }
 
     .level-display {
-      font-size: 15px;
+      font-size: 13px;
       color: var(--text-muted);
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -127,7 +240,7 @@
 
     .progress {
       position: relative;
-      height: 14px;
+      height: 12px;
       border-radius: 999px;
       background: rgba(22, 32, 40, 0.9);
       border: 1px solid rgba(60, 74, 85, 0.6);
@@ -158,38 +271,38 @@
     .progress .knob {
       position: absolute;
       top: 50%;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 0 4px rgba(107, 239, 138, 0.25);
+      box-shadow: 0 0 0 3px rgba(107, 239, 138, 0.25);
       transform: translate(-50%, -50%);
       transition: left 120ms ease;
       pointer-events: none;
     }
 
-    main {
+    .weapon-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
-      gap: 28px;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+      gap: 22px;
       align-items: flex-start;
     }
 
     .side-column {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
       align-self: stretch;
     }
 
     .attachments-panel {
       background: linear-gradient(180deg, rgba(19, 27, 34, 0.9), rgba(13, 21, 27, 0.95));
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid rgba(37, 49, 59, 0.65);
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 18px;
       position: relative;
       overflow: hidden;
       flex: 1;
@@ -200,12 +313,12 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(54, 69, 82, 0.35);
-      padding-bottom: 14px;
+      padding-bottom: 12px;
     }
 
     .attachments-header h2 {
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--text-muted);
@@ -213,26 +326,21 @@
 
     .ap-total {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
     }
 
     .ap-readout {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      gap: 4px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.95);
-    }
-
-    .ap-readout img {
-      width: 18px;
-      height: 18px;
-      object-fit: contain;
+      white-space: nowrap;
     }
 
     .ap-readout .ap-value {
@@ -245,36 +353,87 @@
 
     .ap-meter {
       display: flex;
-      gap: 6px;
+      gap: 3px;
+      align-items: center;
     }
 
     .ap-cell {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
+      position: relative;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
       background: rgba(15, 22, 28, 0.92);
       border: 1px solid rgba(41, 54, 65, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background var(--transition), border-color var(--transition), opacity var(--transition);
+      overflow: hidden;
     }
 
-    .ap-cell img {
-      width: 18px;
-      height: 18px;
+    .ap-cell .ap-icon {
+      position: relative;
+      width: 12px;
+      height: 12px;
+      display: block;
+    }
+
+    .ap-cell .ap-icon img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       filter: grayscale(1) brightness(0.55);
-      opacity: 0.45;
+      opacity: 0.4;
+      pointer-events: none;
     }
 
-    .ap-cell.filled {
+    .ap-cell.half .ap-icon img,
+    .ap-cell.full .ap-icon img {
+      filter: grayscale(0.2) brightness(0.9);
+      opacity: 0.75;
+    }
+
+    .ap-cell.full .ap-icon img {
+      opacity: 0.95;
+      filter: grayscale(0) brightness(1.05);
+    }
+
+    .ap-cell .ap-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(107, 239, 138, 0.9), rgba(107, 239, 138, 0.65));
+      opacity: 0;
+      transition: opacity var(--transition);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .ap-cell .ap-fill.first {
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    .ap-cell .ap-fill.second {
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
+
+    .ap-cell.half {
+      background: rgba(22, 30, 37, 0.95);
+      border-color: rgba(71, 89, 103, 0.85);
+    }
+
+    .ap-cell.half .ap-fill.first {
+      opacity: 0.9;
+    }
+
+    .ap-cell.full {
       background: rgba(28, 36, 43, 0.95);
       border-color: rgba(96, 110, 122, 0.9);
     }
 
-    .ap-cell.filled img {
-      filter: grayscale(1) brightness(0.95);
-      opacity: 0.9;
+    .ap-cell.full .ap-fill {
+      opacity: 0.95;
     }
 
     .slots {
@@ -311,7 +470,7 @@
       padding: var(--card-padding);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
     }
 
@@ -356,17 +515,17 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .card-info {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .card-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.02em;
     }
@@ -374,9 +533,9 @@
     .card-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.78);
     }
@@ -390,32 +549,25 @@
       letter-spacing: 0.18em;
     }
 
-    .ap-chip {
+    .ap-inline {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(60, 74, 85, 0.55);
-      background: rgba(18, 26, 32, 0.88);
-      letter-spacing: 0.1em;
-      text-transform: none;
+      gap: 3px;
+      font-size: 10px;
       font-weight: 600;
-      color: rgba(205, 217, 226, 0.95);
+      letter-spacing: 0.08em;
+      color: rgba(177, 191, 203, 0.9);
+      text-transform: uppercase;
     }
 
-    .ap-chip img {
-      width: 14px;
-      height: 14px;
+    .ap-inline img {
+      width: 9px;
+      height: 9px;
       filter: grayscale(1) brightness(0.8);
-      opacity: 0.9;
+      opacity: 0.85;
     }
 
-    .ap-chip span {
-      letter-spacing: 0.1em;
-    }
-
-    .slot-card.old .ap-chip {
+    .slot-card.old .ap-inline {
       opacity: 0.7;
     }
 
@@ -442,79 +594,60 @@
       color: rgba(120, 136, 151, 0.9);
     }
 
-    .card-status {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255, 107, 107, 0.75);
-    }
-
-    .slot-card.removed .card-status {
-      color: rgba(255, 160, 160, 0.85);
+    .card-description {
+      font-size: 12px;
+      color: rgba(173, 187, 198, 0.85);
+      line-height: 1.45;
     }
 
     .arrow-layer {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 10;
     }
 
     .arrow-svg {
       position: absolute;
       overflow: visible;
-      pointer-events: none;
     }
 
     .changes-panel {
-      background: rgba(13, 20, 26, 0.92);
-      border-radius: 14px;
-      border: 1px solid rgba(41, 54, 65, 0.7);
-      padding: 18px 20px;
+      background: rgba(16, 24, 30, 0.92);
+      border-radius: 12px;
+      border: 1px solid rgba(45, 58, 70, 0.7);
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 13px;
+      gap: 12px;
+      min-height: 0;
     }
 
     .changes-panel h3 {
       margin: 0;
-      font-size: 13px;
+      font-size: 14px;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(148, 161, 173, 0.9);
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
     }
 
     .change-row {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding: 12px;
-      border-radius: 10px;
-      background: rgba(22, 31, 39, 0.92);
-      border: 1px solid rgba(60, 74, 85, 0.5);
+      gap: 5px;
     }
 
     .change-heading {
-      font-size: 11px;
-      letter-spacing: 0.18em;
+      font-size: 12px;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(148, 161, 173, 0.9);
+      color: rgba(177, 191, 203, 0.9);
     }
 
     .change-detail {
-      font-size: 13px;
-      color: var(--text);
       display: flex;
       align-items: center;
-    }
-
-    .change-detail .change-arrow {
-      color: rgba(148, 161, 173, 0.9);
-      margin: 0 6px;
-    }
-
-    .change-detail .change-prev {
+      gap: 6px;
+      font-size: 12px;
       color: rgba(148, 161, 173, 0.85);
     }
 
@@ -533,98 +666,8 @@
       text-align: center;
     }
 
-    .sidebar {
-      background: rgba(13, 20, 26, 0.92);
-      border-radius: 14px;
-      border: 1px solid rgba(41, 54, 65, 0.7);
-      padding: 18px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      min-height: 0;
-    }
-
-    .sidebar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .sidebar h3 {
-      margin: 0;
-      font-size: 15px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-
-    .sidebar button {
-      background: rgba(51, 63, 75, 0.6);
-      color: var(--text);
-      border: 1px solid rgba(80, 94, 106, 0.5);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background var(--transition), border-color var(--transition);
-    }
-
-    .sidebar button:hover {
-      background: rgba(107, 239, 138, 0.1);
-      border-color: rgba(107, 239, 138, 0.35);
-    }
-
-    .sidebar pre {
-      margin: 0;
-      padding: 12px;
-      border-radius: 10px;
-      background: rgba(12, 18, 22, 0.9);
-      border: 1px solid rgba(60, 74, 85, 0.5);
-      font-size: 12px;
-      line-height: 1.45;
-      overflow: auto;
-      max-height: 320px;
-    }
-
-    .sidebar.collapsed pre,
-    .sidebar.collapsed .copy-row {
-      display: none;
-    }
-
-    .sidebar.collapsed .collapse-toggle::after {
-      content: "Show";
-    }
-
-    .sidebar .collapse-toggle::after {
-      content: "Hide";
-    }
-
-    .copy-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .copy-feedback {
-      color: var(--accent);
-      font-weight: 600;
-      opacity: 0;
-      transition: opacity var(--transition);
-    }
-
-    .copy-feedback.visible {
-      opacity: 1;
-    }
-
     @media (max-width: 960px) {
-      main {
+      .weapon-layout {
         grid-template-columns: 1fr;
       }
 
@@ -641,72 +684,900 @@
       .app {
         padding: 20px;
       }
-
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <header>
-      <div class="title-row">
-        <div>
-          <div class="weapon-name">KORD 6P67</div>
-          <div class="subtitle">Mastery Loadout Progression</div>
-        </div>
-        <div class="level-pill" id="levelPill">Level 1</div>
-      </div>
-      <div class="level-controls">
-        <button class="level-button" id="levelDown" aria-label="Decrease level">−</button>
-        <div class="progress" id="progressBar" role="slider" aria-valuemin="1" aria-valuemax="40" aria-valuenow="1">
-          <div class="knob" id="progressKnob"></div>
-        </div>
-        <button class="level-button" id="levelUp" aria-label="Increase level">+</button>
-      </div>
-      <div class="level-display" id="levelDisplay">Select a level to inspect attachment changes.</div>
+    <header class="page-header">
+      <h1 class="page-title">Mastery Loadout Tracker</h1>
+      <p class="page-subtitle">Track multiple mastery weapons, compare their attachment unlocks, and keep your favorites pinned for fast reference.</p>
     </header>
-    <main>
-      <section class="attachments-panel">
-        <div class="attachments-header">
-          <h2>Attachments</h2>
-          <div class="ap-total" id="apTotal">
-            <div class="ap-meter" id="apMeter"></div>
-            <div class="ap-readout">
-              <img src="https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png" alt="Attachment Points" />
-              <span class="ap-value" id="apValue">0</span>
-              <span class="ap-max">/ 100</span>
-            </div>
-          </div>
-        </div>
-        <div class="slots" id="slots"></div>
-      </section>
-      <aside class="side-column">
-        <section class="changes-panel" id="changesPanel">
-          <h3>Changes at this Level</h3>
-          <div class="changes-empty">No changes unlocked at this level.</div>
-        </section>
-        <section class="sidebar" id="dataSidebar">
-          <div class="sidebar-header">
-            <h3>Debug Data</h3>
-            <button class="collapse-toggle" id="sidebarToggle" type="button"></button>
-          </div>
-          <div class="copy-row">
-            <button id="copyState" type="button">Copy JSON</button>
-            <span class="copy-feedback" id="copyFeedback">Copied!</span>
-          </div>
-          <pre id="stateDump"></pre>
-        </section>
-      </aside>
-    </main>
+    <div class="weapon-list" id="weaponList"></div>
   </div>
+
+  <template id="weaponTemplate">
+    <section class="weapon-card" tabindex="0">
+      <div class="weapon-header">
+        <button class="drag-handle" type="button" title="Drag to reorder" aria-label="Drag to reorder" draggable="true">
+          <span aria-hidden="true">⋮⋮</span>
+        </button>
+        <button class="favorite-toggle" type="button" aria-pressed="false" title="Toggle favorite">
+          <span aria-hidden="true">☆</span>
+          <span class="favorite-text">Favorite</span>
+        </button>
+        <div class="weapon-header-text">
+          <div class="weapon-name"></div>
+          <div class="weapon-subtitle">Mastery Loadout Progression</div>
+        </div>
+        <div class="level-pill"></div>
+        <button class="collapse-toggle" type="button" aria-expanded="true">Hide</button>
+      </div>
+      <div class="weapon-body">
+        <div class="level-controls">
+          <button class="level-button level-down" type="button" aria-label="Decrease level">−</button>
+          <div class="progress" role="slider" aria-valuemin="1" aria-valuemax="40" aria-valuenow="1">
+            <div class="knob"></div>
+          </div>
+          <button class="level-button level-up" type="button" aria-label="Increase level">+</button>
+        </div>
+        <div class="level-display"></div>
+        <div class="weapon-layout">
+          <section class="attachments-panel">
+            <div class="attachments-header">
+              <h2>Attachments</h2>
+              <div class="ap-total">
+                <div class="ap-meter"></div>
+                <div class="ap-readout">
+                  <span class="ap-value">0</span>
+                  <span class="ap-max"></span>
+                </div>
+              </div>
+            </div>
+            <div class="slots"></div>
+          </section>
+          <aside class="side-column">
+            <section class="changes-panel">
+              <h3>Changes at this Level</h3>
+              <div class="changes-empty">No changes unlocked at this level.</div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </template>
   <script>
-    const SLOT_TYPE = { 1: 'Barrel', 2: 'Underbarrel', 3: 'Ammunition', 4: 'Muzzle', 5: 'Right Accessory', 6: 'Magazine', 7: 'Scope' };
-
-    const INDENT = 44;
-    const CARD_PAD = 14;
-    const ARROW_STROKE = 3;
     const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
+    const INDENT = 36;
+    const CARD_PAD = 12;
+    const ARROW_STROKE = 3;
 
-    const baseline = {
+    document.documentElement.style.setProperty('--indent', `${INDENT}px`);
+    document.documentElement.style.setProperty('--card-padding', `${CARD_PAD}px`);
+
+    const toUpperSafe = (value) => (typeof value === 'string' ? value.toUpperCase() : value);
+
+    function normalizeReplaced(replaced) {
+      if (!replaced) return [];
+      const array = Array.isArray(replaced) ? replaced : [replaced];
+      return array
+        .map((entry) => {
+          if (typeof entry === 'string') {
+            return { name: toUpperSafe(entry) };
+          }
+          if (entry && typeof entry === 'object') {
+            const normalized = { ...entry };
+            if (normalized.name) normalized.name = toUpperSafe(normalized.name);
+            if (normalized.type) normalized.type = toUpperSafe(normalized.type);
+            return normalized;
+          }
+          return null;
+        })
+        .filter(Boolean);
+    }
+
+    function normalizeEntry(payload, unlockLevel) {
+      if (!payload || typeof payload !== 'object') return null;
+      const entry = { ...payload };
+      if (unlockLevel !== undefined) {
+        entry.unlockLevel = unlockLevel;
+      }
+      if (entry.name) entry.name = toUpperSafe(entry.name);
+      if (entry.type) entry.type = toUpperSafe(entry.type);
+      if (entry.replaced) {
+        entry.replaced = normalizeReplaced(entry.replaced);
+      }
+      return entry;
+    }
+
+    const storage = (() => {
+      const KEY = 'bf6-meta-state-v2';
+      const store = typeof window !== 'undefined' && window.localStorage ? window.localStorage : null;
+      let data = { weapons: {}, order: [] };
+
+      const raw = store ? store.getItem(KEY) : null;
+      const sanitized = typeof raw === 'string' ? raw.trim() : '';
+      if (sanitized && (sanitized.startsWith('{') || sanitized.startsWith('['))) {
+        const parsed = JSON.parse(sanitized);
+        if (parsed && typeof parsed === 'object') {
+          data = {
+            weapons: parsed.weapons && typeof parsed.weapons === 'object' ? parsed.weapons : {},
+            order: Array.isArray(parsed.order) ? parsed.order : []
+          };
+        }
+      }
+
+      function save() {
+        if (!store) return;
+        store.setItem(KEY, JSON.stringify(data));
+      }
+
+      function ensureWeapon(id) {
+        if (!data.weapons[id]) {
+          data.weapons[id] = {};
+          save();
+        }
+      }
+
+      return {
+        getWeaponState(id) {
+          ensureWeapon(id);
+          return { ...data.weapons[id] };
+        },
+        updateWeaponState(id, patch) {
+          ensureWeapon(id);
+          data.weapons[id] = { ...data.weapons[id], ...patch };
+          save();
+        },
+        getOrder() {
+          return Array.isArray(data.order) ? [...data.order] : [];
+        },
+        setOrder(order) {
+          if (!Array.isArray(order)) return;
+          data.order = [...order];
+          save();
+        }
+      };
+    })();
+
+    let currentDraggedId = null;
+
+    class WeaponTracker {
+      constructor(config) {
+        this.config = config;
+        this.id = config.id;
+        this.minLevel = Number.isFinite(config.minLevel) ? config.minLevel : 1;
+        this.maxLevel = Number.isFinite(config.maxLevel) ? config.maxLevel : 40;
+        this.apMax = Number.isFinite(config.apMax) ? config.apMax : 100;
+        this.slotLabels = { ...(config.slotLabels || {}) };
+        for (const key of Object.keys(this.slotLabels)) {
+          this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
+        }
+        this.baseline = config.baseline || {};
+        this.changes = config.changes || {};
+        this.slotKeys = this.buildSlotKeys();
+
+        const saved = storage.getWeaponState(this.id);
+        const defaultLevel = Number.isFinite(config.initialLevel) ? config.initialLevel : this.minLevel;
+        this.state = {
+          level: this.clampLevel(Number.isFinite(saved.level) ? saved.level : defaultLevel),
+          collapsed: Boolean(saved.collapsed),
+          favorite: Boolean(saved.favorite)
+        };
+
+        this.arrowLayerEl = document.createElement('div');
+        this.arrowLayerEl.className = 'arrow-layer';
+      }
+
+      buildSlotKeys() {
+        const order = [];
+        const seen = new Set();
+
+        const addKey = (key, label) => {
+          if (key === undefined || key === null) return;
+          const stringKey = String(key);
+          if (!seen.has(stringKey)) {
+            order.push(stringKey);
+            seen.add(stringKey);
+          }
+          if (label && !this.slotLabels[stringKey]) {
+            this.slotLabels[stringKey] = toUpperSafe(label);
+          }
+        };
+
+        if (Array.isArray(this.config.slotOrder)) {
+          this.config.slotOrder.forEach((slot) => addKey(slot));
+        }
+
+        for (const [slot, data] of Object.entries(this.baseline || {})) {
+          addKey(slot, data && data.type ? data.type : undefined);
+        }
+
+        for (const changeSet of Object.values(this.changes || {})) {
+          if (!changeSet || typeof changeSet !== 'object') continue;
+          for (const [slot, payload] of Object.entries(changeSet)) {
+            if (payload && typeof payload === 'object' && payload.type) {
+              addKey(slot, payload.type);
+            } else {
+              addKey(slot);
+            }
+          }
+        }
+
+        return order;
+      }
+
+      getSlotLabel(slotKey) {
+        const label = this.slotLabels[String(slotKey)];
+        if (typeof label === 'string') return label;
+        const snapshot = this.baseline[slotKey];
+        if (snapshot && snapshot.type) return toUpperSafe(snapshot.type);
+        return `SLOT ${slotKey}`;
+      }
+
+      clampLevel(level) {
+        const value = Math.round(level);
+        return Math.max(this.minLevel, Math.min(this.maxLevel, value));
+      }
+
+      mount(template) {
+        const fragment = template.content.cloneNode(true);
+        this.cardEl = fragment.querySelector('.weapon-card');
+        this.cardEl.dataset.weaponId = this.id;
+
+        this.dragHandleBtn = this.cardEl.querySelector('.drag-handle');
+        this.favoriteBtn = this.cardEl.querySelector('.favorite-toggle');
+        this.favoriteIcon = this.favoriteBtn.querySelector('span[aria-hidden="true"]');
+        this.favoriteText = this.favoriteBtn.querySelector('.favorite-text');
+        this.collapseBtn = this.cardEl.querySelector('.collapse-toggle');
+        this.weaponNameEl = this.cardEl.querySelector('.weapon-name');
+        this.levelPillEl = this.cardEl.querySelector('.level-pill');
+        this.levelDisplayEl = this.cardEl.querySelector('.level-display');
+        this.progressBarEl = this.cardEl.querySelector('.progress');
+        this.progressKnobEl = this.cardEl.querySelector('.knob');
+        this.levelDownBtn = this.cardEl.querySelector('.level-down');
+        this.levelUpBtn = this.cardEl.querySelector('.level-up');
+        this.apMeterEl = this.cardEl.querySelector('.ap-meter');
+        this.apValueEl = this.cardEl.querySelector('.ap-value');
+        this.apMaxEl = this.cardEl.querySelector('.ap-max');
+        this.slotsEl = this.cardEl.querySelector('.slots');
+        this.changesPanelEl = this.cardEl.querySelector('.changes-panel');
+
+        this.weaponNameEl.textContent = toUpperSafe(this.config.name || this.id);
+        this.apMaxEl.textContent = `/${this.apMax}`;
+
+        this.progressBarEl.style.setProperty('--max-level', this.maxLevel - this.minLevel + 1);
+        this.progressBarEl.setAttribute('aria-valuemin', String(this.minLevel));
+        this.progressBarEl.setAttribute('aria-valuemax', String(this.maxLevel));
+
+        this.levelDownBtn.addEventListener('click', () => this.setLevel(this.state.level - 1));
+        this.levelUpBtn.addEventListener('click', () => this.setLevel(this.state.level + 1));
+        this.progressBarEl.addEventListener('click', (event) => this.handleProgressClick(event));
+        this.favoriteBtn.addEventListener('click', () => this.toggleFavorite());
+        this.collapseBtn.addEventListener('click', () => this.toggleCollapse());
+
+        this.dragHandleBtn.addEventListener('dragstart', (event) => this.handleDragStart(event));
+        this.dragHandleBtn.addEventListener('dragend', () => this.handleDragEnd());
+
+        this.cardEl.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            this.setLevel(this.state.level - 1);
+          } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            this.setLevel(this.state.level + 1);
+          }
+        });
+
+        this.applyFavoriteUI();
+        this.applyCollapseState();
+        this.updateProgressUI(this.state.level);
+        this.render();
+
+        this.cardEl.remove();
+      }
+      attach(container) {
+        if (!this.cardEl) return;
+        container.appendChild(this.cardEl);
+      }
+
+      isFavorite() {
+        return Boolean(this.state.favorite);
+      }
+
+      handleDragStart(event) {
+        if (currentDraggedId && currentDraggedId !== this.id) {
+          event.preventDefault();
+          return;
+        }
+        currentDraggedId = this.id;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', this.id);
+        this.cardEl.classList.add('dragging');
+      }
+
+      handleDragEnd() {
+        this.cardEl.classList.remove('dragging');
+        currentDraggedId = null;
+      }
+
+      toggleFavorite() {
+        this.state.favorite = !this.state.favorite;
+        storage.updateWeaponState(this.id, { favorite: this.state.favorite });
+        this.applyFavoriteUI();
+        renderWeaponList();
+      }
+
+      applyFavoriteUI() {
+        this.cardEl.classList.toggle('favorite', this.state.favorite);
+        this.favoriteBtn.setAttribute('aria-pressed', this.state.favorite ? 'true' : 'false');
+        if (this.favoriteIcon) {
+          this.favoriteIcon.textContent = this.state.favorite ? '★' : '☆';
+        }
+        if (this.favoriteText) {
+          this.favoriteText.textContent = this.state.favorite ? 'Favorited' : 'Favorite';
+        }
+      }
+
+      toggleCollapse() {
+        this.state.collapsed = !this.state.collapsed;
+        storage.updateWeaponState(this.id, { collapsed: this.state.collapsed });
+        this.applyCollapseState();
+        if (!this.state.collapsed) {
+          this.renderSlots(this.state.level);
+          this.renderChanges(this.state.level);
+        }
+      }
+
+      applyCollapseState() {
+        this.cardEl.classList.toggle('collapsed', this.state.collapsed);
+        this.collapseBtn.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
+        this.collapseBtn.textContent = this.state.collapsed ? 'Show' : 'Hide';
+      }
+
+      setLevel(level) {
+        const next = this.clampLevel(level);
+        if (next === this.state.level) return;
+        this.state.level = next;
+        storage.updateWeaponState(this.id, { level: next });
+        this.render();
+      }
+
+      handleProgressClick(event) {
+        const rect = this.progressBarEl.getBoundingClientRect();
+        const ratio = rect.width > 0 ? (event.clientX - rect.left) / rect.width : 0;
+        const level = Math.round(ratio * (this.maxLevel - this.minLevel)) + this.minLevel;
+        this.setLevel(level);
+      }
+
+      ensureProgressSegments() {
+        const desired = this.maxLevel - this.minLevel + 1;
+        const existing = this.progressBarEl.querySelectorAll('.segment').length;
+        if (existing === desired) return;
+        this.progressBarEl.querySelectorAll('.segment').forEach((segment) => segment.remove());
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < desired; i++) {
+          const segment = document.createElement('div');
+          segment.className = 'segment';
+          frag.appendChild(segment);
+        }
+        this.progressBarEl.insertBefore(frag, this.progressKnobEl);
+      }
+
+      updateProgressUI(level) {
+        this.ensureProgressSegments();
+        const segments = this.progressBarEl.querySelectorAll('.segment');
+        const index = level - this.minLevel;
+        segments.forEach((segment, idx) => {
+          if (idx <= index) {
+            segment.classList.add('active');
+          } else {
+            segment.classList.remove('active');
+          }
+        });
+        const denominator = Math.max(1, this.maxLevel - this.minLevel);
+        const percent = denominator === 0 ? 0 : ((level - this.minLevel) / denominator) * 100;
+        this.progressKnobEl.style.left = `${percent}%`;
+        this.progressBarEl.setAttribute('aria-valuenow', String(level));
+      }
+
+      ensureApMeterCells() {
+        if (!this.apMeterEl || this.apMeterEl.children.length) return;
+        const cellCount = Math.max(1, Math.round(this.apMax / 10));
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < cellCount; i++) {
+          const cell = document.createElement('span');
+          cell.className = 'ap-cell';
+          const iconWrapper = document.createElement('span');
+          iconWrapper.className = 'ap-icon';
+
+          const icon = document.createElement('img');
+          icon.src = AP_ICON;
+          icon.alt = 'Attachment Points';
+          iconWrapper.appendChild(icon);
+
+          const firstFill = document.createElement('span');
+          firstFill.className = 'ap-fill first';
+          iconWrapper.appendChild(firstFill);
+
+          const secondFill = document.createElement('span');
+          secondFill.className = 'ap-fill second';
+          iconWrapper.appendChild(secondFill);
+
+          cell.appendChild(iconWrapper);
+          frag.appendChild(cell);
+        }
+        this.apMeterEl.appendChild(frag);
+      }
+
+      updateApMeter(total) {
+        this.ensureApMeterCells();
+        if (!this.apMeterEl) return;
+        const cells = Array.from(this.apMeterEl.children);
+        if (!cells.length) return;
+        if (this.apMax <= 0) {
+          cells.forEach((cell) => cell.classList.remove('half', 'full'));
+          return;
+        }
+        const cappedTotal = Math.max(0, Math.min(total, this.apMax));
+        const perCell = this.apMax / cells.length;
+        cells.forEach((cell, index) => {
+          const cellMin = perCell * index;
+          const cellMax = cellMin + perCell;
+          const amountInCell = Math.max(0, Math.min(cappedTotal, cellMax) - cellMin);
+          const halfThreshold = perCell / 2;
+          const isFull = amountInCell >= perCell - 0.01;
+          const isHalf = !isFull && amountInCell >= halfThreshold - 0.01;
+          cell.classList.remove('half', 'full');
+          if (isFull) {
+            cell.classList.add('full');
+          } else if (isHalf) {
+            cell.classList.add('half');
+          }
+        });
+      }
+
+      createApDisplay(value) {
+        if (!Number.isFinite(value)) return null;
+        const wrapper = document.createElement('span');
+        wrapper.className = 'ap-inline';
+        const icon = document.createElement('img');
+        icon.src = AP_ICON;
+        icon.alt = 'Attachment Points';
+        wrapper.appendChild(icon);
+        const text = document.createElement('span');
+        text.textContent = `${value}`;
+        wrapper.appendChild(text);
+        return wrapper;
+      }
+
+      createApChip(value) {
+        return this.createApDisplay(value);
+      }
+
+      createCard(data, options = {}) {
+        if (!data) return null;
+        const card = document.createElement('div');
+        card.className = 'slot-card';
+        if (options.old) card.classList.add('old');
+        if (options.changed) card.classList.add('changed');
+        if (options.indented) card.classList.add('indented');
+        if (options.removed) card.classList.add('removed');
+
+        const top = document.createElement('div');
+        top.className = 'card-top';
+
+        const info = document.createElement('div');
+        info.className = 'card-info';
+
+        const title = document.createElement('div');
+        title.className = 'card-title';
+        title.textContent = toUpperSafe(data.name);
+        info.appendChild(title);
+
+        const meta = document.createElement('div');
+        meta.className = 'card-meta';
+        const type = document.createElement('span');
+        type.className = 'meta-type';
+        type.textContent = toUpperSafe(data.type || 'ATTACHMENT');
+        meta.appendChild(type);
+
+        if (typeof data.pts === 'number') {
+          const separator = document.createElement('span');
+          separator.className = 'meta-separator';
+          separator.textContent = '•';
+          meta.appendChild(separator);
+
+          const pts = this.createApDisplay(data.pts);
+          if (pts) {
+            pts.classList.add('meta-pts');
+            meta.appendChild(pts);
+          }
+        }
+
+        info.appendChild(meta);
+        top.appendChild(info);
+
+        const levelBadge = document.createElement('div');
+        levelBadge.className = 'card-level';
+        const displayLevel = options.level ?? data.unlockLevel;
+        if (options.hideLevel) {
+          levelBadge.textContent = 'Unlocked';
+        } else if (displayLevel) {
+          levelBadge.textContent = `Level ${displayLevel}`;
+        } else {
+          levelBadge.textContent = 'Unlocked';
+        }
+        top.appendChild(levelBadge);
+
+        card.appendChild(top);
+
+        if (typeof data.description === 'string' && data.description.trim()) {
+          const description = document.createElement('div');
+          description.className = 'card-description';
+          description.textContent = data.description.trim();
+          card.appendChild(description);
+        }
+
+        if (typeof data.pts === 'number' && data.pts !== 0) {
+          const chip = this.createApChip(data.pts);
+          card.appendChild(chip);
+        }
+
+        return card;
+      }
+
+      createPlaceholderCard() {
+        const card = document.createElement('div');
+        card.className = 'slot-card empty';
+        card.textContent = 'No attachment equipped.';
+        return card;
+      }
+      computeState(level) {
+        const snapshot = {};
+        for (const slot of this.slotKeys) {
+          snapshot[slot] = null;
+        }
+
+        for (const [slot, data] of Object.entries(this.baseline || {})) {
+          if (!data) continue;
+          const slotKey = String(slot);
+          const unlockLevel = Number.isFinite(data.unlockLevel) ? data.unlockLevel : this.minLevel;
+          const entry = normalizeEntry(data, unlockLevel);
+          if (entry) {
+            snapshot[slotKey] = entry;
+          }
+        }
+
+        const sortedLevels = Object.keys(this.changes || {})
+          .map((value) => Number(value))
+          .filter((value) => !Number.isNaN(value))
+          .sort((a, b) => a - b);
+
+        for (const changeLevel of sortedLevels) {
+          if (changeLevel > level) break;
+          const changeSet = this.changes[changeLevel];
+          if (!changeSet || typeof changeSet !== 'object') continue;
+          for (const [slot, payload] of Object.entries(changeSet)) {
+            const slotKey = String(slot);
+            if (payload === null) {
+              snapshot[slotKey] = null;
+            } else {
+              const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : changeLevel;
+              const entry = normalizeEntry(payload, unlockLevel);
+              if (entry) {
+                snapshot[slotKey] = entry;
+              }
+            }
+          }
+        }
+
+        return snapshot;
+      }
+
+      diffAtLevel(level) {
+        const changeSet = this.changes[level];
+        if (!changeSet || typeof changeSet !== 'object') return {};
+        const diff = {};
+        for (const [slot, payload] of Object.entries(changeSet)) {
+          const slotKey = String(slot);
+          if (payload === null) {
+            diff[slotKey] = null;
+          } else {
+            const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : level;
+            const entry = normalizeEntry(payload, unlockLevel);
+            if (entry) {
+              diff[slotKey] = entry;
+            }
+          }
+        }
+        return diff;
+      }
+
+      renderSlots(level) {
+        this.slotsEl.innerHTML = '';
+        const current = this.computeState(level);
+        const previous = this.computeState(Math.max(this.minLevel - 1, level - 1));
+        const diff = this.diffAtLevel(level);
+        const arrowPairs = [];
+
+        for (const slot of this.slotKeys) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'slot-wrapper';
+          const label = document.createElement('div');
+          label.className = 'slot-label';
+          label.textContent = this.getSlotLabel(slot);
+          wrapper.appendChild(label);
+
+          const change = diff.hasOwnProperty(slot) ? diff[slot] : undefined;
+
+          if (change !== undefined) {
+            const previousData = previous[slot];
+            if (change === null) {
+              if (previousData) {
+                const oldLevel = Number.isFinite(previousData.unlockLevel)
+                  ? previousData.unlockLevel
+                  : level;
+                const oldCard = this.createCard(previousData, {
+                  old: true,
+                  removed: true,
+                  level: oldLevel
+                });
+                if (oldCard) {
+                  wrapper.appendChild(oldCard);
+                }
+              } else {
+                const placeholder = this.createPlaceholderCard();
+                wrapper.appendChild(placeholder);
+              }
+            } else {
+              const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
+              let oldCardData = previousData ? { ...previousData } : null;
+              let oldLevel = oldCardData && Number.isFinite(oldCardData.unlockLevel)
+                ? oldCardData.unlockLevel
+                : level;
+
+              if (replacedMeta.length) {
+                const match = oldCardData
+                  ? replacedMeta.find((entry) => entry.name === oldCardData.name)
+                  : replacedMeta[0];
+                if (match) {
+                  if (oldCardData) {
+                    oldCardData = { ...oldCardData, ...match };
+                  } else {
+                    oldCardData = {
+                      name: match.name || 'Previous attachment',
+                      pts: match.pts ?? 0,
+                      type: match.type || this.getSlotLabel(slot),
+                      unlockLevel: Number.isFinite(match.unlockLevel) ? match.unlockLevel : level
+                    };
+                  }
+                  oldLevel = Number.isFinite(match.unlockLevel)
+                    ? match.unlockLevel
+                    : oldCardData.unlockLevel ?? level;
+                  const normalized = normalizeEntry(
+                    oldCardData,
+                    Number.isFinite(oldCardData.unlockLevel) ? oldCardData.unlockLevel : oldLevel
+                  );
+                  if (normalized) {
+                    oldCardData = normalized;
+                  }
+                }
+              }
+
+              let oldCard = null;
+              if (oldCardData) {
+                oldCard = this.createCard(oldCardData, { old: true, level: oldLevel });
+                if (oldCard) {
+                  wrapper.appendChild(oldCard);
+                }
+              }
+
+              const newCard = this.createCard(change, {
+                changed: true,
+                indented: Boolean(oldCard),
+                level: Number.isFinite(change.unlockLevel) ? change.unlockLevel : level
+              });
+              if (newCard) {
+                wrapper.appendChild(newCard);
+              }
+              if (oldCard && newCard) {
+                arrowPairs.push({ oldEl: oldCard, newEl: newCard });
+              }
+            }
+          } else {
+            const currentData = current[slot];
+            if (currentData) {
+              const prevData = previous[slot];
+              const changed = prevData ? prevData.name !== currentData.name : level > this.minLevel;
+              const card = this.createCard(currentData, {
+                changed,
+                level: currentData.unlockLevel,
+                hideLevel: currentData.unlockLevel ? currentData.unlockLevel > level : false
+              });
+              if (card) {
+                wrapper.appendChild(card);
+              }
+            } else {
+              const placeholder = this.createPlaceholderCard();
+              wrapper.appendChild(placeholder);
+            }
+          }
+
+          this.slotsEl.appendChild(wrapper);
+        }
+
+        this.arrowLayerEl.innerHTML = '';
+        this.slotsEl.appendChild(this.arrowLayerEl);
+        requestAnimationFrame(() => this.drawArrows(arrowPairs));
+      }
+
+      renderChanges(level) {
+        const diff = this.diffAtLevel(level);
+        const previous = this.computeState(Math.max(this.minLevel - 1, level - 1));
+        const container = this.changesPanelEl;
+        container.innerHTML = '';
+        const title = document.createElement('h3');
+        title.textContent = 'Changes at this Level';
+        container.appendChild(title);
+
+        const entries = Object.entries(diff);
+        if (!entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'changes-empty';
+          empty.textContent = 'No changes unlocked at this level.';
+          container.appendChild(empty);
+          return;
+        }
+
+        for (const [slot, change] of entries) {
+          const row = document.createElement('div');
+          row.className = 'change-row';
+          const slotName = this.getSlotLabel(slot) || `SLOT ${slot}`;
+          const heading = document.createElement('div');
+          heading.className = 'change-heading';
+
+          if (change === null) {
+            const prev = previous[slot];
+            const prevName = prev ? prev.name : 'Previous attachment';
+            const prevNameDisplay = toUpperSafe(prevName);
+            heading.textContent = `${slotName} • Removed`;
+            const detail = document.createElement('div');
+            detail.className = 'change-detail';
+            detail.textContent = `${prevNameDisplay} removed at Level ${level}.`;
+            row.appendChild(heading);
+            row.appendChild(detail);
+          } else {
+            const prev = previous[slot];
+            const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
+            const fallbackPrev = prev
+              ? null
+              : replacedMeta.find((entry) => entry && entry.name) || replacedMeta[0] || null;
+            const prevName = prev
+              ? prev.name
+              : fallbackPrev && fallbackPrev.name
+              ? fallbackPrev.name
+              : 'Baseline';
+            const changeLevel = Number.isFinite(change.unlockLevel) ? change.unlockLevel : level;
+            heading.textContent = `${slotName} • Level ${changeLevel}`;
+            const detail = document.createElement('div');
+            detail.className = 'change-detail';
+
+            const prevSpan = document.createElement('span');
+            prevSpan.className = 'change-prev';
+            prevSpan.textContent = toUpperSafe(prevName);
+
+            const arrow = document.createElement('span');
+            arrow.className = 'change-arrow';
+            arrow.textContent = '→';
+
+            const nextSpan = document.createElement('span');
+            nextSpan.className = 'change-next';
+            nextSpan.textContent = toUpperSafe(change.name);
+
+            detail.appendChild(prevSpan);
+            detail.appendChild(arrow);
+            detail.appendChild(nextSpan);
+
+            row.appendChild(heading);
+            row.appendChild(detail);
+          }
+
+          container.appendChild(row);
+        }
+      }
+
+      updateAp(level) {
+        const snapshot = this.computeState(level);
+        let total = 0;
+        for (const value of Object.values(snapshot)) {
+          if (value && typeof value.pts === 'number') {
+            total += value.pts;
+          }
+        }
+        if (this.apValueEl) {
+          const clamped = Math.max(0, Math.min(total, this.apMax));
+          this.apValueEl.textContent = `${Math.round(clamped)}`;
+        }
+        this.updateApMeter(total);
+        return total;
+      }
+
+      drawArrows(pairs) {
+        this.arrowLayerEl.innerHTML = '';
+        if (!pairs.length) return;
+        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#6bef8a';
+
+        for (const pair of pairs) {
+          if (!pair.oldEl || !pair.newEl) continue;
+          const startY = this.offsetWithinContainer(pair.oldEl) + pair.oldEl.offsetHeight;
+          const endY = this.offsetWithinContainer(pair.newEl) + pair.newEl.offsetHeight / 2;
+          const vertical = Math.max(0, endY - startY);
+          const height = vertical + 16;
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.classList.add('arrow-svg');
+          svg.setAttribute('width', INDENT + CARD_PAD);
+          svg.setAttribute('height', height);
+          svg.style.left = `${CARD_PAD}px`;
+          svg.style.top = `${startY}px`;
+
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', `M1 1 v${vertical} h${INDENT}`);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', accent.trim() || '#6bef8a');
+          path.setAttribute('stroke-width', ARROW_STROKE);
+          path.setAttribute('stroke-linejoin', 'round');
+          path.setAttribute('stroke-linecap', 'round');
+
+          const arrowHead = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const arrowSize = 6;
+          const tipX = INDENT;
+          const tipY = vertical + 1;
+          arrowHead.setAttribute('d', `M${tipX - arrowSize} ${tipY - arrowSize} L${tipX} ${tipY} L${tipX - arrowSize} ${tipY + arrowSize}`);
+          arrowHead.setAttribute('fill', 'none');
+          arrowHead.setAttribute('stroke', accent.trim() || '#6bef8a');
+          arrowHead.setAttribute('stroke-width', ARROW_STROKE);
+          arrowHead.setAttribute('stroke-linecap', 'round');
+          arrowHead.setAttribute('stroke-linejoin', 'round');
+
+          svg.appendChild(path);
+          svg.appendChild(arrowHead);
+          this.arrowLayerEl.appendChild(svg);
+        }
+      }
+
+      offsetWithinContainer(element) {
+        if (!element) return 0;
+        let offset = 0;
+        let node = element;
+        const container = this.slotsEl;
+        while (node && node !== container) {
+          offset += node.offsetTop || 0;
+          node = node.offsetParent;
+        }
+        return offset;
+      }
+
+      render() {
+        const level = this.state.level;
+        this.levelPillEl.textContent = `Level ${level}`;
+        this.levelDisplayEl.textContent = `Viewing mastery unlocks at level ${level}.`;
+        this.levelDownBtn.disabled = level === this.minLevel;
+        this.levelUpBtn.disabled = level === this.maxLevel;
+        this.updateProgressUI(level);
+        this.updateAp(level);
+        if (!this.state.collapsed) {
+          this.renderSlots(level);
+          this.renderChanges(level);
+        }
+      }
+
+      refreshLayout() {
+        if (this.state.collapsed) return;
+        this.renderSlots(this.state.level);
+      }
+    }
+    const KORD_BASELINE = {
       1: { name: '415MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
       2: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
       3: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
@@ -715,7 +1586,7 @@
       7: { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
     };
 
-    const changes = {
+    const KORD_CHANGES = {
       2: {
         5: {
           name: 'FLASHLIGHT',
@@ -844,634 +1715,228 @@
         }
       }
     };
-
-    const MIN_LEVEL = 1;
-    const MAX_LEVEL = 40;
-
-    const state = {
-      currentLevel: 1
+    const PW5A3_BASELINE = {
+      core: { name: 'PW5A3 FACTORY FRAME', pts: 5, type: 'Core', unlockLevel: 1 },
+      barrel: { name: '330MM LIGHT BARREL', pts: 10, type: 'Barrel', unlockLevel: 1 },
+      ammunition: { name: 'STANDARD ISSUE', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      optic: { name: 'IRON SIGHTS', pts: 0, type: 'Optic', unlockLevel: 1 },
+      stock: { name: 'MINIMALIST STOCK', pts: 5, type: 'Stock', unlockLevel: 1 }
     };
 
-    const slotsEl = document.getElementById('slots');
-    const apMeterEl = document.getElementById('apMeter');
-    const apValueEl = document.getElementById('apValue');
-    const levelPillEl = document.getElementById('levelPill');
-    const levelDisplayEl = document.getElementById('levelDisplay');
-    const levelDownBtn = document.getElementById('levelDown');
-    const levelUpBtn = document.getElementById('levelUp');
-    const progressBarEl = document.getElementById('progressBar');
-    const progressKnobEl = document.getElementById('progressKnob');
-    const changesPanelEl = document.getElementById('changesPanel');
-    const sidebarEl = document.getElementById('dataSidebar');
-    const sidebarToggleBtn = document.getElementById('sidebarToggle');
-    const stateDumpEl = document.getElementById('stateDump');
-    const copyStateBtn = document.getElementById('copyState');
-    const copyFeedbackEl = document.getElementById('copyFeedback');
-
-    const arrowLayerEl = document.createElement('div');
-    arrowLayerEl.className = 'arrow-layer';
-
-    function normalizeReplaced(replaced) {
-      if (!replaced) return [];
-      const array = Array.isArray(replaced) ? replaced : [replaced];
-      return array
-        .map((entry) => {
-          if (typeof entry === 'string') {
-            return { name: entry };
-          }
-          if (entry && typeof entry === 'object') {
-            return { ...entry };
-          }
-          return null;
-        })
-        .filter(Boolean);
-    }
-
-    document.documentElement.style.setProperty('--indent', `${INDENT}px`);
-    document.documentElement.style.setProperty('--card-padding', `${CARD_PAD}px`);
-
-    function validateSchemas() {
-      const issues = [];
-      const validSlots = new Set(Object.keys(SLOT_TYPE));
-
-      for (const [slot, data] of Object.entries(baseline)) {
-        if (!validSlots.has(String(slot))) {
-          issues.push(`Baseline slot ${slot} is not within the valid range 1-7.`);
+    const PW5A3_CHANGES = {
+      3: {
+        optic: {
+          name: 'MICRO RED DOT',
+          pts: 5,
+          type: 'Optic',
+          unlockLevel: 3,
+          replaced: [
+            { name: 'IRON SIGHTS', pts: 0, type: 'Optic', unlockLevel: 1 }
+          ]
         }
-        if (!data || typeof data.name !== 'string' || typeof data.pts !== 'number') {
-          issues.push(`Baseline slot ${slot} is missing required name/pts fields.`);
+      },
+      5: {
+        barrel: {
+          name: '380MM PRECISION BARREL',
+          pts: 12,
+          type: 'Barrel',
+          unlockLevel: 5,
+          replaced: [
+            { name: '330MM LIGHT BARREL', pts: 10, type: 'Barrel', unlockLevel: 1 }
+          ]
         }
-      }
-
-      for (const [level, entries] of Object.entries(changes)) {
-        for (const [slot, payload] of Object.entries(entries)) {
-          if (!validSlots.has(String(slot))) {
-            issues.push(`Change at level ${level} targets invalid slot ${slot}.`);
-            continue;
-          }
-          if (payload !== null) {
-            if (typeof payload.name !== 'string' || typeof payload.pts !== 'number') {
-              issues.push(`Change at level ${level}, slot ${slot} missing name or pts.`);
-            }
-          }
+      },
+      7: {
+        stock: {
+          name: 'PRECISION STOCK',
+          pts: 8,
+          type: 'Stock',
+          unlockLevel: 7,
+          replaced: [
+            { name: 'MINIMALIST STOCK', pts: 5, type: 'Stock', unlockLevel: 1 }
+          ]
         }
-      }
-
-      if (issues.length) {
-        console.warn('[Schema Validation]', issues);
-      }
-    }
-
-    function computeState(level) {
-      const snapshot = {};
-      for (let slot = 1; slot <= 7; slot++) {
-        snapshot[slot] = null;
-      }
-      for (const [slot, data] of Object.entries(baseline)) {
-        if (data) {
-          const unlockLevel = data.unlockLevel ?? 1;
-          snapshot[slot] = { ...data, unlockLevel };
+      },
+      10: {
+        ammunition: {
+          name: 'HIGH VELOCITY',
+          pts: 8,
+          type: 'Ammunition',
+          unlockLevel: 10,
+          replaced: [
+            { name: 'STANDARD ISSUE', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+          ]
         }
-      }
-      const sortedLevels = Object.keys(changes)
-        .map(Number)
-        .sort((a, b) => a - b);
-      for (const changeLevel of sortedLevels) {
-        if (changeLevel > level) break;
-        const changeSet = changes[changeLevel];
-        for (const [slot, payload] of Object.entries(changeSet)) {
-          if (payload === null) {
-            snapshot[slot] = null;
-          } else {
-            const unlockLevel = payload.unlockLevel ?? changeLevel;
-            const entry = { ...payload, unlockLevel };
-            if (entry.replaced) {
-              entry.replaced = normalizeReplaced(entry.replaced);
-            }
-            snapshot[slot] = entry;
-          }
+      },
+      12: {
+        core: {
+          name: 'REINFORCED FRAME',
+          pts: 6,
+          type: 'Core',
+          unlockLevel: 12,
+          replaced: [
+            { name: 'PW5A3 FACTORY FRAME', pts: 5, type: 'Core', unlockLevel: 1 }
+          ]
+        }
+      },
+      15: {
+        muzzle: {
+          name: 'FLASH HIDER',
+          pts: 6,
+          type: 'Muzzle',
+          unlockLevel: 15
+        }
+      },
+      18: {
+        stock: null
+      },
+      20: {
+        optic: {
+          name: 'HYBRID 2.0X',
+          pts: 7,
+          type: 'Optic',
+          unlockLevel: 20,
+          replaced: [
+            { name: 'MICRO RED DOT', pts: 5, type: 'Optic', unlockLevel: 3 }
+          ]
+        }
+      },
+      25: {
+        barrel: {
+          name: 'EXTENDED PRECISION BARREL',
+          pts: 14,
+          type: 'Barrel',
+          unlockLevel: 25,
+          replaced: [
+            { name: '380MM PRECISION BARREL', pts: 12, type: 'Barrel', unlockLevel: 5 }
+          ]
         }
       }
-      return snapshot;
-    }
-
-    function diffAtLevel(level) {
-      const changeSet = changes[level];
-      if (!changeSet) return {};
-      const diff = {};
-      for (const [slot, payload] of Object.entries(changeSet)) {
-        if (payload === null) {
-          diff[slot] = null;
-        } else {
-          const unlockLevel = payload.unlockLevel ?? level;
-          const entry = { ...payload, unlockLevel };
-          if (entry.replaced) {
-            entry.replaced = normalizeReplaced(entry.replaced);
-          }
-          diff[slot] = entry;
-        }
+    };
+    const weaponConfigs = [
+      {
+        id: 'kord-6p67',
+        name: 'KORD 6P67',
+        minLevel: 1,
+        maxLevel: 40,
+        apMax: 100,
+        slotOrder: ['1', '2', '3', '4', '5', '6', '7'],
+        slotLabels: {
+          '1': 'Barrel',
+          '2': 'Underbarrel',
+          '3': 'Ammunition',
+          '4': 'Muzzle',
+          '5': 'Right Accessory',
+          '6': 'Magazine',
+          '7': 'Scope'
+        },
+        baseline: KORD_BASELINE,
+        changes: KORD_CHANGES
+      },
+      {
+        id: 'pw5a3',
+        name: 'PW5A3',
+        minLevel: 1,
+        maxLevel: 30,
+        apMax: 80,
+        slotOrder: ['core', 'barrel', 'ammunition', 'optic', 'stock', 'muzzle'],
+        slotLabels: {
+          core: 'Core',
+          barrel: 'Barrel',
+          ammunition: 'Ammunition',
+          optic: 'Optic',
+          stock: 'Stock',
+          muzzle: 'Muzzle'
+        },
+        baseline: PW5A3_BASELINE,
+        changes: PW5A3_CHANGES
       }
-      return diff;
-    }
+    ];
 
-    function clampLevel(level) {
-      return Math.max(MIN_LEVEL, Math.min(MAX_LEVEL, level));
-    }
+    const template = document.getElementById('weaponTemplate');
+    const weaponListEl = document.getElementById('weaponList');
 
-    function setLevel(level) {
-      const next = clampLevel(level);
-      if (next === state.currentLevel) return;
-      state.currentLevel = next;
-      render();
-    }
-
-    function handleProgressClick(event) {
-      const rect = progressBarEl.getBoundingClientRect();
-      const ratio = (event.clientX - rect.left) / rect.width;
-      const level = Math.round(ratio * (MAX_LEVEL - 1)) + 1;
-      setLevel(level);
-    }
-
-    function updateProgressUI(level) {
-      progressBarEl.style.setProperty('--max-level', MAX_LEVEL);
-      let segments = progressBarEl.querySelectorAll('.segment');
-      if (!segments.length) {
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < MAX_LEVEL; i++) {
-          const segment = document.createElement('div');
-          segment.className = 'segment';
-          frag.appendChild(segment);
-        }
-        progressBarEl.insertBefore(frag, progressKnobEl);
-        segments = progressBarEl.querySelectorAll('.segment');
-      }
-      const activeIndex = level - 1;
-      segments.forEach((seg, index) => {
-        if (index <= activeIndex) {
-          seg.classList.add('active');
-        } else {
-          seg.classList.remove('active');
-        }
-      });
-      const percent = (activeIndex / (MAX_LEVEL - 1)) * 100;
-      progressKnobEl.style.left = `${percent}%`;
-      progressBarEl.setAttribute('aria-valuenow', String(level));
-    }
-
-    function formatPts(pts) {
-      return `${pts}`;
-    }
-
-    function ensureApMeterCells() {
-      if (!apMeterEl || apMeterEl.children.length) return;
-      const frag = document.createDocumentFragment();
-      for (let i = 0; i < 10; i++) {
-        const cell = document.createElement('span');
-        cell.className = 'ap-cell';
-        const icon = document.createElement('img');
-        icon.src = AP_ICON;
-        icon.alt = 'Attachment Points';
-        cell.appendChild(icon);
-        frag.appendChild(cell);
-      }
-      apMeterEl.appendChild(frag);
-    }
-
-    function updateApMeter(total) {
-      ensureApMeterCells();
-      if (!apMeterEl) return;
-      const cells = Array.from(apMeterEl.children);
-      const filled = Math.floor(total / 10);
-      cells.forEach((cell, index) => {
-        cell.classList.toggle('filled', index < filled);
-      });
-    }
-
-    function createApChip(value) {
-      const chip = document.createElement('span');
-      chip.className = 'ap-chip';
-      const icon = document.createElement('img');
-      icon.src = AP_ICON;
-      icon.alt = 'Attachment Points';
-      chip.appendChild(icon);
-      const text = document.createElement('span');
-      text.textContent = formatPts(value);
-      chip.appendChild(text);
-      return chip;
-    }
-
-    function createCard(data, options = {}) {
-      if (!data) return null;
-      const card = document.createElement('div');
-      card.className = 'slot-card';
-      if (options.old) card.classList.add('old');
-      if (options.changed) card.classList.add('changed');
-      if (options.indented) card.classList.add('indented');
-      if (options.removed) card.classList.add('removed');
-
-      const top = document.createElement('div');
-      top.className = 'card-top';
-
-      const info = document.createElement('div');
-      info.className = 'card-info';
-
-      const title = document.createElement('div');
-      title.className = 'card-title';
-      title.textContent = data.name;
-      info.appendChild(title);
-
-      const meta = document.createElement('div');
-      meta.className = 'card-meta';
-      const typeText = data.type ? data.type.toUpperCase() : '';
-      if (typeText) {
-        const typeSpan = document.createElement('span');
-        typeSpan.className = 'meta-type';
-        typeSpan.textContent = typeText;
-        meta.appendChild(typeSpan);
-      }
-      if (typeText) {
-        const separator = document.createElement('span');
-        separator.className = 'meta-separator';
-        separator.textContent = '•';
-        meta.appendChild(separator);
-      }
-      meta.appendChild(createApChip(data.pts));
-      info.appendChild(meta);
-
-      top.appendChild(info);
-
-      const unlockLevel = options.level ?? options.unlockLevel ?? data.unlockLevel;
-      const hideLevel = options.hideLevel ?? false;
-      if (!hideLevel && unlockLevel && unlockLevel > 1) {
-        const levelPill = document.createElement('div');
-        levelPill.className = 'card-level';
-        levelPill.textContent = `Level ${unlockLevel}`;
-        top.appendChild(levelPill);
-      }
-
-      card.appendChild(top);
-
-      if (options.removed) {
-        const status = document.createElement('div');
-        status.className = 'card-status';
-        status.textContent = options.removalLevel
-          ? `Removed at Level ${options.removalLevel}`
-          : 'Removed';
-        card.appendChild(status);
-      }
-
-      return card;
-    }
-
-    function createPlaceholderCard() {
-      const card = document.createElement('div');
-      card.className = 'slot-card empty';
-
-      const top = document.createElement('div');
-      top.className = 'card-top';
-
-      const info = document.createElement('div');
-      info.className = 'card-info';
-
-      const title = document.createElement('div');
-      title.className = 'card-title';
-      title.textContent = 'No attachment equipped';
-      info.appendChild(title);
-
-      const meta = document.createElement('div');
-      meta.className = 'card-meta';
-      const tag = document.createElement('span');
-      tag.className = 'meta-type';
-      tag.textContent = 'LOCKED';
-      meta.appendChild(tag);
-      info.appendChild(meta);
-
-      top.appendChild(info);
-      card.appendChild(top);
-
-      return card;
-    }
-
-    function offsetWithinContainer(el, container) {
-      let offset = 0;
-      let node = el;
-      while (node && node !== container) {
-        offset += node.offsetTop || 0;
-        node = node.offsetParent;
-      }
-      return offset;
-    }
-
-    function drawArrows(pairs) {
-      arrowLayerEl.innerHTML = '';
-      slotsEl.appendChild(arrowLayerEl);
-      const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#6bef8a';
-
-      for (const pair of pairs) {
-        if (!pair.oldEl || !pair.newEl) continue;
-        const startY = offsetWithinContainer(pair.oldEl, slotsEl) + pair.oldEl.offsetHeight;
-        const endY = offsetWithinContainer(pair.newEl, slotsEl) + pair.newEl.offsetHeight / 2;
-        const vertical = Math.max(0, endY - startY);
-        const height = vertical + 16;
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.classList.add('arrow-svg');
-        svg.setAttribute('width', INDENT + CARD_PAD);
-        svg.setAttribute('height', height);
-        svg.style.left = `${CARD_PAD}px`;
-        svg.style.top = `${startY}px`;
-
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', `M1 1 v${vertical} h${INDENT}`);
-        path.setAttribute('fill', 'none');
-        path.setAttribute('stroke', accent.trim() || '#6bef8a');
-        path.setAttribute('stroke-width', ARROW_STROKE);
-        path.setAttribute('stroke-linejoin', 'round');
-        path.setAttribute('stroke-linecap', 'round');
-
-        const arrowHead = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        const arrowSize = 6;
-        const tipX = INDENT;
-        const tipY = vertical + 1;
-        arrowHead.setAttribute('d', `M${tipX - arrowSize} ${tipY - arrowSize} L${tipX} ${tipY} L${tipX - arrowSize} ${tipY + arrowSize}`);
-        arrowHead.setAttribute('fill', 'none');
-        arrowHead.setAttribute('stroke', accent.trim() || '#6bef8a');
-        arrowHead.setAttribute('stroke-width', ARROW_STROKE);
-        arrowHead.setAttribute('stroke-linecap', 'round');
-        arrowHead.setAttribute('stroke-linejoin', 'round');
-
-        svg.appendChild(path);
-        svg.appendChild(arrowHead);
-        arrowLayerEl.appendChild(svg);
-      }
-    }
-
-    function renderSlots(level) {
-      slotsEl.innerHTML = '';
-      const current = computeState(level);
-      const previous = computeState(Math.max(0, level - 1));
-      const diff = diffAtLevel(level);
-      const arrowPairs = [];
-
-      for (let slot = 1; slot <= 7; slot++) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'slot-wrapper';
-        const label = document.createElement('div');
-        label.className = 'slot-label';
-        label.textContent = SLOT_TYPE[slot];
-        wrapper.appendChild(label);
-
-        const change = diff[slot];
-
-        if (change !== undefined) {
-          const previousData = previous[slot];
-          if (change === null) {
-            if (previousData) {
-              const oldLevel = previousData.unlockLevel ?? level;
-              const oldCard = createCard(previousData, {
-                old: true,
-                removed: true,
-                removalLevel: level,
-                level: oldLevel
-              });
-              wrapper.appendChild(oldCard);
-            }
-          } else {
-            const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
-            let oldCardData = previousData ? { ...previousData } : null;
-            let oldLevel = oldCardData ? oldCardData.unlockLevel ?? level : level;
-
-            if (replacedMeta.length) {
-              const match = oldCardData
-                ? replacedMeta.find((entry) => entry.name === oldCardData.name)
-                : replacedMeta[0];
-              if (match) {
-                if (oldCardData) {
-                  oldCardData = { ...oldCardData, ...match };
-                } else {
-                  oldCardData = {
-                    name: match.name || 'Previous attachment',
-                    pts: match.pts ?? 0,
-                    type: match.type || SLOT_TYPE[slot],
-                    unlockLevel: match.unlockLevel ?? level
-                  };
-                }
-                oldLevel = match.unlockLevel ?? oldCardData.unlockLevel ?? level;
-              }
-            }
-
-            let oldCard = null;
-            if (oldCardData) {
-              oldCard = createCard(oldCardData, { old: true, level: oldLevel });
-              wrapper.appendChild(oldCard);
-            }
-
-            const newCard = createCard(change, {
-              changed: true,
-              indented: true,
-              level: change.unlockLevel ?? level
-            });
-            wrapper.appendChild(newCard);
-            if (oldCard) {
-              arrowPairs.push({ oldEl: oldCard, newEl: newCard });
-            }
-          }
-        } else {
-          const currentData = current[slot];
-          if (currentData) {
-            const prevData = previous[slot];
-            const changed = prevData ? prevData.name !== currentData.name : level > MIN_LEVEL;
-            const card = createCard(currentData, {
-              changed,
-              level: currentData.unlockLevel,
-              hideLevel: currentData.unlockLevel ? currentData.unlockLevel > level : false
-            });
-            wrapper.appendChild(card);
-          } else {
-            const placeholder = createPlaceholderCard();
-            wrapper.appendChild(placeholder);
-          }
-        }
-
-        slotsEl.appendChild(wrapper);
-      }
-
-      requestAnimationFrame(() => drawArrows(arrowPairs));
-    }
-
-    function renderChanges(level) {
-      const diff = diffAtLevel(level);
-      const previous = computeState(Math.max(0, level - 1));
-      const container = changesPanelEl;
-      container.innerHTML = '';
-      const title = document.createElement('h3');
-      title.textContent = 'Changes at this Level';
-      container.appendChild(title);
-
-      const entries = Object.entries(diff);
-      if (!entries.length) {
-        const empty = document.createElement('div');
-        empty.className = 'changes-empty';
-        empty.textContent = 'No changes unlocked at this level.';
-        container.appendChild(empty);
-        return;
-      }
-
-      for (const [slot, change] of entries) {
-        const row = document.createElement('div');
-        row.className = 'change-row';
-        const slotName = SLOT_TYPE[slot] || `Slot ${slot}`;
-        const heading = document.createElement('div');
-        heading.className = 'change-heading';
-
-        if (change === null) {
-          const prev = previous[slot];
-          const prevName = prev ? prev.name : 'Previous attachment';
-          heading.textContent = `${slotName.toUpperCase()} • Removed`;
-          const detail = document.createElement('div');
-          detail.className = 'change-detail';
-          detail.textContent = `${prevName} removed at Level ${level}.`;
-          row.appendChild(heading);
-          row.appendChild(detail);
-        } else {
-          const prev = previous[slot];
-          const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
-          const fallbackPrev = prev
-            ? null
-            : replacedMeta.find((entry) => entry && entry.name) || replacedMeta[0] || null;
-          const prevName = prev
-            ? prev.name
-            : fallbackPrev && fallbackPrev.name
-            ? fallbackPrev.name
-            : 'Baseline';
-          const changeLevel = change.unlockLevel ?? level;
-          heading.textContent = `${slotName.toUpperCase()} • Level ${changeLevel}`;
-          const detail = document.createElement('div');
-          detail.className = 'change-detail';
-
-          const prevSpan = document.createElement('span');
-          prevSpan.className = 'change-prev';
-          prevSpan.textContent = prevName;
-
-          const arrow = document.createElement('span');
-          arrow.className = 'change-arrow';
-          arrow.textContent = '→';
-
-          const nextSpan = document.createElement('span');
-          nextSpan.className = 'change-next';
-          nextSpan.textContent = change.name;
-
-          detail.appendChild(prevSpan);
-          detail.appendChild(arrow);
-          detail.appendChild(nextSpan);
-
-          row.appendChild(heading);
-          row.appendChild(detail);
-        }
-
-        container.appendChild(row);
-      }
-    }
-
-    function renderSidebar(level) {
-      const snapshot = computeState(level);
-      stateDumpEl.textContent = JSON.stringify(snapshot, null, 2);
-    }
-
-    function updateAp(level) {
-      const snapshot = computeState(level);
-      let total = 0;
-      for (const value of Object.values(snapshot)) {
-        if (value && typeof value.pts === 'number') {
-          total += value.pts;
-        }
-      }
-      if (apValueEl) {
-        apValueEl.textContent = `${total}`;
-      }
-      updateApMeter(total);
-      return total;
-    }
-
-    function render() {
-      const level = state.currentLevel;
-      levelPillEl.textContent = `Level ${level}`;
-      levelDisplayEl.textContent = `Viewing mastery unlocks at level ${level}.`;
-      levelDownBtn.disabled = level === MIN_LEVEL;
-      levelUpBtn.disabled = level === MAX_LEVEL;
-      updateProgressUI(level);
-      updateAp(level);
-      renderSlots(level);
-      renderChanges(level);
-      renderSidebar(level);
-    }
-
-    function copyCurrentState() {
-      const level = state.currentLevel;
-      const snapshot = computeState(level);
-      const payload = JSON.stringify(snapshot, null, 2);
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(payload).then(() => {
-          showCopyFeedback();
-        }).catch(() => fallbackCopy(payload));
-      } else {
-        fallbackCopy(payload);
-      }
-    }
-
-    function fallbackCopy(text) {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'absolute';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        showCopyFeedback();
-      } catch (error) {
-        console.warn('Copy failed', error);
-      }
-      document.body.removeChild(textarea);
-    }
-
-    let feedbackTimer = null;
-    function showCopyFeedback() {
-      copyFeedbackEl.classList.add('visible');
-      clearTimeout(feedbackTimer);
-      feedbackTimer = setTimeout(() => {
-        copyFeedbackEl.classList.remove('visible');
-      }, 1500);
-    }
-
-    sidebarToggleBtn.addEventListener('click', () => {
-      sidebarEl.classList.toggle('collapsed');
-      requestAnimationFrame(() => renderSlots(state.currentLevel));
+    const trackers = weaponConfigs.map((config) => {
+      const tracker = new WeaponTracker(config);
+      tracker.mount(template);
+      return tracker;
     });
 
-    copyStateBtn.addEventListener('click', copyCurrentState);
-    levelDownBtn.addEventListener('click', () => setLevel(state.currentLevel - 1));
-    levelUpBtn.addEventListener('click', () => setLevel(state.currentLevel + 1));
-    progressBarEl.addEventListener('click', handleProgressClick);
+    function renderWeaponList() {
+      const storedOrder = storage.getOrder();
+      const idToTracker = new Map(trackers.map((tracker) => [tracker.id, tracker]));
+      const baseOrder = [];
+      const seen = new Set();
+
+      for (const id of storedOrder) {
+        if (idToTracker.has(id) && !seen.has(id)) {
+          baseOrder.push(id);
+          seen.add(id);
+        }
+      }
+
+      for (const tracker of trackers) {
+        if (!seen.has(tracker.id)) {
+          baseOrder.push(tracker.id);
+          seen.add(tracker.id);
+        }
+      }
+
+      const favorites = baseOrder.filter((id) => idToTracker.get(id).isFavorite());
+      const others = baseOrder.filter((id) => !idToTracker.get(id).isFavorite());
+      const finalOrder = favorites.concat(others);
+
+      const storedMatches =
+        storedOrder.length === finalOrder.length &&
+        finalOrder.every((id, index) => storedOrder[index] === id);
+      if (!storedMatches) {
+        storage.setOrder(finalOrder);
+      }
+
+      weaponListEl.innerHTML = '';
+      for (const id of finalOrder) {
+        const tracker = idToTracker.get(id);
+        tracker.attach(weaponListEl);
+      }
+    }
+
+    renderWeaponList();
+
+    weaponListEl.addEventListener('dragover', (event) => {
+      if (!currentDraggedId) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+    });
+
+    weaponListEl.addEventListener('drop', (event) => {
+      if (!currentDraggedId) return;
+      event.preventDefault();
+      const dropCard = event.target.closest('.weapon-card');
+      const domOrder = Array.from(weaponListEl.children).map((el) => el.dataset.weaponId);
+      let insertIndex = domOrder.length;
+      if (dropCard) {
+        const dropId = dropCard.dataset.weaponId;
+        const dropIndex = domOrder.indexOf(dropId);
+        if (dropIndex !== -1) {
+          const rect = dropCard.getBoundingClientRect();
+          const before = event.clientY < rect.top + rect.height / 2;
+          insertIndex = before ? dropIndex : dropIndex + 1;
+        }
+      }
+
+      const order = domOrder.filter((id) => id && id !== currentDraggedId);
+      if (insertIndex > order.length) {
+        insertIndex = order.length;
+      }
+      order.splice(insertIndex, 0, currentDraggedId);
+      storage.setOrder(order);
+      renderWeaponList();
+      currentDraggedId = null;
+    });
 
     window.addEventListener('resize', () => {
-      requestAnimationFrame(() => {
-        const level = state.currentLevel;
-        renderSlots(level);
-      });
+      trackers.forEach((tracker) => tracker.refreshLayout());
     });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') {
-        setLevel(state.currentLevel - 1);
-      } else if (event.key === 'ArrowRight') {
-        setLevel(state.currentLevel + 1);
-      }
-    });
-
-    validateSchemas();
-    updateProgressUI(state.currentLevel);
-    render();
   </script>
 </body>
 </html>
