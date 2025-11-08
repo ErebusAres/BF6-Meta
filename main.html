@@ -1151,10 +1151,6 @@
         return wrapper;
       }
 
-      createApChip(value) {
-        return this.createApDisplay(value);
-      }
-
       createCard(data, options = {}) {
         if (!data) return null;
         const card = document.createElement('div');
@@ -1217,11 +1213,6 @@
           description.className = 'card-description';
           description.textContent = data.description.trim();
           card.appendChild(description);
-        }
-
-        if (typeof data.pts === 'number' && data.pts !== 0) {
-          const chip = this.createApChip(data.pts);
-          card.appendChild(chip);
         }
 
         return card;
