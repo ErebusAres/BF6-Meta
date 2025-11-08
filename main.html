@@ -1505,15 +1505,26 @@
           const endY = this.offsetWithinContainer(pair.newEl) + pair.newEl.offsetHeight / 2;
           const vertical = Math.max(0, endY - startY);
           const height = vertical + 16;
+          const arrowSize = 6;
+          const oldLeft = this.offsetLeftWithinContainer(pair.oldEl);
+          const newLeft = this.offsetLeftWithinContainer(pair.newEl);
+          const baseLeft = Math.min(oldLeft, newLeft);
+          const startX = CARD_PAD + 1 + (oldLeft - baseLeft);
+          const rawTargetX = newLeft - baseLeft;
+          const targetX = Math.max(startX, rawTargetX);
+          const horizontal = Math.max(0, targetX - startX);
+          const tipX = startX + horizontal;
+          const width = Math.max(startX, tipX) + arrowSize + 4;
+
           const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
           svg.classList.add('arrow-svg');
-          svg.setAttribute('width', INDENT + CARD_PAD);
+          svg.setAttribute('width', width);
           svg.setAttribute('height', height);
-          svg.style.left = `${CARD_PAD}px`;
+          svg.style.left = `${baseLeft}px`;
           svg.style.top = `${startY}px`;
 
           const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('d', `M1 1 v${vertical} h${INDENT}`);
+          path.setAttribute('d', `M${startX} 1 v${vertical} h${horizontal}`);
           path.setAttribute('fill', 'none');
           path.setAttribute('stroke', accent.trim() || '#6bef8a');
           path.setAttribute('stroke-width', ARROW_STROKE);
@@ -1521,8 +1532,6 @@
           path.setAttribute('stroke-linecap', 'round');
 
           const arrowHead = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          const arrowSize = 6;
-          const tipX = INDENT;
           const tipY = vertical + 1;
           arrowHead.setAttribute('d', `M${tipX - arrowSize} ${tipY - arrowSize} L${tipX} ${tipY} L${tipX - arrowSize} ${tipY + arrowSize}`);
           arrowHead.setAttribute('fill', 'none');
@@ -1544,6 +1553,18 @@
         const container = this.slotsEl;
         while (node && node !== container) {
           offset += node.offsetTop || 0;
+          node = node.offsetParent;
+        }
+        return offset;
+      }
+
+      offsetLeftWithinContainer(element) {
+        if (!element) return 0;
+        let offset = 0;
+        let node = element;
+        const container = this.slotsEl;
+        while (node && node !== container) {
+          offset += node.offsetLeft || 0;
           node = node.offsetParent;
         }
         return offset;
