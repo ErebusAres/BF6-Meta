@@ -708,15 +708,16 @@
 
     const baseline = {
       1: { name: '415MM FACTORY', pts: 10, type: 'Barrel' },
-      2: { name: 'ALLOY VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 1 },
+      2: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1},
       3: { name: 'FMJ', pts: 5, type: 'Ammunition' },
       4: { name: 'SINGLE-PORT BRAKE', pts: 5, type: 'Muzzle' },
-      5: { name: 'FLASHLIGHT', pts: 10, type: 'Right Accessory', unlockLevel: 2 },
-      6: { name: '30 RND', pts: 5, type: 'Magazine' },
-      7: { name: 'CCO 2.00X', pts: 10, type: 'Scope' }
+      5: { name: '30 RND', pts: 5, type: 'Magazine' },
+      6: { name: 'CCO 2.00X', pts: 10, type: 'Scope' }
     };
 
     const changes = {
+      2: { 5: { name: 'FLASHLIGHT', pts: 10, type: 'Right Accessory', unlockLevel: 2 } },
+      3: { 2: { name: 'ALLOY VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 1, replaced: ['FOLDING VERTICAL'] } },
       6: { 2: { name: 'RIBBED VERTICAL', pts: 20, type: 'Underbarrel', replaced: ['ALLOY VERTICAL'] } },
       10: { 1: { name: '415MM PROTOTYPE', pts: 10, type: 'Barrel' } },
       12: { 5: { name: 'RED LASER', pts: 10, type: 'Right Accessory' } },
