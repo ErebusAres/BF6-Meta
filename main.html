@@ -2813,6 +2813,228 @@
         }
       }
     };
+    const m2010ESR_BASELINE = {
+      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      magazine: { name: '5RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
+      scope: { name: 'SU-230 LPVO', pts: 20, type: 'Scope', unlockLevel: 1 }
+    };
+    const M2010ESR_CHANGES = {
+      2: {
+        barrel: {
+          name: '24" Fluted',
+          pts: 20,
+          type: 'Barrel',
+          unlockLevel: 2
+        },
+        underbarrel: {
+          name: 'Full Angled',
+          pts: 5,
+          type: 'Underbarrel',
+          unlockLevel: 2
+        },
+        leftAccessory: {
+          name: 'Range Finder',
+          pts: 15,
+          type: 'Left Accessory',
+          unlockLevel: 2
+        },
+        topAccessory: {
+          name: '5 MW RED',
+          pts: 10,
+          type: 'Top Accessory',
+          unlockLevel: 2
+        },
+        scope: {
+          name: 'S-VPS 6.00X',
+          pts: 10,
+          type: 'Scope',
+          unlockLevel: 2,
+          replaced: [
+            { name: 'SU-230 LPVO', pts: 20, type: 'Scope', unlockLevel: 1 }
+          ]
+        }
+      },
+      3: {
+        ammunition: {
+          name: 'Match Grade',
+          pts: 10,
+          type: 'Ammunition',
+          unlockLevel: 3,
+          replaced: [
+            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+          ]
+        }
+      },
+      7: {
+        topAccessory: {
+          name: '5 MW GREEN',
+          pts: 10,
+          type: 'Top Accessory',
+          unlockLevel: 7,
+          replaced: [
+            { name: '5 MW RED', pts: 10, type: 'Top Accessory', unlockLevel: 2 }
+          ]
+        }
+      },
+      10: {
+        scope: {
+          name: 'SSDS 6.00X',
+          pts: 10,
+          type: 'Scope',
+          unlockLevel: 10,
+          replaced: [
+            { name: 'S-VPS 6.00X', pts: 10, type: 'Scope', unlockLevel: 2 }
+          ]
+        }
+      },
+      13: {
+        ergonomics: {
+          name: 'DLC Bolt',
+          pts: 30,
+          type: 'Ergonomics',
+          unlockLevel: 13
+        },
+        // Keep: Barrel, Underbarrel, Ammunition, Ergonomics, Left Accessory, Magazine, Scope
+        topAccessory: null
+      },
+      15: {
+        magazine: {
+          name: '5RND FAST MAG',
+          pts: 10,
+          type: 'Magazine',
+          unlockLevel: 15,
+          replaced: [
+            { name: '5RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 }
+          ]
+        }
+      },
+      16: {
+        barrel: {
+          name: '26" Carbon',
+          pts: 15,
+          type: 'Barrel',
+          unlockLevel: 16,
+          replaced: [
+            { name: '24" Fluted', pts: 20, type: 'Barrel', unlockLevel: 2 }
+          ]
+        }
+      },
+      36: {
+        opticAccessory: {
+          name: 'Anti-Glare Coating',
+          pts: 10,
+          type: 'Optic Accessory',
+          unlockLevel: 36
+        },
+        magazine: {
+          name: '5RND MAGAZINE',
+          pts: 5,
+          type: 'Magazine',
+          unlockLevel: 1,
+          replaced: [
+            { name: '5RND FAST MAG', pts: 10, type: 'Magazine', unlockLevel: 15 }
+          ]
+        }
+      }
+    };
+    const miniscout_baseline = {
+      barrel: { name: '16" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
+      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      magazine: { name: '10RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
+      scope: { name: 'DVO LPVO', pts: 25, type: 'Scope', unlockLevel: 1 }
+    };
+    const miniscout_changes = {
+      2: {
+        underbarrel: {
+          name: 'FULL ANGLED',
+          pts: 5,
+          type: 'Underbarrel',
+          unlockLevel: 2
+        }
+      },
+      3: {
+        rightAccessory: {
+          name: '5 MW RED',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 3
+        }
+      },
+      4: {
+        barrel: {
+          name: '18" EXTENDED',
+          pts: 15,
+          type: 'Barrel',
+          unlockLevel: 4,
+          replaced: [
+            { name: '16" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
+          ]
+        }
+      },
+      6: {
+        leftAccessory: {
+          name: 'FLASHLIGHT',
+          pts: 10,
+          type: 'Left Accessory',
+          unlockLevel: 6
+        }
+      },
+      8: {
+        magazine: {
+          name: '10RND FAST MAG',
+          pts: 10,
+          type: 'Magazine',
+          unlockLevel: 8,
+          replaced: [
+            { name: '10RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 }
+          ]
+        }
+      },
+      12: {
+        rightAccessory: {
+          name: '5 MW GREEN',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 12,
+          replaced: [
+            { name: '5 MW RED', pts: 10, type: 'Right Accessory', unlockLevel: 3 }
+          ]
+        }
+      }, 
+      19: { 
+        muzzle: {
+          name: 'Standard SUPPRESSOR',
+          pts: 25,
+          type: 'Muzzle',
+          unlockLevel: 19
+        }
+      },
+      24: {
+        leftAccessory: {
+          name: 'Range Finder',
+          pts: 15,
+          type: 'Left Accessory',
+          unlockLevel: 24
+        },
+        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Magazine, Scope, Left Accessory.
+        rightAccessory: null
+      },
+      40: {
+        opticAccessory: {
+          name: 'Anti-Glare Coating',
+          pts: 10,
+          type: 'Optic Accessory',
+          unlockLevel: 40
+        },
+        rightAccessory: {
+          name: '5 MW GREEN',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 40
+        },
+        muzzle: null
+      }
+    };
     const weaponConfigs = [
       {
         id: 'kord-6p67',
@@ -2931,6 +3153,26 @@
         },
         baseline: L110_BASELINE,
         changes: L110_CHANGES
+      },
+      {
+        id: 'm2010esr',
+        name: 'M2010 ESR • Sniper Rifle',
+        minLevel: 1,
+        maxLevel: 40,
+        apMax: 100,
+        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'magazine', 'scope', 'leftAccessory', 'topAccessory', 'opticAccessory'],
+        slotLabels: {
+          barrel: 'Barrel',
+          underbarrel: 'Underbarrel',
+          ammunition: 'Ammunition',
+          magazine: 'Magazine',
+          scope: 'Scope',
+          leftAccessory: 'Left Accessory',
+          topAccessory: 'Top Accessory',
+          opticAccessory: 'Optic Accessory'
+        },
+        baseline: m2010ESR_BASELINE,
+        changes: M2010ESR_CHANGES
       }
     ];
 
