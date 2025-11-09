@@ -103,7 +103,7 @@
       border: 1px solid rgba(80, 120, 140, 0.18);
       display: flex;
       flex-direction: column;
-      padding: 12px 14px;
+      padding: 10px 12px;
       gap: 10px;
       transition: box-shadow var(--transition), border-color var(--transition), background var(--transition);
       position: relative;
@@ -154,7 +154,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
       cursor: grab;
       user-select: none;
       -webkit-user-select: none;
@@ -178,6 +178,48 @@
       font-weight: 700;
       letter-spacing: 0.02em;
     }
+
+    .weapon-image-wrap {
+      flex: 0 0 auto;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 110px;
+      min-height: 38px;
+    }
+
+    .weapon-image {
+      max-height: 38px;
+      width: auto;
+      border-radius: 6px;
+      border: 1px solid rgba(60, 74, 85, 0.55);
+      background: rgba(18, 26, 32, 0.88);
+      object-fit: contain;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      display: block;
+    }
+
+    .weapon-image-ph {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      min-height: 38px;
+      min-width: 110px;
+      border-radius: 6px;
+      border: 1px dotted rgba(120, 140, 156, 0.9);
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      background: rgba(18, 26, 32, 0.6);
+      text-transform: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .weapon-image-wrap.placeholder .weapon-image { display: none; }
+    .weapon-image-wrap:not(.placeholder) .weapon-image-ph { display: none; }
 
     .weapon-subtitle {
       font-size: 12px;
@@ -249,6 +291,7 @@
 
     .favorite-toggle,
     .collapse-toggle,
+    .collapse-box,
     .drag-handle {
       border: 1px solid rgba(60, 74, 85, 0.55);
       background: rgba(18, 26, 32, 0.88);
@@ -262,6 +305,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       transition: background var(--transition), border-color var(--transition), color var(--transition);
     }
@@ -279,6 +323,7 @@
 
     .favorite-toggle:hover,
     .collapse-toggle:hover,
+    .collapse-box:hover,
     .drag-handle:hover {
       background: rgba(0, 229, 255, 0.12);
       border-color: rgba(0, 229, 255, 0.35);
@@ -288,6 +333,24 @@
       background: rgba(0, 229, 255, 0.18);
       border-color: rgba(0, 229, 255, 0.5);
       color: var(--accent);
+    }
+
+    /* Square icon-only controls */
+    .favorite-toggle,
+    .collapse-box {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      font-size: 18px;
+      line-height: 1;
+      text-transform: none;
+    }
+
+    .control-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
     }
 
     .weapon-body {
@@ -817,13 +880,16 @@
         <button class="drag-handle" type="button" title="Drag to reorder" aria-label="Drag to reorder" draggable="true">
           <span aria-hidden="true">&#9776;</span>
         </button>
-        <button class="favorite-toggle" type="button" aria-pressed="false" title="Toggle favorite">
-          <span aria-hidden="true">&#9734;</span>
-        </button>
+        <div class="control-stack">
+          <button class="collapse-box" type="button" aria-label="Toggle collapse" aria-expanded="true">▾</button>
+          <button class="favorite-toggle" type="button" aria-pressed="false" title="Toggle favorite">
+            <span aria-hidden="true">&#9734;</span>
+          </button>
+        </div>
         <div class="weapon-header-text" tabindex="0" role="button" aria-label="Toggle collapse" aria-expanded="true">
           <div class="weapon-name"></div>
           <div class="weapon-subtitle">Mastery Loadout Progression</div>
-          <button class="chevron-toggle" type="button" aria-label="Toggle collapse" aria-expanded="true">&rsaquo;</button>
+          
           <div class="header-controls">
             <span class="header-level" aria-live="polite">LEVEL 1</span>
             <span class="header-sep" aria-hidden="true">&bull;</span>
@@ -840,6 +906,10 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="weapon-image-wrap placeholder">
+          <img class="weapon-image" alt="" loading="lazy" draggable="false" />
+          <div class="weapon-image-ph">No Image Yet</div>
         </div>
         <div class="level-pill"></div>
         <button class="collapse-toggle" type="button" aria-expanded="true">Hide</button>
@@ -1062,10 +1132,15 @@
         this.headerLevelEl = this.cardEl.querySelector('.header-level');
         this.dragHandleBtn = this.cardEl.querySelector('.drag-handle');
         this.favoriteBtn = this.cardEl.querySelector('.favorite-toggle');
+        this.collapseBoxBtn = this.cardEl.querySelector('.collapse-box');
         this.favoriteIcon = this.favoriteBtn ? this.favoriteBtn.querySelector('span[aria-hidden="true"]') : null;
         this.favoriteText = this.favoriteBtn ? this.favoriteBtn.querySelector('.favorite-text') : null;
         this.collapseBtn = this.cardEl.querySelector('.collapse-toggle');
         this.weaponNameEl = this.cardEl.querySelector('.weapon-name');
+        this.weaponTypeEl = this.cardEl.querySelector('.weapon-subtitle');
+        this.weaponImageWrapEl = this.cardEl.querySelector('.weapon-image-wrap');
+        this.weaponImageEl = this.cardEl.querySelector('.weapon-image');
+        this.weaponImagePhEl = this.cardEl.querySelector('.weapon-image-ph');
         this.levelPillEl = this.cardEl.querySelector('.level-pill');
         this.levelDisplayEl = this.cardEl.querySelector('.level-display');
         this.progressBarEl = this.cardEl.querySelector('.progress');
@@ -1079,6 +1154,25 @@
         this.changesPanelEl = this.cardEl.querySelector('.changes-panel');
 
         if (this.weaponNameEl) this.weaponNameEl.textContent = toUpperSafe(this.config.name || this.id);
+        if (this.weaponTypeEl) this.weaponTypeEl.textContent = toUpperSafe(this.config.type || 'Mastery Loadout Progression');
+        if (this.weaponImageWrapEl && this.weaponImageEl) {
+          const imgName = typeof this.config.image === 'string' ? this.config.image.trim() : '';
+          if (imgName) {
+            const src = `Images/${imgName}`;
+            this.weaponImageWrapEl.classList.remove('placeholder');
+            this.weaponImageEl.src = src;
+            this.weaponImageEl.alt = toUpperSafe(this.config.name || this.id);
+            this.weaponImageEl.addEventListener('error', () => {
+              this.weaponImageEl.removeAttribute('src');
+              this.weaponImageWrapEl.classList.add('placeholder');
+              this.weaponImageEl.alt = '';
+            }, { once: true });
+          } else {
+            this.weaponImageWrapEl.classList.add('placeholder');
+            this.weaponImageEl.removeAttribute('src');
+            this.weaponImageEl.alt = '';
+          }
+        }
         if (this.apMaxEl) this.apMaxEl.textContent = `/${this.apMax}`;
 
         if (this.progressBarEl) {
@@ -1098,8 +1192,21 @@
           // Pointer-based scrubbing
           this.progressBarEl.addEventListener('pointerdown', (event) => this.handleProgressPointerDown(event));
         }
+        if (this.weaponImageWrapEl) {
+          // Prevent drag-to-reorder from the image area
+          this.weaponImageWrapEl.setAttribute('draggable', 'false');
+          this.weaponImageWrapEl.addEventListener('dragstart', (e) => { e.preventDefault(); });
+          this.weaponImageWrapEl.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        }
+        const controlStack = this.cardEl.querySelector('.control-stack');
+        if (controlStack) {
+          controlStack.setAttribute('draggable', 'false');
+          controlStack.addEventListener('dragstart', (e) => { e.preventDefault(); });
+          controlStack.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        }
         if (this.favoriteBtn) this.favoriteBtn.addEventListener('click', () => this.toggleFavorite());
         if (this.collapseBtn) this.collapseBtn.addEventListener('click', () => this.toggleCollapse());
+        if (this.collapseBoxBtn) this.collapseBoxBtn.addEventListener('click', () => this.toggleCollapse());
 
         // Title block and chevron toggle collapse
         if (this.headerTextEl) {
@@ -1167,8 +1274,8 @@
       }
 
       handleDragStart(event) {
-        // Do not start reordering when dragging from interactive header controls
-        if (event && event.target && event.target.closest && event.target.closest('.header-controls')) {
+        // Do not start reordering when dragging from interactive header controls or image
+        if (event && event.target && event.target.closest && (event.target.closest('.header-controls') || event.target.closest('.weapon-image') || event.target.closest('.weapon-image-wrap') || event.target.closest('.control-stack') || event.target.closest('.collapse-box') || event.target.closest('.favorite-toggle'))) {
           event.preventDefault();
           return;
         }
@@ -1225,6 +1332,10 @@
           this.collapseBtn.textContent = this.state.collapsed ? 'Show' : 'Hide';
         }
         if (this.chevronBtn) this.chevronBtn.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
+        if (this.collapseBoxBtn) {
+          this.collapseBoxBtn.textContent = this.state.collapsed ? '▸' : '▾';
+          this.collapseBoxBtn.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
+        }
         if (this.headerTextEl) this.headerTextEl.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
       }
 
@@ -3038,7 +3149,9 @@
     const weaponConfigs = [
       {
         id: 'kord-6p67',
-        name: 'KORD 6P67 • Assault Rifle',
+        name: 'KORD 6P67',
+        type: 'Assault Rifle',
+        image: 'kord.avif',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3057,7 +3170,9 @@
       },
       {
         id: 'pw5a3',
-        name: 'PW5A3 • SMG',
+        name: 'PW5A3',
+        type: 'SMG',
+        image: 'pw5a3.avif',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3076,7 +3191,9 @@
       },
       {
         id: 'rpkm',
-        name: 'RPKM • Light Machine Gun',
+        name: 'RPKM',
+        type: 'Light Machine Gun',
+        image: 'rpkm.avif',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3096,7 +3213,9 @@
       },
       {
         id: 'm87a1',
-        name: 'M87A1 • Shotgun',
+        name: 'M87A1',
+        type: 'Shotgun',
+        image: 'm87a1.avif',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3116,7 +3235,9 @@
       },
       {
         id: 'ggh-22',
-        name: 'GGH-22 • Sidearm',
+        name: 'GGH-22',
+        type: 'Sidearm',
+        image: 'ggh-22.avif',
         minLevel: 1,
         maxLevel: 40,
         apMax: 60,
@@ -3135,7 +3256,9 @@
       },
       {
         id: 'l110',
-        name: 'L110 • Light Machine Gun',
+        name: 'L110',
+        type: 'Light Machine Gun',
+        image: 'l110.avif',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3156,7 +3279,9 @@
       },
       {
         id: 'm2010esr',
-        name: 'M2010 ESR • Sniper Rifle',
+        name: 'M2010 ESR',
+        type: 'Sniper Rifle',
+        image: 'm2010-esr.avif',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3173,6 +3298,29 @@
         },
         baseline: m2010ESR_BASELINE,
         changes: M2010ESR_CHANGES
+      },
+      {
+        id: 'miniscout',
+        name: 'Mini Scout',
+        type: 'Sniper Rifle',
+        image: 'miniscout.avif',
+        minLevel: 1,
+        maxLevel: 40,
+        apMax: 100,
+        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'magazine', 'scope', 'leftAccessory', 'rightAccessory', 'opticAccessory'],
+        slotLabels: {
+          barrel: 'Barrel',
+          underbarrel: 'Underbarrel',
+          ammunition: 'Ammunition',
+          muzzle: 'Muzzle',
+          magazine: 'Magazine',
+          scope: 'Scope',
+          leftAccessory: 'Left Accessory',
+          rightAccessory: 'Right Accessory',
+          opticAccessory: 'Optic Accessory'
+        },
+        baseline: miniscout_baseline,
+        changes: miniscout_changes
       }
     ];
 
