@@ -1158,15 +1158,32 @@
         if (this.weaponImageWrapEl && this.weaponImageEl) {
           const imgName = typeof this.config.image === 'string' ? this.config.image.trim() : '';
           if (imgName) {
-            const src = `Images/${imgName}`;
+            const nameOrId = toUpperSafe(this.config.name || this.id);
+            const hasPath = /[\\/]/.test(imgName) || /^(https?:)?\/\//i.test(imgName);
+            const primary = hasPath ? imgName : `images/${imgName}`;
+            const alternate = hasPath ? imgName : `Images/${imgName}`;
+            let triedAlt = false;
+
             this.weaponImageWrapEl.classList.remove('placeholder');
-            this.weaponImageEl.src = src;
-            this.weaponImageEl.alt = toUpperSafe(this.config.name || this.id);
-            this.weaponImageEl.addEventListener('error', () => {
-              this.weaponImageEl.removeAttribute('src');
-              this.weaponImageWrapEl.classList.add('placeholder');
-              this.weaponImageEl.alt = '';
+            this.weaponImageEl.alt = nameOrId;
+            const onError = () => {
+              if (!triedAlt && alternate !== primary) {
+                triedAlt = true;
+                this.weaponImageEl.src = alternate;
+              } else {
+                this.weaponImageEl.removeEventListener('error', onError);
+                this.weaponImageEl.removeAttribute('src');
+                this.weaponImageWrapEl.classList.add('placeholder');
+                this.weaponImageEl.alt = '';
+              }
+            };
+            this.weaponImageEl.addEventListener('error', onError);
+            this.weaponImageEl.addEventListener('load', () => {
+              // On success, ensure placeholder is hidden and stop error fallback
+              this.weaponImageWrapEl.classList.remove('placeholder');
+              this.weaponImageEl.removeEventListener('error', onError);
             }, { once: true });
+            this.weaponImageEl.src = primary;
           } else {
             this.weaponImageWrapEl.classList.add('placeholder');
             this.weaponImageEl.removeAttribute('src');
