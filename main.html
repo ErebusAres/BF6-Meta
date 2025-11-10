@@ -1,7 +1,5 @@
 ﻿<!DOCTYPE html>
-
 <body>
-  <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -224,12 +222,52 @@
     .weapon-image-wrap.placeholder .weapon-image { display: none; }
     .weapon-image-wrap:not(.placeholder) .weapon-image-ph { display: none; }
 
-    .weapon-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    
+
+    /* Meta chips under the weapon name */
+    .weapon-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+      flex-wrap: wrap;
     }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(60, 74, 85, 0.6);
+      background: rgba(18, 26, 32, 0.88);
+      color: var(--text);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .meta-chip.type-chip {
+      background: linear-gradient(135deg, rgba(0,229,255,0.18), rgba(0,229,255,0.08));
+      border-color: rgba(0,229,255,0.45);
+      color: #e9fbff;
+      text-shadow: 0 0 6px rgba(0,229,255,0.28);
+    }
+
+    .meta-chip.rank-m { background: linear-gradient(135deg, #f1c40f, #d4a017); border-color: rgba(241,196,15,0.65); color: #132018; }
+    .meta-chip.rank-a { background: linear-gradient(135deg, #00e5ff, #3aa6ff); border-color: rgba(0,229,255,0.55); color: #0a1620; }
+    .meta-chip.rank-b { background: linear-gradient(135deg, #14d672, #0fb862); border-color: rgba(20,214,114,0.55); color: #0c1d16; }
+    .meta-chip.rank-c { background: linear-gradient(135deg, #ffb15a, #ff8a3a); border-color: rgba(255,165,80,0.6); color: #23160c; }
+    .meta-chip.rank-d { background: linear-gradient(135deg, #ff6b6b, #ff4444); border-color: rgba(255,107,107,0.6); color: #2a0f12; }
+    .meta-chip.rank-unranked { background: linear-gradient(135deg, #7d5fff, #5a3dff); border-color: rgba(125,95,255,0.55); color: #f2f0ff; }
+
+    .meta-chip.range-1 { background: linear-gradient(135deg, #f1c40f, #d4a017); border-color: rgba(241,196,15,0.65); color: #132018; }
+    .meta-chip.range-2 { background: linear-gradient(135deg, #bdc3c7, #95a5a6); border-color: rgba(189,195,199,0.6); color: #141b1e; }
+    .meta-chip.range-3 { background: linear-gradient(135deg, #cd7f32, #b9732c); border-color: rgba(205,127,50,0.65); color: #210f08; }
+    .meta-chip.range-4 { background: linear-gradient(135deg, #5b7a8e, #3f5566); border-color: rgba(91,122,142,0.6); color: #e6eef5; }
+    .meta-chip.range-unranked { background: linear-gradient(135deg, #7d5fff, #5a3dff); border-color: rgba(125,95,255,0.55); color: #f2f0ff; }
 
     .level-pill {
       background: rgba(0, 229, 255, 0.12);
@@ -397,12 +435,17 @@
       -webkit-user-select: none;
     }
 
-    .side-nav-item:hover { background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.35); }
-    .side-nav-name { flex: 1 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .side-nav-type { color: var(--text-muted); font-size: 11px; letter-spacing: 0.04em; }
-    .side-nav-fav { color: #00e5ff; font-size: 14px; line-height: 1; }\n    /* Hide horizontal scrollbar in WebKit for side nav */\n    .side-nav::-webkit-scrollbar:horizontal { height: 0; }\n
-\n    /* Hide horizontal scrollbar in WebKit for side nav */\n    .side-nav::-webkit-scrollbar:horizontal { height: 0; }\n
-    @media (max-width: 900px) { .side-nav { display: none; } }
+.side-nav-item:hover { background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.35); }
+.side-nav-name { flex: 1 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.side-nav-type { color: var(--text-muted); font-size: 11px; letter-spacing: 0.04em; }
+.side-nav-fav { color: #00e5ff; font-size: 14px; line-height: 1; }
+
+/* Hide horizontal scrollbar in WebKit for side nav */
+.side-nav::-webkit-scrollbar:horizontal { height: 0; }
+
+@media (max-width: 900px) {
+  .side-nav { display: none; }
+}
 
     .level-controls {
       display: grid;
@@ -904,7 +947,96 @@
         padding: 20px;
       }
     }
-  </style>
+  /* Enhanced chip visuals (vibrant + glow) */
+    .meta-chip.type-chip {
+      background: linear-gradient(135deg, rgba(0,229,255,0.28), rgba(0,229,255,0.10));
+      border-color: rgba(0,229,255,0.65);
+      color: #e9fbff;
+      text-shadow: 0 0 8px rgba(0,229,255,0.45);
+      box-shadow: 0 0 12px rgba(0,229,255,0.25), inset 0 0 6px rgba(0,229,255,0.25);
+    }
+
+    .meta-chip.rank-m {
+      background: linear-gradient(135deg, #ffe57a, #f1c40f);
+      border-color: rgba(241,196,15,0.85);
+      color: #1b1a10;
+      text-shadow: 0 0 8px rgba(241,196,15,0.55);
+      box-shadow: 0 0 16px rgba(241,196,15,0.45), inset 0 0 8px rgba(241,196,15,0.35);
+    }
+    .meta-chip.rank-a {
+      background: linear-gradient(135deg, #4dd2ff, #00bfff);
+      border-color: rgba(0,191,255,0.8);
+      color: #08131a;
+      text-shadow: 0 0 7px rgba(0,191,255,0.45);
+      box-shadow: 0 0 14px rgba(0,191,255,0.35), inset 0 0 7px rgba(0,191,255,0.28);
+    }
+    .meta-chip.rank-b {
+      background: linear-gradient(135deg, #2ee58d, #14d672);
+      border-color: rgba(20,214,114,0.75);
+      color: #0b1712;
+      text-shadow: 0 0 6px rgba(20,214,114,0.35);
+      box-shadow: 0 0 12px rgba(20,214,114,0.28), inset 0 0 6px rgba(20,214,114,0.22);
+    }
+    .meta-chip.rank-c {
+      background: linear-gradient(135deg, #ffc27a, #ff9b4d);
+      border-color: rgba(255,155,77,0.7);
+      color: #24150a;
+      text-shadow: 0 0 5px rgba(255,155,77,0.28);
+      box-shadow: 0 0 10px rgba(255,155,77,0.22), inset 0 0 5px rgba(255,155,77,0.18);
+    }
+    .meta-chip.rank-d {
+      background: linear-gradient(135deg, #ff8b8b, #ff5c5c);
+      border-color: rgba(255,92,92,0.65);
+      color: #2b0f12;
+      text-shadow: 0 0 4px rgba(255,92,92,0.22);
+      box-shadow: 0 0 9px rgba(255,92,92,0.18), inset 0 0 4px rgba(255,92,92,0.15);
+    }
+    .meta-chip.rank-unranked {
+      background: linear-gradient(135deg, #8d78ff, #6a4dff);
+      border-color: rgba(125,95,255,0.7);
+      color: #f5f3ff;
+      text-shadow: 0 0 6px rgba(125,95,255,0.35);
+      box-shadow: 0 0 12px rgba(125,95,255,0.25), inset 0 0 6px rgba(125,95,255,0.22);
+    }
+
+    /* Type rating (TR) chips: #1 gold, #2 silver, #3 bronze, #4 dull blue */
+    .meta-chip.range-1 {
+      background: linear-gradient(135deg, #ffe57a, #f1c40f);
+      border-color: rgba(241,196,15,0.85);
+      color: #1b1a10;
+      text-shadow: 0 0 8px rgba(241,196,15,0.55);
+      box-shadow: 0 0 16px rgba(241,196,15,0.45), inset 0 0 8px rgba(241,196,15,0.35);
+    }
+    .meta-chip.range-2 {
+      background: linear-gradient(135deg, #edf1f4, #bfc7cc);
+      border-color: rgba(191,199,204,0.85);
+      color: #101519;
+      text-shadow: 0 0 7px rgba(191,199,204,0.45);
+      box-shadow: 0 0 14px rgba(191,199,204,0.35), inset 0 0 7px rgba(191,199,204,0.28);
+    }
+    .meta-chip.range-3 {
+      background: linear-gradient(135deg, #f0a561, #cd7f32);
+      border-color: rgba(205,127,50,0.8);
+      color: #211108;
+      text-shadow: 0 0 6px rgba(205,127,50,0.35);
+      box-shadow: 0 0 12px rgba(205,127,50,0.28), inset 0 0 6px rgba(205,127,50,0.22);
+    }
+    .meta-chip.range-4 {
+      background: linear-gradient(135deg, #6d8aa0, #4a6273);
+      border-color: rgba(91,122,142,0.75);
+      color: #e9f2f9;
+      text-shadow: 0 0 5px rgba(91,122,142,0.28);
+      box-shadow: 0 0 10px rgba(91,122,142,0.22), inset 0 0 5px rgba(91,122,142,0.18);
+    }
+    .meta-chip.range-unranked {
+      background: linear-gradient(135deg, #8d78ff, #6a4dff);
+      border-color: rgba(125,95,255,0.7);
+      color: #f5f3ff;
+      text-shadow: 0 0 6px rgba(125,95,255,0.35);
+      box-shadow: 0 0 12px rgba(125,95,255,0.25), inset 0 0 6px rgba(125,95,255,0.22);
+    }
+</style>
+</style>
 </head>
 <body>
   <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
@@ -929,8 +1061,7 @@
           </button>
         </div>
         <div class="weapon-header-text" tabindex="0" role="button" aria-label="Toggle collapse" aria-expanded="true">
-          <div class="weapon-name"></div>
-          <div class="weapon-subtitle">Mastery Loadout Progression</div>
+          <div class="weapon-name"></div>          <div class="weapon-meta-row"><span class="meta-chip type-chip"></span><span class="meta-chip rank-chip"></span><span class="meta-chip range-chip"></span></div>
           
           <div class="header-controls">
             <span class="header-level" aria-live="polite">LEVEL 1</span>
@@ -1180,6 +1311,9 @@
         this.collapseBtn = this.cardEl.querySelector('.collapse-toggle');
         this.weaponNameEl = this.cardEl.querySelector('.weapon-name');
         this.weaponTypeEl = this.cardEl.querySelector('.weapon-subtitle');
+        this.typeChipEl = this.cardEl.querySelector('.type-chip');
+        this.rankChipEl = this.cardEl.querySelector('.rank-chip');
+        this.rangeChipEl = this.cardEl.querySelector('.range-chip');
         this.weaponImageWrapEl = this.cardEl.querySelector('.weapon-image-wrap');
         this.weaponImageEl = this.cardEl.querySelector('.weapon-image');
         this.weaponImagePhEl = this.cardEl.querySelector('.weapon-image-ph');
@@ -1197,6 +1331,36 @@
 
         if (this.weaponNameEl) this.weaponNameEl.textContent = toUpperSafe(this.config.name || this.id);
         if (this.weaponTypeEl) this.weaponTypeEl.textContent = toUpperSafe(this.config.type || 'Mastery Loadout Progression');
+        if (this.typeChipEl) {
+          const typeLabel = toUpperSafe(this.config.type || 'Type Not Found');
+          this.typeChipEl.textContent = typeLabel;
+        }
+        if (this.rankChipEl) {
+          const r = (this.config.rank || '').toString().trim().toLowerCase();
+          const map = { m: 'META', a: 'A TIER', b: 'B TIER', c: 'C TIER', d: 'D TIER' };
+          const label = map[r] || 'UNRANKED';
+          this.rankChipEl.textContent = label;
+          this.rankChipEl.classList.remove('rank-m','rank-a','rank-b','rank-c','rank-d','rank-unranked');
+          this.rankChipEl.classList.add(r && map[r] ? ('rank-' + r) : 'rank-unranked');
+        }
+                if (this.rangeChipEl) {
+          const code = (this.config.tr || '').toString().trim().toUpperCase();
+          const num = parseInt(code, 10);
+          const typeLabel = toUpperSafe(this.config.type || 'TYPE'); const kind = typeLabel;
+          if (Number.isFinite(num) && num >= 1 && num <= 4 && kind) {
+            this.rangeChipEl.textContent = '#' + num + ' ' + kind;
+            this.rangeChipEl.classList.remove('range-1','range-2','range-3','range-4','range-unranked');
+            this.rangeChipEl.classList.add('range-' + num);
+          } else {
+            this.rangeChipEl.textContent = 'UNRANKED';
+            this.rangeChipEl.classList.remove('range-1','range-2','range-3','range-4');
+            this.rangeChipEl.classList.add('range-unranked');
+          }
+          if (!this.rangeChipEl.textContent || !this.rangeChipEl.textContent.trim()) {
+            this.rangeChipEl.textContent = 'UNRANKED';
+            this.rangeChipEl.classList.add('range-unranked');
+          }
+        }
         if (this.weaponImageWrapEl && this.weaponImageEl) {
           const imgName = typeof this.config.image === 'string' ? this.config.image.trim() : '';
           if (imgName) {
@@ -3206,12 +3370,462 @@
         muzzle: null
       }
     };
+    const umg40_baseline = {
+      barrel: { name: '200MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
+      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
+      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      magazine: { name: '30RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
+      scope: { name: 'R4T 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
+    };
+    const umg40_changes = {
+      3: {
+        rightAccessory: {
+          name: '5 MW RED',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 3
+        }
+      },
+      7: {
+        underbarrel: {
+          name: 'alloy vertical',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 7,
+          replaced: [
+            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
+          ]
+        },
+        scope: {
+          name: 'A-P2 1.75x',
+          pts: 10,
+          type: 'Scope',
+          unlockLevel: 7,
+          replaced: [
+            { name: 'R4T 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
+          ]
+        }
+      },
+      8: {
+        muzzle: {
+          name: 'linear comp',
+          pts: 10,
+          type: 'Muzzle',
+          unlockLevel: 8
+        }
+      },
+      11: { 
+        underbarrel: {
+          name: 'ribbed vertical',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 11,
+          replaced: [
+            { name: 'alloy vertical', pts: 20, type: 'Underbarrel', unlockLevel: 7 }
+          ]
+        }
+      },
+      12: {
+        rightAccessory: {
+          name: '5 MW GREEN',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 12,
+          replaced: [
+            { name: '5 MW RED', pts: 10, type: 'Right Accessory', unlockLevel: 3 }
+          ]
+        }
+      },
+      14: { 
+        underbarrel: {
+          name: 'Folding Stubby',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 14,
+          replaced: [
+            { name: 'ribbed vertical', pts: 20, type: 'Underbarrel', unlockLevel: 11 }
+          ]
+        },
+        scope: {
+          name: 'RO-M 1.75x',
+          pts: 10,
+          type: 'Scope',
+          unlockLevel: 14
+        }
+      },
+      17: {
+        underbarrel: {
+          name: 'Slim Angled',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 17,
+          replaced: [
+            { name: 'Folding Stubby', pts: 20, type: 'Underbarrel', unlockLevel: 14 }
+          ]
+        }
+      },
+      18: {
+        ammunition: {
+          name: 'hollow point',
+          pts: 20,
+          type: 'Ammunition',
+          unlockLevel: 18,
+          replaced: [
+            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+          ]
+        }
+      },
+      19: {
+        muzzle: {
+          name: 'compensated brake',
+          pts: 20,
+          type: 'Muzzle',
+          unlockLevel: 19,
+          replaced: [
+            { name: 'linear comp', pts: 10, type: 'Muzzle', unlockLevel: 8 }
+          ]
+        }
+      },
+      22: {
+        ammunition: {
+          name: 'FMJ',
+          pts: 5,
+          type: 'Ammunition',
+          unlockLevel: 1,
+          replaced: [
+            { name: 'hollow point', pts: 20, type: 'Ammunition', unlockLevel: 18 }
+          ]
+        },
+        leftAccessory: {
+          name: 'FLASHLIGHT',
+          pts: 10,
+          type: 'Left Accessory',
+          unlockLevel: 22
+        }
+      },
+      23: {
+        rightAccessory: {
+          name: '50 MW GREEN',
+          pts: 20,
+          type: 'Right Accessory',
+          unlockLevel: 23
+        }
+      },
+      24: {
+        muzzle: {
+          name: 'standard suppressor',
+          pts: 25,
+          type: 'Muzzle',
+          unlockLevel: 24,
+          replaced: [
+            { name: 'compensated brake', pts: 20, type: 'Muzzle', unlockLevel: 19 }
+          ]
+        }
+      },
+      26: {
+        barrel: {
+          name: '305mm Custom',
+          pts: 15,
+          type: 'Barrel',
+          unlockLevel: 26,
+          replaced: [
+            { name: '200MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
+          ]
+        },
+        // Keep: Barrel, Underbarrel  Ammunition  Muzzle  Right Magazine  Scope  
+        leftAccessory: null
+      },
+      28: {
+        muzzle: {
+          name: 'long suppressor',
+          pts: 25,
+          type: 'Muzzle',
+          unlockLevel: 28,
+          replaced: [
+            { name: 'standard suppressor', pts: 25, type: 'Muzzle', unlockLevel: 24 }
+          ]
+        }
+      },
+      29: {
+        underbarrel: {
+          name: 'Canted Stubby',
+          pts: 30,
+          type: 'Underbarrel',
+          unlockLevel: 29,
+          replaced: [
+            { name: 'Slim Angled', pts: 25, type: 'Underbarrel', unlockLevel: 17 }
+          ]
+        },
+        rightAccessory: {
+          //unlocks at lv 12
+          name: '5 MW GREEN',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 12,
+          replaced: [
+            { name: '50 MW GREEN', pts: 20, type: 'Right Accessory', unlockLevel: 23 }
+          ]
+        }
+      },
+      36: {
+        underbarrel: {
+          name: 'Stippled Stubby',
+          pts: 35,
+          type: 'Underbarrel',
+          unlockLevel: 36,
+          replaced: [
+            { name: 'Canted Stubby', pts: 30, type: 'Underbarrel', unlockLevel: 29 }
+          ]
+        },
+        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Magazine, Scope
+        rightAccessory: null
+      },
+      37: {
+        muzzle: {
+          name: 'lightened suppressor',
+          pts: 30,
+          type: 'Muzzle',
+          unlockLevel: 37,
+          replaced: [
+            { name: 'long suppressor', pts: 25, type: 'Muzzle', unlockLevel: 28 }
+          ]
+        }
+      },
+      39: {
+        underbarrel: { // unlocked at 17
+          name: 'Slim Angled',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 17,
+          replaced: [
+            { name: 'Stippled Stubby', pts: 35, type: 'Underbarrel', unlockLevel: 36 }
+          ]
+        },
+        ammunition: {
+          name: 'synthetic tip',
+          pts: 30,
+          type: 'Ammunition',
+          unlockLevel: 39,
+          replaced: [
+            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+          ]
+        },
+        muzzle: {
+          name: 'Standard Suppressor',
+          pts: 20,
+          type: 'Muzzle',
+          unlockLevel: 39,
+          replaced: [
+            { name: 'lightened suppressor', pts: 30, type: 'Muzzle', unlockLevel: 37 }
+          ]
+        }
+      }
+    };
+    const qbz_192_baseline = {
+      barrel: { name: '10.5" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
+      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
+      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
+      ergonomics: { name: 'RAIL COVER', pts: 5, type: 'Ergonomics', unlockLevel: 'Season 1 Hardware 2' },
+      magazine: { name: '36RND MAGAZINE', pts: 15, type: 'Magazine', unlockLevel: 1 },
+      scope: { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
+    };
+    const qbz_192_changes = {
+      2: {
+        muzzle: {
+          name: 'linear comp',
+         pts: 10,
+          type: 'Muzzle',
+          unlockLevel: 2
+        }
+      },
+      3: {
+        underbarrel: {
+          name: 'alloy vertical',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 3,
+          replaced: [
+            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
+          ]
+        },
+        scope: {
+          name: 'RO-M 1.75x',
+          pts: 10,
+          type: 'Scope',
+          unlockLevel: 3,
+          replaced: [
+            { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
+          ]
+        }
+      },
+      5: {
+        topAccessory: {
+          name: '5 MW RED',
+          pts: 10,
+          type: 'Top Accessory',
+          unlockLevel: 5
+        }
+      },
+      6: {
+        underbarrel: {
+          name: 'ribbed vertical',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 6,
+          replaced: [
+            { name: 'alloy vertical', pts: 20, type: 'Underbarrel', unlockLevel: 3 }
+          ]
+        }
+      },
+      8: {
+        rightAccessory: {
+          name: 'flashlight',
+          pts: 10,
+          type: 'Right Accessory',
+          unlockLevel: 8
+        }
+      },
+      9: {
+        underbarrel: {
+          name: 'Folding Stubby',
+          pts: 20,
+          type: 'Underbarrel',
+          unlockLevel: 9,
+          replaced: [
+            { name: 'ribbed vertical', pts: 20, type: 'Underbarrel', unlockLevel: 6 }
+          ]
+        }
+      }, 
+      12: {
+        topAccessory: {
+          name: '5 MW GREEN',
+          pts: 10,
+          type: 'Top Accessory',
+          unlockLevel: 12,
+          replaced: [
+            { name: '5 MW RED', pts: 10, type: 'Top Accessory', unlockLevel: 5 }
+          ]
+        }
+      },
+      14: {
+        ammunition: {
+          name: 'Polymer Case',
+          pts: 10,
+          type: 'Ammunition',
+          unlockLevel: 14,
+          replaced: [
+            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+          ]
+        }
+      },
+      16: {
+        barrel: {
+          name: '14.5" Common',
+          pts: 10,
+          type: 'Barrel',
+          unlockLevel: 16,
+          replaced: [
+            { name: '10.5" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
+          ]
+        },
+        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Top Accessory, Ergonomics, Magazine, Scope
+        rightAccessory: null
+      },
+      18: {
+        underbarrel: {
+          name: 'Slim Angled',
+          pts: 25,
+          type: 'Underbarrel',
+          unlockLevel: 18,
+          replaced: [
+            { name: 'Folding Stubby', pts: 20, type: 'Underbarrel', unlockLevel: 9 }
+          ]
+        }
+      },
+      23: {
+        underbarrel: {
+          name: 'Canted Stubby',
+          pts: 30,
+          type: 'Underbarrel',
+          unlockLevel: 23,
+          replaced: [
+            { name: 'Slim Angled', pts: 25, type: 'Underbarrel', unlockLevel: 18 }
+          ]
+        },
+        ammunition: {
+          name: 'FMJ',
+          pts: 5,
+          type: 'Ammunition',
+          unlockLevel: 1,
+          replaced: [
+            { name: 'Polymer Case', pts: 10, type: 'Ammunition', unlockLevel: 14 }
+          ]
+        }
+      },
+      25: {
+        underbarrel: {
+          name: 'Full Angled',
+          pts: 25,
+          type: 'Underbarrel',
+          unlockLevel: 25,
+          replaced: [
+            { name: 'Canted Stubby', pts: 30, type: 'Underbarrel', unlockLevel: 23 }
+          ]
+        },
+        ammunition: {
+          name: 'Polymer Case',
+          pts: 10,
+          type: 'Ammunition',
+          unlockLevel: 1,
+          replaced: [
+            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+          ]
+        }
+      },
+      36: {
+        underbarrel: {
+          name: 'Stipped Stubby',
+          pts: 35,
+          type: 'Underbarrel',
+          unlockLevel: 36,
+          replaced: [
+            { name: 'Full Angled', pts: 25, type: 'Underbarrel', unlockLevel: 25 }
+          ]
+        },
+        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Ergonomics, Magazine, Scope
+        topAccessory: null
+      },
+      39: {
+        underbarrel: {
+          name: 'Low-Profile Stubby',
+          pts: 45,
+          type: 'Underbarrel',
+          unlockLevel: 39,
+          replaced: [
+            { name: 'Stipped Stubby', pts: 35, type: 'Underbarrel', unlockLevel: 36 }
+          ]
+        },
+        ammunition: {
+          name: 'FMJ',
+          pts: 5,
+          type: 'Ammunition',
+          unlockLevel: 1,
+          replaced: [
+            { name: 'Polymer Case', pts: 10, type: 'Ammunition', unlockLevel: 14 }
+          ]
+        },
+        // Keep: Barrel, Underbarrel, Muzzle, Magazine, Scope.
+        ergonomics: null
+      }
+    };
     const weaponConfigs = [
       {
         id: 'kord-6p67',
         name: 'KORD 6P67',
         type: 'Assault Rifle',
         image: 'kord.avif',
+        rank: 'm',
+        tr: '1',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3233,6 +3847,8 @@
         name: 'PW5A3',
         type: 'SMG',
         image: 'pw5a3.avif',
+        rank: 'm',
+        tr: '1',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3254,6 +3870,8 @@
         name: 'RPKM',
         type: 'Light Machine Gun',
         image: 'rpkm.avif',
+        rank: 'm',
+        tr: '1',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3276,6 +3894,8 @@
         name: 'M87A1',
         type: 'Shotgun',
         image: 'm87a1.avif',
+        rank: 'm',
+        tr: '1',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3296,8 +3916,10 @@
       {
         id: 'ggh-22',
         name: 'GGH-22',
-        type: 'Sidearm',
+        type: 'Secondary',
         image: 'ggh-22.avif',
+        rank: 'b',
+        tr: '1',
         minLevel: 1,
         maxLevel: 40,
         apMax: 60,
@@ -3319,6 +3941,8 @@
         name: 'L110',
         type: 'Light Machine Gun',
         image: 'l110.avif',
+        rank: 'm',
+        tr: '2',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3342,6 +3966,8 @@
         name: 'M2010 ESR',
         type: 'Sniper Rifle',
         image: 'm2010-esr.avif',
+        rank: 'm',
+        tr: '1',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3364,6 +3990,8 @@
         name: 'Mini Scout',
         type: 'Sniper Rifle',
         image: 'miniscout.avif',
+        rank: 'm',
+        tr: '2',
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
@@ -3381,6 +4009,54 @@
         },
         baseline: miniscout_baseline,
         changes: miniscout_changes
+      },
+      {
+        id: 'umg40',
+        name: 'UMG-40',
+        type: 'SMG',
+        image: 'umg-40.avif',
+        rank: 'm',
+        tr: '2',
+        minLevel: 1,
+        maxLevel: 40,
+        apMax: 100,
+        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'magazine', 'scope', 'leftAccessory', 'rightAccessory'],
+        slotLabels: {
+          barrel: 'Barrel',
+          underbarrel: 'Underbarrel',
+          ammunition: 'Ammunition',
+          muzzle: 'Muzzle',
+          magazine: 'Magazine',
+          scope: 'Scope',
+          leftAccessory: 'Left Accessory',
+          rightAccessory: 'Right Accessory'
+        },
+        baseline: umg40_baseline,
+        changes: umg40_changes
+      },
+      {
+        id: 'qbz-192',
+        name: 'QBZ-192',
+        type: 'Carbine',
+        image: 'qbz-192.avif',
+        rank: 'm',
+        tr: '1',
+        minLevel: 1,
+        maxLevel: 40,
+        apMax: 100,
+        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'topAccessory', 'ergonomics', 'magazine', 'scope'],
+        slotLabels: {
+          barrel: 'Barrel',
+          underbarrel: 'Underbarrel',
+          ammunition: 'Ammunition',
+          muzzle: 'Muzzle',
+          topAccessory: 'Top Accessory',
+          ergonomics: 'Ergonomics',
+          magazine: 'Magazine',
+          scope: 'Scope'
+        },
+        baseline: qbz_192_baseline,
+        changes: qbz_192_changes
       }
     ];
 
@@ -3594,3 +4270,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
