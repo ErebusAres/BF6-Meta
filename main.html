@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+
+<body>
+  <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -362,6 +365,44 @@
     .weapon-card.collapsed .weapon-body {
       display: none;
     }
+
+    /* Left floating weapon nav */
+    .side-nav { position: fixed; top: 96px; left: 8px; z-index: 20; padding: 8px; border: 1px solid rgba(60,74,85,.55); background: rgba(18,26,32,.88); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.35); width: 240px; max-height: calc(100vh - 120px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; }
+
+    
+    /* Hide the nav UI until populated to avoid a stray shape */
+    .side-nav:not(.nav-ready) { visibility: hidden; pointer-events: none; }
+.side-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .side-nav-item {
+      border: 1px solid rgba(60, 74, 85, 0.55);
+      background: rgba(10, 16, 21, 0.7);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .side-nav-item:hover { background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.35); }
+    .side-nav-name { flex: 1 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .side-nav-type { color: var(--text-muted); font-size: 11px; letter-spacing: 0.04em; }
+    .side-nav-fav { color: #00e5ff; font-size: 14px; line-height: 1; }\n    /* Hide horizontal scrollbar in WebKit for side nav */\n    .side-nav::-webkit-scrollbar:horizontal { height: 0; }\n
+\n    /* Hide horizontal scrollbar in WebKit for side nav */\n    .side-nav::-webkit-scrollbar:horizontal { height: 0; }\n
+    @media (max-width: 900px) { .side-nav { display: none; } }
 
     .level-controls {
       display: grid;
@@ -866,6 +907,7 @@
   </style>
 </head>
 <body>
+  <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
   <div class="app">
     <header class="page-header">
       <h1 class="page-title">Mastery Loadout Tracker</h1>
@@ -881,7 +923,7 @@
           <span aria-hidden="true">&#9776;</span>
         </button>
         <div class="control-stack">
-          <button class="collapse-box" type="button" aria-label="Toggle collapse" aria-expanded="true">▾</button>
+          <button class="collapse-box" type="button" aria-label="Toggle collapse" aria-expanded="true">&#9662;</button>
           <button class="favorite-toggle" type="button" aria-pressed="false" title="Toggle favorite">
             <span aria-hidden="true">&#9734;</span>
           </button>
@@ -1316,6 +1358,7 @@
         storage.updateWeaponState(this.id, { favorite: this.state.favorite });
         this.applyFavoriteUI();
         renderWeaponList();
+    alignSideNav();
       }
 
                   applyFavoriteUI() {
@@ -1350,7 +1393,7 @@
         }
         if (this.chevronBtn) this.chevronBtn.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
         if (this.collapseBoxBtn) {
-          this.collapseBoxBtn.textContent = this.state.collapsed ? '▸' : '▾';
+          this.collapseBoxBtn.textContent = this.state.collapsed ? '\u25B8' : '\u25BE';
           this.collapseBoxBtn.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
         }
         if (this.headerTextEl) this.headerTextEl.setAttribute('aria-expanded', this.state.collapsed ? 'false' : 'true');
@@ -3343,12 +3386,98 @@
 
     const template = document.getElementById('weaponTemplate');
     const weaponListEl = document.getElementById('weaponList');
+    const weaponNavEl = document.getElementById('weaponNav');
+    function alignSideNav() {
+  const nav = document.getElementById('weaponNav');
+  const app = document.querySelector('.app');
+  if (!nav || !app) return;
+  const style = window.getComputedStyle(nav);
+  if (style.display === 'none') return;
+  const appRect = app.getBoundingClientRect();
+  const navWidth = nav.offsetWidth || 240;
+  const gap = 24;
+  const scrollX = window.pageXOffset || document.documentElement.scrollLeft || 0;
+  let left = Math.round(appRect.left + scrollX - navWidth - gap);
+  if (left < 8) left = 8;
+  nav.style.left = left + 'px';
+
+  const header = document.querySelector('.page-header');
+  if (header) {
+    const headerRect = header.getBoundingClientRect();
+    const top = Math.max(16, Math.round(headerRect.bottom + 12));
+    nav.style.top = top + 'px';
+  } else {
+    nav.style.top = '96px';
+  }
+}
+    
 
     const trackers = weaponConfigs.map((config) => {
       const tracker = new WeaponTracker(config);
       tracker.mount(template);
       return tracker;
     });
+
+    function updateWeaponNav(order) {
+      if (!weaponNavEl) return;
+      const idToTracker = new Map(trackers.map((t) => [t.id, t]));
+      const ul = document.createElement('ul');
+      ul.className = 'side-nav-list';
+      for (const id of order) {
+        const tracker = idToTracker.get(id);
+        if (!tracker) continue;
+        const li = document.createElement('li');
+        li.className = 'side-nav-item';
+        li.dataset.weaponId = id;
+        const name = document.createElement('span');
+        name.className = 'side-nav-name';
+        name.textContent = toUpperSafe(tracker.config.name || id);
+        li.appendChild(name);
+        if (tracker.config && tracker.config.type) {
+          const type = document.createElement('span');
+          type.className = 'side-nav-type';
+          type.textContent = toUpperSafe(tracker.config.type);
+          li.appendChild(type);
+        }
+        if (tracker.isFavorite()) {
+          const fav = document.createElement('span');
+          fav.className = 'side-nav-fav';
+          fav.setAttribute('aria-hidden', 'true');
+          fav.textContent = '\u2605';
+          li.appendChild(fav);
+        }
+        ul.appendChild(li);
+      }
+      weaponNavEl.innerHTML = '';
+      weaponNavEl.appendChild(ul);
+      weaponNavEl.classList.add("nav-ready");
+      alignSideNav();
+    }
+
+    function scrollToTracker(tracker) {
+      if (!tracker || !tracker.cardEl) return;
+      const rect = tracker.cardEl.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const viewportH = window.innerHeight || document.documentElement.clientHeight;
+      let targetTop;
+      if (!tracker.state.collapsed) {
+        const mid = rect.top + scrollTop + rect.height / 2;
+        targetTop = Math.max(0, Math.round(mid - viewportH / 2));
+      } else {
+        targetTop = Math.max(0, Math.round(rect.top + scrollTop - 24));
+      }
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+    }
+
+    if (weaponNavEl) {
+      weaponNavEl.addEventListener('click', (event) => {
+        const item = event.target.closest('.side-nav-item');
+        if (!item) return;
+        const id = item.dataset.weaponId;
+        const tracker = trackers.find((t) => t.id === id);
+        scrollToTracker(tracker);
+      });
+    }
 
     function renderWeaponList() {
       const storedOrder = storage.getOrder();
@@ -3386,9 +3515,11 @@
         const tracker = idToTracker.get(id);
         tracker.attach(weaponListEl);
       }
+      updateWeaponNav(finalOrder);
     }
 
     renderWeaponList();
+    alignSideNav();
 
     weaponListEl.addEventListener('dragover', (event) => {
       if (!currentDraggedId) return;
@@ -3419,13 +3550,47 @@
       order.splice(insertIndex, 0, currentDraggedId);
       storage.setOrder(order);
       renderWeaponList();
+    alignSideNav();
       currentDraggedId = null;
     });
 
     window.addEventListener('resize', () => {
       trackers.forEach((tracker) => tracker.refreshLayout());
+      alignSideNav();
     });
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
