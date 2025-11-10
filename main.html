@@ -26,6 +26,8 @@
       --transition: 160ms ease;
       --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
       --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --ui-scale: 1; /* 1.0 = 100% */
+      --ui-scale-pct: 100%; /* fill for UI scale track */
     }
 
     * {
@@ -462,6 +464,42 @@
 @media (max-width: 900px) {
   .side-nav { display: none; }
 }
+
+    /* UI Scale panel (sits above the side nav) */
+    .ui-scale-panel {
+      position: fixed;
+      top: 8px;
+      right: 8px;
+      z-index: 25;
+      width: 240px;
+      padding: 8px 10px;
+      border: 1px solid rgba(60,74,85,.55);
+      background: rgba(18,26,32,.88);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ui-scale-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+    .ui-scale-text { color: var(--text-muted); }
+    .ui-scale-value { font-weight: 700; color: var(--accent); text-shadow: 0 0 8px rgba(0, 229, 255, 0.35); }
+
+    /* Match level bar exactly */
+    .ui-scale-panel .progress { width: 100%; }
+
+    /* Scale only the main app; leave side nav unscaled for alignment */
+    .app { transform: scale(var(--ui-scale)); transform-origin: top center; }
 
     .level-controls {
       display: grid;
@@ -1055,6 +1093,15 @@
 </style>
 </head>
 <body>
+  <div class="ui-scale-panel" id="uiScalePanel" role="group" aria-label="UI Scale">
+    <div class="ui-scale-row">
+      <span class="ui-scale-text">UI Scale</span>
+      <span class="ui-scale-value" id="uiScaleValue">100%</span>
+    </div>
+    <div class="progress" id="uiScaleProgress" role="slider" aria-label="UI scale" aria-valuemin="50" aria-valuemax="200" aria-valuenow="100">
+      <div class="knob"></div>
+    </div>
+  </div>
   <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
   <div class="app">
     <header class="page-header">
@@ -4250,6 +4297,135 @@
       trackers.forEach((tracker) => tracker.refreshLayout());
       alignSideNav();
     });
+
+    // UI Scale control setup
+    (function setupUiScale() {
+      const KEY = 'bf6-meta-ui-scale';
+      const valueEl = document.getElementById('uiScaleValue');
+      const progressEl = document.getElementById('uiScaleProgress');
+      const knobEl = progressEl ? progressEl.querySelector('.knob') : null;
+
+      const MIN = 50;
+      const MAX = 200;
+      const STEP = 5;
+      const STEPS = Math.floor((MAX - MIN) / STEP) + 1; // 31
+
+      function clampPercent(p) {
+        p = Math.round(Number(p) || 100);
+        if (p < MIN) p = MIN;
+        if (p > MAX) p = MAX;
+        return p;
+      }
+
+      function quantize(p) {
+        const clamped = clampPercent(p);
+        const stepsFromMin = Math.round((clamped - MIN) / STEP);
+        return MIN + stepsFromMin * STEP;
+      }
+
+      function ensureSegments() {
+        if (!progressEl) return;
+        const existing = progressEl.querySelectorAll('.segment').length;
+        if (existing === STEPS) return;
+        progressEl.querySelectorAll('.segment').forEach((s) => s.remove());
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < STEPS; i++) {
+          const seg = document.createElement('div');
+          seg.className = 'segment';
+          frag.appendChild(seg);
+        }
+        progressEl.insertBefore(frag, knobEl);
+        progressEl.style.setProperty('--max-level', String(STEPS));
+      }
+
+      function updateUI(pct) {
+        if (!progressEl || !knobEl) return;
+        ensureSegments();
+        const value = quantize(pct);
+        const percent = ((value - MIN) / (MAX - MIN)) * 100;
+        knobEl.style.left = percent + '%';
+        progressEl.setAttribute('aria-valuenow', String(value));
+        const idx = Math.round((value - MIN) / STEP);
+        const segments = progressEl.querySelectorAll('.segment');
+        segments.forEach((seg, i) => {
+          if (i <= idx) seg.classList.add('active');
+          else seg.classList.remove('active');
+        });
+        if (valueEl) valueEl.textContent = value + '%';
+      }
+
+      function applyScale(percent) {
+        const p = quantize(percent);
+        document.documentElement.style.setProperty('--ui-scale', (p / 100).toString());
+        document.documentElement.style.setProperty('--ui-scale-pct', p + '%');
+        try { localStorage.setItem(KEY, String(p)); } catch (_) {}
+        updateUI(p);
+        alignSideNav();
+      }
+
+      function valueFromClientX(clientX) {
+        const rect = progressEl.getBoundingClientRect();
+        let ratio = (clientX - rect.left) / rect.width;
+        if (ratio < 0) ratio = 0; if (ratio > 1) ratio = 1;
+        const raw = MIN + ratio * (MAX - MIN);
+        return quantize(raw);
+      }
+
+      let initial = 100;
+      try {
+        const raw = localStorage.getItem(KEY);
+        const num = parseInt(raw || '100', 10);
+        if (Number.isFinite(num)) initial = clampPercent(num);
+      } catch (_) {}
+
+      if (progressEl) {
+        progressEl.setAttribute('aria-valuemin', String(MIN));
+        progressEl.setAttribute('aria-valuemax', String(MAX));
+        ensureSegments();
+        progressEl.addEventListener('click', (e) => {
+          applyScale(valueFromClientX(e.clientX));
+        });
+        let scrubbing = false;
+        let pointerId = null;
+        const onMove = (e) => {
+          if (!scrubbing) return;
+          applyScale(valueFromClientX(e.clientX));
+        };
+        const onEnd = (e) => {
+          if (!scrubbing) return;
+          scrubbing = false;
+          try { if (pointerId != null) progressEl.releasePointerCapture(pointerId); } catch (_) {}
+          pointerId = null;
+          progressEl.removeEventListener('pointermove', onMove);
+        };
+        progressEl.addEventListener('pointerdown', (e) => {
+          scrubbing = true;
+          pointerId = e.pointerId;
+          try { progressEl.setPointerCapture(pointerId); } catch (_) {}
+          progressEl.addEventListener('pointermove', onMove);
+          progressEl.addEventListener('pointerup', onEnd, { once: true });
+          progressEl.addEventListener('pointercancel', onEnd, { once: true });
+          applyScale(valueFromClientX(e.clientX));
+        });
+        progressEl.tabIndex = 0;
+        progressEl.addEventListener('keydown', (e) => {
+          const now = parseInt(progressEl.getAttribute('aria-valuenow') || String(initial), 10);
+          let next = now;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = now + STEP;
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = now - STEP;
+          else if (e.key === 'PageUp') next = now + STEP * 2;
+          else if (e.key === 'PageDown') next = now - STEP * 2;
+          else if (e.key === 'Home') next = MIN;
+          else if (e.key === 'End') next = MAX;
+          if (next !== now) {
+            e.preventDefault();
+            applyScale(next);
+          }
+        });
+      }
+
+      applyScale(initial);
+    })();
   </script>
 </body>
 </html>
