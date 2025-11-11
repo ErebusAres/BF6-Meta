@@ -34,6 +34,9 @@
       box-sizing: border-box;
     }
 
+    /* Ensure hidden elements do not render */
+    [hidden] { display: none !important; }
+
     body {
       margin: 0;
       background: radial-gradient(1000px 600px at 80% -100px, rgba(0, 229, 255, 0.12), transparent 60%),
@@ -48,7 +51,7 @@
     }
 
     .app {
-      width: min(980px, 100%);
+      width: min(1000px, 100%);
       background: rgba(8, 12, 16, 0.55);
       border: 1px solid rgba(120, 160, 180, 0.14);
       border-radius: 16px;
@@ -588,6 +591,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
       gap: 22px;
+      padding-right: 12px;
       align-items: flex-start;
     }
 
@@ -596,6 +600,7 @@
       flex-direction: column;
       gap: 16px;
       align-self: stretch;
+      width: min(290px);
     }
 
     .attachments-panel {
@@ -946,6 +951,43 @@
       color: var(--text-muted);
     }
 
+    /* Recommended build panel matches changes styling */
+    .recommended-panel {
+      background: rgba(16, 24, 30, 0.92);
+      border-radius: 12px;
+      border: 1px solid rgba(45, 58, 70, 0.7);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .recommended-panel h3 {
+      margin: 0;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .recommended-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .recommended-empty {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px dashed rgba(60, 74, 85, 0.6);
+      color: rgba(148, 161, 173, 0.85);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
     .change-row {
       display: flex;
       flex-direction: column;
@@ -1178,6 +1220,17 @@
               <h3>Changes at this Level</h3>
               <div class="changes-empty">No changes unlocked at this level.</div>
             </section>
+            <section class="recommended-panel" hidden>
+              <h3>Recommended Build</h3>
+              <div class="ap-total ap-total-recommended">
+                <div class="ap-meter"></div>
+                <div class="ap-readout">
+                  <span class="ap-value">0</span>
+                  <span class="ap-max"></span>
+                </div>
+              </div>
+              <div class="recommended-list"></div>
+            </section>
           </aside>
         </div>
       </div>
@@ -1391,6 +1444,12 @@
         this.apMaxEl = this.cardEl.querySelector('.ap-max');
         this.slotsEl = this.cardEl.querySelector('.slots');
         this.changesPanelEl = this.cardEl.querySelector('.changes-panel');
+        this.recommendedPanelEl = this.cardEl.querySelector('.recommended-panel');
+        this.recommendedListEl = this.cardEl.querySelector('.recommended-list');
+        // Mini AP meter inside Recommended panel
+        this.recommendedApMeterEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-meter') : null;
+        this.recommendedApValueEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-value') : null;
+        this.recommendedApMaxEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-max') : null;
 
         if (this.weaponNameEl) this.weaponNameEl.textContent = toUpperSafe(this.config.name || this.id);
         if (this.weaponTypeEl) this.weaponTypeEl.textContent = toUpperSafe(this.config.type || 'Mastery Loadout Progression');
@@ -1546,7 +1605,10 @@
         this.applyFavoriteUI();
         this.applyCollapseState();
         if (this.progressBarEl) this.updateProgressUI(this.state.level);
+        // Ensure recommended panel starts hidden unless data populates it.
+        if (this.recommendedPanelEl) this.recommendedPanelEl.hidden = true;
         this.render();
+        this.renderRecommended();
 
         this.cardEl.remove();
       }
@@ -1779,6 +1841,57 @@
           } else if (isHalf) {
             cell.classList.add('half');
           }
+        });
+      }
+
+      // Helpers to drive an AP meter for a specific element (used by Recommended panel)
+      ensureApMeterCellsFor(meterEl) {
+        if (!meterEl || meterEl.children.length) return;
+        const cellCount = Math.max(1, Math.round(this.apMax / 10));
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < cellCount; i++) {
+          const cell = document.createElement('span');
+          cell.className = 'ap-cell';
+          const iconWrapper = document.createElement('span');
+          iconWrapper.className = 'ap-icon';
+          const icon = document.createElement('img');
+          icon.src = AP_ICON;
+          icon.alt = 'Attachment Points';
+          iconWrapper.appendChild(icon);
+          const firstFill = document.createElement('span');
+          firstFill.className = 'ap-fill first';
+          iconWrapper.appendChild(firstFill);
+          const secondFill = document.createElement('span');
+          secondFill.className = 'ap-fill second';
+          iconWrapper.appendChild(secondFill);
+          cell.appendChild(iconWrapper);
+          frag.appendChild(cell);
+        }
+        meterEl.appendChild(frag);
+      }
+
+      updateApMeterFor(meterEl, total) {
+        if (!meterEl) return;
+        this.ensureApMeterCellsFor(meterEl);
+        const cells = Array.from(meterEl.children);
+        if (!cells.length) return;
+        const max = this.apMax;
+        if (max <= 0) {
+          cells.forEach((cell) => cell.classList.remove('half', 'full'));
+          return;
+        }
+        const cappedTotal = Math.max(0, Math.min(total, max));
+        const perCell = max / cells.length;
+        cells.forEach((cell, index) => {
+          const cellMin = perCell * index;
+          const cellMax = cellMin + perCell;
+          const amountInCell = Math.max(0, Math.min(cappedTotal, cellMax) - cellMin);
+          const halfThreshold = perCell / 2;
+          const isFull = amountInCell >= perCell - 0.01;
+          const isHalf = !isFull && amountInCell >= halfThreshold - 0.01;
+          cell.classList.remove('half', 'full');
+          if (isFull) cell.classList.add('full');
+          else if (isHalf) cell.classList.add('half');
         });
       }
 
@@ -2127,6 +2240,47 @@
 
           container.appendChild(row);
         }
+      }
+
+      // Render static Recommended Build cards (not tied to mastery level)
+      renderRecommended() {
+        if (!this.recommendedPanelEl || !this.recommendedListEl) return;
+        const source = this.config.recommended || this.config.recommendedBuild || this.config.recommended_build || null;
+        let items = [];
+        if (Array.isArray(source)) {
+          items = source.slice();
+        } else if (source && typeof source === 'object') {
+          try { items = Object.values(source); } catch (_) { items = []; }
+        }
+
+        // Hide panel when no data provided
+        if (!items.length) {
+          this.recommendedListEl.innerHTML = '';
+          this.recommendedPanelEl.hidden = true;
+          return;
+        }
+
+        this.recommendedListEl.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        let totalAp = 0;
+        for (const payload of items) {
+          if (!payload) continue;
+          const unlock = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : undefined;
+          const entry = normalizeEntry(payload, unlock);
+          if (!entry) continue;
+          const card = this.createCard(entry, { changed: true, hideLevel: false, level: entry.unlockLevel });
+          if (card) frag.appendChild(card);
+          if (typeof entry.pts === 'number') totalAp += entry.pts;
+        }
+        this.recommendedListEl.appendChild(frag);
+        // Update mini AP meter
+        if (this.recommendedApValueEl) {
+          const clamped = Math.max(0, Math.min(totalAp, this.apMax));
+          this.recommendedApValueEl.textContent = `${Math.round(clamped)}`;
+        }
+        if (this.recommendedApMaxEl) this.recommendedApMaxEl.textContent = `/${this.apMax}`;
+        if (this.recommendedApMeterEl) this.updateApMeterFor(this.recommendedApMeterEl, totalAp);
+        this.recommendedPanelEl.hidden = false;
       }
 
       updateAp(level) {
@@ -3887,6 +4041,17 @@
         ergonomics: null
       }
     };
+    // Optional: per-weapon Recommended Build
+    // Add `recommended` to any weapon config as either an array or object.
+    // Example:
+    // recommended: [
+    //   { name: 'A-P2 1.75X', type: 'Optic', unlockLevel: 17 },
+    //   { name: 'LONG SUPPRESSOR', type: 'Muzzle', unlockLevel: 27 },
+    //   { name: '590MM FACTORY', type: 'Barrel', unlockLevel: 1 },
+    //   { name: 'FOLDING STUBBY', type: 'Underbarrel', unlockLevel: 9 },
+    //   { name: '40RND MAGAZINE', type: 'Magazine', unlockLevel: 6 },
+    //   { name: 'SYNTHETIC TIP', type: 'Ammunition', unlockLevel: 38 }
+    // ]
     const weaponConfigs = [
       {
         id: 'kord-6p67',
@@ -3944,6 +4109,14 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
+        recommended: [
+          { name: 'A-P2 1.75X', pts: 10, type: 'Optic', unlockLevel: 17 },
+          { name: 'LONG SUPPRESSOR', pts: 25, type: 'Muzzle', unlockLevel: 27 },
+          { name: '590MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
+          { name: 'FOLDING STUBBY', pts: 20, type: 'Underbarrel', unlockLevel: 9 },
+          { name: '40RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
+          { name: 'SYNTHETIC TIP', pts: 30, type: 'Ammunition', unlockLevel: 38 }
+        ],
         slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'magazine', 'scope', 'leftAccessory', 'rightAccessory'],
         slotLabels: {
           barrel: 'Barrel',
