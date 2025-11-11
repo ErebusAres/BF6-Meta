@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-<body>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -51,11 +50,11 @@
     }
 
     .app {
-      width: min(1000px, 100%);
+      width: min(1100px, 100%);
       background: rgba(8, 12, 16, 0.55);
       border: 1px solid rgba(120, 160, 180, 0.14);
       border-radius: 16px;
-      padding: 24px 28px;
+      padding: 20px 24px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
@@ -591,7 +590,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
       gap: 22px;
-      padding-right: 12px;
+      padding-right: 16px;
       align-items: flex-start;
     }
 
@@ -600,7 +599,7 @@
       flex-direction: column;
       gap: 16px;
       align-self: stretch;
-      width: min(290px);
+      width: min(300px);
     }
 
     .attachments-panel {
@@ -843,31 +842,44 @@
       display: flex;
       flex-direction: column;
       gap: 3px;
+      min-width: 0; /* allow truncation inside flex */
     }
 
     .card-title {
       font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     .card-meta {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       font-size: 10px;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.78);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .card-meta .meta-type {
       letter-spacing: 0.18em;
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .card-meta .meta-separator {
       opacity: 0.6;
       letter-spacing: 0.18em;
+      flex: 0 0 auto;
     }
 
     .ap-inline {
@@ -879,6 +891,7 @@
       letter-spacing: 0.08em;
       color: rgba(177, 191, 203, 0.9);
       text-transform: uppercase;
+      flex: 0 0 auto;
     }
 
     .ap-inline img {
@@ -1043,6 +1056,11 @@
         padding: 20px;
       }
     }
+
+    /* Layout fix: keep side column within right grid track on wide screens */
+    @media (min-width: 960px) {
+      .side-column { width: 100%; max-width: 280px; }
+    }
   /* Enhanced chip visuals (vibrant + glow) */
     .meta-chip.type-chip {
       background: linear-gradient(135deg, rgba(0,229,255,0.28), rgba(0,229,255,0.10));
@@ -1131,7 +1149,6 @@
       text-shadow: 0 0 6px rgba(125,95,255,0.35);
       box-shadow: 0 0 12px rgba(125,95,255,0.25), inset 0 0 6px rgba(125,95,255,0.22);
     }
-</style>
 </style>
 </head>
 <body>
@@ -4045,12 +4062,9 @@
     // Add `recommended` to any weapon config as either an array or object.
     // Example:
     // recommended: [
-    //   { name: 'A-P2 1.75X', type: 'Optic', unlockLevel: 17 },
-    //   { name: 'LONG SUPPRESSOR', type: 'Muzzle', unlockLevel: 27 },
-    //   { name: '590MM FACTORY', type: 'Barrel', unlockLevel: 1 },
-    //   { name: 'FOLDING STUBBY', type: 'Underbarrel', unlockLevel: 9 },
-    //   { name: '40RND MAGAZINE', type: 'Magazine', unlockLevel: 6 },
-    //   { name: 'SYNTHETIC TIP', type: 'Ammunition', unlockLevel: 38 }
+    //   { name: 'A-P2 1.75X', pts: 10, type: 'Optic', unlockLevel: 17 },
+    //   { name: 'LONG SUPPRESSOR', pts: 25, type: 'Muzzle', unlockLevel: 27 },
+    // etc.
     // ]
     const weaponConfigs = [
       {
@@ -4063,6 +4077,15 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
+        recommended: [
+          { name: 'OSA-7 1.00X', pts: 10, type: 'Scope', unlockLevel: 1 },
+          { name: 'SINGLE-PORT BRAKE', pts: 25, type: 'Muzzle', unlockLevel: 1 },
+          { name: '415MM PROTOTYPE', pts: 10, type: 'Barrel', unlockLevel: 7 },
+          { name: '5 MW RED', pts : 10, type: 'Right Accessory', unlockLevel: 6 },
+          { name: 'RIBBED VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 6 },
+          { name: '30RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
+          { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+        ],
         slotOrder: ['1', '2', '3', '4', '5', '6', '7'],
         slotLabels: {
           '1': 'Barrel',
