@@ -2492,7 +2492,7 @@
       underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
       ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
       magazine: { name: '40 RND MAGAZINE', pts: 25, type: 'Magazine', unlockLevel: 1 },
-      muzzle: { name: 'LIGHTENED SUPPRESSOR', pts: 30, type: 'Muzzle', unlockLevel: 1 },
+      muzzle: { name: 'Flash Hider', pts: 10, type: 'Muzzle', unlockLevel: 1 },
       scope: { name: 'MINI FLEX 1.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
     };
     const RPKM_CHANGES = {
@@ -2669,6 +2669,12 @@
           replaced: [
             { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 35 }
           ]
+        },
+        muzzle: {
+          name: 'Lightened Suppressor',
+          pts: 30,
+          type: 'Muzzle',
+          unlockLevel: 37,
         }
       }
     };
@@ -3930,7 +3936,7 @@
       },
       {
         id: 'rpkm',
-        name: 'RPKM',
+        name: 'RPKM - currently wrong attachments',
         type: 'LMG',
         image: 'rpkm.avif',
         rank: 'm',
