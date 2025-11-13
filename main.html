@@ -660,10 +660,24 @@
       color: rgba(132, 145, 156, 0.75);
     }
 
+    .ap-readout.ap-overcap .ap-value {
+      color: var(--enemy);
+    }
+
+    .ap-readout.ap-overcap .ap-max {
+      color: rgba(255, 107, 107, 0.9);
+    }
+
     .ap-meter {
       display: flex;
       gap: 3px;
       align-items: center;
+    }
+
+    .ap-meter.ap-overcap .ap-cell {
+      border-color: rgba(255, 59, 59, 0.6);
+      background: rgba(45, 15, 18, 0.9);
+      box-shadow: 0 0 8px rgba(255, 59, 59, 0.35);
     }
 
     .ap-cell {
@@ -698,6 +712,11 @@
       pointer-events: none;
     }
 
+    .ap-meter.ap-overcap .ap-cell .ap-icon img {
+      filter: grayscale(0) brightness(1.1);
+      opacity: 1;
+    }
+
     .ap-cell.half .ap-icon img,
     .ap-cell.full .ap-icon img {
       filter: grayscale(0.2) brightness(0.9);
@@ -717,6 +736,10 @@
       transition: opacity var(--transition);
       mix-blend-mode: screen;
       pointer-events: none;
+    }
+
+    .ap-meter.ap-overcap .ap-cell .ap-fill {
+      background: linear-gradient(135deg, rgba(255, 59, 59, 0.95), rgba(255, 128, 128, 0.75));
     }
 
     .ap-cell .ap-fill.first {
@@ -1253,6 +1276,7 @@
       </div>
     </section>
   </template>
+  <script src="weapon-db.js"></script>
   <script>
     const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
     const INDENT = 36;
@@ -1264,16 +1288,82 @@
 
     const toUpperSafe = (value) => (typeof value === 'string' ? value.toUpperCase() : value);
 
-    function normalizeReplaced(replaced) {
+    const attachmentDatabase =
+      typeof window !== 'undefined' && window.weaponDatabase && typeof window.weaponDatabase === 'object'
+        ? window.weaponDatabase
+        : {};
+
+    const normalizeDbKey = (value) => (typeof value === 'string' ? value.trim().toUpperCase() : '');
+
+    function getWeaponDb(dbName) {
+      if (!dbName || typeof dbName !== 'string') return null;
+      const trimmed = dbName.trim();
+      if (!trimmed) return null;
+      return (
+        attachmentDatabase[trimmed] ||
+        attachmentDatabase[normalizeDbKey(trimmed)] ||
+        attachmentDatabase[trimmed.toLowerCase()] ||
+        null
+      );
+    }
+
+    const attachmentIndexCache = new WeakMap();
+
+    function getAttachmentIndex(attachments) {
+      if (!attachments || typeof attachments !== 'object') return null;
+      let cache = attachmentIndexCache.get(attachments);
+      if (cache) return cache;
+      cache = new Map();
+      for (const [name, data] of Object.entries(attachments)) {
+        const normalized = normalizeDbKey(name);
+        if (!normalized || cache.has(normalized)) continue;
+        cache.set(normalized, data);
+      }
+      attachmentIndexCache.set(attachments, cache);
+      return cache;
+    }
+
+    function resolveAttachmentFromDb(dbName, attachmentName) {
+      if (!dbName || !attachmentName) return null;
+      const db = getWeaponDb(dbName);
+      if (!db || typeof db !== 'object') return null;
+      const attachments = db.attachments || {};
+      const key = normalizeDbKey(attachmentName);
+      let raw = null;
+      if (key) {
+        const index = getAttachmentIndex(attachments);
+        if (index && index.has(key)) {
+          raw = index.get(key);
+        } else if (attachments[key]) {
+          raw = attachments[key];
+        }
+      }
+      if (!raw && typeof attachmentName === 'string' && attachments[attachmentName]) {
+        raw = attachments[attachmentName];
+      }
+      if (!raw) return null;
+      const copy = { ...raw };
+      if (!copy.name) {
+        copy.name = key || attachmentName;
+      }
+      return copy;
+    }
+
+    function normalizeReplaced(replaced, dbName) {
       if (!replaced) return [];
       const array = Array.isArray(replaced) ? replaced : [replaced];
       return array
         .map((entry) => {
           if (typeof entry === 'string') {
-            return { name: toUpperSafe(entry) };
+            const lookup = resolveAttachmentFromDb(dbName, entry);
+            const normalized = lookup ? { ...lookup } : { name: entry };
+            if (normalized.name) normalized.name = toUpperSafe(normalized.name);
+            if (normalized.type) normalized.type = toUpperSafe(normalized.type);
+            return normalized;
           }
           if (entry && typeof entry === 'object') {
-            const normalized = { ...entry };
+            const lookup = entry.name ? resolveAttachmentFromDb(dbName, entry.name) : null;
+            const normalized = { ...(lookup || {}), ...entry };
             if (normalized.name) normalized.name = toUpperSafe(normalized.name);
             if (normalized.type) normalized.type = toUpperSafe(normalized.type);
             return normalized;
@@ -1283,16 +1373,31 @@
         .filter(Boolean);
     }
 
-    function normalizeEntry(payload, unlockLevel) {
-      if (!payload || typeof payload !== 'object') return null;
-      const entry = { ...payload };
+    function normalizeEntry(payload, unlockLevel, dbName) {
+      if (payload == null) return null;
+      const isString = typeof payload === 'string';
+      if (!isString && typeof payload !== 'object') return null;
+      const baseName = isString
+        ? payload
+        : typeof payload.name === 'string'
+        ? payload.name
+        : null;
+      const lookup = baseName ? resolveAttachmentFromDb(dbName, baseName) : null;
+      const source = lookup ? { ...lookup } : {};
+      const overrides = isString ? { name: payload } : { ...payload };
+      const entry = { ...source, ...overrides };
+      if (!entry.name && baseName) {
+        entry.name = baseName;
+      }
       if (unlockLevel !== undefined) {
         entry.unlockLevel = unlockLevel;
+      } else if (entry.unlockLevel === undefined && source.unlockLevel !== undefined) {
+        entry.unlockLevel = source.unlockLevel;
       }
       if (entry.name) entry.name = toUpperSafe(entry.name);
       if (entry.type) entry.type = toUpperSafe(entry.type);
       if (entry.replaced) {
-        entry.replaced = normalizeReplaced(entry.replaced);
+        entry.replaced = normalizeReplaced(entry.replaced, dbName);
       }
       return entry;
     }
@@ -1356,6 +1461,10 @@
         this.minLevel = Number.isFinite(config.minLevel) ? config.minLevel : 1;
         this.maxLevel = Number.isFinite(config.maxLevel) ? config.maxLevel : 40;
         this.apMax = Number.isFinite(config.apMax) ? config.apMax : 100;
+        this.dbname =
+          typeof config.dbname === 'string' && config.dbname.trim()
+            ? config.dbname.trim()
+            : null;
         this.slotLabels = { ...(config.slotLabels || {}) };
         for (const key of Object.keys(this.slotLabels)) {
           this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
@@ -1376,49 +1485,111 @@
         this.arrowLayerEl.className = 'arrow-layer';
       }
 
-      buildSlotKeys() {
-        const order = [];
-        const seen = new Set();
+      resolveSlotType(payload) {
+        if (!payload) return undefined;
+        if (typeof payload === 'string') {
+          const match = resolveAttachmentFromDb(this.dbname, payload);
+          return match && match.type ? match.type : undefined;
+        }
+        if (payload.type) return payload.type;
+        if (payload.name) {
+          const match = resolveAttachmentFromDb(this.dbname, payload.name);
+          if (match && match.type) return match.type;
+        }
+        return undefined;
+      }
 
-        const addKey = (key, label) => {
-          if (key === undefined || key === null) return;
-          const stringKey = String(key);
-          if (!seen.has(stringKey)) {
-            order.push(stringKey);
-            seen.add(stringKey);
+      buildSlotKeys() {
+        const manualOrder = Array.isArray(this.config.slotOrder) ? this.config.slotOrder.map((slot) => String(slot)) : [];
+        const manualIndex = new Map();
+        manualOrder.forEach((slot, idx) => manualIndex.set(String(slot), idx));
+        const firstSeen = new Map();
+        let serial = 0;
+
+        const recordSlot = (slot, label, levelHint, opts = {}) => {
+          if (slot === undefined || slot === null) return;
+          const key = String(slot);
+          if (label && !this.slotLabels[key]) {
+            this.slotLabels[key] = toUpperSafe(label);
           }
-          if (label && !this.slotLabels[stringKey]) {
-            this.slotLabels[stringKey] = toUpperSafe(label);
+          const normalizedLevel = Number.isFinite(levelHint)
+            ? levelHint
+            : opts.manual
+            ? Number.NEGATIVE_INFINITY
+            : Number.POSITIVE_INFINITY;
+          const existing = firstSeen.get(key);
+          if (!existing) {
+            firstSeen.set(key, { level: normalizedLevel, index: serial++ });
+          } else if (normalizedLevel < existing.level) {
+            existing.level = normalizedLevel;
           }
         };
 
-        if (Array.isArray(this.config.slotOrder)) {
-          this.config.slotOrder.forEach((slot) => addKey(slot));
-        }
+        manualOrder.forEach((slot) => {
+          recordSlot(slot, this.slotLabels[String(slot)] || null, Number.NEGATIVE_INFINITY, { manual: true });
+        });
 
         for (const [slot, data] of Object.entries(this.baseline || {})) {
-          addKey(slot, data && data.type ? data.type : undefined);
+          if (data == null) continue;
+          const unlockLevel =
+            data && typeof data === 'object' && Number.isFinite(data.unlockLevel) ? data.unlockLevel : this.minLevel;
+          recordSlot(slot, this.resolveSlotType(data), unlockLevel);
         }
 
-        for (const changeSet of Object.values(this.changes || {})) {
+        const sortedLevels = Object.keys(this.changes || {})
+          .map((value) => Number(value))
+          .filter((value) => Number.isFinite(value))
+          .sort((a, b) => a - b);
+
+        for (const level of sortedLevels) {
+          const changeSet = this.changes[level];
           if (!changeSet || typeof changeSet !== 'object') continue;
           for (const [slot, payload] of Object.entries(changeSet)) {
-            if (payload && typeof payload === 'object' && payload.type) {
-              addKey(slot, payload.type);
-            } else {
-              addKey(slot);
+            if (payload === undefined || payload === null) {
+              recordSlot(slot, null, level);
+              continue;
             }
+            const unlockLevel =
+              payload && typeof payload === 'object' && Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : level;
+            recordSlot(slot, this.resolveSlotType(payload), unlockLevel);
           }
         }
 
-        return order;
+        const entries = Array.from(firstSeen.entries());
+        const big = Number.POSITIVE_INFINITY;
+        entries.sort((a, b) => {
+          const aKey = a[0];
+          const bKey = b[0];
+          const aManual = manualIndex.has(aKey);
+          const bManual = manualIndex.has(bKey);
+          if (aManual && bManual) {
+            return manualIndex.get(aKey) - manualIndex.get(bKey);
+          }
+          if (aManual) return -1;
+          if (bManual) return 1;
+          const aLevel = Number.isFinite(a[1].level) ? a[1].level : big;
+          const bLevel = Number.isFinite(b[1].level) ? b[1].level : big;
+          if (aLevel !== bLevel) return aLevel - bLevel;
+          return a[1].index - b[1].index;
+        });
+
+        return entries.map(([key]) => key);
       }
 
       getSlotLabel(slotKey) {
         const label = this.slotLabels[String(slotKey)];
         if (typeof label === 'string') return label;
         const snapshot = this.baseline[slotKey];
-        if (snapshot && snapshot.type) return toUpperSafe(snapshot.type);
+        if (snapshot) {
+          if (snapshot.type) return toUpperSafe(snapshot.type);
+          if (typeof snapshot === 'string') {
+            const lookup = resolveAttachmentFromDb(this.dbname, snapshot);
+            if (lookup && lookup.type) return toUpperSafe(lookup.type);
+          } else if (snapshot.name) {
+            const lookup = resolveAttachmentFromDb(this.dbname, snapshot.name);
+            if (lookup && lookup.type) return toUpperSafe(lookup.type);
+          }
+        }
         return `SLOT ${slotKey}`;
       }
 
@@ -1834,8 +2005,11 @@
         this.apMeterEl.appendChild(frag);
       }
 
-      updateApMeter(total) {
+      updateApMeter(total, overcap = false) {
         this.ensureApMeterCells();
+        if (this.apMeterEl) {
+          this.apMeterEl.classList.toggle('ap-overcap', overcap);
+        }
         if (!this.apMeterEl) return;
         const cells = Array.from(this.apMeterEl.children);
         if (!cells.length) return;
@@ -1887,9 +2061,10 @@
         meterEl.appendChild(frag);
       }
 
-      updateApMeterFor(meterEl, total) {
+      updateApMeterFor(meterEl, total, overcap = false) {
         if (!meterEl) return;
         this.ensureApMeterCellsFor(meterEl);
+        meterEl.classList.toggle('ap-overcap', overcap);
         const cells = Array.from(meterEl.children);
         if (!cells.length) return;
         const max = this.apMax;
@@ -1971,10 +2146,18 @@
 
         const levelBadge = document.createElement('div');
         levelBadge.className = 'card-level';
-        const displayLevel = options.level ?? data.unlockLevel;
+        const displayLevelRaw = options.level ?? data.unlockLevel;
+        const displayLevel =
+          typeof displayLevelRaw === 'string' ? displayLevelRaw.trim() : displayLevelRaw;
+        const isDefaultLevel =
+          displayLevel === 0 ||
+          displayLevel === '0' ||
+          (typeof displayLevel === 'number' && Number.isFinite(displayLevel) && displayLevel === 0);
         if (options.hideLevel) {
           levelBadge.textContent = 'Unlocked';
-        } else if (displayLevel) {
+        } else if (isDefaultLevel) {
+          levelBadge.textContent = 'Default';
+        } else if (displayLevel !== undefined && displayLevel !== null && displayLevel !== '') {
           levelBadge.textContent = `Level ${displayLevel}`;
         } else {
           levelBadge.textContent = 'Unlocked';
@@ -2005,11 +2188,15 @@
         }
 
         for (const [slot, data] of Object.entries(this.baseline || {})) {
-          if (!data) continue;
+          if (data == null) continue;
           const slotKey = String(slot);
-          const unlockLevel = Number.isFinite(data.unlockLevel) ? data.unlockLevel : this.minLevel;
-          const entry = normalizeEntry(data, unlockLevel);
+          const hasExplicitLevel = data && typeof data === 'object' && Number.isFinite(data.unlockLevel);
+          const unlockLevel = hasExplicitLevel ? data.unlockLevel : undefined;
+          const entry = normalizeEntry(data, hasExplicitLevel ? unlockLevel : undefined, this.dbname);
           if (entry) {
+            if (!Number.isFinite(entry.unlockLevel)) {
+              entry.unlockLevel = hasExplicitLevel ? unlockLevel : this.minLevel;
+            }
             snapshot[slotKey] = entry;
           }
         }
@@ -2028,8 +2215,10 @@
             if (payload === null) {
               snapshot[slotKey] = null;
             } else {
-              const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : changeLevel;
-              const entry = normalizeEntry(payload, unlockLevel);
+              const hasExplicitLevel =
+                payload && typeof payload === 'object' && Number.isFinite(payload.unlockLevel);
+              const unlockLevel = hasExplicitLevel ? payload.unlockLevel : changeLevel;
+              const entry = normalizeEntry(payload, unlockLevel, this.dbname);
               if (entry) {
                 snapshot[slotKey] = entry;
               }
@@ -2049,8 +2238,10 @@
           if (payload === null) {
             diff[slotKey] = null;
           } else {
-            const unlockLevel = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : level;
-            const entry = normalizeEntry(payload, unlockLevel);
+            const hasExplicitLevel =
+              payload && typeof payload === 'object' && Number.isFinite(payload.unlockLevel);
+            const unlockLevel = hasExplicitLevel ? payload.unlockLevel : level;
+            const entry = normalizeEntry(payload, unlockLevel, this.dbname);
             if (entry) {
               diff[slotKey] = entry;
             }
@@ -2123,7 +2314,8 @@
                     : oldCardData.unlockLevel ?? level;
                   const normalized = normalizeEntry(
                     oldCardData,
-                    Number.isFinite(oldCardData.unlockLevel) ? oldCardData.unlockLevel : oldLevel
+                    Number.isFinite(oldCardData.unlockLevel) ? oldCardData.unlockLevel : oldLevel,
+                    this.dbname
                   );
                   if (normalized) {
                     oldCardData = normalized;
@@ -2283,7 +2475,7 @@
         for (const payload of items) {
           if (!payload) continue;
           const unlock = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : undefined;
-          const entry = normalizeEntry(payload, unlock);
+          const entry = normalizeEntry(payload, unlock, this.dbname);
           if (!entry) continue;
           const card = this.createCard(entry, { changed: true, hideLevel: false, level: entry.unlockLevel });
           if (card) frag.appendChild(card);
@@ -2291,12 +2483,20 @@
         }
         this.recommendedListEl.appendChild(frag);
         // Update mini AP meter
+        const recommendedOvercap = Number.isFinite(this.apMax) && totalAp > this.apMax;
         if (this.recommendedApValueEl) {
-          const clamped = Math.max(0, Math.min(totalAp, this.apMax));
-          this.recommendedApValueEl.textContent = `${Math.round(clamped)}`;
+          this.recommendedApValueEl.textContent = `${Math.round(totalAp)}`;
         }
         if (this.recommendedApMaxEl) this.recommendedApMaxEl.textContent = `/${this.apMax}`;
-        if (this.recommendedApMeterEl) this.updateApMeterFor(this.recommendedApMeterEl, totalAp);
+        const recommendedReadout = this.recommendedApValueEl
+          ? this.recommendedApValueEl.closest('.ap-readout')
+          : null;
+        if (recommendedReadout) {
+          recommendedReadout.classList.toggle('ap-overcap', recommendedOvercap);
+        }
+        if (this.recommendedApMeterEl) {
+          this.updateApMeterFor(this.recommendedApMeterEl, totalAp, recommendedOvercap);
+        }
         this.recommendedPanelEl.hidden = false;
       }
 
@@ -2308,11 +2508,14 @@
             total += value.pts;
           }
         }
+        const overcap = Number.isFinite(this.apMax) && total > this.apMax;
         if (this.apValueEl) {
-          const clamped = Math.max(0, Math.min(total, this.apMax));
-          this.apValueEl.textContent = `${Math.round(clamped)}`;
+          this.apValueEl.textContent = `${Math.round(total)}`;
         }
-        this.updateApMeter(total);
+        if (this.apMaxEl) this.apMaxEl.textContent = `/${this.apMax}`;
+        const readout = this.apValueEl ? this.apValueEl.closest('.ap-readout') : null;
+        if (readout) readout.classList.toggle('ap-overcap', overcap);
+        this.updateApMeter(total, overcap);
         return total;
       }
 
@@ -2413,140 +2616,87 @@
       }
     }
     const KORD_BASELINE = {
-      1: { name: '415MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
-      2: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
-      3: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      4: { name: 'SINGLE-PORT BRAKE', pts: 5, type: 'Muzzle', unlockLevel: 1 },
-      6: { name: '30 RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
-      7: { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
+      1: '415MM FACTORY',
+      2: 'FOLDING VERTICAL',
+      3: 'FMJ',
+      4: 'SINGLE-PORT BRAKE',
+      6: '30 RND MAGAZINE',
+      7: 'CCO 2.00X'
     };
 
     const KORD_CHANGES = {
       2: {
-        5: {
-          name: 'FLASHLIGHT',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 2
-        }
+        5: 'FLASHLIGHT'
       },
       3: {
         2: {
           name: 'ALLOY VERTICAL',
-          pts: 20,
-          type: 'Underbarrel',
-          replaced: [
-            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
-          ]
+          replaced: ['FOLDING VERTICAL']
         }
       },
       6: {
         2: {
           name: 'RIBBED VERTICAL',
-          pts: 20,
-          type: 'Underbarrel',
-          replaced: [
-            { name: 'ALLOY VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 3 }
-          ]
+          replaced: ['ALLOY VERTICAL']
         }
       },
       7: {
         1: {
           name: '415MM PROTOTYPE',
-          pts: 10,
-          type: 'Barrel',
-          replaced: [
-            { name: '415MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
+          replaced: ['415MM FACTORY']
         }
       },
       8: {
         2: {
           name: '6H64 VERTICAL',
-          pts: 20,
-          type: 'Underbarrel',
-          replaced: [
-            { name: 'RIBBED VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 6 }
-          ]
+          replaced: ['RIBBED VERTICAL']
         }
       },
       12: {
         5: {
           name: 'RED LASER',
-          pts: 10,
-          type: 'Right Accessory',
-          replaced: [
-            { name: 'FLASHLIGHT', pts: 10, type: 'Right Accessory', unlockLevel: 2 }
-          ]
+          replaced: ['FLASHLIGHT']
         }
       },
       13: {
         6: {
           name: '36 RND MAGAZINE',
-          pts: 15,
-          type: 'Ammunition',
-          replaced: [
-            { name: '30 RND MAGAZINE', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
+          replaced: ['30 RND MAGAZINE']
         }
       },
       15: {
         7: {
           name: '3VZR 1.75x',
-          pts: 10,
-          type: 'Scope',
-          replaced: [
-            { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
-          ]
+          replaced: ['CCO 2.00X']
         }
       },
       16: {
         2: {
           name: 'CLASSIC VERTICAL',
-          pts: 35,
-          type: 'Underbarrel',
-          replaced: [
-            { name: '6H64 VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 8 }
-          ]
+          replaced: ['6H64 VERTICAL']
         },
         7: {
           name: 'RO-M 1.75x',
-          pts: 10,
-          type: 'Scope',
-          replaced: [
-            { name: '3VZR 1.75x', pts: 10, type: 'Scope', unlockLevel: 15 }
-          ]
+          replaced: ['3VZR 1.75x']
         }
       },
       20: {
         4: {
           name: 'COMPENSATED BRAKE',
-          pts: 20,
-          type: 'Muzzle',
-          replaced: [
-            { name: 'SINGLE-PORT BRAKE', pts: 5, type: 'Muzzle', unlockLevel: 1 }
-          ]
+          replaced: ['SINGLE-PORT BRAKE']
         },
         5: null
       },
       24: {
         4: {
           name: 'STANDARD SUPPRESSOR',
-          pts: 20,
-          type: 'Muzzle',
-          replaced: [
-            { name: 'COMPENSATED BRAKE', pts: 20, type: 'Muzzle', unlockLevel: 20 }
-          ]
+          replaced: ['COMPENSATED BRAKE']
         }
       },
       32: {
         4: {
           name: 'LONG SUPPRESSOR',
-          pts: 25,
-          type: 'Muzzle',
-          replaced: [
-            { name: 'STANDARD SUPPRESSOR', pts: 20, type: 'Muzzle', unlockLevel: 24 }
-          ]
+          replaced: ['STANDARD SUPPRESSOR']
         }
       }
     };
@@ -4058,18 +4208,12 @@
         ergonomics: null
       }
     };
-    // Optional: per-weapon Recommended Build
-    // Add `recommended` to any weapon config as either an array or object.
-    // Example:
-    // recommended: [
-    //   { name: 'A-P2 1.75X', pts: 10, type: 'Optic', unlockLevel: 17 },
-    //   { name: 'LONG SUPPRESSOR', pts: 25, type: 'Muzzle', unlockLevel: 27 },
-    // etc.
-    // ]
+
     const weaponConfigs = [
       {
         id: 'kord-6p67',
         name: 'KORD 6P67',
+        dbname: 'KORD 6P67',
         type: 'Assault Rifle',
         image: 'kord.avif',
         rank: 'm',
@@ -4078,30 +4222,21 @@
         maxLevel: 40,
         apMax: 100,
         recommended: [
-          { name: 'OSA-7 1.00X', pts: 10, type: 'Scope', unlockLevel: 1 },
-          { name: 'SINGLE-PORT BRAKE', pts: 25, type: 'Muzzle', unlockLevel: 1 },
-          { name: '415MM PROTOTYPE', pts: 10, type: 'Barrel', unlockLevel: 7 },
-          { name: '5 MW RED', pts : 10, type: 'Right Accessory', unlockLevel: 6 },
-          { name: 'RIBBED VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 6 },
-          { name: '30RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
-          { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
+          'OSA-7 1.00X',
+          'SINGLE-PORT BRAKE',
+          '415MM PROTOTYPE',
+          '5 MW RED',
+          'RIBBED VERTICAL',
+          '30 RND MAGAZINE',
+          'FMJ'
         ],
-        slotOrder: ['1', '2', '3', '4', '5', '6', '7'],
-        slotLabels: {
-          '1': 'Barrel',
-          '2': 'Underbarrel',
-          '3': 'Ammunition',
-          '4': 'Muzzle',
-          '5': 'Right Accessory',
-          '6': 'Magazine',
-          '7': 'Scope'
-        },
         baseline: KORD_BASELINE,
         changes: KORD_CHANGES
       },
       {
         id: 'pw5a3',
         name: 'PW5A3',
+        dbname: 'PW5A3',
         type: 'SMG',
         image: 'pw5a3.avif',
         rank: 'm',
@@ -4109,22 +4244,13 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'magazine', 'ergonomics', 'scope'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          muzzle: 'Muzzle',
-          magazine: 'Magazine',
-          ergonomics: 'Ergonomics',
-          scope: 'Scope'
-        },
         baseline: PW5A3_BASELINE,
         changes: PW5A3_CHANGES
       },
       {
         id: 'rpkm',
         name: 'RPKM',
+        dbname: 'RPKM',
         type: 'LMG',
         image: 'rpkm.avif',
         rank: 'm',
@@ -4133,30 +4259,20 @@
         maxLevel: 40,
         apMax: 100,
         recommended: [
-          { name: 'A-P2 1.75X', pts: 10, type: 'Scope', unlockLevel: 17 },
-          { name: 'LONG SUPPRESSOR', pts: 25, type: 'Muzzle', unlockLevel: 27 },
-          { name: '590MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
-          { name: 'FOLDING STUBBY', pts: 20, type: 'Underbarrel', unlockLevel: 9 },
-          { name: '40RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
-          { name: 'SYNTHETIC TIP', pts: 30, type: 'Ammunition', unlockLevel: 38 }
+          'A-P2 1.75X',
+          'LONG SUPPRESSOR',
+          '590MM FACTORY',
+          'FOLDING STUBBY',
+          '40RND MAGAZINE',
+          'SYNTHETIC TIP'
         ],
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'magazine', 'scope', 'leftAccessory', 'rightAccessory'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          muzzle: 'Muzzle',
-          magazine: 'Magazine',
-          scope: 'Scope',
-          leftAccessory: 'Left Accessory',
-          rightAccessory: 'Right Accessory'
-        },
         baseline: RPKM_BASELINE,
         changes: RPKM_CHANGES
       },
       {
         id: 'm87a1',
         name: 'M87A1',
+        dbname: 'M87A1',
         type: 'Shotgun',
         image: 'm87a1.avif',
         rank: 'm',
@@ -4164,23 +4280,13 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
-        slotOrder: ['barrel', 'ammunition', 'magazine', 'scope', 'underbarrel', 'muzzle', 'leftAccessory', 'rightAccessory'],
-        slotLabels: {
-          barrel: 'Barrel',
-          ammunition: 'Ammunition',
-          magazine: 'Magazine',
-          scope: 'Scope',
-          underbarrel: 'Underbarrel',
-          muzzle: 'Muzzle',
-          leftAccessory: 'Left Accessory',
-          rightAccessory: 'Right Accessory'
-        },
         baseline: M87A1_BASELINE,
         changes: M87A1_CHANGES
       },
       {
         id: 'ggh-22',
         name: 'GGH-22',
+        dbname: 'GGH-22',
         type: 'Secondary',
         image: 'ggh-22.avif',
         rank: 'b',
@@ -4188,22 +4294,13 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 60,
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'magazine', 'scope', 'ergonomics', 'muzzle'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          magazine: 'Magazine',
-          scope: 'Scope',
-          ergonomics: 'Ergonomics',
-          muzzle: 'Muzzle'
-        },
         baseline: GGH_22_BASELINE,
         changes: GGH_22_CHANGES
       },
       {
         id: 'l110',
         name: 'L110',
+        dbname: 'L110',
         type: 'LMG',
         image: 'l110.avif',
         rank: 'm',
@@ -4211,24 +4308,13 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'rightAccessory', 'magazine', 'scope', 'leftAccessory', 'ergonomics'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          muzzle: 'Muzzle',
-          rightAccessory: 'Right Accessory',
-          magazine: 'Magazine',
-          scope: 'Scope',
-          leftAccessory: 'Left Accessory',
-          ergonomics: 'Ergonomics'
-        },
         baseline: L110_BASELINE,
         changes: L110_CHANGES
       },
       {
         id: 'm2010esr',
         name: 'M2010 ESR',
+        dbname: 'M2010 ESR',
         type: 'Sniper Rifle',
         image: 'm2010-esr.avif',
         rank: 'm',
@@ -4237,31 +4323,21 @@
         maxLevel: 40,
         apMax: 100,
         recommended: [
-          { name: 'S-VPS 6.00X', pts: 26, type: 'Scope', unlockLevel: 2 },
-          { name: '26" CARBON', pts: 16, type: 'Barrel', unlockLevel: 16 },
-          { name: 'ANTI-GLARE COATING', pts: 36, type: 'Optic Accessory', unlockLevel: 36 },
-          { name: 'RANGE FINDER', pts: 2, type: 'Left Accessory', unlockLevel: 2 },
-          { name: '5RND MAGAZINE', pts: 15, type: 'Magazine', unlockLevel: 15 },
-          { name: 'DLC BOLT', pts: 13, type: 'Rear Grip', unlockLevel: 13 },
-          { name: 'MATCH GRADE', pts: 3, type: 'Ammunition', unlockLevel: 3 }
+          'S-VPS 6.00X',
+          '26" CARBON',
+          'ANTI-GLARE COATING',
+          'RANGE FINDER',
+          '5RND MAGAZINE',
+          'DLC BOLT',
+          'MATCH GRADE'
         ],
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'magazine', 'scope', 'leftAccessory', 'topAccessory', 'opticAccessory'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          magazine: 'Magazine',
-          scope: 'Scope',
-          leftAccessory: 'Left Accessory',
-          topAccessory: 'Top Accessory',
-          opticAccessory: 'Optic Accessory'
-        },
         baseline: m2010ESR_BASELINE,
         changes: M2010ESR_CHANGES
       },
       {
         id: 'miniscout',
         name: 'Mini Scout',
+        dbname: 'Mini Scout',
         type: 'Sniper Rifle',
         image: 'miniscout.avif',
         rank: 'm',
@@ -4269,24 +4345,13 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'magazine', 'scope', 'leftAccessory', 'rightAccessory', 'opticAccessory'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          muzzle: 'Muzzle',
-          magazine: 'Magazine',
-          scope: 'Scope',
-          leftAccessory: 'Left Accessory',
-          rightAccessory: 'Right Accessory',
-          opticAccessory: 'Optic Accessory'
-        },
         baseline: miniscout_baseline,
         changes: miniscout_changes
       },
       {
         id: 'umg40',
         name: 'UMG-40',
+        dbname: 'UMG-40',
         type: 'SMG',
         image: 'umg-40.avif',
         rank: 'm',
@@ -4294,23 +4359,13 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'magazine', 'scope', 'leftAccessory', 'rightAccessory'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          muzzle: 'Muzzle',
-          magazine: 'Magazine',
-          scope: 'Scope',
-          leftAccessory: 'Left Accessory',
-          rightAccessory: 'Right Accessory'
-        },
         baseline: umg40_baseline,
         changes: umg40_changes
       },
       {
         id: 'qbz-192',
         name: 'QBZ-192',
+        dbname: 'QBZ-192',
         type: 'Carbine',
         image: 'qbz-192.avif',
         rank: 'm',
@@ -4318,17 +4373,6 @@
         minLevel: 1,
         maxLevel: 40,
         apMax: 100,
-        slotOrder: ['barrel', 'underbarrel', 'ammunition', 'muzzle', 'topAccessory', 'ergonomics', 'magazine', 'scope'],
-        slotLabels: {
-          barrel: 'Barrel',
-          underbarrel: 'Underbarrel',
-          ammunition: 'Ammunition',
-          muzzle: 'Muzzle',
-          topAccessory: 'Top Accessory',
-          ergonomics: 'Ergonomics',
-          magazine: 'Magazine',
-          scope: 'Scope'
-        },
         baseline: qbz_192_baseline,
         changes: qbz_192_changes
       }

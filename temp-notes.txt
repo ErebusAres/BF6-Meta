@@ -1,0 +1,13 @@
+can we make the change where instead of being in the weapon Configs, the following are part of it's weapon's db?
+
+name
+type
+image
+maxLevel
+apMax
+
+and assume minLevel is 1, unless added manually into the config.
+make the required changes to the weapons db, use image names if in the images folder, and they match said weapon, otherwise leave it as ''
+move any matching info from the configs to the db and if there's no info already, use context cluse to fill in the rest of the db files.
+- like, assuming apmax for all weapons is 100, unless it's a secondary weapon like a pistol (ggh for ex)
+- assume all max level is 40, unless manually changed.
