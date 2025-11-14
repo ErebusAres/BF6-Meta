@@ -1,0 +1,958 @@
+const KORD_BASELINE = ['415MM FACTORY', 'FOLDING VERTICAL', 'FMJ', 'SINGLE-PORT BRAKE', '30RND MAGAZINE', 'CCO 2.00X'];
+
+const KORD_CHANGES = {
+  2: ['FLASHLIGHT'],
+  3: [
+    {
+      name: 'ALLOY VERTICAL',
+      replaced: ['FOLDING VERTICAL']
+    }
+  ],
+  6: [
+    {
+      name: 'RIBBED VERTICAL',
+      replaced: ['ALLOY VERTICAL']
+    }
+  ],
+  7: [
+    {
+      name: '415MM PROTOTYPE',
+      replaced: ['415MM FACTORY']
+    }
+  ],
+  8: [
+    {
+      name: '6H64 VERTICAL',
+      replaced: ['RIBBED VERTICAL']
+    }
+  ],
+  12: [
+    {
+      name: 'RED LASER',
+      replaced: ['FLASHLIGHT']
+    }
+  ],
+  13: [
+    {
+      name: '36RND MAGAZINE',
+      replaced: ['30RND MAGAZINE']
+    }
+  ],
+  15: [
+    {
+      name: '3VZR 1.75X',
+      replaced: ['CCO 2.00X']
+    }
+  ],
+  16: [
+    {
+      name: 'CLASSIC VERTICAL',
+      replaced: ['6H64 VERTICAL']
+    },
+    {
+      name: 'RO-M 1.75X',
+      replaced: ['3VZR 1.75X']
+    }
+  ],
+  20: [
+    {
+      name: 'COMPENSATED BRAKE',
+      replaced: ['SINGLE-PORT BRAKE']
+    },
+    { remove: 'FLASHLIGHT' }
+  ],
+  24: [
+    {
+      name: 'STANDARD SUPPRESSOR',
+      replaced: ['COMPENSATED BRAKE']
+    }
+  ],
+  32: [
+    {
+      name: 'LONG SUPPRESSOR',
+      replaced: ['STANDARD SUPPRESSOR']
+    }
+  ]
+};
+const PW5A3_BASELINE = ['225MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'IRON SIGHTS'];
+
+const PW5A3_CHANGES = {
+  3: [
+    {
+      name: 'ALLOY VERTICAL',
+      replaced: ['FOLDING VERTICAL']
+    }
+  ],
+  5: [
+    {
+      name: '30RND FAST MAG',
+      replaced: ['30RND MAGAZINE']
+    }
+  ],
+  6: [
+    {
+      name: 'RIBBED VERTICAL',
+      replaced: ['ALLOY VERTICAL']
+    }
+  ],
+  9: ['STANDARD SUPPRESSOR'],
+  12: ['245MM CUSTOM', 'IMPROVED MAG CATCH'],
+  14: [
+    {
+      name: '6H64 VERTICAL',
+      replaced: ['RIBBED VERTICAL']
+    }
+  ],
+  21: [
+    {
+      name: 'CLASSIC VERTICAL',
+      replaced: ['6H64 VERTICAL']
+    }
+  ],
+  28: [
+    {
+      name: '6H64 VERTICAL',
+      replaced: ['CLASSIC VERTICAL']
+    },
+    {
+      name: '40RND MAGAZINE',
+      replaced: ['30RND FAST MAG']
+    }
+  ]
+};
+const RPKM_BASELINE = ['590MM FACTORY', 'FOLDING VERTICAL', 'FMJ', 'FLASH HIDER', '40RND MAGAZINE', 'MINI FLEX 1.00X'];
+const RPKM_CHANGES = {
+  2: [
+    {
+      name: 'RO-M 1.75X',
+      replaced: ['MINI FLEX 1.00X']
+    }
+  ],
+  4: [
+    {
+      name: 'ALLOY VERTICAL',
+      replaced: ['FOLDING VERTICAL']
+    }
+  ],
+  5: ['5 MW RED'],
+  6: [
+    {
+      name: 'RIBBED VERTICAL',
+      replaced: ['ALLOY VERTICAL']
+    }
+  ],
+  8: ['FLASHLIGHT'],
+  9: [
+    {
+      name: 'FOLDING STUBBY',
+      replaced: ['RIBBED VERTICAL']
+    }
+  ],
+  12: [
+    {
+      name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+  18: [
+    {
+      name: 'SLIM ANGLED',
+      replaced: ['FOLDING STUBBY']
+    },
+    { remove: 'FLASHLIGHT' }
+  ],
+  21: [
+    {
+      name: '600MM TABUK',
+      replaced: ['590MM FACTORY']
+    }
+  ],
+  23: [
+    {
+      name: 'CANTED STUBBY',
+      replaced: ['SLIM ANGLED']
+    },
+    { remove: '5 MW GREEN' }
+  ],
+  25: [
+    {
+      name: 'FULL ANGLED',
+      replaced: ['CANTED STUBBY']
+    },
+    {
+      name: 'POLYMER CASE',
+      replaced: ['FMJ']
+    }
+  ],
+  35: [
+    {
+      name: 'STIPPLED STUBBY',
+      replaced: ['FULL ANGLED']
+    },
+    {
+      name: 'FMJ',
+      replaced: ['POLYMER CASE']
+    }
+  ],
+  38: [
+    {
+      name: '590MM FACTORY',
+      replaced: ['600MM TABUK']
+    },
+    {
+      name: 'ADJUSTABLE ANGLED',
+      replaced: ['STIPPLED STUBBY']
+    },
+    {
+      name: 'SYNTHETIC TIP',
+      replaced: ['FMJ']
+    },
+    {
+      name: 'LIGHTENED SUPPRESSOR',
+      replaced: ['FLASH HIDER']
+    }
+  ]
+};
+const M87A1_BASELINE = ['20" FACTORY', 'BUCKSHOT', '7 SHELL TUBE', 'IRON SIGHTS'];
+const M87A1_CHANGES = {
+  4: ['5 MW RED'],
+  5: ['RIBBED STUBBY'],
+  10: [
+    {
+      name: 'SLIM ANGLED',
+      replaced: ['RIBBED STUBBY']
+    }
+  ],
+  13: ['FLASHLIGHT'],
+  15: [
+    {
+      name: '50 MW BLUE',
+      replaced: ['5 MW RED']
+    }
+  ],
+  18: [
+    {
+      name: 'FOLDING STUBBY',
+      replaced: ['SLIM ANGLED']
+    },
+    'CQB SUPPRESSOR',
+    { remove: 'FLASHLIGHT' }
+  ],
+  19: [
+    {
+      name: 'ADJUSTABLE ANGLED',
+      replaced: ['FOLDING STUBBY']
+    }
+  ],
+  22: [
+    'FLASHLIGHT',
+    {
+      name: '5 MW GREEN',
+      replaced: ['50 MW BLUE']
+    }
+  ],
+  26: [
+    {
+      name: 'FLECHETTE',
+      replaced: ['BUCKSHOT']
+    },
+    { remove: '5 MW GREEN' },
+    { remove: 'FLASHLIGHT' }
+  ]
+};
+const GGH_22_BASELINE = ['114MM FACTORY', '5 MW RED', 'FMJ', '15RND MAGAZINE', 'IRON SIGHTS'];
+const GGH_22_CHANGES = {
+  2: [
+    {
+      name: 'ROX 1.50X',
+      replaced: ['IRON SIGHTS']
+    }
+  ],
+  4: ['IMPROVED MAG CATCH'],
+  5: [
+    {
+      name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+  7: ['SINGLE-PORT BRAKE'],
+  9: [
+    {
+      name: '114MM PENCIL',
+      replaced: ['114MM FACTORY']
+    },
+    { remove: 'IMPROVED MAG CATCH' }
+  ],
+  12: [
+    {
+      name: '114MM FACTORY',
+      replaced: ['114MM PENCIL']
+    },
+    'IMPROVED MAG CATCH',
+    {
+      name: '20RND MAGAZINE',
+      replaced: ['15RND MAGAZINE']
+    },
+    { remove: '5 MW GREEN' }
+  ],
+  15: [
+    {
+      name: '114MM PENCIL',
+      replaced: ['114MM FACTORY']
+    },
+    {
+      name: 'STANDARD SUPPRESSOR',
+      replaced: ['SINGLE-PORT BRAKE']
+    },
+    {
+      name: '15RND MAGAZINE',
+      replaced: ['20RND MAGAZINE']
+    },
+    { remove: 'IMPROVED MAG CATCH' }
+  ],
+  18: [
+    {
+      name: 'A-P2 1.75X',
+      replaced: ['ROX 1.50X']
+    }
+  ]
+};
+const L110_BASELINE = ['349MM SB', 'CLASSIC GRIP POD', 'FMJ', '5 MW GREEN', '100RND BELT POUCH', 'R4T 2.00X'];
+const L110_CHANGES = {
+  2: ['SINGLE-PORT BRAKE'],
+  3: [
+    {
+      name: '465MM LB',
+      replaced: ['349MM SB']
+    }
+  ],
+  5: [
+    {
+      name: 'RO-M 1.75X',
+      replaced: ['R4T 2.00X']
+    }
+  ],
+  7: [
+    {
+      name: 'LINEAR COMP',
+      replaced: ['SINGLE-PORT BRAKE']
+    }
+  ],
+  8: ['FLASHLIGHT'],
+  9: [
+    {
+      name: 'FOLDING STUBBY',
+      replaced: ['CLASSIC GRIP POD']
+    }
+  ],
+  15: [
+    {
+      name: 'HOLLOW POINT',
+      replaced: ['FMJ']
+    }
+  ],
+  16: [
+    {
+      name: 'SLIM ANGLED',
+      replaced: ['FOLDING STUBBY']
+    }
+  ],
+  17: [
+    {
+      name: 'FMJ',
+      replaced: ['HOLLOW POINT']
+    },
+    {
+      name: 'COMPENSATED BRAKE',
+      replaced: ['LINEAR COMP']
+    }
+  ],
+  18: [
+    {
+      name: '50 MW GREEN',
+      replaced: ['5 MW GREEN']
+    },
+    { remove: 'FLASHLIGHT' }
+  ],
+  21: [
+    {
+      name: 'CANTED STUBBY',
+      replaced: ['SLIM ANGLED']
+    }
+  ],
+  23: [
+    {
+      name: 'STANDARD SUPPRESSOR',
+      replaced: ['COMPENSATED BRAKE']
+    }
+  ],
+  24: [
+    {
+      name: 'FULL ANGLED',
+      replaced: ['CANTED STUBBY']
+    }
+  ],
+  28: [
+    {
+      name: 'LONG SUPPRESSOR',
+      replaced: ['STANDARD SUPPRESSOR']
+    }
+  ],
+  35: [
+    {
+      name: 'STIPPLED STUBBY',
+      replaced: ['FULL ANGLED']
+    },
+    {
+      name: '5 MW GREEN',
+      replaced: ['50 MW GREEN']
+    }
+  ],
+  37: [
+    {
+      name: '349MM FLUTED',
+      replaced: ['465MM LB']
+    },
+    { remove: '50 MW GREEN' }
+  ],
+  39: [
+    {
+      name: 'FULL ANGLED',
+      replaced: ['STIPPLED STUBBY']
+    },
+    {
+      name: 'LIGHTENED SUPPRESSOR',
+      replaced: ['LONG SUPPRESSOR']
+    }
+  ]
+};
+const m2010ESR_BASELINE = ['FMJ', '5RND MAGAZINE', 'SU-230 LPVO'];
+const M2010ESR_CHANGES = {
+  2: ['24" FLUTED', 'FULL ANGLED', 'RANGE FINDER', '5 MW RED', { name: 'S-VPS 6.00X', replaced: ['SU-230 LPVO'] }],
+  3: [
+    {
+      name: 'MATCH GRADE',
+      replaced: ['FMJ']
+    }
+  ],
+  7: [
+    {
+      name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+  10: [
+    {
+      name: 'SSDS 6.00X',
+      replaced: ['S-VPS 6.00X']
+    }
+  ],
+  13: ['DLC BOLT', { remove: '5 MW GREEN' }],
+  15: [
+    {
+      name: '5RND FAST MAG',
+      replaced: ['5RND MAGAZINE']
+    }
+  ],
+  16: [
+    {
+      name: '26" CARBON',
+      replaced: ['24" FLUTED']
+    }
+  ],
+  36: ['ANTI-GLARE COATING', { name: '5RND MAGAZINE', replaced: ['5RND FAST MAG'] }]
+};
+const miniscout_baseline = ['16" FACTORY', 'FMJ', '10RND MAGAZINE', 'DVO LPVO'];
+const miniscout_changes = {
+  2: ['FULL ANGLED'],
+  3: ['5 MW RED'],
+  4: [
+    {
+      name: '18" EXTENDED',
+      replaced: ['16" FACTORY']
+    }
+  ],
+  6: [{ name: 'FLASHLIGHT', slot: 8 }],
+  8: [
+    {
+      name: '10RND FAST MAG',
+      replaced: ['10RND MAGAZINE']
+    }
+  ],
+  12: [
+    {
+      name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+  19: ['STANDARD SUPPRESSOR'],
+  24: ['RANGE FINDER', { remove: '5 MW GREEN' }],
+  40: ['ANTI-GLARE COATING', '5 MW GREEN', { remove: 'STANDARD SUPPRESSOR' }]
+};
+const umg40_baseline = ['200MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'R4T 2.00X'];
+const umg40_changes = {
+  3: ['5 MW RED'],
+  7: [
+    {
+      name: 'ALLOY VERTICAL',
+      replaced: ['FOLDING VERTICAL']
+    },
+    {
+      name: 'A-P2 1.75X',
+      replaced: ['R4T 2.00X']
+    }
+  ],
+  8: ['LINEAR COMP'],
+  11: [
+    {
+      name: 'RIBBED VERTICAL',
+      replaced: ['ALLOY VERTICAL']
+    }
+  ],
+  12: [
+    {
+      name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+  14: [
+    {
+      name: 'FOLDING STUBBY',
+      replaced: ['RIBBED VERTICAL']
+    },
+    'RO-M 1.75X'
+  ],
+  17: [
+    {
+      name: 'SLIM ANGLED',
+      replaced: ['FOLDING STUBBY']
+    }
+  ],
+  18: [
+    {
+      name: 'HOLLOW POINT',
+      replaced: ['FMJ']
+    }
+  ],
+  19: [
+    {
+      name: 'COMPENSATED BRAKE',
+      replaced: ['LINEAR COMP']
+    }
+  ],
+  22: [
+    {
+      name: 'FMJ',
+      replaced: ['HOLLOW POINT']
+    },
+    { name: 'FLASHLIGHT', slot: 8 }
+  ],
+  23: ['50 MW GREEN'],
+  24: [
+    {
+      name: 'STANDARD SUPPRESSOR',
+      replaced: ['COMPENSATED BRAKE']
+    }
+  ],
+  26: [
+    {
+      name: '305MM CUSTOM',
+      replaced: ['200MM FACTORY']
+    },
+    { remove: 'FLASHLIGHT' }
+  ],
+  28: [
+    {
+      name: 'LONG SUPPRESSOR',
+      replaced: ['STANDARD SUPPRESSOR']
+    }
+  ],
+  29: [
+    {
+      name: 'CANTED STUBBY',
+      replaced: ['SLIM ANGLED']
+    },
+    {
+      name: '5 MW GREEN',
+      replaced: ['50 MW GREEN']
+    }
+  ],
+  36: [
+    {
+      name: 'STIPPLED STUBBY',
+      replaced: ['CANTED STUBBY']
+    },
+    { remove: '5 MW GREEN' }
+  ],
+  37: [
+    {
+      name: 'LIGHTENED SUPPRESSOR',
+      replaced: ['LONG SUPPRESSOR']
+    }
+  ],
+  39: [
+    {
+      name: 'SLIM ANGLED',
+      replaced: ['STIPPLED STUBBY']
+    },
+    {
+      name: 'SYNTHETIC TIP',
+      replaced: ['FMJ']
+    },
+    {
+      name: 'STANDARD SUPPRESSOR',
+      replaced: ['LIGHTENED SUPPRESSOR']
+    }
+  ]
+};
+const qbz_192_baseline = ['10.5" FACTORY', 'FOLDING VERTICAL', 'FMJ', '36RND MAGAZINE', 'CCO 2.00X', 'RAIL COVER'];
+const qbz_192_changes = {
+  2: ['LINEAR COMP'],
+  3: [
+    {
+      name: 'ALLOY VERTICAL',
+      replaced: ['FOLDING VERTICAL']
+    },
+    {
+      name: 'RO-M 1.75X',
+      replaced: ['CCO 2.00X']
+    }
+  ],
+  5: ['5 MW RED'],
+  6: [
+    {
+      name: 'RIBBED VERTICAL',
+      replaced: ['ALLOY VERTICAL']
+    }
+  ],
+  8: [{ name: 'FLASHLIGHT', slot: 5 }],
+  9: [
+    {
+      name: 'FOLDING STUBBY',
+      replaced: ['RIBBED VERTICAL']
+    }
+  ],
+  12: [
+    {
+      name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+  14: [
+    {
+      name: 'POLYMER CASE',
+      replaced: ['FMJ']
+    }
+  ],
+  16: [
+    {
+      name: '14.5" COMMON',
+      replaced: ['10.5" FACTORY']
+    },
+    { remove: '5 MW GREEN' }
+  ],
+  18: [
+    {
+      name: 'SLIM ANGLED',
+      replaced: ['FOLDING STUBBY']
+    }
+  ],
+  23: [
+    {
+      name: 'CANTED STUBBY',
+      replaced: ['SLIM ANGLED']
+    },
+    {
+      name: 'FMJ',
+      replaced: ['POLYMER CASE']
+    }
+  ],
+  25: [
+    {
+      name: 'FULL ANGLED',
+      replaced: ['CANTED STUBBY']
+    },
+    {
+      name: 'POLYMER CASE',
+      replaced: ['FMJ']
+    }
+  ],
+  36: [
+    {
+      name: 'STIPPLED STUBBY',
+      replaced: ['FULL ANGLED']
+    },
+    { remove: '5 MW GREEN' }
+  ],
+  39: [
+    {
+      name: 'LOW-PROFILE STUBBY',
+      replaced: ['STIPPLED STUBBY']
+    },
+    {
+      name: 'FMJ',
+      replaced: ['POLYMER CASE']
+    },
+    { remove: 'RAIL COVER' }
+  ]
+};
+
+const weaponConfigs = [
+  {
+    id: 'kord-6p67',
+    dbname: 'KORD 6P67',
+    rank: 'm',
+    tr: '1',
+    versatile: [
+      { Notes: "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>." },
+      'Standard Suppressor',
+      '415MM Factory',
+      'Ribbed Stubby',
+      '40RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    recommended: [
+      { Notes: "Test" },
+      'OSA-7 1.00X',
+      'SINGLE-PORT BRAKE',
+      '415MM PROTOTYPE',
+      '5 MW RED',
+      'RIBBED VERTICAL',
+      '30RND MAGAZINE',
+      'FMJ'
+    ],
+    baseline: KORD_BASELINE,
+    changes: KORD_CHANGES
+  },
+  {
+    id: 'pw5a3',
+    dbname: 'PW5A3',
+    rank: 'm',
+    tr: '3',
+    baseline: PW5A3_BASELINE,
+    changes: PW5A3_CHANGES
+  },
+  {
+    id: 'rpkm',
+    dbname: 'RPKM',
+    rank: 'b',
+    tr: '6',
+    recommended: [
+      'A-P2 1.75X',
+      'LONG SUPPRESSOR',
+      '590MM FACTORY',
+      'FOLDING STUBBY',
+      '40RND MAGAZINE',
+      'SYNTHETIC TIP'
+    ],
+    baseline: RPKM_BASELINE,
+    changes: RPKM_CHANGES
+  },
+  {
+    id: 'm87a1',
+    dbname: 'M87A1',
+    rank: 'c',
+    tr: '2',
+    versatile: [
+      { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
+      'CQB SUPPRESSOR',
+      '20" FACTORY',
+      '50 MW GREEN',
+      'Adjustable Angled',
+      '5 SHELL TUBE',
+      'Buckshot',
+      'Mini Flex 1.00X'
+    ],
+    baseline: M87A1_BASELINE,
+    changes: M87A1_CHANGES
+  },
+  {
+    id: 'ggh-22',
+    dbname: 'GGH-22',
+    rank: 'b',
+    tr: '4',
+    baseline: GGH_22_BASELINE,
+    changes: GGH_22_CHANGES
+  },
+  {
+    id: 'l110',
+    dbname: 'L110',
+    rank: 'b',
+    tr: '5',
+    baseline: L110_BASELINE,
+    changes: L110_CHANGES
+  },
+  {
+    id: 'm2010esr',
+    dbname: 'M2010 ESR',
+    rank: 'm',
+    tr: '1',
+    sniper: [
+      { Notes: "The flagship <b>Sniper Rifle</b> with second-best velocity but best lethality, the <c>M2010 ESR</c> is your first and best choice. <b>Sweet Spot: 75-120m</b>." },
+      '26" CARBON',
+      'Range Finder',
+      'Anti-Glare Coating',
+      'Full Angled',
+      '5RND MAGAZINE',
+      'MATCH GRADE',
+      'DLC BOLT',
+      'S-VPS 6.00X'
+    ],
+    recommended: [
+      'S-VPS 6.00X',
+      '26" CARBON',
+      'ANTI-GLARE COATING',
+      'RANGE FINDER',
+      '5RND MAGAZINE',
+      'DLC BOLT',
+      'MATCH GRADE'
+    ],
+    baseline: m2010ESR_BASELINE,
+    changes: M2010ESR_CHANGES
+  },
+  {
+    id: 'miniscout',
+    dbname: 'Mini Scout',
+    rank: 'b',
+    tr: '4',
+    baseline: miniscout_baseline,
+    changes: miniscout_changes
+  },
+  {
+    id: 'umg40',
+    dbname: 'UMG-40',
+    rank: 'a',
+    tr: '5',
+    baseline: umg40_baseline,
+    changes: umg40_changes
+  },
+  {
+    id: 'qbz-192',
+    dbname: 'QBZ-192',
+    rank: 'b',
+    tr: '3',
+    baseline: qbz_192_baseline,
+    changes: qbz_192_changes
+  },
+  {
+    id: 'sgx',
+    dbname: 'sgx',
+    rank: 'm',
+    tr: '1',
+    close: [
+      { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
+      'CQB SUPPRESSOR',
+      '8" Extended',
+      '41RND Magazine',
+      'FMJ',
+      'IRON SIGHTS',
+      '50 MW Blue'
+    ]
+  },
+  {
+    id: 'usg-90',
+    dbname: 'USG-90',
+    rank: 'm',
+    tr: '2',
+    close: [ 
+    { Notes: 
+      "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
+    },
+      'CQB SUPPRESSOR',
+      '407MM CIV-S',
+      '50RND MAGAZINE',
+      'Polymer Case',
+      'Improved Mag Catch',
+      'RO-S 1.25X',
+      '120 MW Blue'
+    ]
+  },
+  {
+    id: '18.5ks-k',
+    dbname: '18.5ks-k',
+    rank: 'c',
+    tr: '1',
+    versatile: [
+      'CQB Suppressor',
+      '430MM Cut',
+      '50 MW Blue',
+      'Folding Stubby',
+      '8RND Magazine',
+      'Buckshot',
+      'Iron Sights'
+    ]
+  },
+  {
+    id: 'b36a4',
+    dbname: 'b36a4',
+    rank: 'm',
+    tr: '2',
+    versatile: [
+      { Notes: "A decent, versatile AR that performs well over range with careful burst firing." },
+      'Standard Suppressor',
+      '480MM Factory',
+      'Ribbed Stubby',
+      '40RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: "A decent, versatile AR that performs well over range with careful burst firing." },
+      'Linear Comp',
+      '391MM CQB',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'Polymer Case',
+      'OSA-7 1.00X'
+    ]
+  },
+  {
+    id: 'sor-556 mk2',
+    dbname: 'sor-556 mk2',
+    rank: 'm',
+    tr: '3',
+    versatile: [
+      { Notes: "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing." },
+      'Standard Suppressor',
+      '16" US',
+      'Ribbed Stubby',
+      '40RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing." },
+      'Linear Comp',
+      '14.5" Factory',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'Polymer Case',
+      'OSA-7 1.00X'
+    ]
+  },
+  {
+    id: 'drs-iar',
+    dbname: 'drs-iar',
+    rank: 'm',
+    tr: '1',
+    versatile: [
+      { Notes: "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance." },
+      'Compensated Brake',
+      '16.5" Fluted',
+      'Ribbed Stubby',
+      '36RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ]
+  }
+];
+
+if (typeof window !== 'undefined' && window.autoBuilds && typeof window.autoBuilds.applyToWeaponConfigs === 'function') {
+  window.autoBuilds.applyToWeaponConfigs(weaponConfigs);
+  window.addEventListener('autobuilds:updated', () => {
+    window.autoBuilds.applyToWeaponConfigs(weaponConfigs);
+  });
+}

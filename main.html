@@ -357,14 +357,97 @@
 
     .drag-handle { cursor: grab; display: none !important; }
 
+    .weapon-card[data-active-build]:not([data-active-build="mastery"]) .level-pill,
+    .weapon-card[data-active-build]:not([data-active-build="mastery"]) .weapon-body .level-controls {
+      display: none !important;
+    }
+
+    .weapon-card[data-active-build]:not([data-active-build="mastery"]) .header-controls .level-button,
+    .weapon-card[data-active-build]:not([data-active-build="mastery"]) .header-controls .progress,
+    .weapon-card[data-active-build]:not([data-active-build="mastery"]) .header-level,
+    .weapon-card[data-active-build]:not([data-active-build="mastery"]) .header-sep {
+      display: none !important;
+    }
+
     /* Hide legacy UI controls/labels when using header row */
     .collapse-toggle { display: none !important; }
     .favorite-toggle .favorite-text { display: none !important; }
-    .weapon-body .level-controls { display: none !important; }
-    .weapon-body .level-display { display: none !important; }
-    .attachments-header .ap-total { display: none !important; }
+    .build-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 2px 0;
+    }
+
+    .build-tablist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .build-tab {
+      border-radius: 999px;
+      border: 1px solid rgba(120, 160, 180, 0.45);
+      background: rgba(8, 12, 16, 0.8);
+      color: inherit;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    .build-tab.active,
+    .build-tab:hover {
+      border-color: rgba(0, 229, 255, 0.55);
+      background: rgba(0, 229, 255, 0.12);
+    }
+
+    .recommended-panel { display: none !important; }
 
     .drag-handle:active { cursor: grabbing; }
+
+    .filter-section {
+      border: 1px solid rgba(120, 160, 180, 0.35);
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 12px;
+      background: rgba(10, 16, 21, 0.75);
+    }
+
+    .filter-heading {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(177, 191, 203, 0.95);
+      margin-bottom: 8px;
+    }
+
+    .type-filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .type-filter-item {
+      border: 1px solid rgba(120, 160, 180, 0.35);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(8, 12, 16, 0.85);
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+      text-align: left;
+    }
+
+    .type-filter-item.active {
+      border-color: rgba(0, 229, 255, 0.7);
+      background: rgba(0, 229, 255, 0.12);
+    }
 
     .favorite-toggle:hover,
     .collapse-toggle:hover,
@@ -623,6 +706,7 @@
       align-items: center;
       border-bottom: 1px solid rgba(54, 69, 82, 0.35);
       padding-bottom: 12px;
+      gap: 12px;
     }
 
     .attachments-header h2 {
@@ -633,11 +717,26 @@
       color: rgba(160, 178, 192, 0.9);
     }
 
-    .ap-total {
+    .attachments-separator {
+      font-size: 14px;
+      color: rgba(160, 178, 192, 0.7);
+    }
+
+    .ap-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex-wrap: nowrap;
+      gap: 10px;
+    }
+
+    .notes-highlight {
+      background: rgba(0, 229, 255, 0.2);
+      padding: 0 4px;
+      border-radius: 4px;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+
+    .notes-color {
+      color: var(--accent);
     }
 
     .ap-readout {
@@ -893,8 +992,9 @@
 
     .card-meta .meta-type {
       letter-spacing: 0.18em;
-      flex: 1 1 auto;
+      flex: 0 1 auto;
       min-width: 0;
+      max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -1183,6 +1283,10 @@
     <div class="progress" id="uiScaleProgress" role="slider" aria-label="UI scale" aria-valuemin="50" aria-valuemax="200" aria-valuenow="100">
       <div class="knob"></div>
     </div>
+    <div class="filter-section">
+      <div class="filter-heading">Filter by Type</div>
+      <div class="type-filter-list" id="typeFilterList" role="tablist"></div>
+    </div>
   </div>
   <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
   <div class="app">
@@ -1216,13 +1320,6 @@
               <div class="knob"></div>
             </div>
             <button class="level-button level-up" type="button" aria-label="Increase level">+</button>
-            <div class="ap-inline">
-              <div class="ap-meter"></div>
-              <div class="ap-readout">
-                <span class="ap-value">0</span>
-                <span class="ap-max"></span>
-              </div>
-            </div>
           </div>
         </div>
         <div class="weapon-image-wrap placeholder">
@@ -1233,25 +1330,21 @@
         <button class="collapse-toggle" type="button" aria-expanded="true">Hide</button>
       </div>
       <div class="weapon-body">
-        <div class="level-controls">
-          <button class="level-button level-down" type="button" aria-label="Decrease level">-</button>
-          <div class="progress" role="slider" aria-valuemin="1" aria-valuemax="40" aria-valuenow="1">
-            <div class="knob"></div>
-          </div>
-          <button class="level-button level-up" type="button" aria-label="Increase level">+</button>
-        </div>
         <div class="level-display"></div>
+        <div class="build-tabs" hidden>
+          <div class="build-tablist" role="tablist"></div>
+        </div>
         <div class="weapon-layout">
           <section class="attachments-panel">
-            <div class="attachments-header">
-              <h2>Attachments</h2>
-              <div class="ap-total">
-                <div class="ap-meter"></div>
-                <div class="ap-readout">
-                  <span class="ap-value">0</span>
-                  <span class="ap-max"></span>
-                </div>
+          <div class="attachments-header">
+            <h2>Attachments</h2>
+            <div class="ap-header">
+              <div class="ap-meter"></div>
+              <div class="ap-readout">
+                <span class="ap-value"></span>
+                <span class="ap-max"></span>
               </div>
+            </div>
             </div>
             <div class="slots"></div>
           </section>
@@ -1263,11 +1356,11 @@
             <section class="recommended-panel" hidden>
               <h3>Recommended Build</h3>
               <div class="ap-total ap-total-recommended">
-                <div class="ap-meter"></div>
-                <div class="ap-readout">
-                  <span class="ap-value">0</span>
-                  <span class="ap-max"></span>
-                </div>
+              <div class="ap-meter"></div>
+              <div class="ap-readout">
+                <span class="ap-value"></span>
+                <span class="ap-max"></span>
+              </div>
               </div>
               <div class="recommended-list"></div>
             </section>
@@ -1277,6 +1370,7 @@
     </section>
   </template>
   <script src="weapon-db.js"></script>
+  <script src="manualbuilds.js"></script>
   <script>
     const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
     const INDENT = 36;
@@ -1288,12 +1382,33 @@
 
     const toUpperSafe = (value) => (typeof value === 'string' ? value.toUpperCase() : value);
 
+    const TYPE_ORDER = [
+      'ASSAULT RIFLE',
+      'CARBINE',
+      'DMR',
+      'LMG',
+      'SMG',
+      'SHOTGUN',
+      'SNIPER',
+      'SECONDARY',
+      'PISTOL',
+      'LAUNCHER'
+    ];
+    const TYPE_INDEX = TYPE_ORDER.reduce((map, type, index) => {
+      map[type] = index;
+      return map;
+    }, {});
+
     const attachmentDatabase =
       typeof window !== 'undefined' && window.weaponDatabase && typeof window.weaponDatabase === 'object'
         ? window.weaponDatabase
         : {};
+    const typeFilterList =
+      typeof document !== 'undefined' ? document.getElementById('typeFilterList') : null;
+    let currentTypeFilter = '';
 
     const normalizeDbKey = (value) => (typeof value === 'string' ? value.trim().toUpperCase() : '');
+    const formatTypeKey = (value) => (typeof value === 'string' ? value.trim().toUpperCase() : '');
 
     function getWeaponDb(dbName) {
       if (!dbName || typeof dbName !== 'string') return null;
@@ -1581,6 +1696,10 @@
         this.displayName = configName || metaName || this.id;
         this.displayType = configType || metaType || '';
         this.displayImage = configImage || metaImage || '';
+        this.typeKey = formatTypeKey(this.displayType || '');
+        const trCode = (config.tr || '').toString().trim();
+        const trValue = parseInt(trCode, 10);
+        this.typeRatingValue = Number.isFinite(trValue) ? trValue : Number.MAX_SAFE_INTEGER;
         this.maxLevel = Number.isFinite(config.maxLevel)
           ? config.maxLevel
           : Number.isFinite(metaMaxLevel)
@@ -1598,6 +1717,14 @@
         this.baseline = normalizeBaselineConfig(config.baseline, this.dbname);
         this.changes = normalizeChangesConfig(config.changes, this.dbname);
         this.slotKeys = this.buildSlotKeys();
+        this.buildDefinitions = this.resolveBuildDefinitions();
+        this.buildById = this.buildDefinitions.reduce((map, build) => {
+          map[build.id] = build;
+          return map;
+        }, {});
+        this.activeBuildId = this.buildDefinitions.length ? this.buildDefinitions[0].id : null;
+        this.activeBuildNote = null;
+        this.activeBuildApStats = null;
 
         const saved = storage.getWeaponState(this.id);
         const defaultLevel = Number.isFinite(config.initialLevel) ? config.initialLevel : this.minLevel;
@@ -1764,6 +1891,10 @@
         this.recommendedApMeterEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-meter') : null;
         this.recommendedApValueEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-value') : null;
         this.recommendedApMaxEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-max') : null;
+        this.buildTabsEl = this.cardEl.querySelector('.build-tabs');
+        this.buildTabListEl = this.cardEl.querySelector('.build-tablist');
+        this.buildTabButtons = [];
+        this.setupBuildTabs();
 
         if (this.weaponNameEl) this.weaponNameEl.textContent = toUpperSafe(this.displayName || this.id);
         if (this.weaponTypeEl) this.weaponTypeEl.textContent = toUpperSafe(this.displayType || 'Mastery Loadout Progression');
@@ -1783,11 +1914,11 @@
           const code = (this.config.tr || '').toString().trim().toUpperCase();
           const num = parseInt(code, 10);
           const typeLabel = toUpperSafe(this.displayType || 'TYPE');
-          const kind = typeLabel;
-          if (Number.isFinite(num) && num >= 1 && num <= 4 && kind) {
-            this.rangeChipEl.textContent = '#' + num + ' ' + kind;
+          if (Number.isFinite(num) && num >= 1 && typeLabel) {
+            const cssIndex = Math.min(4, num);
+            this.rangeChipEl.textContent = '#' + num + ' ' + typeLabel;
             this.rangeChipEl.classList.remove('range-1','range-2','range-3','range-4','range-unranked');
-            this.rangeChipEl.classList.add('range-' + num);
+            this.rangeChipEl.classList.add('range-' + cssIndex);
           } else {
             this.rangeChipEl.textContent = 'UNRANKED';
             this.rangeChipEl.classList.remove('range-1','range-2','range-3','range-4');
@@ -1923,7 +2054,6 @@
         // Ensure recommended panel starts hidden unless data populates it.
         if (this.recommendedPanelEl) this.recommendedPanelEl.hidden = true;
         this.render();
-        this.renderRecommended();
 
         this.cardEl.remove();
       }
@@ -2506,15 +2636,21 @@
         const previous = this.computeState(Math.max(this.minLevel - 1, level - 1));
         const container = this.changesPanelEl;
         container.innerHTML = '';
+        const isNotesView = this.activeBuildId && this.activeBuildId !== 'mastery' && this.activeBuildNote;
+        const entries = Object.entries(diff);
+        const showNoteFallback = isNotesView && !entries.length;
         const title = document.createElement('h3');
-        title.textContent = 'Changes at this Level';
+        title.textContent = showNoteFallback ? 'Notes' : 'Changes at this Level';
         container.appendChild(title);
 
-        const entries = Object.entries(diff);
         if (!entries.length) {
           const empty = document.createElement('div');
           empty.className = 'changes-empty';
-          empty.textContent = 'No changes unlocked at this level.';
+          if (showNoteFallback) {
+            empty.innerHTML = this.formatNotesText(this.activeBuildNote);
+          } else {
+            empty.textContent = 'No changes unlocked at this level.';
+          }
           container.appendChild(empty);
           return;
         }
@@ -2574,32 +2710,114 @@
             row.appendChild(detail);
           }
 
-          container.appendChild(row);
+        container.appendChild(row);
+      }
+    }
+
+      formatNotesText(note) {
+        if (!note || typeof note !== 'string') return '';
+        let text = note.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const mapping = [
+          { tag: 'b', open: '<b>', close: '</b>' },
+          { tag: 'i', open: '<i>', close: '</i>' },
+          { tag: 'hl', open: '<span class="notes-highlight">', close: '</span>' },
+          { tag: 'c', open: '<span class="notes-color">', close: '</span>' }
+        ];
+        for (const item of mapping) {
+          const openPattern = new RegExp(`&lt;${item.tag}&gt;`, 'gi');
+          const closePattern = new RegExp(`&lt;/${item.tag}&gt;`, 'gi');
+          text = text.replace(openPattern, item.open);
+          text = text.replace(closePattern, item.close);
         }
+        return text;
       }
 
-      // Render static Recommended Build cards (not tied to mastery level)
-      renderRecommended() {
-        if (!this.recommendedPanelEl || !this.recommendedListEl) return;
-        const source = this.config.recommended || this.config.recommendedBuild || this.config.recommended_build || null;
+      hasMasteryData() {
+        const baselineKeys = this.baseline ? Object.keys(this.baseline) : [];
+        const changeKeys = this.changes ? Object.keys(this.changes) : [];
+        return baselineKeys.length > 0 || changeKeys.length > 0;
+      }
+
+      resolveBuildDefinitions() {
+        const recognized = [
+          { id: 'recommended', label: 'Recommended', keys: ['recommended', 'recommendedBuild', 'recommended_build'] },
+          { id: 'versatile', label: 'Versatile', keys: ['versatile'] },
+          { id: 'close', label: 'Close Range', keys: ['close'] },
+          { id: 'long', label: 'Long Range', keys: ['long'] },
+          { id: 'sniper', label: 'Sniper', keys: ['sniper'] }
+        ];
+        const lookup = {};
+        for (const info of recognized) {
+          for (const key of info.keys) {
+            lookup[key.toLowerCase()] = info.id;
+          }
+        }
+        const builds = [];
+        if (this.hasMasteryData()) {
+          builds.push({ id: 'mastery', label: 'Mastery', type: 'mastery' });
+        }
+        const seen = new Set(builds.map((build) => build.id));
+        for (const key of Object.keys(this.config)) {
+          const normalized = key.toString().trim().toLowerCase();
+          const buildId = lookup[normalized];
+          if (!buildId || seen.has(buildId)) continue;
+          const info = recognized.find((entry) => entry.id === buildId);
+          const payload = this.config[key];
+          if (payload == null) continue;
+          seen.add(buildId);
+          builds.push({
+            id: buildId,
+            label: info ? info.label : buildId,
+            type: 'list',
+            payload,
+            sourceKey: key
+          });
+        }
+        return builds;
+      }
+
+      getBuildPayloadEntries(build) {
+        if (!build || build.type !== 'list') return { entries: [], note: null };
+        const payload = build.payload;
         let items = [];
-        if (Array.isArray(source)) {
-          items = source.slice();
-        } else if (source && typeof source === 'object') {
-          try { items = Object.values(source); } catch (_) { items = []; }
+        if (Array.isArray(payload)) {
+          items = payload.slice();
+        } else if (payload && typeof payload === 'object') {
+          try {
+            items = Object.values(payload);
+          } catch (_) {
+            items = [];
+          }
         }
-
-        // Hide panel when no data provided
-        if (!items.length) {
-          this.recommendedListEl.innerHTML = '';
-          this.recommendedPanelEl.hidden = true;
-          return;
+        let note = null;
+        const filtered = [];
+        for (const item of items) {
+          if (item && typeof item === 'object') {
+            const noteValue = item.Notes || item.notes;
+            if (typeof noteValue === 'string' && noteValue.trim()) {
+              note = noteValue.trim();
+              continue;
+            }
+          }
+          filtered.push(item);
         }
+        return { entries: filtered, note };
+      }
 
-        this.recommendedListEl.innerHTML = '';
+      renderBuildAttachments(build) {
+        if (!this.slotsEl) return null;
+        const { entries, note } = this.getBuildPayloadEntries(build);
+        this.activeBuildNote = note;
+        this.slotsEl.innerHTML = '';
+        this.arrowLayerEl.innerHTML = '';
+        if (!entries.length) {
+          this.activeBuildApStats = null;
+          return null;
+        }
         const frag = document.createDocumentFragment();
         let totalAp = 0;
-        for (const payload of items) {
+        let highestLevel = Number.NEGATIVE_INFINITY;
+        for (const payload of entries) {
           if (!payload) continue;
           const unlock = Number.isFinite(payload.unlockLevel) ? payload.unlockLevel : undefined;
           const entry = normalizeEntry(payload, unlock, this.dbname);
@@ -2607,24 +2825,75 @@
           const card = this.createCard(entry, { changed: true, hideLevel: false, level: entry.unlockLevel });
           if (card) frag.appendChild(card);
           if (typeof entry.pts === 'number') totalAp += entry.pts;
+          if (Number.isFinite(entry.unlockLevel)) {
+            highestLevel = Math.max(highestLevel, entry.unlockLevel);
+          }
         }
-        this.recommendedListEl.appendChild(frag);
-        // Update mini AP meter
-        const recommendedOvercap = Number.isFinite(this.apMax) && totalAp > this.apMax;
-        if (this.recommendedApValueEl) {
-          this.recommendedApValueEl.textContent = `${Math.round(totalAp)}`;
+        if (!frag.childElementCount) {
+          this.activeBuildApStats = null;
+          return null;
         }
-        if (this.recommendedApMaxEl) this.recommendedApMaxEl.textContent = `/${this.apMax}`;
-        const recommendedReadout = this.recommendedApValueEl
-          ? this.recommendedApValueEl.closest('.ap-readout')
-          : null;
-        if (recommendedReadout) {
-          recommendedReadout.classList.toggle('ap-overcap', recommendedOvercap);
+        this.slotsEl.appendChild(frag);
+        const stats = { totalAp, overcap: Number.isFinite(this.apMax) && totalAp > this.apMax };
+        stats.requiredLevel = Number.isFinite(highestLevel) ? highestLevel : null;
+        this.activeBuildApStats = stats;
+        return stats;
+      }
+
+      setupBuildTabs() {
+        if (!this.buildTabsEl || !this.buildTabListEl) return;
+        this.buildTabListEl.innerHTML = '';
+        this.buildTabButtons = [];
+        if (!this.buildDefinitions.length) {
+          this.buildTabsEl.hidden = true;
+          return;
         }
-        if (this.recommendedApMeterEl) {
-          this.updateApMeterFor(this.recommendedApMeterEl, totalAp, recommendedOvercap);
+        this.buildTabsEl.hidden = this.buildDefinitions.length === 0;
+        for (const build of this.buildDefinitions) {
+          const tab = document.createElement('button');
+          tab.type = 'button';
+          tab.className = 'build-tab';
+          tab.dataset.build = build.id;
+          tab.setAttribute('role', 'tab');
+          tab.textContent = build.label;
+          tab.addEventListener('click', () => this.setActiveBuild(build.id));
+          this.buildTabListEl.appendChild(tab);
+          this.buildTabButtons.push(tab);
         }
-        this.recommendedPanelEl.hidden = false;
+        this.updateBuildTabSelection();
+        this.renderBuildView();
+      }
+
+      updateBuildTabSelection() {
+        if (!this.buildTabButtons.length) return;
+        for (const tab of this.buildTabButtons) {
+          const isActive = tab.dataset.build === this.activeBuildId;
+          tab.classList.toggle('active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        }
+      }
+
+      setActiveBuild(buildId) {
+        if (!buildId || buildId === this.activeBuildId) return;
+        this.activeBuildId = buildId;
+        this.updateBuildTabSelection();
+        if (this.cardEl) {
+          this.cardEl.dataset.activeBuild = buildId;
+        }
+        this.renderBuildView();
+        this.render();
+      }
+
+      renderBuildView() {
+        if (!this.cardEl) return;
+        if (this.buildTabsEl) {
+          this.buildTabsEl.hidden = this.buildDefinitions.length === 0;
+        }
+        if (this.activeBuildId) {
+          this.cardEl.dataset.activeBuild = this.activeBuildId;
+        } else {
+          this.cardEl.removeAttribute('data-active-build');
+        }
       }
 
       updateAp(level) {
@@ -2644,6 +2913,34 @@
         if (readout) readout.classList.toggle('ap-overcap', overcap);
         this.updateApMeter(total, overcap);
         return total;
+      }
+
+      applyBuildApStats(stats) {
+        if (!stats || !this.apValueEl) return;
+        const totalAp = Number.isFinite(stats.totalAp) ? stats.totalAp : 0;
+        const overcap = Boolean(stats.overcap);
+        if (this.apValueEl) {
+          const displayValue = Number.isFinite(totalAp) && totalAp > 0 ? `${Math.round(totalAp)}` : '';
+          this.apValueEl.textContent = displayValue;
+        }
+        if (this.apMaxEl) this.apMaxEl.textContent = `/${this.apMax}`;
+        const readout = this.apValueEl ? this.apValueEl.closest('.ap-readout') : null;
+        if (readout) readout.classList.toggle('ap-overcap', overcap);
+        this.updateApMeter(totalAp, overcap);
+      }
+
+      updateLevelDisplayForBuild(stats) {
+        if (!this.levelDisplayEl) return;
+        if (stats && Number.isFinite(stats.requiredLevel)) {
+          this.levelDisplayEl.textContent = `Full build requires Mastery ${Math.round(stats.requiredLevel)}.`;
+        } else {
+          this.levelDisplayEl.textContent = '';
+        }
+      }
+
+      updateLevelDisplayDefault(level) {
+        if (!this.levelDisplayEl) return;
+        this.levelDisplayEl.textContent = `Viewing mastery unlocks at level ${level}.`;
       }
 
       drawArrows(pairs) {
@@ -2732,9 +3029,21 @@
         if (this.progressBarEl && this.progressKnobEl) this.updateProgressUI(level);
         this.updateAp(level);
         if (!this.state.collapsed) {
-          this.renderSlots(level);
-          this.renderChanges(level);
+          const build = this.buildById[this.activeBuildId];
+          if (build && build.type !== 'mastery') {
+            const stats = this.renderBuildAttachments(build);
+            this.applyBuildApStats(stats);
+            this.updateLevelDisplayForBuild(stats);
+            this.renderChanges(level);
+          } else {
+            this.renderSlots(level);
+            this.renderChanges(level);
+            this.activeBuildNote = null;
+            this.activeBuildApStats = null;
+            this.updateLevelDisplayDefault(level);
+          }
         }
+        this.renderBuildView();
       }
 
       refreshLayout() {
@@ -2742,814 +3051,6 @@
         this.renderSlots(this.state.level);
       }
     }
-    const KORD_BASELINE = ['415MM FACTORY', 'FOLDING VERTICAL', 'FMJ', 'SINGLE-PORT BRAKE', '30RND MAGAZINE', 'CCO 2.00X'];
-
-    const KORD_CHANGES = {
-      2: ['FLASHLIGHT'],
-      3: [
-        {
-          name: 'ALLOY VERTICAL',
-          replaced: ['FOLDING VERTICAL']
-        }
-      ],
-      6: [
-        {
-          name: 'RIBBED VERTICAL',
-          replaced: ['ALLOY VERTICAL']
-        }
-      ],
-      7: [
-        {
-          name: '415MM PROTOTYPE',
-          replaced: ['415MM FACTORY']
-        }
-      ],
-      8: [
-        {
-          name: '6H64 VERTICAL',
-          replaced: ['RIBBED VERTICAL']
-        }
-      ],
-      12: [
-        {
-          name: 'RED LASER',
-          replaced: ['FLASHLIGHT']
-        }
-      ],
-      13: [
-        {
-          name: '36RND MAGAZINE',
-          replaced: ['30RND MAGAZINE']
-        }
-      ],
-      15: [
-        {
-          name: '3VZR 1.75X',
-          replaced: ['CCO 2.00X']
-        }
-      ],
-      16: [
-        {
-          name: 'CLASSIC VERTICAL',
-          replaced: ['6H64 VERTICAL']
-        },
-        {
-          name: 'RO-M 1.75X',
-          replaced: ['3VZR 1.75X']
-        }
-      ],
-      20: [
-        {
-          name: 'COMPENSATED BRAKE',
-          replaced: ['SINGLE-PORT BRAKE']
-        },
-        { remove: 'FLASHLIGHT' }
-      ],
-      24: [
-        {
-          name: 'STANDARD SUPPRESSOR',
-          replaced: ['COMPENSATED BRAKE']
-        }
-      ],
-      32: [
-        {
-          name: 'LONG SUPPRESSOR',
-          replaced: ['STANDARD SUPPRESSOR']
-        }
-      ]
-    };
-    const PW5A3_BASELINE = ['225MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'IRON SIGHTS'];
-
-    const PW5A3_CHANGES = {
-      3: [
-        {
-          name: 'ALLOY VERTICAL',
-          replaced: ['FOLDING VERTICAL']
-        }
-      ],
-      5: [
-        {
-          name: '30RND FAST MAG',
-          replaced: ['30RND MAGAZINE']
-        }
-      ],
-      6: [
-        {
-          name: 'RIBBED VERTICAL',
-          replaced: ['ALLOY VERTICAL']
-        }
-      ],
-      9: ['STANDARD SUPPRESSOR'],
-      12: ['245MM CUSTOM', 'IMPROVED MAG CATCH'],
-      14: [
-        {
-          name: '6H64 VERTICAL',
-          replaced: ['RIBBED VERTICAL']
-        }
-      ],
-      21: [
-        {
-          name: 'CLASSIC VERTICAL',
-          replaced: ['6H64 VERTICAL']
-        }
-      ],
-      28: [
-        {
-          name: '6H64 VERTICAL',
-          replaced: ['CLASSIC VERTICAL']
-        },
-        {
-          name: '40RND MAGAZINE',
-          replaced: ['30RND FAST MAG']
-        }
-      ]
-    };
-    const RPKM_BASELINE = ['590MM FACTORY', 'FOLDING VERTICAL', 'FMJ', 'FLASH HIDER', '40RND MAGAZINE', 'MINI FLEX 1.00X'];
-    const RPKM_CHANGES = {
-      2: [
-        {
-          name: 'RO-M 1.75X',
-          replaced: ['MINI FLEX 1.00X']
-        }
-      ],
-      4: [
-        {
-          name: 'ALLOY VERTICAL',
-          replaced: ['FOLDING VERTICAL']
-        }
-      ],
-      5: ['5 MW RED'],
-      6: [
-        {
-          name: 'RIBBED VERTICAL',
-          replaced: ['ALLOY VERTICAL']
-        }
-      ],
-      8: ['FLASHLIGHT'],
-      9: [
-        {
-          name: 'FOLDING STUBBY',
-          replaced: ['RIBBED VERTICAL']
-        }
-      ],
-      12: [
-        {
-          name: '5 MW GREEN',
-          replaced: ['5 MW RED']
-        }
-      ],
-      18: [
-        {
-          name: 'SLIM ANGLED',
-          replaced: ['FOLDING STUBBY']
-        },
-        { remove: 'FLASHLIGHT' }
-      ],
-      21: [
-        {
-          name: '600MM TABUK',
-          replaced: ['590MM FACTORY']
-        }
-      ],
-      23: [
-        {
-          name: 'CANTED STUBBY',
-          replaced: ['SLIM ANGLED']
-        },
-        { remove: '5 MW GREEN' }
-      ],
-      25: [
-        {
-          name: 'FULL ANGLED',
-          replaced: ['CANTED STUBBY']
-        },
-        {
-          name: 'POLYMER CASE',
-          replaced: ['FMJ']
-        }
-      ],
-      35: [
-        {
-          name: 'STIPPLED STUBBY',
-          replaced: ['FULL ANGLED']
-        },
-        {
-          name: 'FMJ',
-          replaced: ['POLYMER CASE']
-        }
-      ],
-      38: [
-        {
-          name: '590MM FACTORY',
-          replaced: ['600MM TABUK']
-        },
-        {
-          name: 'ADJUSTABLE ANGLED',
-          replaced: ['STIPPLED STUBBY']
-        },
-        {
-          name: 'SYNTHETIC TIP',
-          replaced: ['FMJ']
-        },
-        {
-          name: 'LIGHTENED SUPPRESSOR',
-          replaced: ['FLASH HIDER']
-        }
-      ]
-    };
-    const M87A1_BASELINE = ['20" FACTORY', 'BUCKSHOT', '7 SHELL TUBE', 'IRON SIGHTS'];
-    const M87A1_CHANGES = {
-      4: ['5 MW RED'],
-      5: ['RIBBED STUBBY'],
-      10: [
-        {
-          name: 'SLIM ANGLED',
-          replaced: ['RIBBED STUBBY']
-        }
-      ],
-      13: ['FLASHLIGHT'],
-      15: [
-        {
-          name: '50 MW BLUE',
-          replaced: ['5 MW RED']
-        }
-      ],
-      18: [
-        {
-          name: 'FOLDING STUBBY',
-          replaced: ['SLIM ANGLED']
-        },
-        'CQB SUPPRESSOR',
-        { remove: 'FLASHLIGHT' }
-      ],
-      19: [
-        {
-          name: 'ADJUSTABLE ANGLED',
-          replaced: ['FOLDING STUBBY']
-        }
-      ],
-      22: [
-        'FLASHLIGHT',
-        {
-          name: '5 MW GREEN',
-          replaced: ['50 MW BLUE']
-        }
-      ],
-      26: [
-        {
-          name: 'FLECHETTE',
-          replaced: ['BUCKSHOT']
-        },
-        { remove: '5 MW GREEN' },
-        { remove: 'FLASHLIGHT' }
-      ]
-    };
-    const GGH_22_BASELINE = ['114MM FACTORY', '5 MW RED', 'FMJ', '15RND MAGAZINE', 'IRON SIGHTS'];
-    const GGH_22_CHANGES = {
-      2: [
-        {
-          name: 'ROX 1.50X',
-          replaced: ['IRON SIGHTS']
-        }
-      ],
-      4: ['IMPROVED MAG CATCH'],
-      5: [
-        {
-          name: '5 MW GREEN',
-          replaced: ['5 MW RED']
-        }
-      ],
-      7: ['SINGLE-PORT BRAKE'],
-      9: [
-        {
-          name: '114MM PENCIL',
-          replaced: ['114MM FACTORY']
-        },
-        { remove: 'IMPROVED MAG CATCH' }
-      ],
-      12: [
-        {
-          name: '114MM FACTORY',
-          replaced: ['114MM PENCIL']
-        },
-        'IMPROVED MAG CATCH',
-        {
-          name: '20RND MAGAZINE',
-          replaced: ['15RND MAGAZINE']
-        },
-        { remove: '5 MW GREEN' }
-      ],
-      15: [
-        {
-          name: '114MM PENCIL',
-          replaced: ['114MM FACTORY']
-        },
-        {
-          name: 'STANDARD SUPPRESSOR',
-          replaced: ['SINGLE-PORT BRAKE']
-        },
-        {
-          name: '15RND MAGAZINE',
-          replaced: ['20RND MAGAZINE']
-        },
-        { remove: 'IMPROVED MAG CATCH' }
-      ],
-      18: [
-        {
-          name: 'A-P2 1.75X',
-          replaced: ['ROX 1.50X']
-        }
-      ]
-    };
-    const L110_BASELINE = ['349MM SB', 'CLASSIC GRIP POD', 'FMJ', '5 MW GREEN', '100RND BELT POUCH', 'R4T 2.00X'];
-    const L110_CHANGES = {
-      2: ['SINGLE-PORT BRAKE'],
-      3: [
-        {
-          name: '465MM LB',
-          replaced: ['349MM SB']
-        }
-      ],
-      5: [
-        {
-          name: 'RO-M 1.75X',
-          replaced: ['R4T 2.00X']
-        }
-      ],
-      7: [
-        {
-          name: 'LINEAR COMP',
-          replaced: ['SINGLE-PORT BRAKE']
-        }
-      ],
-      8: ['FLASHLIGHT'],
-      9: [
-        {
-          name: 'FOLDING STUBBY',
-          replaced: ['CLASSIC GRIP POD']
-        }
-      ],
-      15: [
-        {
-          name: 'HOLLOW POINT',
-          replaced: ['FMJ']
-        }
-      ],
-      16: [
-        {
-          name: 'SLIM ANGLED',
-          replaced: ['FOLDING STUBBY']
-        }
-      ],
-      17: [
-        {
-          name: 'FMJ',
-          replaced: ['HOLLOW POINT']
-        },
-        {
-          name: 'COMPENSATED BRAKE',
-          replaced: ['LINEAR COMP']
-        }
-      ],
-      18: [
-        {
-          name: '50 MW GREEN',
-          replaced: ['5 MW GREEN']
-        },
-        { remove: 'FLASHLIGHT' }
-      ],
-      21: [
-        {
-          name: 'CANTED STUBBY',
-          replaced: ['SLIM ANGLED']
-        }
-      ],
-      23: [
-        {
-          name: 'STANDARD SUPPRESSOR',
-          replaced: ['COMPENSATED BRAKE']
-        }
-      ],
-      24: [
-        {
-          name: 'FULL ANGLED',
-          replaced: ['CANTED STUBBY']
-        }
-      ],
-      28: [
-        {
-          name: 'LONG SUPPRESSOR',
-          replaced: ['STANDARD SUPPRESSOR']
-        }
-      ],
-      35: [
-        {
-          name: 'STIPPLED STUBBY',
-          replaced: ['FULL ANGLED']
-        },
-        {
-          name: '5 MW GREEN',
-          replaced: ['50 MW GREEN']
-        }
-      ],
-      37: [
-        {
-          name: '349MM FLUTED',
-          replaced: ['465MM LB']
-        },
-        { remove: '50 MW GREEN' }
-      ],
-      39: [
-        {
-          name: 'FULL ANGLED',
-          replaced: ['STIPPLED STUBBY']
-        },
-        {
-          name: 'LIGHTENED SUPPRESSOR',
-          replaced: ['LONG SUPPRESSOR']
-        }
-      ]
-    };
-    const m2010ESR_BASELINE = ['FMJ', '5RND MAGAZINE', 'SU-230 LPVO'];
-    const M2010ESR_CHANGES = {
-      2: ['24" FLUTED', 'FULL ANGLED', 'RANGE FINDER', '5 MW RED', { name: 'S-VPS 6.00X', replaced: ['SU-230 LPVO'] }],
-      3: [
-        {
-          name: 'MATCH GRADE',
-          replaced: ['FMJ']
-        }
-      ],
-      7: [
-        {
-          name: '5 MW GREEN',
-          replaced: ['5 MW RED']
-        }
-      ],
-      10: [
-        {
-          name: 'SSDS 6.00X',
-          replaced: ['S-VPS 6.00X']
-        }
-      ],
-      13: ['DLC BOLT', { remove: '5 MW GREEN' }],
-      15: [
-        {
-          name: '5RND FAST MAG',
-          replaced: ['5RND MAGAZINE']
-        }
-      ],
-      16: [
-        {
-          name: '26" CARBON',
-          replaced: ['24" FLUTED']
-        }
-      ],
-      36: ['ANTI-GLARE COATING', { name: '5RND MAGAZINE', replaced: ['5RND FAST MAG'] }]
-    };
-    const miniscout_baseline = ['16" FACTORY', 'FMJ', '10RND MAGAZINE', 'DVO LPVO'];
-    const miniscout_changes = {
-      2: ['FULL ANGLED'],
-      3: ['5 MW RED'],
-      4: [
-        {
-          name: '18" EXTENDED',
-          replaced: ['16" FACTORY']
-        }
-      ],
-      6: [{ name: 'FLASHLIGHT', slot: 8 }],
-      8: [
-        {
-          name: '10RND FAST MAG',
-          replaced: ['10RND MAGAZINE']
-        }
-      ],
-      12: [
-        {
-          name: '5 MW GREEN',
-          replaced: ['5 MW RED']
-        }
-      ],
-      19: ['STANDARD SUPPRESSOR'],
-      24: ['RANGE FINDER', { remove: '5 MW GREEN' }],
-      40: ['ANTI-GLARE COATING', '5 MW GREEN', { remove: 'STANDARD SUPPRESSOR' }]
-    };
-    const umg40_baseline = ['200MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'R4T 2.00X'];
-    const umg40_changes = {
-      3: ['5 MW RED'],
-      7: [
-        {
-          name: 'ALLOY VERTICAL',
-          replaced: ['FOLDING VERTICAL']
-        },
-        {
-          name: 'A-P2 1.75X',
-          replaced: ['R4T 2.00X']
-        }
-      ],
-      8: ['LINEAR COMP'],
-      11: [
-        {
-          name: 'RIBBED VERTICAL',
-          replaced: ['ALLOY VERTICAL']
-        }
-      ],
-      12: [
-        {
-          name: '5 MW GREEN',
-          replaced: ['5 MW RED']
-        }
-      ],
-      14: [
-        {
-          name: 'FOLDING STUBBY',
-          replaced: ['RIBBED VERTICAL']
-        },
-        'RO-M 1.75X'
-      ],
-      17: [
-        {
-          name: 'SLIM ANGLED',
-          replaced: ['FOLDING STUBBY']
-        }
-      ],
-      18: [
-        {
-          name: 'HOLLOW POINT',
-          replaced: ['FMJ']
-        }
-      ],
-      19: [
-        {
-          name: 'COMPENSATED BRAKE',
-          replaced: ['LINEAR COMP']
-        }
-      ],
-      22: [
-        {
-          name: 'FMJ',
-          replaced: ['HOLLOW POINT']
-        },
-        { name: 'FLASHLIGHT', slot: 8 }
-      ],
-      23: ['50 MW GREEN'],
-      24: [
-        {
-          name: 'STANDARD SUPPRESSOR',
-          replaced: ['COMPENSATED BRAKE']
-        }
-      ],
-      26: [
-        {
-          name: '305MM CUSTOM',
-          replaced: ['200MM FACTORY']
-        },
-        { remove: 'FLASHLIGHT' }
-      ],
-      28: [
-        {
-          name: 'LONG SUPPRESSOR',
-          replaced: ['STANDARD SUPPRESSOR']
-        }
-      ],
-      29: [
-        {
-          name: 'CANTED STUBBY',
-          replaced: ['SLIM ANGLED']
-        },
-        {
-          name: '5 MW GREEN',
-          replaced: ['50 MW GREEN']
-        }
-      ],
-      36: [
-        {
-          name: 'STIPPLED STUBBY',
-          replaced: ['CANTED STUBBY']
-        },
-        { remove: '5 MW GREEN' }
-      ],
-      37: [
-        {
-          name: 'LIGHTENED SUPPRESSOR',
-          replaced: ['LONG SUPPRESSOR']
-        }
-      ],
-      39: [
-        {
-          name: 'SLIM ANGLED',
-          replaced: ['STIPPLED STUBBY']
-        },
-        {
-          name: 'SYNTHETIC TIP',
-          replaced: ['FMJ']
-        },
-        {
-          name: 'STANDARD SUPPRESSOR',
-          replaced: ['LIGHTENED SUPPRESSOR']
-        }
-      ]
-    };
-    const qbz_192_baseline = ['10.5" FACTORY', 'FOLDING VERTICAL', 'FMJ', '36RND MAGAZINE', 'CCO 2.00X', 'RAIL COVER'];
-    const qbz_192_changes = {
-      2: ['LINEAR COMP'],
-      3: [
-        {
-          name: 'ALLOY VERTICAL',
-          replaced: ['FOLDING VERTICAL']
-        },
-        {
-          name: 'RO-M 1.75X',
-          replaced: ['CCO 2.00X']
-        }
-      ],
-      5: ['5 MW RED'],
-      6: [
-        {
-          name: 'RIBBED VERTICAL',
-          replaced: ['ALLOY VERTICAL']
-        }
-      ],
-      8: [{ name: 'FLASHLIGHT', slot: 5 }],
-      9: [
-        {
-          name: 'FOLDING STUBBY',
-          replaced: ['RIBBED VERTICAL']
-        }
-      ],
-      12: [
-        {
-          name: '5 MW GREEN',
-          replaced: ['5 MW RED']
-        }
-      ],
-      14: [
-        {
-          name: 'POLYMER CASE',
-          replaced: ['FMJ']
-        }
-      ],
-      16: [
-        {
-          name: '14.5" COMMON',
-          replaced: ['10.5" FACTORY']
-        },
-        { remove: '5 MW GREEN' }
-      ],
-      18: [
-        {
-          name: 'SLIM ANGLED',
-          replaced: ['FOLDING STUBBY']
-        }
-      ],
-      23: [
-        {
-          name: 'CANTED STUBBY',
-          replaced: ['SLIM ANGLED']
-        },
-        {
-          name: 'FMJ',
-          replaced: ['POLYMER CASE']
-        }
-      ],
-      25: [
-        {
-          name: 'FULL ANGLED',
-          replaced: ['CANTED STUBBY']
-        },
-        {
-          name: 'POLYMER CASE',
-          replaced: ['FMJ']
-        }
-      ],
-      36: [
-        {
-          name: 'STIPPLED STUBBY',
-          replaced: ['FULL ANGLED']
-        },
-        { remove: '5 MW GREEN' }
-      ],
-      39: [
-        {
-          name: 'LOW-PROFILE STUBBY',
-          replaced: ['STIPPLED STUBBY']
-        },
-        {
-          name: 'FMJ',
-          replaced: ['POLYMER CASE']
-        },
-        { remove: 'RAIL COVER' }
-      ]
-    };
-
-    const weaponConfigs = [
-      {
-        id: 'kord-6p67',
-        dbname: 'KORD 6P67',
-        rank: 'm',
-        tr: '1',
-        recommended: [
-          'OSA-7 1.00X',
-          'SINGLE-PORT BRAKE',
-          '415MM PROTOTYPE',
-          '5 MW RED',
-          'RIBBED VERTICAL',
-          '30RND MAGAZINE',
-          'FMJ'
-        ],
-        baseline: KORD_BASELINE,
-        changes: KORD_CHANGES
-      },
-      {
-        id: 'pw5a3',
-        dbname: 'PW5A3',
-        rank: 'm',
-        tr: '1',
-        baseline: PW5A3_BASELINE,
-        changes: PW5A3_CHANGES
-      },
-      {
-        id: 'rpkm',
-        dbname: 'RPKM',
-        rank: 'm',
-        tr: '1',
-        recommended: [
-          'A-P2 1.75X',
-          'LONG SUPPRESSOR',
-          '590MM FACTORY',
-          'FOLDING STUBBY',
-          '40RND MAGAZINE',
-          'SYNTHETIC TIP'
-        ],
-        baseline: RPKM_BASELINE,
-        changes: RPKM_CHANGES
-      },
-      {
-        id: 'm87a1',
-        dbname: 'M87A1',
-        rank: 'm',
-        tr: '1',
-        baseline: M87A1_BASELINE,
-        changes: M87A1_CHANGES
-      },
-      {
-        id: 'ggh-22',
-        dbname: 'GGH-22',
-        rank: 'b',
-        tr: '1',
-        baseline: GGH_22_BASELINE,
-        changes: GGH_22_CHANGES
-      },
-      {
-        id: 'l110',
-        dbname: 'L110',
-        rank: 'm',
-        tr: '2',
-        baseline: L110_BASELINE,
-        changes: L110_CHANGES
-      },
-      {
-        id: 'm2010esr',
-        dbname: 'M2010 ESR',
-        rank: 'm',
-        tr: '1',
-        recommended: [
-          'S-VPS 6.00X',
-          '26" CARBON',
-          'ANTI-GLARE COATING',
-          'RANGE FINDER',
-          '5RND MAGAZINE',
-          'DLC BOLT',
-          'MATCH GRADE'
-        ],
-        baseline: m2010ESR_BASELINE,
-        changes: M2010ESR_CHANGES
-      },
-      {
-        id: 'miniscout',
-        dbname: 'Mini Scout',
-        rank: 'm',
-        tr: '2',
-        baseline: miniscout_baseline,
-        changes: miniscout_changes
-      },
-      {
-        id: 'umg40',
-        dbname: 'UMG-40',
-        rank: 'm',
-        tr: '2',
-        baseline: umg40_baseline,
-        changes: umg40_changes
-      },
-      {
-        id: 'qbz-192',
-        dbname: 'QBZ-192',
-        rank: 'm',
-        tr: '1',
-        baseline: qbz_192_baseline,
-        changes: qbz_192_changes
-      }
-    ];
-
     const template = document.getElementById('weaponTemplate');
     const weaponListEl = document.getElementById('weaponList');
     const weaponNavEl = document.getElementById('weaponNav');
@@ -3575,14 +3076,68 @@
   } else {
     nav.style.top = '96px';
   }
-}
-    
+  }
+
+    function setTypeFilter(value) {
+      currentTypeFilter = formatTypeKey(value || '');
+      updateTypeFilterSelection();
+      renderWeaponList();
+    }
+
+    function updateTypeFilterSelection() {
+      if (!typeFilterList) return;
+      const buttons = Array.from(typeFilterList.querySelectorAll('.type-filter-item'));
+      buttons.forEach((button) => {
+        const key = formatTypeKey(button.dataset.type || '');
+        button.classList.toggle('active', key === currentTypeFilter);
+      });
+    }
+
+  function deriveDefaultTypeOrder(trackersList) {
+    const trackersCopy = [...trackersList];
+    trackersCopy.sort((a, b) => {
+      const aIndex = TYPE_INDEX[a.typeKey] ?? TYPE_ORDER.length;
+      const bIndex = TYPE_INDEX[b.typeKey] ?? TYPE_ORDER.length;
+      if (aIndex !== bIndex) return aIndex - bIndex;
+      return (a.displayName || '').localeCompare(b.displayName || '');
+    });
+    return trackersCopy.map((tracker) => tracker.id);
+  }
+
+  function populateTypeFilterList(trackersList) {
+      if (!typeFilterList) return;
+      const typeMap = new Map();
+      for (const tracker of trackersList) {
+        if (!tracker || !tracker.typeKey) continue;
+        if (!typeMap.has(tracker.typeKey)) {
+          const label = (tracker.displayType && tracker.displayType.trim()) || tracker.typeKey;
+          typeMap.set(tracker.typeKey, label);
+        }
+      }
+      const entries = Array.from(typeMap.entries()).sort((a, b) => a[1].localeCompare(b[1]));
+      const chips = ['<button type="button" class="type-filter-item" data-type="">All</button>'];
+      for (const [key, label] of entries) {
+        chips.push(`<button type="button" class="type-filter-item" data-type="${key}">${label}</button>`);
+      }
+      typeFilterList.innerHTML = chips.join('');
+      updateTypeFilterSelection();
+    }
+
 
     const trackers = weaponConfigs.map((config) => {
       const tracker = new WeaponTracker(config);
       tracker.mount(template);
       return tracker;
     });
+
+    if (typeFilterList) {
+      typeFilterList.addEventListener('click', (event) => {
+        const button = event.target.closest('.type-filter-item');
+        if (!button) return;
+        setTypeFilter(button.dataset.type || '');
+      });
+    }
+    populateTypeFilterList(trackers);
 
     function updateWeaponNav(order) {
       if (!weaponNavEl) return;
@@ -3679,7 +3234,26 @@
       }
 
       weaponListEl.innerHTML = '';
-      for (const id of finalOrder) {
+      let displayOrder = finalOrder;
+      if (currentTypeFilter) {
+        const filtered = finalOrder
+          .map((id) => idToTracker.get(id))
+          .filter((tracker) => tracker && tracker.typeKey === currentTypeFilter);
+        filtered.sort((a, b) => {
+          const aVal = Number.isFinite(a.typeRatingValue) ? a.typeRatingValue : Number.MAX_SAFE_INTEGER;
+          const bVal = Number.isFinite(b.typeRatingValue) ? b.typeRatingValue : Number.MAX_SAFE_INTEGER;
+          if (aVal !== bVal) return aVal - bVal;
+          return (a.displayName || '').localeCompare(b.displayName || '');
+        });
+        displayOrder = filtered.map((tracker) => tracker.id);
+      } else {
+        const defaultOrder = deriveDefaultTypeOrder(trackers);
+        const matchesDefault =
+          defaultOrder.length === finalOrder.length &&
+          defaultOrder.every((id, index) => finalOrder[index] === id);
+        displayOrder = matchesDefault ? defaultOrder : finalOrder;
+      }
+        for (const id of displayOrder) {
         const tracker = idToTracker.get(id);
         tracker.attach(weaponListEl);
       }
@@ -3907,6 +3481,8 @@
 
 
     
+
+
 
 
 
