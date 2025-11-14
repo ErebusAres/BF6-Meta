@@ -978,6 +978,72 @@ const weaponConfigs = [
       'FMJ',
       'RO-S 1.25X'
     ]
+  },
+  {
+    id: 'm39 emr',
+    dbname: 'm39 emr',
+    rank: 'b',
+    tr: '1',
+    versatile: [
+      { Notes: "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>." 
+      },
+      'Lightened Suppressor',
+      '22" Factory',
+      'Stippled Stubby',
+      '15RND Magazine',
+      'FMJ',
+      'R4T 2.00X'
+    ]
+  },
+  {
+    id: 'svdm',
+    dbname: 'svdm',
+    rank: 'c',
+    tr: '2',
+    versatile: [
+    { Notes: 
+      "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
+    },
+    'Double-Port Brake',
+    '556MM Para',
+    'Folding Stubby',
+    '20RND Fast Mag',
+    'FMJ',
+    'R4T 2.00X'
+    ]
+  },
+  {
+    id: 'p18',
+    dbname: 'p18',
+    rank: 'a',
+    tr: '1',
+    versatile: [
+      { Notes: 
+        "The stock pistol offers moderate damage and a fast fire rate, but complicating muzzle rise may obscure targets."
+      },
+      'Single-Port Brake',
+      '3.9" Factory',
+      '5 MW Green',
+      '17RND Magazine',
+      'FMJ',
+      'Improved Mag Catch',
+      'Iron Sights'
+    ]
+  },
+  {
+    id: 'm44',
+    dbname: 'm44',
+    rank: 'b',
+    tr: '2',
+    versatile: [
+      { Notes: 
+        "The six-shooting backup pocket rocket offers excellent hipfire and a devastating one-two punch, but harshly punishes any missed shots."
+      },
+      '8.37" Long',
+      '6RND Speedloader',
+      'Hollow point',
+      'Iron sights'
+    ]
   }
 ];
 
