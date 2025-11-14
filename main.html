@@ -1402,6 +1402,111 @@
       return entry;
     }
 
+    const SLOT_KEY_BY_TYPE = {
+      BARREL: '1',
+      UNDERBARREL: '2',
+      AMMUNITION: '3',
+      MUZZLE: '4',
+      'RIGHT ACCESSORY': '5',
+      MAGAZINE: '6',
+      SCOPE: '7',
+      'LEFT ACCESSORY': '8',
+      'TOP ACCESSORY': '9',
+      'OPTIC ACCESSORY': '10',
+      ERGONOMICS: '11'
+    };
+
+    function getTypeFromPayload(payload, dbName) {
+      if (payload && typeof payload === 'object' && typeof payload.type === 'string') {
+        return payload.type;
+      }
+      const baseName =
+        typeof payload === 'string'
+          ? payload
+        : payload && typeof payload.name === 'string'
+          ? payload.name
+          : payload && typeof payload.remove === 'string'
+          ? payload.remove
+          : null;
+      if (!baseName || !dbName) return null;
+      const lookup = resolveAttachmentFromDb(dbName, baseName);
+      return lookup && lookup.type ? lookup.type : null;
+    }
+
+    function normalizeSlotKeyFromPayload(payload, dbName) {
+      if (payload && typeof payload === 'object') {
+        if (payload.slot !== undefined && payload.slot !== null) return String(payload.slot);
+        if (payload.slotKey !== undefined && payload.slotKey !== null) return String(payload.slotKey);
+        if (payload.slotName) return String(payload.slotName);
+      }
+      const type = getTypeFromPayload(payload, dbName);
+      if (!type) return null;
+      const normalized = type.toString().trim().toUpperCase();
+      return SLOT_KEY_BY_TYPE[normalized] || normalized;
+    }
+
+    function sanitizePayloadForStorage(payload) {
+      if (!payload || typeof payload !== 'object') return payload;
+      const copy = { ...payload };
+      delete copy.slot;
+      delete copy.slotKey;
+      delete copy.slotName;
+      delete copy.slotId;
+      delete copy.remove;
+      delete copy.removed;
+      delete copy.action;
+      return copy;
+    }
+
+    function isRemovalPayload(payload) {
+      if (!payload || typeof payload !== 'object') return false;
+      if (payload.remove === true || payload.removed === true) return true;
+      if (typeof payload.remove === 'string' && payload.remove.trim()) return true;
+      if (typeof payload.action === 'string' && payload.action.trim().toLowerCase() === 'remove') {
+        return true;
+      }
+      return false;
+    }
+
+    function normalizeBaselineConfig(raw, dbName) {
+      if (!raw) return {};
+      if (Array.isArray(raw)) {
+        const map = {};
+        for (const entry of raw) {
+          if (entry == null) continue;
+          const slotKey = normalizeSlotKeyFromPayload(entry, dbName);
+          if (!slotKey) continue;
+          map[slotKey] = sanitizePayloadForStorage(entry);
+        }
+        return map;
+      }
+      return typeof raw === 'object' ? raw : {};
+    }
+
+    function normalizeChangesConfig(raw, dbName) {
+      if (!raw || typeof raw !== 'object') return raw || {};
+      const normalized = {};
+      for (const [level, definition] of Object.entries(raw)) {
+        if (Array.isArray(definition)) {
+          const map = {};
+          for (const entry of definition) {
+            if (entry == null) continue;
+            const slotKey = normalizeSlotKeyFromPayload(entry, dbName);
+            if (!slotKey) continue;
+            if (isRemovalPayload(entry)) {
+              map[slotKey] = null;
+            } else {
+              map[slotKey] = sanitizePayloadForStorage(entry);
+            }
+          }
+          normalized[level] = map;
+        } else {
+          normalized[level] = definition;
+        }
+      }
+      return normalized;
+    }
+
     const storage = (() => {
       const KEY = 'bf6-meta-state-v2';
       const store = typeof window !== 'undefined' && window.localStorage ? window.localStorage : null;
@@ -1459,18 +1564,39 @@
         this.config = config;
         this.id = config.id;
         this.minLevel = Number.isFinite(config.minLevel) ? config.minLevel : 1;
-        this.maxLevel = Number.isFinite(config.maxLevel) ? config.maxLevel : 40;
-        this.apMax = Number.isFinite(config.apMax) ? config.apMax : 100;
         this.dbname =
           typeof config.dbname === 'string' && config.dbname.trim()
             ? config.dbname.trim()
             : null;
+        this.dbEntry = this.dbname ? getWeaponDb(this.dbname) : null;
+        const meta = this.dbEntry && typeof this.dbEntry === 'object' ? this.dbEntry : null;
+        const configName = typeof config.name === 'string' ? config.name.trim() : '';
+        const configType = typeof config.type === 'string' ? config.type.trim() : '';
+        const configImage = typeof config.image === 'string' ? config.image.trim() : '';
+        const metaName = meta && typeof meta.name === 'string' ? meta.name.trim() : '';
+        const metaType = meta && typeof meta.type === 'string' ? meta.type.trim() : '';
+        const metaImage = meta && typeof meta.image === 'string' ? meta.image.trim() : '';
+        const metaMaxLevel = meta && Number.isFinite(meta.maxLevel) ? meta.maxLevel : null;
+        const metaApMax = meta && Number.isFinite(meta.apMax) ? meta.apMax : null;
+        this.displayName = configName || metaName || this.id;
+        this.displayType = configType || metaType || '';
+        this.displayImage = configImage || metaImage || '';
+        this.maxLevel = Number.isFinite(config.maxLevel)
+          ? config.maxLevel
+          : Number.isFinite(metaMaxLevel)
+          ? metaMaxLevel
+          : 40;
+        this.apMax = Number.isFinite(config.apMax)
+          ? config.apMax
+          : Number.isFinite(metaApMax)
+          ? metaApMax
+          : 100;
         this.slotLabels = { ...(config.slotLabels || {}) };
         for (const key of Object.keys(this.slotLabels)) {
           this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
         }
-        this.baseline = config.baseline || {};
-        this.changes = config.changes || {};
+        this.baseline = normalizeBaselineConfig(config.baseline, this.dbname);
+        this.changes = normalizeChangesConfig(config.changes, this.dbname);
         this.slotKeys = this.buildSlotKeys();
 
         const saved = storage.getWeaponState(this.id);
@@ -1639,10 +1765,10 @@
         this.recommendedApValueEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-value') : null;
         this.recommendedApMaxEl = this.recommendedPanelEl ? this.recommendedPanelEl.querySelector('.ap-max') : null;
 
-        if (this.weaponNameEl) this.weaponNameEl.textContent = toUpperSafe(this.config.name || this.id);
-        if (this.weaponTypeEl) this.weaponTypeEl.textContent = toUpperSafe(this.config.type || 'Mastery Loadout Progression');
+        if (this.weaponNameEl) this.weaponNameEl.textContent = toUpperSafe(this.displayName || this.id);
+        if (this.weaponTypeEl) this.weaponTypeEl.textContent = toUpperSafe(this.displayType || 'Mastery Loadout Progression');
         if (this.typeChipEl) {
-          const typeLabel = toUpperSafe(this.config.type || 'Type Not Found');
+          const typeLabel = toUpperSafe(this.displayType || 'Type Not Found');
           this.typeChipEl.textContent = typeLabel;
         }
         if (this.rankChipEl) {
@@ -1653,10 +1779,11 @@
           this.rankChipEl.classList.remove('rank-m','rank-a','rank-b','rank-c','rank-d','rank-unranked');
           this.rankChipEl.classList.add(r && map[r] ? ('rank-' + r) : 'rank-unranked');
         }
-                if (this.rangeChipEl) {
+        if (this.rangeChipEl) {
           const code = (this.config.tr || '').toString().trim().toUpperCase();
           const num = parseInt(code, 10);
-          const typeLabel = toUpperSafe(this.config.type || 'TYPE'); const kind = typeLabel;
+          const typeLabel = toUpperSafe(this.displayType || 'TYPE');
+          const kind = typeLabel;
           if (Number.isFinite(num) && num >= 1 && num <= 4 && kind) {
             this.rangeChipEl.textContent = '#' + num + ' ' + kind;
             this.rangeChipEl.classList.remove('range-1','range-2','range-3','range-4','range-unranked');
@@ -1672,9 +1799,9 @@
           }
         }
         if (this.weaponImageWrapEl && this.weaponImageEl) {
-          const imgName = typeof this.config.image === 'string' ? this.config.image.trim() : '';
+          const imgName = this.displayImage;
           if (imgName) {
-            const nameOrId = toUpperSafe(this.config.name || this.id);
+            const nameOrId = toUpperSafe(this.displayName || this.id);
             const hasPath = /[\\/]/.test(imgName) || /^(https?:)?\/\//i.test(imgName);
             const primary = hasPath ? imgName : `images/${imgName}`;
             const alternate = hasPath ? imgName : `Images/${imgName}`;
@@ -2615,1619 +2742,718 @@
         this.renderSlots(this.state.level);
       }
     }
-    const KORD_BASELINE = {
-      1: '415MM FACTORY',
-      2: 'FOLDING VERTICAL',
-      3: 'FMJ',
-      4: 'SINGLE-PORT BRAKE',
-      6: '30 RND MAGAZINE',
-      7: 'CCO 2.00X'
-    };
+    const KORD_BASELINE = ['415MM FACTORY', 'FOLDING VERTICAL', 'FMJ', 'SINGLE-PORT BRAKE', '30RND MAGAZINE', 'CCO 2.00X'];
 
     const KORD_CHANGES = {
-      2: {
-        5: 'FLASHLIGHT'
-      },
-      3: {
-        2: {
+      2: ['FLASHLIGHT'],
+      3: [
+        {
           name: 'ALLOY VERTICAL',
           replaced: ['FOLDING VERTICAL']
         }
-      },
-      6: {
-        2: {
+      ],
+      6: [
+        {
           name: 'RIBBED VERTICAL',
           replaced: ['ALLOY VERTICAL']
         }
-      },
-      7: {
-        1: {
+      ],
+      7: [
+        {
           name: '415MM PROTOTYPE',
           replaced: ['415MM FACTORY']
         }
-      },
-      8: {
-        2: {
+      ],
+      8: [
+        {
           name: '6H64 VERTICAL',
           replaced: ['RIBBED VERTICAL']
         }
-      },
-      12: {
-        5: {
+      ],
+      12: [
+        {
           name: 'RED LASER',
           replaced: ['FLASHLIGHT']
         }
-      },
-      13: {
-        6: {
-          name: '36 RND MAGAZINE',
-          replaced: ['30 RND MAGAZINE']
+      ],
+      13: [
+        {
+          name: '36RND MAGAZINE',
+          replaced: ['30RND MAGAZINE']
         }
-      },
-      15: {
-        7: {
-          name: '3VZR 1.75x',
+      ],
+      15: [
+        {
+          name: '3VZR 1.75X',
           replaced: ['CCO 2.00X']
         }
-      },
-      16: {
-        2: {
+      ],
+      16: [
+        {
           name: 'CLASSIC VERTICAL',
           replaced: ['6H64 VERTICAL']
         },
-        7: {
-          name: 'RO-M 1.75x',
-          replaced: ['3VZR 1.75x']
+        {
+          name: 'RO-M 1.75X',
+          replaced: ['3VZR 1.75X']
         }
-      },
-      20: {
-        4: {
+      ],
+      20: [
+        {
           name: 'COMPENSATED BRAKE',
           replaced: ['SINGLE-PORT BRAKE']
         },
-        5: null
-      },
-      24: {
-        4: {
+        { remove: 'FLASHLIGHT' }
+      ],
+      24: [
+        {
           name: 'STANDARD SUPPRESSOR',
           replaced: ['COMPENSATED BRAKE']
         }
-      },
-      32: {
-        4: {
+      ],
+      32: [
+        {
           name: 'LONG SUPPRESSOR',
           replaced: ['STANDARD SUPPRESSOR']
         }
-      }
+      ]
     };
-    const PW5A3_BASELINE = {
-      barrel: { name: '225MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
-      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
-      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      magazine: { name: '30 RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
-      scope: { name: 'IRON SIGHTS', pts: 5, type: 'Scope', unlockLevel: 1 }
-    };
+    const PW5A3_BASELINE = ['225MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'IRON SIGHTS'];
 
     const PW5A3_CHANGES = {
-      3: {
-        underbarrel: {
-          name: 'Alloy Vertical',
-          pts: 5,
-          type: 'Underbarrel',
-          unlockLevel: 3,
-          replaced: [
-            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
-          ]
-        }
-      },
-      5: {
-        magazine: {
-          name: '30RND FAST MAG',
-          pts: 10,
-          type: 'Magazine',
-          unlockLevel: 5,
-          replaced: [
-            { name: '30 RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 }
-          ]
-        }
-      },
-      6: {
-        underbarrel: {
-          name: 'RIBBED VERTICAL',
-          pts: 10,
-          type: 'Underbarrel',
-          unlockLevel: 6,
-          replaced: [
-            { name: 'Alloy Vertical', pts: 5, type: 'Underbarrel', unlockLevel: 3 }
-          ]
-        }
-      },
-      9: {
-        muzzle: {
-          name: 'STANDARD SUPPRESSOR',
-          pts: 20,
-          type: 'Muzzle',
-          unlockLevel: 9
-        }
-      },
-      12: {
-        barrel: {
-          name: '245mm Custom',
-          pts: 15,
-          type: 'Barrel',
-          unlockLevel: 12
-        },
-        ergonomics: {
-          name: 'Improved Mag Catch',
-          pts: 5,
-          type: 'Ergonomics',
-          unlockLevel: 12
-        }
-      },
-      14: {
-        underbarrel: {
-          name: '6H64 VERTICAL',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 14,
-          replaced: [
-            { name: 'RIBBED VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 6 }
-          ]
-        }
-      },
-      21: {
-        underbarrel: {
-          name: 'CLASSIC VERTICAL',
-          pts: 35,
-          type: 'Underbarrel',
-          unlockLevel: 21,
-          replaced: [
-            { name: '6H64 VERTICAL', pts: 25, type: 'Underbarrel', unlockLevel: 14 }
-          ]
-        }
-      },
-      28: {
-        underbarrel: {
-          name: '6H64 Vertical',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 14,
-          replaced: [
-            { name: 'CLASSIC VERTICAL', pts: 35, type: 'Underbarrel', unlockLevel: 21 }
-          ]
-        },
-        magazine: {
-          name: '40 RND Magazine',
-          pts: 25,
-          type: 'Magazine',
-          unlockLevel: 28,
-          replaced: [
-            { name: '30RND FAST MAG', pts: 10, type: 'Magazine', unlockLevel: 5 }
-          ]
-        }
-      }
-    };
-    const RPKM_BASELINE = {
-      // 590MM FACTORY
-      barrel: { name: '590MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
-      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
-      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      magazine: { name: '40 RND MAGAZINE', pts: 25, type: 'Magazine', unlockLevel: 1 },
-      muzzle: { name: 'Flash Hider', pts: 10, type: 'Muzzle', unlockLevel: 1 },
-      scope: { name: 'MINI FLEX 1.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
-    };
-    const RPKM_CHANGES = {
-      2: { 
-        scope: {
-          name: 'RO-M 1.75x',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 2,
-          replaced: [
-            { name: 'MINI FLEX 1.00X', pts: 10, type: 'Scope', unlockLevel: 28 }
-          ]
-        }
-      },
-      4: {
-        underbarrel: {
+      3: [
+        {
           name: 'ALLOY VERTICAL',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 4,
-          replaced: [
-            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
-          ]
+          replaced: ['FOLDING VERTICAL']
         }
-      },
-      5: {
-        rightAccessory: {
-          name: '5 MW RED',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 5
+      ],
+      5: [
+        {
+          name: '30RND FAST MAG',
+          replaced: ['30RND MAGAZINE']
         }
-      },
-      6: {
-        underbarrel: {
+      ],
+      6: [
+        {
           name: 'RIBBED VERTICAL',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 6,
-          replaced: [
-            { name: 'ALLOY VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 4 }
-          ]
+          replaced: ['ALLOY VERTICAL']
         }
-      },
-      8: {
-        leftAccessory: {
-          name: 'flashlight',
-          pts: 10,
-          type: 'Left Accessory',
-          unlockLevel: 8
+      ],
+      9: ['STANDARD SUPPRESSOR'],
+      12: ['245MM CUSTOM', 'IMPROVED MAG CATCH'],
+      14: [
+        {
+          name: '6H64 VERTICAL',
+          replaced: ['RIBBED VERTICAL']
         }
-      },
-      9: {
-        underbarrel: {
-          name: 'Folding stubby',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 9,
-          replaced: [
-            { name: 'RIBBED VERTICAL', pts: 20, type: 'Underbarrel', unlockLevel: 6 }
-          ]
+      ],
+      21: [
+        {
+          name: 'CLASSIC VERTICAL',
+          replaced: ['6H64 VERTICAL']
         }
-      }, 
-      12: {
-        rightAccessory: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 12,
-          replaced: [
-            { name: '5 MW RED', pts: 10, type: 'Right Accessory', unlockLevel: 5 }
-          ]
-        }
-      }, 
-      18: {
-        underbarrel: {
-          name: 'Slim Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 18,
-          replaced: [
-            { name: 'Folding stubby', pts: 20, type: 'Underbarrel', unlockLevel: 9 }
-          ]
+      ],
+      28: [
+        {
+          name: '6H64 VERTICAL',
+          replaced: ['CLASSIC VERTICAL']
         },
-        leftAccessory: null
-      },
-      21: {
-        barrel: {
+        {
+          name: '40RND MAGAZINE',
+          replaced: ['30RND FAST MAG']
+        }
+      ]
+    };
+    const RPKM_BASELINE = ['590MM FACTORY', 'FOLDING VERTICAL', 'FMJ', 'FLASH HIDER', '40RND MAGAZINE', 'MINI FLEX 1.00X'];
+    const RPKM_CHANGES = {
+      2: [
+        {
+          name: 'RO-M 1.75X',
+          replaced: ['MINI FLEX 1.00X']
+        }
+      ],
+      4: [
+        {
+          name: 'ALLOY VERTICAL',
+          replaced: ['FOLDING VERTICAL']
+        }
+      ],
+      5: ['5 MW RED'],
+      6: [
+        {
+          name: 'RIBBED VERTICAL',
+          replaced: ['ALLOY VERTICAL']
+        }
+      ],
+      8: ['FLASHLIGHT'],
+      9: [
+        {
+          name: 'FOLDING STUBBY',
+          replaced: ['RIBBED VERTICAL']
+        }
+      ],
+      12: [
+        {
+          name: '5 MW GREEN',
+          replaced: ['5 MW RED']
+        }
+      ],
+      18: [
+        {
+          name: 'SLIM ANGLED',
+          replaced: ['FOLDING STUBBY']
+        },
+        { remove: 'FLASHLIGHT' }
+      ],
+      21: [
+        {
           name: '600MM TABUK',
-          pts: 15,
-          type: 'Barrel',
-          unlockLevel: 21,
-          replaced: [
-            { name: '590MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
+          replaced: ['590MM FACTORY']
         }
-      },
-      23: {
-        underbarrel: {
-          name: 'Canted Stubby',
-          pts: 30,
-          type: 'Underbarrel',
-          unlockLevel: 23,
-          replaced: [
-            { name: 'Slim Angled', pts: 25, type: 'Underbarrel', unlockLevel: 18 }
-          ]
+      ],
+      23: [
+        {
+          name: 'CANTED STUBBY',
+          replaced: ['SLIM ANGLED']
         },
-        rightAccessory: null
-      },
-      25: {
-        underbarrel: {
-          name: 'Full Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 25,
-          replaced: [
-            { name: 'Canted Stubby', pts: 30, type: 'Underbarrel', unlockLevel: 23 }
-          ]
-        },
-        ammunition: {
-          name: 'Polymer Case',
-          pts: 10,
-          type: 'Ammunition', 
-          unlockLevel: 25,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
-        }
-      },
-      35: {
-        underbarrel: {
-          name: 'Stippled Stubby',
-          pts: 35,
-          type: 'Underbarrel',
-          unlockLevel: 35,
-          replaced: [
-            { name: 'Full Angled', pts: 25, type: 'Underbarrel', unlockLevel: 25 }
-          ]
-        },
-        ammunition: {
-          name: 'FMJ',
-          pts: 5,
-          type: 'Ammunition',
-          unlockLevel: 35,
-          replaced: [
-            { name: 'Polymer Case', pts: 10, type: 'Ammunition', unlockLevel: 25 }
-          ]
-        }
-      },
-      38: {
-        barrel: {
-          name: '590mm Factory',
-          pts: 10,
-          type: 'Barrel',
-          unlockLevel: 1,
-          replaced: [
-            { name: '600MM TABUK', pts: 15, type: 'Barrel', unlockLevel: 21 }
-          ]
-        },
-        underbarrel: {
-          name: 'Adjustable Angled',
-          pts: 15,
-          type: 'Underbarrel',
-          unlockLevel: 16,
-          replaced: [
-            { name: 'Stippled Stubby', pts: 35, type: 'Underbarrel', unlockLevel: 35 }
-          ]
-        },
-        ammunition: {
-          name: 'Synthetic Tip',
-          pts: 30,
-          type: 'Ammunition',
-          unlockLevel: 38,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 35 }
-          ]
-        },
-        muzzle: {
-          name: 'Lightened Suppressor',
-          pts: 30,
-          type: 'Muzzle',
-          unlockLevel: 37,
-        }
-      }
-    };
-    const M87A1_BASELINE = {
-      // Placeholder for future weapon baseline
-      barrel: {
-        name: '20" FACTORY',
-        pts: 10,
-        type: 'Barrel',
-        unlockLevel: 1
-      },
-      ammunition: {
-        name: 'BUCKSHOT',
-        pts: 10,
-        type: 'Ammunition',
-        unlockLevel: 1
-      },
-      magazine: {
-        name: '7 SHELL TUBE',
-        pts: 5,
-        type: 'Magazine',
-        unlockLevel: 1
-      },
-      scope: {
-        name: 'IRON SIGHTS',
-        pts: 5,
-        type: 'Scope',
-        unlockLevel: 1
-      }
-    };
-    const M87A1_CHANGES = {
-      4: {
-        rightAccessory: {
-          name: '5 MW RED',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 4
-        }
-      },
-      5: {
-        underbarrel: {
-          name: 'Ribbed Stubby',
-          pts: 30,
-          type: 'Underbarrel',
-          unlockLevel: 5
-        }
-      },
-      10: {
-        underbarrel: {
-          name: 'Slim Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 10,
-          replaced: [
-            { name: 'Ribbed Stubby', pts: 30, type: 'Underbarrel', unlockLevel: 5 }
-          ]
-        }
-      },
-      13: {
-        leftAccessory: {
-          name: 'FLASHLIGHT',
-          pts: 10,
-          type: 'Left Accessory',
-          unlockLevel: 13
-        }
-      },
-      15: { 
-        rightAccessory: {
-          name: '50 MW Blue',
-          pts: 20,
-          type: 'Right Accessory',
-          unlockLevel: 15,
-          replaced: [
-            { name: '5 MW RED', pts: 10, type: 'Right Accessory', unlockLevel: 4 }
-          ]
-        }
-      },
-      18: {
-        underbarrel: {
-          name: 'Folding Stubby',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 17,
-          replaced: [
-            { name: 'Slim Angled', pts: 25, type: 'Underbarrel', unlockLevel: 10 }
-          ]
-        },
-        muzzle: {
-          name: 'CQB Suppressor',
-          pts: 30,
-          type: 'Muzzle',
-          unlockLevel: 18
-        },
-        leftAccessory: null
-      },
-      19: {
-        underbarrel: {
-          name: 'Adjustable Angled',
-          pts: 15,
-          type: 'Underbarrel',
-          unlockLevel: 19,
-          replaced: [
-            { name: 'Folding Stubby', pts: 20, type: 'Underbarrel', unlockLevel: 17 }
-          ]
-        }
-      },
-      22: {
-        leftAccessory: {
-          name : 'FLASHLIGHT',
-          pts: 10,
-          type: 'Left Accessory',
-          unlockLevel: 13,
-        },
-        rightAccessory: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 22,
-          replaced: [
-            { name: '5 MW Blue', pts: 20, type: 'Right Accessory', unlockLevel: 15 }
-          ]
-        }
-      },
-      26: {
-        ammunition: {
-          name: 'Flechette',
-          pts: 30,
-          type: 'Ammunition',
-          unlockLevel: 26,
-          replaced: [
-            { name: 'BUCKSHOT', pts: 10, type: 'Ammunition', unlockLevel: 1 }
-          ]
-        },
-        rightAccessory: null,
-        leftAccessory: null
-      },
-    };
-    const GGH_22_BASELINE = {
-      barrel: {
-        name: '114MM FACTORY',
-        pts: 10,
-        type: 'Barrel',
-        unlockLevel: 1
-      },
-      underbarrel: {
-        name: '5 MW RED',
-        pts: 10,
-        type: 'Underbarrel',
-        unlockLevel: 1
-      },
-      ammunition: {
-        name: 'FMJ',
-        pts: 5,
-        type: 'Ammunition',
-        unlockLevel: 1
-      },
-      magazine: {
-        name: '15RND MAGAZINE',
-        pts: 5,
-        type: 'Magazine',
-        unlockLevel: 1
-      },
-      scope: {
-        name: 'IRON SIGHTS',
-        pts: 0,
-        type: 'Scope',
-        unlockLevel: 1
-      }
-    };
-    const GGH_22_CHANGES = {
-      2: {
-        scope: {
-          name: 'ROX 1.50X',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 2,
-          replaced: [
-            { name: 'IRON SIGHTS', pts: 0, type: 'Scope', unlockLevel: 1 }
-          ]
-        }
-      },
-      4: {
-        ergonomics: {
-          name: 'IMPROVED MAG CATCH',
-          pts: 5,
-          type: 'Ergonomics',
-          unlockLevel: 4
-        }
-      },
-      5: {
-        underbarrel: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Underbarrel',
-          unlockLevel: 5,
-          replaced: [
-            { name: '5 MW RED', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
-          ]
-        }
-      },
-      7: {
-        muzzle: {
-          name: 'Single-Port Brake',
-          pts: 10,
-          type: 'Muzzle',
-          unlockLevel: 7
-        }
-      },
-      9: {
-        barrel: {
-          name: '114MM PENCIL',
-          pts: 20,
-          type: 'Barrel',
-          unlockLevel: 9,
-          replaced: [
-            { name: '114MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
-        },
-        ergonomics: null
-      },
-      12: {
-        barrel: {
-          name: '114MM Factory',
-          pts: 10,
-          type: 'Barrel',
-          unlockLevel: 1,
-          replaced: [
-            { name: '114MM PENCIL', pts: 20, type: 'Barrel', unlockLevel: 9 }
-          ]
-        },
-        ergonomics: {
-          name: 'IMPROVED MAG CATCH',
-          pts: 5,
-          type: 'Ergonomics',
-          unlockLevel: 4
-        },
-        magazine: {
-          name: '20RND MAGAZINE',
-          pts: 20,
-          type: 'Magazine',
-          unlockLevel: 12,
-          replaced: [
-            { name: '15RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 }
-          ]
-        },
-        underbarrel: null
-      },
-      15: {
-        barrel: {
-          name: '114MM PENCIL',
-          pts: 20,
-          type: 'Barrel',
-          unlockLevel: 9,
-          replaced: [
-            { name: '114MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
-        },
-        muzzle: {
-          name: 'Standard Suppressor',
-          pts: 20,
-          type: 'Muzzle',
-          unlockLevel: 15,
-          replaced: [
-            { name: 'Single-Port Brake', pts: 10, type: 'Muzzle', unlockLevel: 7 }
-          ]
-        },
-        magazine: {
-          name: '15RND MAGAZINE',
-          pts: 5,
-          type: 'Magazine',
-          unlockLevel: 1,
-          replaced: [
-            { name: '20RND MAGAZINE', pts: 20, type: 'Magazine', unlockLevel: 12 }
-          ]
-        },
-        // Keep: barrel, muzzle, magazine, ammunition, scope. remove else
-        ergonomics: null
-      },
-      18: { 
-        scope: {
-          name: 'A-P2 1.75x',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 18,
-          replaced: [
-            { name: 'ROX 1.50X', pts: 10, type: 'Scope', unlockLevel: 2 }
-          ]
-        }
-      }
-    };
-    const L110_BASELINE = {
-      barrel: {
-        name: '349MM SB',
-        pts: 10,
-        type: 'Barrel',
-        unlockLevel: 1
-      },
-      underbarrel: {
-        name: 'CLASSIC GRIP POD',
-        pts: 30,
-        type: 'Underbarrel',
-        unlockLevel: 1
-      },
-      ammunition: {
-        name: 'FMJ',
-        pts: 5,
-        type: 'Ammunition',
-        unlockLevel: 1
-      },
-      rightAccessory: {
-        name: '5 MW GREEN',
-        pts: 10,
-        type: 'Right Accessory',
-        unlockLevel: 1
-      },
-      magazine: {
-        name: '100RND BELT POUCH',
-        pts: 25,
-        type: 'Magazine',
-        unlockLevel: 1
-      },
-      scope: {
-        name: 'R4T 2.00X',
-        pts: 10,
-        type: 'Scope',
-        unlockLevel: 1
-      }
-    };
-    const L110_CHANGES = {
-      2: {
-        muzzle: {
-          name: 'single-port brake',
-          pts: 5,
-          type: 'Muzzle',
-          unlockLevel: 2
-        }
-      },
-      3: {
-        barrel: {
-          name: '465MM LB',
-          pts: 10,
-          type: 'Barrel',
-          unlockLevel: 3,
-          replaced: [
-            { name: '349MM SB', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
-        }
-      },
-      5: {
-        scope: {
-          name: 'RO-M 1.75x',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 5,
-          replaced: [
-            { name: 'R4T 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
-          ]
-        }
-      },
-      7: {
-        muzzle: { 
-          name: 'Linear Comp',
-          pts: 10,
-          type: 'Muzzle',
-          unlockLevel: 7,
-          replaced: [
-            { name: 'single-port brake', pts: 5, type: 'Muzzle', unlockLevel: 2 }
-          ]
-        }
-      },
-      8: {
-        leftAccessory: {
-          name: 'FLASHLIGHT',
-          pts: 10,
-          type: 'Left Accessory',
-          unlockLevel: 8
-        }
-      },
-      9: {
-        underbarrel: {
-          name: 'Folding stubby',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 9,
-          replaced: [
-            { name: 'CLASSIC GRIP POD', pts: 30, type: 'Underbarrel', unlockLevel: 1 }
-          ]
-        }
-      },
-      15: {
-        ammunition: {
-          name: 'hollow point',
-          pts: 20,
-          type: 'Ammunition',
-          unlockLevel: 15,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
-        }
-      },
-      16: {
-        underbarrel: {
-          name: 'Slim Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 16,
-          replaced: [
-            { name: 'Folding stubby', pts: 20, type: 'Underbarrel', unlockLevel: 9 }
-          ]
-        }
-      },
-      17: {
-        ammunition: {
-          name: 'FMJ',
-          pts: 5,
-          type: 'Ammunition',
-          unlockLevel: 1,
-          replaced: [
-            { name: 'hollow point', pts: 20, type: 'Ammunition', unlockLevel: 15 }
-          ]
-        },
-        muzzle: {
-          name: 'Compensated Brake',
-          pts: 20,
-          type: 'Muzzle',
-          unlockLevel: 17,
-          replaced: [
-            { name: 'Linear Comp', pts: 10, type: 'Muzzle', unlockLevel: 7 }
-          ]
-        }
-      },
-      18: {
-        rightAccessory: {
-          name: '50 MW Green',
-          pts: 20,
-          type: 'Right Accessory',
-          unlockLevel: 18,
-          replaced: [
-            { name: '5 MW GREEN', pts: 10, type: 'Right Accessory', unlockLevel: 1 }
-          ]
-        },
-        //Keep: Scope, Magazine, Right Accessory, Muzzle, Ammunition, Underbarrel, Barrel. 
-        leftAccessory: null  
-      },
-      21: {
-        underbarrel: {
-          name: 'Canted Stubby',
-          pts: 30,
-          type: 'Underbarrel',
-          unlockLevel: 21,
-          replaced: [
-            { name: 'Slim Angled', pts: 25, type: 'Underbarrel', unlockLevel: 16 }
-          ]
-        }
-      },
-      23: {
-        muzzle: {
-          name: 'Standard Suppressor',
-          pts: 20,
-          type: 'Muzzle',
-          unlockLevel: 23,
-          replaced: [
-            { name: 'Compensated Brake', pts: 20, type: 'Muzzle', unlockLevel: 17 }
-          ]
-        }
-      },
-      24: {
-        underbarrel: {
-          name: 'Full Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 24,
-          replaced: [
-            { name: 'Canted Stubby', pts: 30, type: 'Underbarrel', unlockLevel: 21 }
-          ]
-        }
-      },
-      28: {
-        muzzle: { 
-          name: 'Long Suppressor',
-          pts: 25,
-          type: 'Muzzle',
-          unlockLevel: 28,
-          replaced: [
-            { name: 'Standard Suppressor', pts: 20, type: 'Muzzle', unlockLevel: 23 }
-          ]
-        }
-      },
-      35: {
-        underbarrel: {
-          name: 'Stippled Stubby',
-          pts: 35,
-          type: 'Underbarrel',
-          unlockLevel: 35,
-          replaced: [
-            { name: 'Full Angled', pts: 25, type: 'Underbarrel', unlockLevel: 24 }
-          ]
-        },
-        rightAccessory: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 1,
-          replaced: [
-            { name: '50 MW Green', pts: 20, type: 'Right Accessory', unlockLevel: 18 }
-          ]
-        }
-      },
-      37: {
-        barrel: {
-          name: '349MM Fluted',
-          pts: 20,
-          type: 'Barrel',
-          unlockLevel: 37,
-          replaced: [
-            { name: '465MM LB', pts: 10, type: 'Barrel', unlockLevel: 3 }
-          ]
-        },
-        // Keep: Scope, Magazine, Muzzle, Ammunition, Underbarrel, Barrel.
-        rightAccessory: null
-      },
-      39: {
-        underbarrel: {
-          name: 'Full Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 24,
-          replaced: [
-            { name: 'Stippled Stubby', pts: 35, type: 'Underbarrel', unlockLevel: 35 }
-          ]
-        },
-        muzzle: {
-          name: 'Lightened Suppressor',
-          pts: 30,
-          type: 'Muzzle',
-          unlockLevel: 39,
-          replaced: [
-            { name: 'Long Suppressor', pts: 25, type: 'Muzzle', unlockLevel: 28 }
-          ]
-        }
-      }
-    };
-    const m2010ESR_BASELINE = {
-      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      magazine: { name: '5RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
-      scope: { name: 'SU-230 LPVO', pts: 20, type: 'Scope', unlockLevel: 1 }
-    };
-    const M2010ESR_CHANGES = {
-      2: {
-        barrel: {
-          name: '24" Fluted',
-          pts: 20,
-          type: 'Barrel',
-          unlockLevel: 2
-        },
-        underbarrel: {
-          name: 'Full Angled',
-          pts: 5,
-          type: 'Underbarrel',
-          unlockLevel: 2
-        },
-        leftAccessory: {
-          name: 'Range Finder',
-          pts: 15,
-          type: 'Left Accessory',
-          unlockLevel: 2
-        },
-        topAccessory: {
-          name: '5 MW RED',
-          pts: 10,
-          type: 'Top Accessory',
-          unlockLevel: 2
-        },
-        scope: {
-          name: 'S-VPS 6.00X',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 2,
-          replaced: [
-            { name: 'SU-230 LPVO', pts: 20, type: 'Scope', unlockLevel: 1 }
-          ]
-        }
-      },
-      3: {
-        ammunition: {
-          name: 'Match Grade',
-          pts: 10,
-          type: 'Ammunition',
-          unlockLevel: 3,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
-        }
-      },
-      7: {
-        topAccessory: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Top Accessory',
-          unlockLevel: 7,
-          replaced: [
-            { name: '5 MW RED', pts: 10, type: 'Top Accessory', unlockLevel: 2 }
-          ]
-        }
-      },
-      10: {
-        scope: {
-          name: 'SSDS 6.00X',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 10,
-          replaced: [
-            { name: 'S-VPS 6.00X', pts: 10, type: 'Scope', unlockLevel: 2 }
-          ]
-        }
-      },
-      13: {
-        ergonomics: {
-          name: 'DLC Bolt',
-          pts: 30,
-          type: 'Ergonomics',
-          unlockLevel: 13
-        },
-        // Keep: Barrel, Underbarrel, Ammunition, Ergonomics, Left Accessory, Magazine, Scope
-        topAccessory: null
-      },
-      15: {
-        magazine: {
-          name: '5RND FAST MAG',
-          pts: 10,
-          type: 'Magazine',
-          unlockLevel: 15,
-          replaced: [
-            { name: '5RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 }
-          ]
-        }
-      },
-      16: {
-        barrel: {
-          name: '26" Carbon',
-          pts: 15,
-          type: 'Barrel',
-          unlockLevel: 16,
-          replaced: [
-            { name: '24" Fluted', pts: 20, type: 'Barrel', unlockLevel: 2 }
-          ]
-        }
-      },
-      36: {
-        opticAccessory: {
-          name: 'Anti-Glare Coating',
-          pts: 10,
-          type: 'Optic Accessory',
-          unlockLevel: 36
-        },
-        magazine: {
-          name: '5RND MAGAZINE',
-          pts: 5,
-          type: 'Magazine',
-          unlockLevel: 1,
-          replaced: [
-            { name: '5RND FAST MAG', pts: 10, type: 'Magazine', unlockLevel: 15 }
-          ]
-        }
-      }
-    };
-    const miniscout_baseline = {
-      barrel: { name: '16" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
-      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      magazine: { name: '10RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
-      scope: { name: 'DVO LPVO', pts: 25, type: 'Scope', unlockLevel: 1 }
-    };
-    const miniscout_changes = {
-      2: {
-        underbarrel: {
+        { remove: '5 MW GREEN' }
+      ],
+      25: [
+        {
           name: 'FULL ANGLED',
-          pts: 5,
-          type: 'Underbarrel',
-          unlockLevel: 2
-        }
-      },
-      3: {
-        rightAccessory: {
-          name: '5 MW RED',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 3
-        }
-      },
-      4: {
-        barrel: {
-          name: '18" EXTENDED',
-          pts: 15,
-          type: 'Barrel',
-          unlockLevel: 4,
-          replaced: [
-            { name: '16" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
-        }
-      },
-      6: {
-        leftAccessory: {
-          name: 'FLASHLIGHT',
-          pts: 10,
-          type: 'Left Accessory',
-          unlockLevel: 6
-        }
-      },
-      8: {
-        magazine: {
-          name: '10RND FAST MAG',
-          pts: 10,
-          type: 'Magazine',
-          unlockLevel: 8,
-          replaced: [
-            { name: '10RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 }
-          ]
-        }
-      },
-      12: {
-        rightAccessory: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 12,
-          replaced: [
-            { name: '5 MW RED', pts: 10, type: 'Right Accessory', unlockLevel: 3 }
-          ]
-        }
-      }, 
-      19: { 
-        muzzle: {
-          name: 'Standard SUPPRESSOR',
-          pts: 25,
-          type: 'Muzzle',
-          unlockLevel: 19
-        }
-      },
-      24: {
-        leftAccessory: {
-          name: 'Range Finder',
-          pts: 15,
-          type: 'Left Accessory',
-          unlockLevel: 24
+          replaced: ['CANTED STUBBY']
         },
-        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Magazine, Scope, Left Accessory.
-        rightAccessory: null
-      },
-      40: {
-        opticAccessory: {
-          name: 'Anti-Glare Coating',
-          pts: 10,
-          type: 'Optic Accessory',
-          unlockLevel: 40
+        {
+          name: 'POLYMER CASE',
+          replaced: ['FMJ']
+        }
+      ],
+      35: [
+        {
+          name: 'STIPPLED STUBBY',
+          replaced: ['FULL ANGLED']
         },
-        rightAccessory: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 40
-        },
-        muzzle: null
-      }
-    };
-    const umg40_baseline = {
-      barrel: { name: '200MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
-      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
-      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      magazine: { name: '30RND MAGAZINE', pts: 5, type: 'Magazine', unlockLevel: 1 },
-      scope: { name: 'R4T 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
-    };
-    const umg40_changes = {
-      3: {
-        rightAccessory: {
-          name: '5 MW RED',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 3
-        }
-      },
-      7: {
-        underbarrel: {
-          name: 'alloy vertical',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 7,
-          replaced: [
-            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
-          ]
-        },
-        scope: {
-          name: 'A-P2 1.75x',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 7,
-          replaced: [
-            { name: 'R4T 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
-          ]
-        }
-      },
-      8: {
-        muzzle: {
-          name: 'linear comp',
-          pts: 10,
-          type: 'Muzzle',
-          unlockLevel: 8
-        }
-      },
-      11: { 
-        underbarrel: {
-          name: 'ribbed vertical',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 11,
-          replaced: [
-            { name: 'alloy vertical', pts: 20, type: 'Underbarrel', unlockLevel: 7 }
-          ]
-        }
-      },
-      12: {
-        rightAccessory: {
-          name: '5 MW GREEN',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 12,
-          replaced: [
-            { name: '5 MW RED', pts: 10, type: 'Right Accessory', unlockLevel: 3 }
-          ]
-        }
-      },
-      14: { 
-        underbarrel: {
-          name: 'Folding Stubby',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 14,
-          replaced: [
-            { name: 'ribbed vertical', pts: 20, type: 'Underbarrel', unlockLevel: 11 }
-          ]
-        },
-        scope: {
-          name: 'RO-M 1.75x',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 14
-        }
-      },
-      17: {
-        underbarrel: {
-          name: 'Slim Angled',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 17,
-          replaced: [
-            { name: 'Folding Stubby', pts: 20, type: 'Underbarrel', unlockLevel: 14 }
-          ]
-        }
-      },
-      18: {
-        ammunition: {
-          name: 'hollow point',
-          pts: 20,
-          type: 'Ammunition',
-          unlockLevel: 18,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
-        }
-      },
-      19: {
-        muzzle: {
-          name: 'compensated brake',
-          pts: 20,
-          type: 'Muzzle',
-          unlockLevel: 19,
-          replaced: [
-            { name: 'linear comp', pts: 10, type: 'Muzzle', unlockLevel: 8 }
-          ]
-        }
-      },
-      22: {
-        ammunition: {
+        {
           name: 'FMJ',
-          pts: 5,
-          type: 'Ammunition',
-          unlockLevel: 1,
-          replaced: [
-            { name: 'hollow point', pts: 20, type: 'Ammunition', unlockLevel: 18 }
-          ]
-        },
-        leftAccessory: {
-          name: 'FLASHLIGHT',
-          pts: 10,
-          type: 'Left Accessory',
-          unlockLevel: 22
+          replaced: ['POLYMER CASE']
         }
-      },
-      23: {
-        rightAccessory: {
+      ],
+      38: [
+        {
+          name: '590MM FACTORY',
+          replaced: ['600MM TABUK']
+        },
+        {
+          name: 'ADJUSTABLE ANGLED',
+          replaced: ['STIPPLED STUBBY']
+        },
+        {
+          name: 'SYNTHETIC TIP',
+          replaced: ['FMJ']
+        },
+        {
+          name: 'LIGHTENED SUPPRESSOR',
+          replaced: ['FLASH HIDER']
+        }
+      ]
+    };
+    const M87A1_BASELINE = ['20" FACTORY', 'BUCKSHOT', '7 SHELL TUBE', 'IRON SIGHTS'];
+    const M87A1_CHANGES = {
+      4: ['5 MW RED'],
+      5: ['RIBBED STUBBY'],
+      10: [
+        {
+          name: 'SLIM ANGLED',
+          replaced: ['RIBBED STUBBY']
+        }
+      ],
+      13: ['FLASHLIGHT'],
+      15: [
+        {
+          name: '50 MW BLUE',
+          replaced: ['5 MW RED']
+        }
+      ],
+      18: [
+        {
+          name: 'FOLDING STUBBY',
+          replaced: ['SLIM ANGLED']
+        },
+        'CQB SUPPRESSOR',
+        { remove: 'FLASHLIGHT' }
+      ],
+      19: [
+        {
+          name: 'ADJUSTABLE ANGLED',
+          replaced: ['FOLDING STUBBY']
+        }
+      ],
+      22: [
+        'FLASHLIGHT',
+        {
+          name: '5 MW GREEN',
+          replaced: ['50 MW BLUE']
+        }
+      ],
+      26: [
+        {
+          name: 'FLECHETTE',
+          replaced: ['BUCKSHOT']
+        },
+        { remove: '5 MW GREEN' },
+        { remove: 'FLASHLIGHT' }
+      ]
+    };
+    const GGH_22_BASELINE = ['114MM FACTORY', '5 MW RED', 'FMJ', '15RND MAGAZINE', 'IRON SIGHTS'];
+    const GGH_22_CHANGES = {
+      2: [
+        {
+          name: 'ROX 1.50X',
+          replaced: ['IRON SIGHTS']
+        }
+      ],
+      4: ['IMPROVED MAG CATCH'],
+      5: [
+        {
+          name: '5 MW GREEN',
+          replaced: ['5 MW RED']
+        }
+      ],
+      7: ['SINGLE-PORT BRAKE'],
+      9: [
+        {
+          name: '114MM PENCIL',
+          replaced: ['114MM FACTORY']
+        },
+        { remove: 'IMPROVED MAG CATCH' }
+      ],
+      12: [
+        {
+          name: '114MM FACTORY',
+          replaced: ['114MM PENCIL']
+        },
+        'IMPROVED MAG CATCH',
+        {
+          name: '20RND MAGAZINE',
+          replaced: ['15RND MAGAZINE']
+        },
+        { remove: '5 MW GREEN' }
+      ],
+      15: [
+        {
+          name: '114MM PENCIL',
+          replaced: ['114MM FACTORY']
+        },
+        {
+          name: 'STANDARD SUPPRESSOR',
+          replaced: ['SINGLE-PORT BRAKE']
+        },
+        {
+          name: '15RND MAGAZINE',
+          replaced: ['20RND MAGAZINE']
+        },
+        { remove: 'IMPROVED MAG CATCH' }
+      ],
+      18: [
+        {
+          name: 'A-P2 1.75X',
+          replaced: ['ROX 1.50X']
+        }
+      ]
+    };
+    const L110_BASELINE = ['349MM SB', 'CLASSIC GRIP POD', 'FMJ', '5 MW GREEN', '100RND BELT POUCH', 'R4T 2.00X'];
+    const L110_CHANGES = {
+      2: ['SINGLE-PORT BRAKE'],
+      3: [
+        {
+          name: '465MM LB',
+          replaced: ['349MM SB']
+        }
+      ],
+      5: [
+        {
+          name: 'RO-M 1.75X',
+          replaced: ['R4T 2.00X']
+        }
+      ],
+      7: [
+        {
+          name: 'LINEAR COMP',
+          replaced: ['SINGLE-PORT BRAKE']
+        }
+      ],
+      8: ['FLASHLIGHT'],
+      9: [
+        {
+          name: 'FOLDING STUBBY',
+          replaced: ['CLASSIC GRIP POD']
+        }
+      ],
+      15: [
+        {
+          name: 'HOLLOW POINT',
+          replaced: ['FMJ']
+        }
+      ],
+      16: [
+        {
+          name: 'SLIM ANGLED',
+          replaced: ['FOLDING STUBBY']
+        }
+      ],
+      17: [
+        {
+          name: 'FMJ',
+          replaced: ['HOLLOW POINT']
+        },
+        {
+          name: 'COMPENSATED BRAKE',
+          replaced: ['LINEAR COMP']
+        }
+      ],
+      18: [
+        {
           name: '50 MW GREEN',
-          pts: 20,
-          type: 'Right Accessory',
-          unlockLevel: 23
-        }
-      },
-      24: {
-        muzzle: {
-          name: 'standard suppressor',
-          pts: 25,
-          type: 'Muzzle',
-          unlockLevel: 24,
-          replaced: [
-            { name: 'compensated brake', pts: 20, type: 'Muzzle', unlockLevel: 19 }
-          ]
-        }
-      },
-      26: {
-        barrel: {
-          name: '305mm Custom',
-          pts: 15,
-          type: 'Barrel',
-          unlockLevel: 26,
-          replaced: [
-            { name: '200MM FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
+          replaced: ['5 MW GREEN']
         },
-        // Keep: Barrel, Underbarrel  Ammunition  Muzzle  Right Magazine  Scope  
-        leftAccessory: null
-      },
-      28: {
-        muzzle: {
-          name: 'long suppressor',
-          pts: 25,
-          type: 'Muzzle',
-          unlockLevel: 28,
-          replaced: [
-            { name: 'standard suppressor', pts: 25, type: 'Muzzle', unlockLevel: 24 }
-          ]
+        { remove: 'FLASHLIGHT' }
+      ],
+      21: [
+        {
+          name: 'CANTED STUBBY',
+          replaced: ['SLIM ANGLED']
         }
-      },
-      29: {
-        underbarrel: {
-          name: 'Canted Stubby',
-          pts: 30,
-          type: 'Underbarrel',
-          unlockLevel: 29,
-          replaced: [
-            { name: 'Slim Angled', pts: 25, type: 'Underbarrel', unlockLevel: 17 }
-          ]
+      ],
+      23: [
+        {
+          name: 'STANDARD SUPPRESSOR',
+          replaced: ['COMPENSATED BRAKE']
+        }
+      ],
+      24: [
+        {
+          name: 'FULL ANGLED',
+          replaced: ['CANTED STUBBY']
+        }
+      ],
+      28: [
+        {
+          name: 'LONG SUPPRESSOR',
+          replaced: ['STANDARD SUPPRESSOR']
+        }
+      ],
+      35: [
+        {
+          name: 'STIPPLED STUBBY',
+          replaced: ['FULL ANGLED']
         },
-        rightAccessory: {
-          //unlocks at lv 12
+        {
           name: '5 MW GREEN',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 12,
-          replaced: [
-            { name: '50 MW GREEN', pts: 20, type: 'Right Accessory', unlockLevel: 23 }
-          ]
+          replaced: ['50 MW GREEN']
         }
-      },
-      36: {
-        underbarrel: {
-          name: 'Stippled Stubby',
-          pts: 35,
-          type: 'Underbarrel',
-          unlockLevel: 36,
-          replaced: [
-            { name: 'Canted Stubby', pts: 30, type: 'Underbarrel', unlockLevel: 29 }
-          ]
+      ],
+      37: [
+        {
+          name: '349MM FLUTED',
+          replaced: ['465MM LB']
         },
-        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Magazine, Scope
-        rightAccessory: null
-      },
-      37: {
-        muzzle: {
-          name: 'lightened suppressor',
-          pts: 30,
-          type: 'Muzzle',
-          unlockLevel: 37,
-          replaced: [
-            { name: 'long suppressor', pts: 25, type: 'Muzzle', unlockLevel: 28 }
-          ]
+        { remove: '50 MW GREEN' }
+      ],
+      39: [
+        {
+          name: 'FULL ANGLED',
+          replaced: ['STIPPLED STUBBY']
+        },
+        {
+          name: 'LIGHTENED SUPPRESSOR',
+          replaced: ['LONG SUPPRESSOR']
         }
-      },
-      39: {
-        underbarrel: { // unlocked at 17
-          name: 'Slim Angled',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 17,
-          replaced: [
-            { name: 'Stippled Stubby', pts: 35, type: 'Underbarrel', unlockLevel: 36 }
-          ]
-        },
-        ammunition: {
-          name: 'synthetic tip',
-          pts: 30,
-          type: 'Ammunition',
-          unlockLevel: 39,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
-        },
-        muzzle: {
-          name: 'Standard Suppressor',
-          pts: 20,
-          type: 'Muzzle',
-          unlockLevel: 39,
-          replaced: [
-            { name: 'lightened suppressor', pts: 30, type: 'Muzzle', unlockLevel: 37 }
-          ]
-        }
-      }
+      ]
     };
-    const qbz_192_baseline = {
-      barrel: { name: '10.5" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 },
-      underbarrel: { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 },
-      ammunition: { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 },
-      ergonomics: { name: 'RAIL COVER', pts: 5, type: 'Ergonomics', unlockLevel: 'Season 1 Hardware 2' },
-      magazine: { name: '36RND MAGAZINE', pts: 15, type: 'Magazine', unlockLevel: 1 },
-      scope: { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
+    const m2010ESR_BASELINE = ['FMJ', '5RND MAGAZINE', 'SU-230 LPVO'];
+    const M2010ESR_CHANGES = {
+      2: ['24" FLUTED', 'FULL ANGLED', 'RANGE FINDER', '5 MW RED', { name: 'S-VPS 6.00X', replaced: ['SU-230 LPVO'] }],
+      3: [
+        {
+          name: 'MATCH GRADE',
+          replaced: ['FMJ']
+        }
+      ],
+      7: [
+        {
+          name: '5 MW GREEN',
+          replaced: ['5 MW RED']
+        }
+      ],
+      10: [
+        {
+          name: 'SSDS 6.00X',
+          replaced: ['S-VPS 6.00X']
+        }
+      ],
+      13: ['DLC BOLT', { remove: '5 MW GREEN' }],
+      15: [
+        {
+          name: '5RND FAST MAG',
+          replaced: ['5RND MAGAZINE']
+        }
+      ],
+      16: [
+        {
+          name: '26" CARBON',
+          replaced: ['24" FLUTED']
+        }
+      ],
+      36: ['ANTI-GLARE COATING', { name: '5RND MAGAZINE', replaced: ['5RND FAST MAG'] }]
     };
+    const miniscout_baseline = ['16" FACTORY', 'FMJ', '10RND MAGAZINE', 'DVO LPVO'];
+    const miniscout_changes = {
+      2: ['FULL ANGLED'],
+      3: ['5 MW RED'],
+      4: [
+        {
+          name: '18" EXTENDED',
+          replaced: ['16" FACTORY']
+        }
+      ],
+      6: [{ name: 'FLASHLIGHT', slot: 8 }],
+      8: [
+        {
+          name: '10RND FAST MAG',
+          replaced: ['10RND MAGAZINE']
+        }
+      ],
+      12: [
+        {
+          name: '5 MW GREEN',
+          replaced: ['5 MW RED']
+        }
+      ],
+      19: ['STANDARD SUPPRESSOR'],
+      24: ['RANGE FINDER', { remove: '5 MW GREEN' }],
+      40: ['ANTI-GLARE COATING', '5 MW GREEN', { remove: 'STANDARD SUPPRESSOR' }]
+    };
+    const umg40_baseline = ['200MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'R4T 2.00X'];
+    const umg40_changes = {
+      3: ['5 MW RED'],
+      7: [
+        {
+          name: 'ALLOY VERTICAL',
+          replaced: ['FOLDING VERTICAL']
+        },
+        {
+          name: 'A-P2 1.75X',
+          replaced: ['R4T 2.00X']
+        }
+      ],
+      8: ['LINEAR COMP'],
+      11: [
+        {
+          name: 'RIBBED VERTICAL',
+          replaced: ['ALLOY VERTICAL']
+        }
+      ],
+      12: [
+        {
+          name: '5 MW GREEN',
+          replaced: ['5 MW RED']
+        }
+      ],
+      14: [
+        {
+          name: 'FOLDING STUBBY',
+          replaced: ['RIBBED VERTICAL']
+        },
+        'RO-M 1.75X'
+      ],
+      17: [
+        {
+          name: 'SLIM ANGLED',
+          replaced: ['FOLDING STUBBY']
+        }
+      ],
+      18: [
+        {
+          name: 'HOLLOW POINT',
+          replaced: ['FMJ']
+        }
+      ],
+      19: [
+        {
+          name: 'COMPENSATED BRAKE',
+          replaced: ['LINEAR COMP']
+        }
+      ],
+      22: [
+        {
+          name: 'FMJ',
+          replaced: ['HOLLOW POINT']
+        },
+        { name: 'FLASHLIGHT', slot: 8 }
+      ],
+      23: ['50 MW GREEN'],
+      24: [
+        {
+          name: 'STANDARD SUPPRESSOR',
+          replaced: ['COMPENSATED BRAKE']
+        }
+      ],
+      26: [
+        {
+          name: '305MM CUSTOM',
+          replaced: ['200MM FACTORY']
+        },
+        { remove: 'FLASHLIGHT' }
+      ],
+      28: [
+        {
+          name: 'LONG SUPPRESSOR',
+          replaced: ['STANDARD SUPPRESSOR']
+        }
+      ],
+      29: [
+        {
+          name: 'CANTED STUBBY',
+          replaced: ['SLIM ANGLED']
+        },
+        {
+          name: '5 MW GREEN',
+          replaced: ['50 MW GREEN']
+        }
+      ],
+      36: [
+        {
+          name: 'STIPPLED STUBBY',
+          replaced: ['CANTED STUBBY']
+        },
+        { remove: '5 MW GREEN' }
+      ],
+      37: [
+        {
+          name: 'LIGHTENED SUPPRESSOR',
+          replaced: ['LONG SUPPRESSOR']
+        }
+      ],
+      39: [
+        {
+          name: 'SLIM ANGLED',
+          replaced: ['STIPPLED STUBBY']
+        },
+        {
+          name: 'SYNTHETIC TIP',
+          replaced: ['FMJ']
+        },
+        {
+          name: 'STANDARD SUPPRESSOR',
+          replaced: ['LIGHTENED SUPPRESSOR']
+        }
+      ]
+    };
+    const qbz_192_baseline = ['10.5" FACTORY', 'FOLDING VERTICAL', 'FMJ', '36RND MAGAZINE', 'CCO 2.00X', 'RAIL COVER'];
     const qbz_192_changes = {
-      2: {
-        muzzle: {
-          name: 'linear comp',
-         pts: 10,
-          type: 'Muzzle',
-          unlockLevel: 2
-        }
-      },
-      3: {
-        underbarrel: {
-          name: 'alloy vertical',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 3,
-          replaced: [
-            { name: 'FOLDING VERTICAL', pts: 10, type: 'Underbarrel', unlockLevel: 1 }
-          ]
+      2: ['LINEAR COMP'],
+      3: [
+        {
+          name: 'ALLOY VERTICAL',
+          replaced: ['FOLDING VERTICAL']
         },
-        scope: {
-          name: 'RO-M 1.75x',
-          pts: 10,
-          type: 'Scope',
-          unlockLevel: 3,
-          replaced: [
-            { name: 'CCO 2.00X', pts: 10, type: 'Scope', unlockLevel: 1 }
-          ]
+        {
+          name: 'RO-M 1.75X',
+          replaced: ['CCO 2.00X']
         }
-      },
-      5: {
-        topAccessory: {
-          name: '5 MW RED',
-          pts: 10,
-          type: 'Top Accessory',
-          unlockLevel: 5
+      ],
+      5: ['5 MW RED'],
+      6: [
+        {
+          name: 'RIBBED VERTICAL',
+          replaced: ['ALLOY VERTICAL']
         }
-      },
-      6: {
-        underbarrel: {
-          name: 'ribbed vertical',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 6,
-          replaced: [
-            { name: 'alloy vertical', pts: 20, type: 'Underbarrel', unlockLevel: 3 }
-          ]
+      ],
+      8: [{ name: 'FLASHLIGHT', slot: 5 }],
+      9: [
+        {
+          name: 'FOLDING STUBBY',
+          replaced: ['RIBBED VERTICAL']
         }
-      },
-      8: {
-        rightAccessory: {
-          name: 'flashlight',
-          pts: 10,
-          type: 'Right Accessory',
-          unlockLevel: 8
-        }
-      },
-      9: {
-        underbarrel: {
-          name: 'Folding Stubby',
-          pts: 20,
-          type: 'Underbarrel',
-          unlockLevel: 9,
-          replaced: [
-            { name: 'ribbed vertical', pts: 20, type: 'Underbarrel', unlockLevel: 6 }
-          ]
-        }
-      }, 
-      12: {
-        topAccessory: {
+      ],
+      12: [
+        {
           name: '5 MW GREEN',
-          pts: 10,
-          type: 'Top Accessory',
-          unlockLevel: 12,
-          replaced: [
-            { name: '5 MW RED', pts: 10, type: 'Top Accessory', unlockLevel: 5 }
-          ]
+          replaced: ['5 MW RED']
         }
-      },
-      14: {
-        ammunition: {
-          name: 'Polymer Case',
-          pts: 10,
-          type: 'Ammunition',
-          unlockLevel: 14,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
+      ],
+      14: [
+        {
+          name: 'POLYMER CASE',
+          replaced: ['FMJ']
         }
-      },
-      16: {
-        barrel: {
-          name: '14.5" Common',
-          pts: 10,
-          type: 'Barrel',
-          unlockLevel: 16,
-          replaced: [
-            { name: '10.5" FACTORY', pts: 10, type: 'Barrel', unlockLevel: 1 }
-          ]
+      ],
+      16: [
+        {
+          name: '14.5" COMMON',
+          replaced: ['10.5" FACTORY']
         },
-        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Top Accessory, Ergonomics, Magazine, Scope
-        rightAccessory: null
-      },
-      18: {
-        underbarrel: {
-          name: 'Slim Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 18,
-          replaced: [
-            { name: 'Folding Stubby', pts: 20, type: 'Underbarrel', unlockLevel: 9 }
-          ]
+        { remove: '5 MW GREEN' }
+      ],
+      18: [
+        {
+          name: 'SLIM ANGLED',
+          replaced: ['FOLDING STUBBY']
         }
-      },
-      23: {
-        underbarrel: {
-          name: 'Canted Stubby',
-          pts: 30,
-          type: 'Underbarrel',
-          unlockLevel: 23,
-          replaced: [
-            { name: 'Slim Angled', pts: 25, type: 'Underbarrel', unlockLevel: 18 }
-          ]
+      ],
+      23: [
+        {
+          name: 'CANTED STUBBY',
+          replaced: ['SLIM ANGLED']
         },
-        ammunition: {
+        {
           name: 'FMJ',
-          pts: 5,
-          type: 'Ammunition',
-          unlockLevel: 1,
-          replaced: [
-            { name: 'Polymer Case', pts: 10, type: 'Ammunition', unlockLevel: 14 }
-          ]
+          replaced: ['POLYMER CASE']
         }
-      },
-      25: {
-        underbarrel: {
-          name: 'Full Angled',
-          pts: 25,
-          type: 'Underbarrel',
-          unlockLevel: 25,
-          replaced: [
-            { name: 'Canted Stubby', pts: 30, type: 'Underbarrel', unlockLevel: 23 }
-          ]
+      ],
+      25: [
+        {
+          name: 'FULL ANGLED',
+          replaced: ['CANTED STUBBY']
         },
-        ammunition: {
-          name: 'Polymer Case',
-          pts: 10,
-          type: 'Ammunition',
-          unlockLevel: 1,
-          replaced: [
-            { name: 'FMJ', pts: 5, type: 'Ammunition', unlockLevel: 1 }
-          ]
+        {
+          name: 'POLYMER CASE',
+          replaced: ['FMJ']
         }
-      },
-      36: {
-        underbarrel: {
-          name: 'Stipped Stubby',
-          pts: 35,
-          type: 'Underbarrel',
-          unlockLevel: 36,
-          replaced: [
-            { name: 'Full Angled', pts: 25, type: 'Underbarrel', unlockLevel: 25 }
-          ]
+      ],
+      36: [
+        {
+          name: 'STIPPLED STUBBY',
+          replaced: ['FULL ANGLED']
         },
-        // Keep: Barrel, Underbarrel, Ammunition, Muzzle, Ergonomics, Magazine, Scope
-        topAccessory: null
-      },
-      39: {
-        underbarrel: {
-          name: 'Low-Profile Stubby',
-          pts: 45,
-          type: 'Underbarrel',
-          unlockLevel: 39,
-          replaced: [
-            { name: 'Stipped Stubby', pts: 35, type: 'Underbarrel', unlockLevel: 36 }
-          ]
+        { remove: '5 MW GREEN' }
+      ],
+      39: [
+        {
+          name: 'LOW-PROFILE STUBBY',
+          replaced: ['STIPPLED STUBBY']
         },
-        ammunition: {
+        {
           name: 'FMJ',
-          pts: 5,
-          type: 'Ammunition',
-          unlockLevel: 1,
-          replaced: [
-            { name: 'Polymer Case', pts: 10, type: 'Ammunition', unlockLevel: 14 }
-          ]
+          replaced: ['POLYMER CASE']
         },
-        // Keep: Barrel, Underbarrel, Muzzle, Magazine, Scope.
-        ergonomics: null
-      }
+        { remove: 'RAIL COVER' }
+      ]
     };
 
     const weaponConfigs = [
       {
         id: 'kord-6p67',
-        name: 'KORD 6P67',
         dbname: 'KORD 6P67',
-        type: 'Assault Rifle',
-        image: 'kord.avif',
         rank: 'm',
         tr: '1',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         recommended: [
           'OSA-7 1.00X',
           'SINGLE-PORT BRAKE',
           '415MM PROTOTYPE',
           '5 MW RED',
           'RIBBED VERTICAL',
-          '30 RND MAGAZINE',
+          '30RND MAGAZINE',
           'FMJ'
         ],
         baseline: KORD_BASELINE,
@@ -4235,29 +3461,17 @@
       },
       {
         id: 'pw5a3',
-        name: 'PW5A3',
         dbname: 'PW5A3',
-        type: 'SMG',
-        image: 'pw5a3.avif',
         rank: 'm',
         tr: '1',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         baseline: PW5A3_BASELINE,
         changes: PW5A3_CHANGES
       },
       {
         id: 'rpkm',
-        name: 'RPKM',
         dbname: 'RPKM',
-        type: 'LMG',
-        image: 'rpkm.avif',
         rank: 'm',
         tr: '1',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         recommended: [
           'A-P2 1.75X',
           'LONG SUPPRESSOR',
@@ -4271,57 +3485,33 @@
       },
       {
         id: 'm87a1',
-        name: 'M87A1',
         dbname: 'M87A1',
-        type: 'Shotgun',
-        image: 'm87a1.avif',
         rank: 'm',
         tr: '1',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         baseline: M87A1_BASELINE,
         changes: M87A1_CHANGES
       },
       {
         id: 'ggh-22',
-        name: 'GGH-22',
         dbname: 'GGH-22',
-        type: 'Secondary',
-        image: 'ggh-22.avif',
         rank: 'b',
         tr: '1',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 60,
         baseline: GGH_22_BASELINE,
         changes: GGH_22_CHANGES
       },
       {
         id: 'l110',
-        name: 'L110',
         dbname: 'L110',
-        type: 'LMG',
-        image: 'l110.avif',
         rank: 'm',
         tr: '2',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         baseline: L110_BASELINE,
         changes: L110_CHANGES
       },
       {
         id: 'm2010esr',
-        name: 'M2010 ESR',
         dbname: 'M2010 ESR',
-        type: 'Sniper Rifle',
-        image: 'm2010-esr.avif',
         rank: 'm',
         tr: '1',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         recommended: [
           'S-VPS 6.00X',
           '26" CARBON',
@@ -4336,43 +3526,25 @@
       },
       {
         id: 'miniscout',
-        name: 'Mini Scout',
         dbname: 'Mini Scout',
-        type: 'Sniper Rifle',
-        image: 'miniscout.avif',
         rank: 'm',
         tr: '2',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         baseline: miniscout_baseline,
         changes: miniscout_changes
       },
       {
         id: 'umg40',
-        name: 'UMG-40',
         dbname: 'UMG-40',
-        type: 'SMG',
-        image: 'umg-40.avif',
         rank: 'm',
         tr: '2',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         baseline: umg40_baseline,
         changes: umg40_changes
       },
       {
         id: 'qbz-192',
-        name: 'QBZ-192',
         dbname: 'QBZ-192',
-        type: 'Carbine',
-        image: 'qbz-192.avif',
         rank: 'm',
         tr: '1',
-        minLevel: 1,
-        maxLevel: 40,
-        apMax: 100,
         baseline: qbz_192_baseline,
         changes: qbz_192_changes
       }
@@ -4425,12 +3597,14 @@
         li.dataset.weaponId = id;
         const name = document.createElement('span');
         name.className = 'side-nav-name';
-        name.textContent = toUpperSafe(tracker.config.name || id);
+        const navName = tracker.displayName || (tracker.config && tracker.config.name) || id;
+        name.textContent = toUpperSafe(navName);
         li.appendChild(name);
-        if (tracker.config && tracker.config.type) {
+        const navType = tracker.displayType || (tracker.config && tracker.config.type);
+        if (navType) {
           const type = document.createElement('span');
           type.className = 'side-nav-type';
-          type.textContent = toUpperSafe(tracker.config.type);
+          type.textContent = toUpperSafe(navType);
           li.appendChild(type);
         }
         if (tracker.isFavorite()) {
@@ -4733,3 +3907,13 @@
 
 
     
+
+
+
+
+
+
+
+
+
+
