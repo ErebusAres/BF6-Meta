@@ -1405,7 +1405,10 @@
         : {};
     const typeFilterList =
       typeof document !== 'undefined' ? document.getElementById('typeFilterList') : null;
-    let currentTypeFilter = '';
+    const TYPE_FILTER_KEY = 'bf6-meta-type-filter';
+    const ACTIVE_TAB_STORAGE_KEY = 'bf6-meta-active-tab';
+    let currentTypeFilter = loadTypeFilter();
+    const activeTabMap = loadActiveTabs();
 
     const normalizeDbKey = (value) => (typeof value === 'string' ? value.trim().toUpperCase() : '');
     const formatTypeKey = (value) => (typeof value === 'string' ? value.trim().toUpperCase() : '');
@@ -1723,6 +1726,10 @@
           return map;
         }, {});
         this.activeBuildId = this.buildDefinitions.length ? this.buildDefinitions[0].id : null;
+        const savedTab = activeTabMap[this.id];
+        if (savedTab && this.buildById[savedTab]) {
+          this.activeBuildId = savedTab;
+        }
         this.activeBuildNote = null;
         this.activeBuildApStats = null;
 
@@ -2880,6 +2887,7 @@
         if (this.cardEl) {
           this.cardEl.dataset.activeBuild = buildId;
         }
+        persistActiveTab(this.id, buildId);
         this.renderBuildView();
         this.render();
       }
@@ -3080,6 +3088,7 @@
 
     function setTypeFilter(value) {
       currentTypeFilter = formatTypeKey(value || '');
+      saveTypeFilter(currentTypeFilter);
       updateTypeFilterSelection();
       renderWeaponList();
     }
@@ -3104,16 +3113,16 @@
     return trackersCopy.map((tracker) => tracker.id);
   }
 
-  function populateTypeFilterList(trackersList) {
-      if (!typeFilterList) return;
-      const typeMap = new Map();
-      for (const tracker of trackersList) {
-        if (!tracker || !tracker.typeKey) continue;
-        if (!typeMap.has(tracker.typeKey)) {
-          const label = (tracker.displayType && tracker.displayType.trim()) || tracker.typeKey;
-          typeMap.set(tracker.typeKey, label);
+    function populateTypeFilterList(trackersList) {
+        if (!typeFilterList) return;
+        const typeMap = new Map();
+        for (const tracker of trackersList) {
+          if (!tracker || !tracker.typeKey) continue;
+          if (!typeMap.has(tracker.typeKey)) {
+            const label = (tracker.displayType && tracker.displayType.trim()) || tracker.typeKey;
+            typeMap.set(tracker.typeKey, label);
+          }
         }
-      }
       const entries = Array.from(typeMap.entries()).sort((a, b) => a[1].localeCompare(b[1]));
       const chips = ['<button type="button" class="type-filter-item" data-type="">All</button>'];
       for (const [key, label] of entries) {
@@ -3121,6 +3130,53 @@
       }
       typeFilterList.innerHTML = chips.join('');
       updateTypeFilterSelection();
+    }
+
+    function supportsLocalStorage() {
+      try {
+        if (typeof window === 'undefined' || !window.localStorage) return false;
+        const testKey = '__bf6_meta_test';
+        window.localStorage.setItem(testKey, testKey);
+        window.localStorage.removeItem(testKey);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function loadTypeFilter() {
+      if (!supportsLocalStorage()) return '';
+      try {
+        const stored = window.localStorage.getItem(TYPE_FILTER_KEY);
+        return typeof stored === 'string' ? stored : '';
+      } catch {
+        return '';
+      }
+    }
+
+    function saveTypeFilter(value) {
+      if (!supportsLocalStorage()) return;
+      try {
+        window.localStorage.setItem(TYPE_FILTER_KEY, value || '');
+      } catch {}
+    }
+
+    function loadActiveTabs() {
+      if (!supportsLocalStorage()) return {};
+      try {
+        const stored = window.localStorage.getItem(ACTIVE_TAB_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function persistActiveTab(id, buildId) {
+      if (!supportsLocalStorage()) return;
+      try {
+        activeTabMap[id] = buildId;
+        window.localStorage.setItem(ACTIVE_TAB_STORAGE_KEY, JSON.stringify(activeTabMap));
+      } catch {}
     }
 
 
