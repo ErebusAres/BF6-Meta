@@ -947,6 +947,37 @@ const weaponConfigs = [
       'FMJ',
       'RO-S 1.25X'
     ]
+  },
+  {
+    id: 'kts100 mk8',
+    dbname: 'kts100 mk8',
+    rank: 'm',
+    tr: '2',
+    versatile: [
+      { Notes: "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity." },
+      'CQB Suppressor',
+      '508MM MK8',
+      'Ribbed Stubby',
+      '45RND Fast Mag',
+      'Polymer Case',
+      'RO-S 1.25X'
+    ]
+  },
+  {
+    id: 'm250',
+    dbname: 'm250',
+    rank: 'm',
+    tr: '3',
+    versatile: [
+      { Notes: "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK." },
+      ' CQB Suppressor',
+      '556MM Prototype',
+      '5 MW Red',
+      'Ribbed Stubby',
+      '50RND Belt Pouch',
+      'FMJ',
+      'RO-S 1.25X'
+    ]
   }
 ];
 
