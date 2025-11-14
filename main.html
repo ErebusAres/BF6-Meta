@@ -2746,13 +2746,16 @@
       }
 
       resolveBuildDefinitions() {
-        const recognized = [
-          { id: 'recommended', label: 'Recommended', keys: ['recommended', 'recommendedBuild', 'recommended_build'] },
-          { id: 'versatile', label: 'Versatile', keys: ['versatile'] },
-          { id: 'close', label: 'Close Range', keys: ['close'] },
-          { id: 'long', label: 'Long Range', keys: ['long'] },
-          { id: 'sniper', label: 'Sniper', keys: ['sniper'] }
-        ];
+      const recognized = [
+        { id: 'recommended', label: 'Recommended', keys: ['recommended', 'recommendedBuild', 'recommended_build'] },
+        { id: 'versatile', label: 'Versatile', keys: ['versatile'] },
+        { id: 'close', label: 'Close Range', keys: ['close'] },
+        { id: 'long', label: 'Long Range', keys: ['long'] },
+        { id: 'sniper', label: 'Sniper', keys: ['sniper'] },
+        { id: 'ss', label: 'Sniper Support', keys: ['ss', 'snipersupport'] },
+        { id: 'mid', label: 'Medium Range', keys: ['mid', 'mediumrange'] },
+        { id: 'custom', label: 'Custom', keys: ['custom'] }
+      ];
         const lookup = {};
         for (const info of recognized) {
           for (const key of info.keys) {
@@ -2767,17 +2770,25 @@
         for (const key of Object.keys(this.config)) {
           const normalized = key.toString().trim().toLowerCase();
           const buildId = lookup[normalized];
-          if (!buildId || seen.has(buildId)) continue;
-          const info = recognized.find((entry) => entry.id === buildId);
-          const payload = this.config[key];
-          if (payload == null) continue;
-          seen.add(buildId);
-          builds.push({
-            id: buildId,
-            label: info ? info.label : buildId,
-            type: 'list',
-            payload,
-            sourceKey: key
+        if (!buildId || seen.has(buildId)) continue;
+        const info = recognized.find((entry) => entry.id === buildId);
+        let payload = this.config[key];
+        let label = info ? info.label : buildId;
+        if (buildId === 'custom' && Array.isArray(payload)) {
+          const first = payload[0];
+          if (first && typeof first === 'object' && typeof first.custom === 'string') {
+            label = first.custom;
+            payload = payload.slice(1);
+          }
+        }
+        if (payload == null) continue;
+        seen.add(buildId);
+        builds.push({
+          id: buildId,
+          label,
+          type: 'list',
+          payload,
+          sourceKey: key
           });
         }
         return builds;

@@ -726,164 +726,6 @@ const weaponConfigs = [
     changes: KORD_CHANGES
   },
   {
-    id: 'pw5a3',
-    dbname: 'PW5A3',
-    rank: 'm',
-    tr: '3',
-    baseline: PW5A3_BASELINE,
-    changes: PW5A3_CHANGES
-  },
-  {
-    id: 'rpkm',
-    dbname: 'RPKM',
-    rank: 'b',
-    tr: '6',
-    recommended: [
-      'A-P2 1.75X',
-      'LONG SUPPRESSOR',
-      '590MM FACTORY',
-      'FOLDING STUBBY',
-      '40RND MAGAZINE',
-      'SYNTHETIC TIP'
-    ],
-    baseline: RPKM_BASELINE,
-    changes: RPKM_CHANGES
-  },
-  {
-    id: 'm87a1',
-    dbname: 'M87A1',
-    rank: 'c',
-    tr: '2',
-    versatile: [
-      { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
-      'CQB SUPPRESSOR',
-      '20" FACTORY',
-      '50 MW GREEN',
-      'Adjustable Angled',
-      '5 SHELL TUBE',
-      'Buckshot',
-      'Mini Flex 1.00X'
-    ],
-    baseline: M87A1_BASELINE,
-    changes: M87A1_CHANGES
-  },
-  {
-    id: 'ggh-22',
-    dbname: 'GGH-22',
-    rank: 'b',
-    tr: '4',
-    baseline: GGH_22_BASELINE,
-    changes: GGH_22_CHANGES
-  },
-  {
-    id: 'l110',
-    dbname: 'L110',
-    rank: 'b',
-    tr: '5',
-    baseline: L110_BASELINE,
-    changes: L110_CHANGES
-  },
-  {
-    id: 'm2010esr',
-    dbname: 'M2010 ESR',
-    rank: 'm',
-    tr: '1',
-    sniper: [
-      { Notes: "The flagship <b>Sniper Rifle</b> with second-best velocity but best lethality, the <c>M2010 ESR</c> is your first and best choice. <b>Sweet Spot: 75-120m</b>." },
-      '26" CARBON',
-      'Range Finder',
-      'Anti-Glare Coating',
-      'Full Angled',
-      '5RND MAGAZINE',
-      'MATCH GRADE',
-      'DLC BOLT',
-      'S-VPS 6.00X'
-    ],
-    recommended: [
-      'S-VPS 6.00X',
-      '26" CARBON',
-      'ANTI-GLARE COATING',
-      'RANGE FINDER',
-      '5RND MAGAZINE',
-      'DLC BOLT',
-      'MATCH GRADE'
-    ],
-    baseline: m2010ESR_BASELINE,
-    changes: M2010ESR_CHANGES
-  },
-  {
-    id: 'miniscout',
-    dbname: 'Mini Scout',
-    rank: 'b',
-    tr: '4',
-    baseline: miniscout_baseline,
-    changes: miniscout_changes
-  },
-  {
-    id: 'umg40',
-    dbname: 'UMG-40',
-    rank: 'a',
-    tr: '5',
-    baseline: umg40_baseline,
-    changes: umg40_changes
-  },
-  {
-    id: 'qbz-192',
-    dbname: 'QBZ-192',
-    rank: 'b',
-    tr: '3',
-    baseline: qbz_192_baseline,
-    changes: qbz_192_changes
-  },
-  {
-    id: 'sgx',
-    dbname: 'sgx',
-    rank: 'm',
-    tr: '1',
-    close: [
-      { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
-      'CQB SUPPRESSOR',
-      '8" Extended',
-      '41RND Magazine',
-      'FMJ',
-      'IRON SIGHTS',
-      '50 MW Blue'
-    ]
-  },
-  {
-    id: 'usg-90',
-    dbname: 'USG-90',
-    rank: 'm',
-    tr: '2',
-    close: [ 
-    { Notes: 
-      "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
-    },
-      'CQB SUPPRESSOR',
-      '407MM CIV-S',
-      '50RND MAGAZINE',
-      'Polymer Case',
-      'Improved Mag Catch',
-      'RO-S 1.25X',
-      '120 MW Blue'
-    ]
-  },
-  {
-    id: '18.5ks-k',
-    dbname: '18.5ks-k',
-    rank: 'c',
-    tr: '1',
-    versatile: [
-      'CQB Suppressor',
-      '430MM Cut',
-      '50 MW Blue',
-      'Folding Stubby',
-      '8RND Magazine',
-      'Buckshot',
-      'Iron Sights'
-    ]
-  },
-  {
     id: 'b36a4',
     dbname: 'b36a4',
     rank: 'm',
@@ -934,6 +776,47 @@ const weaponConfigs = [
     ]
   },
   {
+    id: 'qbz-192',
+    dbname: 'QBZ-192',
+    rank: 'b',
+    tr: '3',
+    baseline: qbz_192_baseline,
+    changes: qbz_192_changes
+  },
+  {
+    id: 'm39 emr',
+    dbname: 'm39 emr',
+    rank: 'b',
+    tr: '1',
+    versatile: [
+      { Notes: "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>." 
+      },
+      'Lightened Suppressor',
+      '22" Factory',
+      'Stippled Stubby',
+      '15RND Magazine',
+      'FMJ',
+      'R4T 2.00X'
+    ]
+  },
+  {
+    id: 'svdm',
+    dbname: 'svdm',
+    rank: 'c',
+    tr: '2',
+    versatile: [
+    { Notes: 
+      "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
+    },
+    'Double-Port Brake',
+    '556MM Para',
+    'Folding Stubby',
+    '20RND Fast Mag',
+    'FMJ',
+    'R4T 2.00X'
+    ]
+  },
+  {
     id: 'drs-iar',
     dbname: 'drs-iar',
     rank: 'm',
@@ -980,37 +863,28 @@ const weaponConfigs = [
     ]
   },
   {
-    id: 'm39 emr',
-    dbname: 'm39 emr',
+    id: 'l110',
+    dbname: 'L110',
     rank: 'b',
-    tr: '1',
-    versatile: [
-      { Notes: "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>." 
-      },
-      'Lightened Suppressor',
-      '22" Factory',
-      'Stippled Stubby',
-      '15RND Magazine',
-      'FMJ',
-      'R4T 2.00X'
-    ]
+    tr: '5',
+    baseline: L110_BASELINE,
+    changes: L110_CHANGES
   },
   {
-    id: 'svdm',
-    dbname: 'svdm',
-    rank: 'c',
-    tr: '2',
-    versatile: [
-    { Notes: 
-      "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
-    },
-    'Double-Port Brake',
-    '556MM Para',
-    'Folding Stubby',
-    '20RND Fast Mag',
-    'FMJ',
-    'R4T 2.00X'
-    ]
+    id: 'rpkm',
+    dbname: 'RPKM',
+    rank: 'b',
+    tr: '6',
+    recommended: [
+      'A-P2 1.75X',
+      'LONG SUPPRESSOR',
+      '590MM FACTORY',
+      'FOLDING STUBBY',
+      '40RND MAGAZINE',
+      'SYNTHETIC TIP'
+    ],
+    baseline: RPKM_BASELINE,
+    changes: RPKM_CHANGES
   },
   {
     id: 'p18',
@@ -1044,6 +918,159 @@ const weaponConfigs = [
       'Hollow point',
       'Iron sights'
     ]
+  },
+  {
+    id: 'ggh-22',
+    dbname: 'GGH-22',
+    rank: 'b',
+    tr: '4',
+    baseline: GGH_22_BASELINE,
+    changes: GGH_22_CHANGES
+  },
+  {
+    id: '18.5ks-k',
+    dbname: '18.5ks-k',
+    rank: 'c',
+    tr: '1',
+    versatile: [
+      'CQB Suppressor',
+      '430MM Cut',
+      '50 MW Blue',
+      'Folding Stubby',
+      '8RND Magazine',
+      'Buckshot',
+      'Iron Sights'
+    ]
+  },
+  {
+    id: 'm87a1',
+    dbname: 'M87A1',
+    rank: 'c',
+    tr: '2',
+    versatile: [
+      { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
+      'CQB SUPPRESSOR',
+      '20" FACTORY',
+      '50 MW GREEN',
+      'Adjustable Angled',
+      '5 SHELL TUBE',
+      'Buckshot',
+      'Mini Flex 1.00X'
+    ],
+    baseline: M87A1_BASELINE,
+    changes: M87A1_CHANGES
+  },
+  {
+    id: 'sgx',
+    dbname: 'sgx',
+    rank: 'm',
+    tr: '1',
+    close: [
+      { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
+      'CQB SUPPRESSOR',
+      '8" Extended',
+      '41RND Magazine',
+      'FMJ',
+      'IRON SIGHTS',
+      '50 MW Blue'
+    ]
+  },
+  {
+    id: 'usg-90',
+    dbname: 'USG-90',
+    rank: 'm',
+    tr: '2',
+    close: [ 
+    { Notes: 
+      "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
+    },
+      'CQB SUPPRESSOR',
+      '407MM CIV-S',
+      '50RND MAGAZINE',
+      'Polymer Case',
+      'Improved Mag Catch',
+      'RO-S 1.25X',
+      '120 MW Blue'
+    ]
+  },
+  {
+    id: 'pw5a3',
+    dbname: 'PW5A3',
+    rank: 'm',
+    tr: '3',
+    baseline: PW5A3_BASELINE,
+    changes: PW5A3_CHANGES
+  },
+  {
+    id: 'sl9',
+    dbname: 'sl9',
+    rank: 'm',
+    tr: '4',
+    versatile: [
+      { Notes: 
+        "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
+      },
+      '11" Heavy',
+      'Factory Angled',
+      '60RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: 
+        "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
+      },
+      'Single-Port Brake',
+      '3.9" Factory',
+      '50 MW Blue',
+      '60RND Magazine',
+      'FMJ',
+      'Iron Sights'
+    ]
+  },
+  {
+    id: 'umg40',
+    dbname: 'UMG-40',
+    rank: 'a',
+    tr: '5',
+    baseline: umg40_baseline,
+    changes: umg40_changes
+  },
+  {
+    id: 'm2010esr',
+    dbname: 'M2010 ESR',
+    rank: 'm',
+    tr: '1',
+    sniper: [
+      { Notes: "The flagship <b>Sniper Rifle</b> with second-best velocity but best lethality, the <c>M2010 ESR</c> is your first and best choice. <b>Sweet Spot: 75-120m</b>." },
+      '26" CARBON',
+      'Range Finder',
+      'Anti-Glare Coating',
+      'Full Angled',
+      '5RND MAGAZINE',
+      'MATCH GRADE',
+      'DLC BOLT',
+      'S-VPS 6.00X'
+    ],
+    recommended: [
+      'S-VPS 6.00X',
+      '26" CARBON',
+      'ANTI-GLARE COATING',
+      'RANGE FINDER',
+      '5RND MAGAZINE',
+      'DLC BOLT',
+      'MATCH GRADE'
+    ],
+    baseline: m2010ESR_BASELINE,
+    changes: M2010ESR_CHANGES
+  },
+  {
+    id: 'miniscout',
+    dbname: 'Mini Scout',
+    rank: 'b',
+    tr: '4',
+    baseline: miniscout_baseline,
+    changes: miniscout_changes
   }
 ];
 
