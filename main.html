@@ -3324,7 +3324,8 @@
         const tracker = idToTracker.get(id);
         tracker.attach(weaponListEl);
       }
-      updateWeaponNav(finalOrder);
+      const navOrder = currentTypeFilter ? displayOrder : finalOrder;
+      updateWeaponNav(navOrder);
     }
 
     renderWeaponList();
