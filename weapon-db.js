@@ -2012,6 +2012,7 @@
       'DVO LPVO': { name:'DVO LPVO', type:'Scope', pts:25, unlockLevel:34 },
       '1P87 1.50x': { name:'1P87 1.50x', type:'Scope', pts:10, unlockLevel:35 },
       'PAS-35 3.00x': { name:'PAS-35 3.00x', type:'Scope', pts:25, unlockLevel:36 },
+      'ST PRISIM 5.00X': { name:'ST PRISIM 5.00X', type:'Scope', pts:10, unlockLevel:37 },
       'BF-2M 2.50x': { name:'BF-2M 2.50x', type:'Scope', pts:10, unlockLevel:38 },
       'Mars-F LPVO': { name:'Mars-F LPVO', type:'Scope', pts:25, unlockLevel:40 },
       'SU-230 LPVO': { name:'SU-230 LPVO', type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
@@ -2050,8 +2051,9 @@
       '16.5" LSW': { name:'16.5" LSW', type:'Barrel', pts:10, unlockLevel:0 },
       '16.5" Basic': { name:'16.5" Basic', type:'Barrel', pts:10, unlockLevel:3 },
       '20" LE': { name:'20" LE', type:'Barrel', pts:15, unlockLevel:11 },
-      '14.5" Carbine': { name:'14.5" Carbine', type:'Barrel', pts:15, unlockLevel:14 },
-      '16.5" Fluted': { name:'16.5" Fluted', type:'Barrel', pts:20, unlockLevel:28 },
+      '20" SDM-R': { name: '20" SDM-R', type: 'Barrel', pts:10, unlockLevel: 14},
+      '14.5" Carbine': { name:'14.5" Carbine', type:'Barrel', pts:15, unlockLevel:28 },
+      '16.5" Fluted': { name:'16.5" Fluted', type:'Barrel', pts:20, unlockLevel:37 },
 
       // Underbarrels
       'None–Underbarrel': { name:'None', type:'Underbarrel', pts:0, unlockLevel:0 },
@@ -2063,13 +2065,15 @@
       'PTT Grip Pod': { name:'PTT Grip Pod', type:'Underbarrel', pts:20, unlockLevel:11 },
       '6H64 Vertical': { name:'6H64 Vertical', type:'Underbarrel', pts:25, unlockLevel:13 },
       'Adjustable Angled': { name:'Adjustable Angled', type:'Underbarrel', pts:15, unlockLevel:15 },
-      'Slim Angled': { name:'Slim Angled', type:'Underbarrel', pts:25, unlockLevel:16 },
-      'Ribbed Stubby': { name:'Ribbed Stubby', type:'Underbarrel', pts:30, unlockLevel:18 },
-      'Canted Stubby': { name:'Canted Stubby', type:'Underbarrel', pts:30, unlockLevel:21 },
+      'Slim Angled': { name:'Slim Angled', type:'Underbarrel', pts:25, unlockLevel:18 },
+      'Ribbed Stubby': { name:'Ribbed Stubby', type:'Underbarrel', pts:30, unlockLevel:21 },
+      'Canted Stubby': { name:'Canted Stubby', type:'Underbarrel', pts:30, unlockLevel:23 },
       'Full Angled': { name:'Full Angled', type:'Underbarrel', pts:25, unlockLevel:25 },
       'QD Grip Pod': { name:'QD Grip Pod', type:'Underbarrel', pts:30, unlockLevel:28 },
-      'Classic Vertical': { name:'Classic Vertical', type:'Underbarrel', pts:35, unlockLevel:29 },
-      'Low-Profile Stubby': { name:'Low-Profile Stubby', type:'Underbarrel', pts:45, unlockLevel:32 },
+      'Classic Grip Pod': { name:'Classic Grip Pod', type:'Underbarrel', pts:30, unlockLevel:31 },
+      'Classic Vertical': { name:'Classic Vertical', type:'Underbarrel', pts:35, unlockLevel:33 },
+      'Stippled Stubby': { name: 'Stippled Stubby', type:'Underbarrel', pts:35, unlockLevel: 36 },
+      'Low-Profile Stubby': { name:'Low-Profile Stubby', type:'Underbarrel', pts:45, unlockLevel:39 },
 
       // Magazines
       '30RND Magazine': { name:'30RND Magazine', type:'Magazine', pts:5, unlockLevel:0 },
@@ -2079,6 +2083,8 @@
       '40RND Fast Mag': { name:'40RND Fast Mag', type:'Magazine', pts:30, unlockLevel:22 },
       '45RND Magazine': { name:'45RND Magazine', type:'Magazine', pts:35, unlockLevel:27 },
       '45RND Fast Mag': { name:'45RND Fast Mag', type:'Magazine', pts:40, unlockLevel:31 },
+      '50RND Magazine': { name:'50RND Magazine', type:'Magazine', pts:45, unlockLevel:35 },
+      '60RND Magazine': { name:'60RND Magazine', type:'Magazine', pts:55, unlockLevel:40 },
 
       // Ergonomics
       'None–Ergonomics': { name:'None', type:'Ergonomics', pts:0, unlockLevel:0 },
