@@ -3295,7 +3295,6 @@
       'None–Optic Accessory': { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
       'Canted Iron Sights':   { name:'Canted Iron Sights', type:'Optic Accessory', pts:5,  unlockLevel:10 },
       'Canted Reflex':        { name:'Canted Reflex',      type:'Optic Accessory', pts:10, unlockLevel:20 },
-      'Piggyback Reflex':     { name:'Piggyback Reflex',   type:'Optic Accessory', pts:10, unlockLevel:30 },
 
       // Left Accessories
       'None–Left Accessory': { name:'None',          type:'Left Accessory', pts:0,  unlockLevel:0 },
@@ -3310,19 +3309,19 @@
       'Flashlight':           { name:'Flashlight', type:'Right Accessory', pts:10, unlockLevel:23 },
 
       // Muzzles
-      'None–Muzzle':          { name:'None',                type:'Muzzle', pts:0,  unlockLevel:0 },
-      'Single-Port Brake':    { name:'Single-Port Brake',   type:'Muzzle', pts:5,  unlockLevel:0 },
-      'Linear Comp':          { name:'Linear Comp',         type:'Muzzle', pts:10, unlockLevel:1 },
-      'Double-Port Brake':    { name:'Double-Port Brake',   type:'Muzzle', pts:10, unlockLevel:6 },
-      'Compensated Brake':    { name:'Compensated Brake',   type:'Muzzle', pts:20, unlockLevel:11 },
-      'Standard Suppressor':  { name:'Standard Suppressor', type:'Muzzle', pts:20, unlockLevel:16 },
-      'Long Suppressor':      { name:'Long Suppressor',     type:'Muzzle', pts:25, unlockLevel:21 },
-      'CQB Suppressor':       { name:'CQB Suppressor',      type:'Muzzle', pts:30, unlockLevel:26 },
-      'Flash Hider':          { name:'Flash Hider',         type:'Muzzle', pts:10, unlockLevel:32 },
-      'Lightened Suppressor': { name:'Lightened Suppressor',type:'Muzzle', pts:30, unlockLevel:36 },
+        'None–Muzzle':          { name:'None',                type:'Muzzle', pts:0,  unlockLevel:0 },
+        'Flash Hider':          { name:'Flash Hider',         type:'Muzzle', pts:10, unlockLevel:0 },
+        'Single-Port Brake':    { name:'Single-Port Brake',   type:'Muzzle', pts:5,  unlockLevel:1 },
+        'Linear Comp':          { name:'Linear Comp',         type:'Muzzle', pts:10, unlockLevel:6 },
+        'Double-Port Brake':    { name:'Double-Port Brake',   type:'Muzzle', pts:10, unlockLevel:11 },
+        'Compensated Brake':    { name:'Compensated Brake',   type:'Muzzle', pts:20, unlockLevel:16 },
+        'Standard Suppressor':  { name:'Standard Suppressor', type:'Muzzle', pts:20, unlockLevel:21 },
+        'Long Suppressor':      { name:'Long Suppressor',     type:'Muzzle', pts:25, unlockLevel:26 },
+        'CQB Suppressor':       { name:'CQB Suppressor',      type:'Muzzle', pts:30, unlockLevel:32 },
+        'Lightened Suppressor': { name:'Lightened Suppressor',type:'Muzzle', pts:30, unlockLevel:38 },
 
       // Barrels
-      '246mm Factory':   { name:'246mm Factory',   type:'Barrel', pts:10, unlockLevel:0 },
+      '264mm Factory':   { name:'264mm Factory',   type:'Barrel', pts:10, unlockLevel:0 },
       '264mm Prototype': { name:'264mm Prototype', type:'Barrel', pts:10, unlockLevel:3 },
       '407mm CIV-S':     { name:'407mm CIV-S',     type:'Barrel', pts:10, unlockLevel:15 },
       '264mm Fluted':    { name:'264mm Fluted',    type:'Barrel', pts:20, unlockLevel:34 },
