@@ -209,6 +209,21 @@
       background: rgba(10, 16, 21, 0.66);
     }
 
+    .weapon-drop-placeholder {
+      border: 2px dashed rgba(0, 229, 255, 0.5);
+      border-radius: 14px;
+      padding: 28px;
+      color: rgba(0, 229, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 255, 0.06);
+      pointer-events: none;
+    }
+
     .weapon-header {
       display: flex;
       flex-wrap: wrap;
@@ -640,16 +655,35 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      cursor: pointer;
+      cursor: grab;
       transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
       user-select: none;
       -webkit-user-select: none;
+    }
+
+    .side-nav-item:active {
+      cursor: grabbing;
     }
 
     .side-nav-item:hover {
       border-color: rgba(0, 229, 255, 0.35);
       background: rgba(0, 229, 255, 0.1);
       box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+    }
+
+    .side-nav-item.dragging {
+      opacity: 0.65;
+      border-color: rgba(0, 229, 255, 0.5);
+      background: rgba(0, 229, 255, 0.18);
+    }
+
+    .side-nav-item.nav-drop-placeholder {
+      border-style: dashed;
+      border-color: rgba(0, 229, 255, 0.5);
+      background: rgba(0, 229, 255, 0.08);
+      color: rgba(0, 229, 255, 0.75);
+      justify-content: center;
+      pointer-events: none;
     }
 
     .side-nav-name {
@@ -2455,6 +2489,71 @@
     })();
 
     let currentDraggedId = null;
+    let cardDropPlaceholder = null;
+    let navDropPlaceholder = null;
+
+    function getCardDropPlaceholder() {
+      if (!cardDropPlaceholder) {
+        cardDropPlaceholder = document.createElement('div');
+        cardDropPlaceholder.className = 'weapon-drop-placeholder';
+        cardDropPlaceholder.setAttribute('aria-hidden', 'true');
+        cardDropPlaceholder.textContent = 'Drop weapon here';
+      }
+      return cardDropPlaceholder;
+    }
+
+    function clearCardDropPlaceholder() {
+      if (cardDropPlaceholder && cardDropPlaceholder.parentNode) {
+        cardDropPlaceholder.parentNode.removeChild(cardDropPlaceholder);
+      }
+    }
+
+    function getNavDropPlaceholder() {
+      if (!navDropPlaceholder) {
+        navDropPlaceholder = document.createElement('li');
+        navDropPlaceholder.className = 'side-nav-item nav-drop-placeholder';
+        navDropPlaceholder.setAttribute('aria-hidden', 'true');
+        navDropPlaceholder.textContent = 'Drop weapon here';
+        navDropPlaceholder.draggable = false;
+      }
+      return navDropPlaceholder;
+    }
+
+    function clearNavDropPlaceholder() {
+      if (navDropPlaceholder && navDropPlaceholder.parentNode) {
+        navDropPlaceholder.parentNode.removeChild(navDropPlaceholder);
+      }
+    }
+
+    function enableNavDrag(item) {
+      if (!item) return;
+      item.setAttribute('draggable', 'true');
+      item.addEventListener('dragstart', handleNavItemDragStart);
+      item.addEventListener('dragend', handleNavItemDragEnd);
+    }
+
+    function handleNavItemDragStart(event) {
+      const item = event.currentTarget;
+      if (!item) return;
+      const id = item.dataset.weaponId;
+      if (!id) return;
+      currentDraggedId = id;
+      item.classList.add('dragging');
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        try {
+          event.dataTransfer.setData('text/plain', id);
+        } catch (_) {}
+      }
+    }
+
+    function handleNavItemDragEnd(event) {
+      const item = event && event.currentTarget;
+      if (item) item.classList.remove('dragging');
+      clearNavDropPlaceholder();
+      clearCardDropPlaceholder();
+      currentDraggedId = null;
+    }
 
     class WeaponTracker {
       constructor(config) {
@@ -2892,6 +2991,8 @@
 
       handleDragEnd() {
         this.cardEl.classList.remove('dragging');
+        clearCardDropPlaceholder();
+        clearNavDropPlaceholder();
         currentDraggedId = null;
       }
 
@@ -3955,6 +4056,7 @@
         const li = document.createElement('li');
         li.className = 'side-nav-item';
         li.dataset.weaponId = id;
+        enableNavDrag(li);
         const name = document.createElement('span');
         name.className = 'side-nav-name';
         const navName = tracker.displayName || (tracker.config && tracker.config.name) || id;
@@ -4003,6 +4105,64 @@
         const id = item.dataset.weaponId;
         const tracker = trackers.find((t) => t.id === id);
         scrollToTracker(tracker);
+      });
+
+      weaponNavEl.addEventListener('dragover', (event) => {
+        if (!currentDraggedId) return;
+        if (!weaponNavEl.contains(event.target)) return;
+        const listEl = weaponNavEl.querySelector('.side-nav-list');
+        if (!listEl) return;
+        event.preventDefault();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+        const placeholder = getNavDropPlaceholder();
+        if (event.target === placeholder) return;
+        const dropItem = event.target.closest('.side-nav-item');
+        if (dropItem && dropItem !== placeholder) {
+          const rect = dropItem.getBoundingClientRect();
+          const before = event.clientY < rect.top + rect.height / 2;
+          if (before) listEl.insertBefore(placeholder, dropItem);
+          else listEl.insertBefore(placeholder, dropItem.nextSibling);
+        } else if (placeholder.parentNode !== listEl) {
+          listEl.appendChild(placeholder);
+        }
+      });
+
+      weaponNavEl.addEventListener('drop', (event) => {
+        if (!currentDraggedId) return;
+        const listEl = weaponNavEl.querySelector('.side-nav-list');
+        if (!listEl) return;
+        const navItems = Array.from(listEl.children);
+        if (!navItems.length) return;
+        event.preventDefault();
+        const dropItem = event.target.closest('.side-nav-item');
+        const domOrder = navItems.map((item) => item.dataset.weaponId);
+        const filteredOrder = domOrder.filter(Boolean);
+        let insertIndex = filteredOrder.length;
+        if (navDropPlaceholder && navDropPlaceholder.parentNode === listEl) {
+          const placeholderIndex = navItems.indexOf(navDropPlaceholder);
+          if (placeholderIndex !== -1) {
+            const beforeNodes = navItems.slice(0, placeholderIndex);
+            insertIndex = beforeNodes.reduce((count, node) => count + (node.dataset && node.dataset.weaponId ? 1 : 0), 0);
+          }
+        } else if (dropItem) {
+          const dropId = dropItem.dataset.weaponId;
+          if (dropId) {
+            const dropIndex = filteredOrder.indexOf(dropId);
+            if (dropIndex !== -1) {
+              const rect = dropItem.getBoundingClientRect();
+              const before = event.clientY < rect.top + rect.height / 2;
+              insertIndex = before ? dropIndex : dropIndex + 1;
+            }
+          }
+        }
+        const order = filteredOrder.filter((id) => id && id !== currentDraggedId);
+        if (insertIndex > order.length) insertIndex = order.length;
+        order.splice(insertIndex, 0, currentDraggedId);
+        const mergedOrder = mergeVisibleOrderWithFullList(order, trackerMap);
+        storage.setOrder(mergedOrder);
+        clearNavDropPlaceholder();
+        renderWeaponList();
+        currentDraggedId = null;
       });
     }
 
@@ -4060,18 +4220,38 @@
     weaponListEl.addEventListener('dragover', (event) => {
       if (!currentDraggedId) return;
       event.preventDefault();
-      event.dataTransfer.dropEffect = 'move';
+      if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+      const placeholder = getCardDropPlaceholder();
+      if (event.target === placeholder) return;
+      const dropCard = event.target.closest('.weapon-card');
+      if (dropCard && dropCard !== placeholder) {
+        const rect = dropCard.getBoundingClientRect();
+        const before = event.clientY < rect.top + rect.height / 2;
+        if (before) weaponListEl.insertBefore(placeholder, dropCard);
+        else weaponListEl.insertBefore(placeholder, dropCard.nextSibling);
+      } else if (placeholder.parentNode !== weaponListEl) {
+        weaponListEl.appendChild(placeholder);
+      }
     });
 
     weaponListEl.addEventListener('drop', (event) => {
       if (!currentDraggedId) return;
       event.preventDefault();
       const dropCard = event.target.closest('.weapon-card');
-      const domOrder = Array.from(weaponListEl.children).map((el) => el.dataset.weaponId);
-      let insertIndex = domOrder.length;
-      if (dropCard) {
+      const children = Array.from(weaponListEl.children);
+      const domOrder = children.map((el) => el.dataset.weaponId);
+      let insertIndex = domOrder.filter(Boolean).length;
+
+      if (cardDropPlaceholder && cardDropPlaceholder.parentNode === weaponListEl) {
+        const placeholderIndex = children.indexOf(cardDropPlaceholder);
+        if (placeholderIndex !== -1) {
+          const beforeNodes = children.slice(0, placeholderIndex);
+          insertIndex = beforeNodes.reduce((count, node) => count + (node.dataset && node.dataset.weaponId ? 1 : 0), 0);
+        }
+      } else if (dropCard) {
         const dropId = dropCard.dataset.weaponId;
-        const dropIndex = domOrder.indexOf(dropId);
+        const filteredOrder = domOrder.filter(Boolean);
+        const dropIndex = filteredOrder.indexOf(dropId);
         if (dropIndex !== -1) {
           const rect = dropCard.getBoundingClientRect();
           const before = event.clientY < rect.top + rect.height / 2;
@@ -4080,12 +4260,11 @@
       }
 
       const order = domOrder.filter((id) => id && id !== currentDraggedId);
-      if (insertIndex > order.length) {
-        insertIndex = order.length;
-      }
+      if (insertIndex > order.length) insertIndex = order.length;
       order.splice(insertIndex, 0, currentDraggedId);
       const mergedOrder = mergeVisibleOrderWithFullList(order, trackerMap);
       storage.setOrder(mergedOrder);
+      clearCardDropPlaceholder();
       renderWeaponList();
       currentDraggedId = null;
     });
