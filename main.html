@@ -112,6 +112,8 @@
       gap: 10px;
       transition: box-shadow var(--transition), border-color var(--transition), background var(--transition);
       position: relative;
+      z-index: 0;
+      overflow: visible;
       outline: none;
     }
 
@@ -244,13 +246,28 @@
       padding: 4px 8px;
       border-radius: 999px;
       font-size: 11px;
-      letter-spacing: 0.08em;
+      font-weight: 800;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
       border: 1px solid rgba(60, 74, 85, 0.6);
       background: rgba(18, 26, 32, 0.88);
-      color: var(--text);
+      color: #fff;
       user-select: none;
       -webkit-user-select: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 0;
+      isolation: isolate;
+      --chip-text-outline: rgba(0, 0, 0, 0.85);
+      --chip-text-glow: 0 0 0 transparent;
+      text-shadow:
+        -0.7px -0.7px 0 var(--chip-text-outline),
+        0.7px -0.7px 0 var(--chip-text-outline),
+        -0.7px 0.7px 0 var(--chip-text-outline),
+        0.7px 0.7px 0 var(--chip-text-outline),
+        0 0 4px rgba(0, 0, 0, 0.65),
+        var(--chip-text-glow);
+      -webkit-text-stroke: 0.55px rgba(0, 0, 0, 0.6);
     }
 
     .meta-chip.type-chip {
@@ -463,6 +480,54 @@
       color: var(--accent);
     }
 
+    .favorite-toggle span[aria-hidden="true"] {
+      transition: transform 200ms ease, color 200ms ease;
+    }
+
+    .weapon-card.favorite {
+      border-color: rgba(0, 229, 255, 0.55);
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.5),
+        0 0 22px rgba(0, 229, 255, 0.35),
+        0 0 44px rgba(0, 160, 255, 0.2);
+    }
+
+    .favorite-sweep {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .favorite-sweep svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .favorite-sweep rect {
+      fill: none;
+      stroke: rgba(0, 229, 255, 0.95);
+      stroke-width: 4px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 64 480;
+      stroke-dashoffset: 0;
+      filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.8));
+      animation: favoriteSweepDash 0.95s ease-out forwards;
+    }
+
+    .weapon-card.favorite .favorite-toggle span[aria-hidden="true"] {
+      animation: favoriteStarPulse 2.4s ease-in-out infinite;
+      color: #00f0ff;
+    }
+
+    .weapon-card.favorite .favorite-toggle {
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.35) inset, 0 0 16px rgba(0, 229, 255, 0.4);
+    }
+
     /* Square icon-only controls */
     .favorite-toggle,
     .collapse-box {
@@ -541,7 +606,13 @@
 .side-nav-item:hover { background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.35); }
 .side-nav-name { flex: 1 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .side-nav-type { color: var(--text-muted); font-size: 11px; letter-spacing: 0.04em; }
-.side-nav-fav { color: #00e5ff; font-size: 14px; line-height: 1; }
+.side-nav-fav {
+      color: #00e5ff;
+      font-size: 14px;
+      line-height: 1;
+      filter: drop-shadow(0 0 3px rgba(0, 229, 255, 0.4));
+      animation: navStarPulse 3.6s ease-in-out infinite;
+    }
 
 /* Hide horizontal scrollbar in WebKit for side nav */
 .side-nav::-webkit-scrollbar:horizontal { height: 0; }
@@ -1185,92 +1256,438 @@
       .side-column { width: 100%; max-width: 280px; }
     }
   /* Enhanced chip visuals (vibrant + glow) */
+    @keyframes chipGlowPulse {
+      0%,
+      100% {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3), 0 0 0 var(--chip-glow-color, rgba(255, 255, 255, 0.2));
+      }
+      50% {
+        box-shadow: 0 0 14px var(--chip-glow-color, rgba(255, 255, 255, 0.35)),
+          0 0 var(--chip-glow-spread, 26px) var(--chip-glow-color, rgba(255, 255, 255, 0.35));
+      }
+    }
+
+    @keyframes chipHueDrift {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 70% 80%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+
+    @keyframes metaFireFlow {
+      0% {
+        background-position: 0% 20%;
+      }
+      50% {
+        background-position: 80% 90%;
+      }
+      100% {
+        background-position: 0% 20%;
+      }
+    }
+
+    @keyframes metaFirePlume {
+      0% {
+        transform: scale(0.9) translate(-6%, 6%);
+        opacity: 0.4;
+      }
+      50% {
+        transform: scale(1.05) translate(4%, -3%);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(0.95) translate(-4%, 4%);
+        opacity: 0.45;
+      }
+    }
+
+    @keyframes metaSparkDrift {
+      0% {
+        background-position:
+          25% 95%,
+          65% 55%,
+          0% 0%;
+      }
+      50% {
+        background-position:
+          45% 75%,
+          55% 35%,
+          30% 20%;
+      }
+      100% {
+        background-position:
+          20% 90%,
+          75% 60%,
+          60% 10%;
+      }
+    }
+
+    @keyframes metaFlameClip {
+      0% {
+        clip-path: polygon(6% 100%, 14% 58%, 22% 86%, 32% 20%, 42% 78%, 54% 10%, 66% 74%, 78% 18%, 90% 84%, 100% 32%, 100% 100%, 0% 100%);
+      }
+      50% {
+        clip-path: polygon(6% 100%, 16% 68%, 26% 46%, 34% 8%, 46% 64%, 58% 6%, 70% 58%, 84% 10%, 94% 70%, 100% 24%, 100% 100%, 0% 100%);
+      }
+      100% {
+        clip-path: polygon(6% 100%, 12% 55%, 22% 82%, 34% 18%, 46% 72%, 58% 14%, 70% 80%, 84% 26%, 94% 86%, 100% 38%, 100% 100%, 0% 100%);
+      }
+    }
+
+    @keyframes metaFlameRise {
+      0% {
+        transform: translateY(1px) scaleY(0.92);
+        opacity: 0.9;
+      }
+      50% {
+        transform: translateY(-2px) scaleY(1.08);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(1px) scaleY(0.94);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes metaFlameTexture {
+      0% {
+        background-position:
+          50% 0%,
+          50% 100%,
+          0% 110%;
+        opacity: 0.85;
+      }
+      50% {
+        background-position:
+          52% 15%,
+          48% 80%,
+          10% 60%;
+        opacity: 1;
+      }
+      100% {
+        background-position:
+          46% -10%,
+          52% 120%,
+          -10% 90%;
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes chipShimmer {
+      0% {
+        opacity: 0;
+        transform: translateX(-130%) rotate(12deg);
+      }
+      40% {
+        opacity: var(--range-shimmer-opacity, 0.35);
+      }
+      60% {
+        opacity: var(--range-shimmer-opacity, 0.35);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(130%) rotate(12deg);
+      }
+    }
+
+    @keyframes favoriteStarPulse {
+      0%,
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 2px rgba(0, 229, 255, 0.4));
+      }
+      50% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.8));
+      }
+    }
+
+    @keyframes navStarPulse {
+      0%,
+      100% {
+        opacity: 0.65;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.9;
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes favoriteSweepDash {
+      0% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+      80% {
+        opacity: 0.85;
+      }
+      100% {
+        stroke-dashoffset: -520;
+        opacity: 0;
+      }
+    }
+
+    @keyframes metaCorePulse {
+      0%,
+      100% {
+        transform: scaleY(0.96);
+        filter: saturate(1) brightness(1);
+      }
+      45% {
+        transform: scaleY(1.05);
+        filter: saturate(1.25) brightness(1.08);
+      }
+      75% {
+        transform: scaleY(1.02);
+        filter: saturate(1.15) brightness(1.04);
+      }
+    }
+
     .meta-chip.type-chip {
-      background: linear-gradient(135deg, rgba(0,229,255,0.28), rgba(0,229,255,0.10));
-      border-color: rgba(0,229,255,0.65);
-      color: #e9fbff;
-      text-shadow: 0 0 8px rgba(0,229,255,0.45);
-      box-shadow: 0 0 12px rgba(0,229,255,0.25), inset 0 0 6px rgba(0,229,255,0.25);
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.24), rgba(0, 229, 255, 0.1));
+      border-color: rgba(0, 229, 255, 0.65);
+      color: #fff;
+      --chip-text-glow: 0 0 8px rgba(0, 229, 255, 0.55);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.25), inset 0 0 6px rgba(0, 229, 255, 0.25);
     }
 
     .meta-chip.rank-m {
-      background: linear-gradient(135deg, #ffe57a, #f1c40f);
-      border-color: rgba(241,196,15,0.85);
-      color: #1b1a10;
-      text-shadow: 0 0 8px rgba(241,196,15,0.55);
-      box-shadow: 0 0 16px rgba(241,196,15,0.45), inset 0 0 8px rgba(241,196,15,0.35);
+      background-image:
+        radial-gradient(circle at 18% 32%, rgba(255, 255, 255, 0.4), transparent 52%),
+        radial-gradient(circle at 78% 22%, rgba(255, 190, 90, 0.45), transparent 62%),
+        conic-gradient(from 10deg, rgba(255, 210, 140, 0.25), rgba(255, 110, 0, 0.4), rgba(255, 210, 140, 0.25)),
+        linear-gradient(140deg, #ffb347 0%, #ff6a00 45%, #a10d00 90%);
+      background-size: 170% 170%, 200% 200%, 320% 320%, 230% 230%;
+      background-position: 0% 20%, 60% 30%, 0% 0%, 0% 0%;
+      background-blend-mode: screen, screen, screen, normal;
+      border-color: rgba(255, 166, 43, 0.95);
+      color: #fff;
+      --chip-text-glow: 0 0 12px rgba(255, 182, 70, 0.95);
+      --chip-glow-color: rgba(255, 139, 51, 0.92);
+      --chip-glow-spread: 52px;
+      --chip-glow-speed: 1.7s;
+      box-shadow:
+        0 0 16px rgba(255, 140, 40, 0.65),
+        0 0 36px rgba(255, 90, 0, 0.4),
+        inset 0 0 18px rgba(255, 200, 125, 0.4);
+      filter: drop-shadow(0 0 8px rgba(255, 120, 32, 0.55));
+      transform-origin: center;
+      animation:
+        metaFireFlow 4.6s linear infinite,
+        chipGlowPulse var(--chip-glow-speed) ease-in-out infinite,
+        metaCorePulse 2.3s ease-in-out infinite;
     }
+
+    .meta-chip.rank-m::before {
+      content: "";
+      position: absolute;
+      inset: -44% -18%;
+      border-radius: 50%;
+      background-image:
+        radial-gradient(circle at 20% 95%, rgba(255, 255, 255, 0.55), transparent 52%),
+        radial-gradient(circle at 68% 58%, rgba(255, 128, 0, 0.65), transparent 72%),
+        radial-gradient(circle at 45% 25%, rgba(255, 210, 120, 0.35), transparent 65%),
+        repeating-conic-gradient(from 0deg, rgba(255, 220, 120, 0.2) 0deg 16deg, transparent 16deg 32deg);
+      background-size: 220% 220%, 210% 210%, 160% 190%, 380% 380%;
+      background-position: 20% 100%, 65% 55%, 44% 32%, 0% 0%;
+      background-blend-mode: screen;
+      mix-blend-mode: screen;
+      filter: blur(1.6px);
+      opacity: 0.8;
+      pointer-events: none;
+      animation: metaFirePlume 3s ease-in-out infinite, metaSparkDrift 10s linear infinite;
+      z-index: -2;
+    }
+
+    .meta-chip.rank-m::after {
+      content: "";
+      position: absolute;
+      inset: -12px 4px 4px;
+      background-image:
+        radial-gradient(circle at 52% -5%, rgba(255, 255, 255, 0.92), transparent 62%),
+        linear-gradient(180deg, rgba(255, 240, 210, 0.98) 0%, rgba(255, 190, 70, 0.9) 38%, rgba(255, 106, 0, 0.82) 78%, rgba(80, 10, 0, 0)),
+        repeating-linear-gradient(180deg, rgba(255, 221, 173, 0.5) 0 12px, rgba(255, 114, 0, 0.2) 12px 24px),
+        radial-gradient(circle at 28% 90%, rgba(255, 220, 140, 0.55), transparent 55%);
+      background-blend-mode: screen;
+      background-size:
+        150% 170%,
+        100% 125%,
+        90% 240%,
+        170% 210%;
+      background-position:
+        52% 0%,
+        50% 100%,
+        0% 110%,
+        36% 78%;
+      clip-path: polygon(6% 100%, 14% 58%, 22% 86%, 32% 22%, 42% 78%, 54% 12%, 66% 74%, 78% 18%, 90% 84%, 100% 32%, 100% 100%, 0% 100%);
+      mix-blend-mode: screen;
+      filter: blur(0.6px) drop-shadow(0 0 6px rgba(255, 150, 60, 0.5));
+      opacity: 0.98;
+      pointer-events: none;
+      animation: metaFlameRise 1.6s ease-in-out infinite, metaFlameClip 1.6s ease-in-out infinite, metaFlameTexture 1.25s linear infinite;
+      z-index: -1;
+    }
+
     .meta-chip.rank-a {
-      background: linear-gradient(135deg, #4dd2ff, #00bfff);
-      border-color: rgba(0,191,255,0.8);
-      color: #08131a;
-      text-shadow: 0 0 7px rgba(0,191,255,0.45);
-      box-shadow: 0 0 14px rgba(0,191,255,0.35), inset 0 0 7px rgba(0,191,255,0.28);
+      background: linear-gradient(135deg, #6ee5ff 0%, #00b0ff 45%, #0e1c40 100%);
+      background-size: 220% 220%;
+      border-color: rgba(0, 191, 255, 0.82);
+      color: #fff;
+      --chip-text-glow: 0 0 8px rgba(103, 229, 255, 0.75);
+      --chip-glow-color: rgba(63, 200, 255, 0.6);
+      --chip-glow-spread: 32px;
+      --chip-glow-speed: 2.4s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 9s linear infinite;
     }
+
     .meta-chip.rank-b {
-      background: linear-gradient(135deg, #2ee58d, #14d672);
-      border-color: rgba(20,214,114,0.75);
-      color: #0b1712;
-      text-shadow: 0 0 6px rgba(20,214,114,0.35);
-      box-shadow: 0 0 12px rgba(20,214,114,0.28), inset 0 0 6px rgba(20,214,114,0.22);
+      background: linear-gradient(135deg, #64f2b0 0%, #14d672 55%, #092017 100%);
+      background-size: 200% 200%;
+      border-color: rgba(20, 214, 114, 0.78);
+      color: #fff;
+      --chip-text-glow: 0 0 6px rgba(77, 230, 155, 0.65);
+      --chip-glow-color: rgba(26, 196, 124, 0.5);
+      --chip-glow-spread: 28px;
+      --chip-glow-speed: 2.8s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 11s linear infinite;
     }
+
     .meta-chip.rank-c {
-      background: linear-gradient(135deg, #ffc27a, #ff9b4d);
-      border-color: rgba(255,155,77,0.7);
-      color: #24150a;
-      text-shadow: 0 0 5px rgba(255,155,77,0.28);
-      box-shadow: 0 0 10px rgba(255,155,77,0.22), inset 0 0 5px rgba(255,155,77,0.18);
+      background: linear-gradient(135deg, #ffd08f 0%, #ff9b4d 60%, #341608 100%);
+      background-size: 190% 190%;
+      border-color: rgba(255, 155, 77, 0.75);
+      color: #fff;
+      --chip-text-glow: 0 0 5px rgba(255, 166, 96, 0.5);
+      --chip-glow-color: rgba(255, 171, 92, 0.45);
+      --chip-glow-spread: 24px;
+      --chip-glow-speed: 3.2s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 13s linear infinite;
     }
+
     .meta-chip.rank-d {
-      background: linear-gradient(135deg, #ff8b8b, #ff5c5c);
-      border-color: rgba(255,92,92,0.65);
-      color: #2b0f12;
-      text-shadow: 0 0 4px rgba(255,92,92,0.22);
-      box-shadow: 0 0 9px rgba(255,92,92,0.18), inset 0 0 4px rgba(255,92,92,0.15);
+      background: linear-gradient(135deg, #ffafaf 0%, #ff5c5c 60%, #2b0a0f 100%);
+      background-size: 180% 180%;
+      border-color: rgba(255, 92, 92, 0.7);
+      color: #fff;
+      --chip-text-glow: 0 0 4px rgba(255, 118, 118, 0.45);
+      --chip-glow-color: rgba(255, 102, 102, 0.35);
+      --chip-glow-spread: 22px;
+      --chip-glow-speed: 3.6s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 16s linear infinite;
     }
+
     .meta-chip.rank-unranked {
-      background: linear-gradient(135deg, #8d78ff, #6a4dff);
-      border-color: rgba(125,95,255,0.7);
-      color: #f5f3ff;
-      text-shadow: 0 0 6px rgba(125,95,255,0.35);
-      box-shadow: 0 0 12px rgba(125,95,255,0.25), inset 0 0 6px rgba(125,95,255,0.22);
+      background: linear-gradient(135deg, #b59aff 0%, #6a4dff 65%, #1e103c 100%);
+      background-size: 210% 210%;
+      border-color: rgba(125, 95, 255, 0.72);
+      color: #fff;
+      --chip-text-glow: 0 0 6px rgba(160, 135, 255, 0.55);
+      --chip-glow-color: rgba(125, 95, 255, 0.4);
+      --chip-glow-spread: 26px;
+      --chip-glow-speed: 4.2s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 18s linear infinite;
     }
 
     /* Type rating (TR) chips: #1 gold, #2 silver, #3 bronze, #4 dull blue */
-    .meta-chip.range-1 {
-      background: linear-gradient(135deg, #ffe57a, #f1c40f);
-      border-color: rgba(241,196,15,0.85);
-      color: #1b1a10;
-      text-shadow: 0 0 8px rgba(241,196,15,0.55);
-      box-shadow: 0 0 16px rgba(241,196,15,0.45), inset 0 0 8px rgba(241,196,15,0.35);
-    }
-    .meta-chip.range-2 {
-      background: linear-gradient(135deg, #edf1f4, #bfc7cc);
-      border-color: rgba(191,199,204,0.85);
-      color: #101519;
-      text-shadow: 0 0 7px rgba(191,199,204,0.45);
-      box-shadow: 0 0 14px rgba(191,199,204,0.35), inset 0 0 7px rgba(191,199,204,0.28);
-    }
-    .meta-chip.range-3 {
-      background: linear-gradient(135deg, #f0a561, #cd7f32);
-      border-color: rgba(205,127,50,0.8);
-      color: #211108;
-      text-shadow: 0 0 6px rgba(205,127,50,0.35);
-      box-shadow: 0 0 12px rgba(205,127,50,0.28), inset 0 0 6px rgba(205,127,50,0.22);
-    }
-    .meta-chip.range-4 {
-      background: linear-gradient(135deg, #6d8aa0, #4a6273);
-      border-color: rgba(91,122,142,0.75);
-      color: #e9f2f9;
-      text-shadow: 0 0 5px rgba(91,122,142,0.28);
-      box-shadow: 0 0 10px rgba(91,122,142,0.22), inset 0 0 5px rgba(91,122,142,0.18);
-    }
+    .meta-chip.range-1,
+    .meta-chip.range-2,
+    .meta-chip.range-3,
+    .meta-chip.range-4,
     .meta-chip.range-unranked {
-      background: linear-gradient(135deg, #8d78ff, #6a4dff);
-      border-color: rgba(125,95,255,0.7);
-      color: #f5f3ff;
-      text-shadow: 0 0 6px rgba(125,95,255,0.35);
-      box-shadow: 0 0 12px rgba(125,95,255,0.25), inset 0 0 6px rgba(125,95,255,0.22);
+      background-size: 220% 220%;
+    }
+
+    .meta-chip.range-1 {
+      background: linear-gradient(135deg, #ffe57a 0%, #f7c148 45%, #7c4200 100%);
+      border-color: rgba(241, 196, 15, 0.85);
+      color: #fff;
+      --chip-text-glow: 0 0 8px rgba(241, 196, 15, 0.65);
+      --chip-glow-color: rgba(255, 214, 130, 0.75);
+      --chip-glow-spread: 32px;
+      --chip-glow-speed: 2.3s;
+      --range-shimmer-color: rgba(255, 249, 220, 0.95);
+      --range-shimmer-opacity: 0.95;
+      --range-shimmer-speed: 3s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 10s linear infinite;
+    }
+
+    .meta-chip.range-2 {
+      background: linear-gradient(135deg, #f0f4f8 0%, #bfc7cc 55%, #3b4750 100%);
+      border-color: rgba(191, 199, 204, 0.85);
+      color: #fff;
+      --chip-text-glow: 0 0 7px rgba(191, 199, 204, 0.55);
+      --chip-glow-color: rgba(221, 232, 239, 0.55);
+      --chip-glow-spread: 28px;
+      --chip-glow-speed: 2.9s;
+      --range-shimmer-color: rgba(255, 255, 255, 0.85);
+      --range-shimmer-opacity: 0.65;
+      --range-shimmer-speed: 4s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 12s linear infinite;
+    }
+
+    .meta-chip.range-3 {
+      background: linear-gradient(135deg, #f3b26e 0%, #cd7f32 60%, #3a1a08 100%);
+      border-color: rgba(205, 127, 50, 0.8);
+      color: #fff;
+      --chip-text-glow: 0 0 6px rgba(205, 127, 50, 0.45);
+      --chip-glow-color: rgba(205, 127, 50, 0.45);
+      --chip-glow-spread: 24px;
+      --chip-glow-speed: 3.4s;
+      --range-shimmer-color: rgba(255, 213, 170, 0.65);
+      --range-shimmer-opacity: 0.45;
+      --range-shimmer-speed: 5s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 14s linear infinite;
+    }
+
+    .meta-chip.range-4 {
+      background: linear-gradient(135deg, #7c96ab 0%, #4a6273 65%, #101820 100%);
+      border-color: rgba(91, 122, 142, 0.75);
+      color: #fff;
+      --chip-text-glow: 0 0 5px rgba(91, 122, 142, 0.45);
+      --chip-glow-color: rgba(112, 142, 162, 0.32);
+      --chip-glow-spread: 20px;
+      --chip-glow-speed: 4.1s;
+      --range-shimmer-color: rgba(255, 255, 255, 0.4);
+      --range-shimmer-opacity: 0.2;
+      --range-shimmer-speed: 6.2s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 18s linear infinite;
+    }
+
+    .meta-chip.range-unranked {
+      background: linear-gradient(135deg, #b59aff 0%, #6a4dff 70%, #1e103c 100%);
+      border-color: rgba(125, 95, 255, 0.7);
+      color: #fff;
+      --chip-text-glow: 0 0 6px rgba(125, 95, 255, 0.55);
+      --chip-glow-color: rgba(125, 95, 255, 0.35);
+      --chip-glow-spread: 22px;
+      --chip-glow-speed: 4.8s;
+      --range-shimmer-color: rgba(200, 180, 255, 0.45);
+      --range-shimmer-opacity: 0.25;
+      --range-shimmer-speed: 7s;
+      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 20s linear infinite;
+    }
+
+    .meta-chip.range-1::after,
+    .meta-chip.range-2::after,
+    .meta-chip.range-3::after,
+    .meta-chip.range-4::after,
+    .meta-chip.range-unranked::after {
+      content: "";
+      position: absolute;
+      inset: -45% -15%;
+      border-radius: inherit;
+      background: linear-gradient(115deg, transparent 20%, var(--range-shimmer-color, rgba(255, 255, 255, 0.4)) 50%, transparent 80%);
+      opacity: 0;
+      transform: translateX(-130%) rotate(12deg);
+      animation: chipShimmer var(--range-shimmer-speed, 6s) ease-in-out infinite;
+      mix-blend-mode: screen;
+      z-index: -1;
     }
 </style>
 </head>
@@ -1381,6 +1798,9 @@
     document.documentElement.style.setProperty('--card-padding', `${CARD_PAD}px`);
 
     const toUpperSafe = (value) => (typeof value === 'string' ? value.toUpperCase() : value);
+    function formatTypeKey(value) {
+      return typeof value === 'string' ? value.trim().toUpperCase() : '';
+    }
 
     const TYPE_ORDER = [
       'ASSAULT RIFLE',
@@ -1406,12 +1826,12 @@
     const typeFilterList =
       typeof document !== 'undefined' ? document.getElementById('typeFilterList') : null;
     const TYPE_FILTER_KEY = 'bf6-meta-type-filter';
+    const FAVORITES_FILTER = 'FAVORITES';
     const ACTIVE_TAB_STORAGE_KEY = 'bf6-meta-active-tab';
-    let currentTypeFilter = loadTypeFilter();
+    let currentTypeFilter = formatTypeKey(loadTypeFilter());
     const activeTabMap = loadActiveTabs();
 
     const normalizeDbKey = (value) => (typeof value === 'string' ? value.trim().toUpperCase() : '');
-    const formatTypeKey = (value) => (typeof value === 'string' ? value.trim().toUpperCase() : '');
 
     function getWeaponDb(dbName) {
       if (!dbName || typeof dbName !== 'string') return null;
@@ -1743,6 +2163,7 @@
 
         this.arrowLayerEl = document.createElement('div');
         this.arrowLayerEl.className = 'arrow-layer';
+        this._favoriteAnimTimer = null;
       }
 
       resolveSlotType(payload) {
@@ -1872,6 +2293,7 @@
         this.collapseBoxBtn = this.cardEl.querySelector('.collapse-box');
         this.favoriteIcon = this.favoriteBtn ? this.favoriteBtn.querySelector('span[aria-hidden="true"]') : null;
         this.favoriteText = this.favoriteBtn ? this.favoriteBtn.querySelector('.favorite-text') : null;
+        this.favoriteSweepEl = null;
         this.collapseBtn = this.cardEl.querySelector('.collapse-toggle');
         this.weaponNameEl = this.cardEl.querySelector('.weapon-name');
         this.weaponTypeEl = this.cardEl.querySelector('.weapon-subtitle');
@@ -2098,12 +2520,36 @@
         this.state.favorite = !this.state.favorite;
         storage.updateWeaponState(this.id, { favorite: this.state.favorite });
         this.applyFavoriteUI();
+        if (this.cardEl) {
+          if (this.state.favorite) {
+            this.cardEl.classList.add('favorite-animating');
+            this.triggerFavoriteSweep();
+            if (this._favoriteAnimTimer) {
+              clearTimeout(this._favoriteAnimTimer);
+            }
+            this._favoriteAnimTimer = window.setTimeout(() => {
+              if (this.cardEl) this.cardEl.classList.remove('favorite-animating');
+              this._favoriteAnimTimer = null;
+            }, 1100);
+          } else {
+            this.cardEl.classList.remove('favorite-animating');
+            if (this._favoriteAnimTimer) {
+              clearTimeout(this._favoriteAnimTimer);
+              this._favoriteAnimTimer = null;
+            }
+          }
+        }
         renderWeaponList();
     alignSideNav();
       }
 
                   applyFavoriteUI() {
-        if (this.cardEl) this.cardEl.classList.toggle('favorite', this.state.favorite);
+        if (this.cardEl) {
+          this.cardEl.classList.toggle('favorite', this.state.favorite);
+          if (!this.state.favorite) {
+            this.cardEl.classList.remove('favorite-animating');
+          }
+        }
         if (this.favoriteBtn) this.favoriteBtn.setAttribute('aria-pressed', this.state.favorite ? 'true' : 'false');
         if (this.favoriteIcon) {
           this.favoriteIcon.textContent = this.state.favorite ? '\u2605' : '\u2606';
@@ -2116,13 +2562,48 @@
         }
       }
 
+      triggerFavoriteSweep() {
+        if (!this.cardEl) return;
+        if (this.favoriteSweepEl && this.favoriteSweepEl.parentElement) {
+          this.favoriteSweepEl.parentElement.removeChild(this.favoriteSweepEl);
+        }
+        const sweep = document.createElement('div');
+        sweep.className = 'favorite-sweep';
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('preserveAspectRatio', 'none');
+        const width = Math.max(10, Math.round(this.cardEl.clientWidth));
+        const height = Math.max(10, Math.round(this.cardEl.clientHeight));
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        const inset = 4;
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', inset);
+        rect.setAttribute('y', inset);
+        rect.setAttribute('width', Math.max(0, width - inset * 2));
+        rect.setAttribute('height', Math.max(0, height - inset * 2));
+        rect.setAttribute('rx', 18);
+        rect.setAttribute('ry', 18);
+        const perimeter = 2 * (Math.max(0, width - inset * 2) + Math.max(0, height - inset * 2));
+        const dash = Math.max(60, Math.round(perimeter * 0.12));
+        const gap = Math.max(200, Math.round(perimeter * 1.4));
+        rect.style.strokeDasharray = `${dash} ${gap}`;
+        rect.style.strokeDashoffset = '0';
+        svg.appendChild(rect);
+        sweep.appendChild(svg);
+        this.cardEl.appendChild(sweep);
+        this.favoriteSweepEl = sweep;
+        const cleanup = () => {
+          if (sweep.parentNode) sweep.parentNode.removeChild(sweep);
+          if (this.favoriteSweepEl === sweep) this.favoriteSweepEl = null;
+        };
+        rect.addEventListener('animationend', cleanup, { once: true });
+      }
+
       toggleCollapse() {
         this.state.collapsed = !this.state.collapsed;
         storage.updateWeaponState(this.id, { collapsed: this.state.collapsed });
         this.applyCollapseState();
         if (!this.state.collapsed) {
-          this.renderSlots(this.state.level);
-          this.renderChanges(this.state.level);
+          this.render();
         }
       }
 
@@ -3099,7 +3580,7 @@
 
     function setTypeFilter(value) {
       currentTypeFilter = formatTypeKey(value || '');
-      saveTypeFilter(currentTypeFilter);
+      saveTypeFilter(value || '');
       updateTypeFilterSelection();
       renderWeaponList();
     }
@@ -3135,12 +3616,42 @@
           }
         }
       const entries = Array.from(typeMap.entries()).sort((a, b) => a[1].localeCompare(b[1]));
-      const chips = ['<button type="button" class="type-filter-item" data-type="">All</button>'];
+      const chips = [
+        '<button type="button" class="type-filter-item" data-type="">All</button>',
+        '<button type="button" class="type-filter-item" data-type="favorites">Favorites</button>'
+      ];
       for (const [key, label] of entries) {
         chips.push(`<button type="button" class="type-filter-item" data-type="${key}">${label}</button>`);
       }
       typeFilterList.innerHTML = chips.join('');
       updateTypeFilterSelection();
+    }
+
+    function computeBaseOrder(idToTracker) {
+      const storedOrder = storage.getOrder();
+      const baseOrder = [];
+      const seen = new Set();
+      for (const id of storedOrder) {
+        if (idToTracker.has(id) && !seen.has(id)) {
+          baseOrder.push(id);
+          seen.add(id);
+        }
+      }
+      for (const tracker of trackers) {
+        if (!seen.has(tracker.id)) {
+          baseOrder.push(tracker.id);
+          seen.add(tracker.id);
+        }
+      }
+      return baseOrder;
+    }
+
+    function mergeVisibleOrderWithFullList(visibleOrder, idToTracker) {
+      const baseOrder = computeBaseOrder(idToTracker);
+      const normalizedVisible = visibleOrder.filter((id) => idToTracker.has(id));
+      const visibleSet = new Set(normalizedVisible);
+      const remainder = baseOrder.filter((id) => !visibleSet.has(id));
+      return normalizedVisible.concat(remainder);
     }
 
     function supportsLocalStorage() {
@@ -3196,6 +3707,7 @@
       tracker.mount(template);
       return tracker;
     });
+    const trackerMap = new Map(trackers.map((tracker) => [tracker.id, tracker]));
 
     if (typeFilterList) {
       typeFilterList.addEventListener('click', (event) => {
@@ -3208,7 +3720,7 @@
 
     function updateWeaponNav(order) {
       if (!weaponNavEl) return;
-      const idToTracker = new Map(trackers.map((t) => [t.id, t]));
+      const idToTracker = trackerMap;
       const ul = document.createElement('ul');
       ul.className = 'side-nav-list';
       for (const id of order) {
@@ -3271,23 +3783,8 @@
 
     function renderWeaponList() {
       const storedOrder = storage.getOrder();
-      const idToTracker = new Map(trackers.map((tracker) => [tracker.id, tracker]));
-      const baseOrder = [];
-      const seen = new Set();
-
-      for (const id of storedOrder) {
-        if (idToTracker.has(id) && !seen.has(id)) {
-          baseOrder.push(id);
-          seen.add(id);
-        }
-      }
-
-      for (const tracker of trackers) {
-        if (!seen.has(tracker.id)) {
-          baseOrder.push(tracker.id);
-          seen.add(tracker.id);
-        }
-      }
+      const idToTracker = trackerMap;
+      const baseOrder = computeBaseOrder(idToTracker);
 
       const favorites = baseOrder.filter((id) => idToTracker.get(id).isFavorite());
       const others = baseOrder.filter((id) => !idToTracker.get(id).isFavorite());
@@ -3302,7 +3799,12 @@
 
       weaponListEl.innerHTML = '';
       let displayOrder = finalOrder;
-      if (currentTypeFilter) {
+      if (currentTypeFilter === FAVORITES_FILTER) {
+        displayOrder = finalOrder.filter((id) => {
+          const tracker = idToTracker.get(id);
+          return tracker && tracker.isFavorite();
+        });
+      } else if (currentTypeFilter) {
         const filtered = finalOrder
           .map((id) => idToTracker.get(id))
           .filter((tracker) => tracker && tracker.typeKey === currentTypeFilter);
@@ -3358,7 +3860,8 @@
         insertIndex = order.length;
       }
       order.splice(insertIndex, 0, currentDraggedId);
-      storage.setOrder(order);
+      const mergedOrder = mergeVisibleOrderWithFullList(order, trackerMap);
+      storage.setOrder(mergedOrder);
       renderWeaponList();
     alignSideNav();
       currentDraggedId = null;

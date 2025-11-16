@@ -776,10 +776,55 @@ const weaponConfigs = [
     ]
   },
   {
+    id: 'm4a1',
+    dbname: 'm4a1',
+    rank: 'a',
+    tr: '1',
+    long: [
+      { Notes:
+        "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
+      },
+      'Standard Suppressor',
+      '14.5" Carbine',
+      'Classic Vertical',
+      '36RND Magazine',
+      'FMJ',
+      'Baker 3.00X'
+    ]
+  },
+  {
+    id: 'sg 553r',
+    dbname: 'sg 553r',
+    rank: 'b',
+    tr: '2',
+    long: [
+      { Notes: 
+        "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
+      },
+      'Standard Suppressor',
+      '303MM LB',
+      '6H64 Vertical',
+      '40RND Magazine',
+      'FMJ',
+      'Baker 3.00X'
+    ]
+  },
+  {
     id: 'qbz-192',
     dbname: 'QBZ-192',
     rank: 'b',
     tr: '3',
+    long: [
+      { Notes: 
+        "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
+      },
+      'Standard Suppressor',
+      '14.5" Common',
+      '6H64 Vertical',
+      '40RND Magazine',
+      'FMJ',
+      'Baker 3.00x'
+    ],
     baseline: qbz_192_baseline,
     changes: qbz_192_changes
   },

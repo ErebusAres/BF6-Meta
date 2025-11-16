@@ -191,6 +191,7 @@
       'A-P2 1.75x': { name: 'A-P2 1.75x', type: 'Scope', pts: 10, unlockLevel: 36 },
       'SF-G2 5.00x': { name: 'SF-G2 5.00x', type: 'Scope', pts: 10, unlockLevel: 37 },
       'PAS-35 3.00x': { name: 'PAS-35 3.00x', type: 'Scope', pts: 25, unlockLevel: 40 },
+      'SU-230 LPVO': { name: 'SU-230 LPVO', type: 'Scope', pts: 20, unlockLevel: 'Season 1 Hardware 1'},
 
       // Optic Accessories
       'None-Optic Accessory': { name: 'None', type: 'Optic Accessory', pts: 0, unlockLevel: 0 },
@@ -204,6 +205,7 @@
       '50 MW Green': { name: '50 MW Green', type: 'Top Accessory', pts: 20, unlockLevel: 32 },
       '50 MW Blue': { name: '50 MW Blue', type: 'Top Accessory', pts: 20, unlockLevel: 34 },
       '120 MW Blue': { name: '120 MW Blue', type: 'Top Accessory', pts: 30, unlockLevel: 36 },
+      
       // Right Accessories
       'None-Right Accessory': { name: 'None', type: 'Right Accessory', pts: 0, unlockLevel: 0 },
       'Flashlight': { name: 'Flashlight', type: 'Right Accessory', pts: 10, unlockLevel: 2 },
@@ -219,6 +221,7 @@
       'CQB Suppressor': { name: 'CQB Suppressor', type: 'Muzzle', pts: 30, unlockLevel: 24 },
       'Long Suppressor': { name: 'Long Suppressor', type: 'Muzzle', pts: 25, unlockLevel: 27 },
       'Lightened Suppressor': { name: 'Lightened Suppressor', type: 'Muzzle', pts: 30, unlockLevel: 32 },
+      
       // Barrels
       '14.5" Factory': { name: '14.5" Factory', type: 'Barrel', pts: 15, unlockLevel: 0 },
       '16" US': { name: '16" US', type: 'Barrel', pts: 10, unlockLevel: 3 },
@@ -1494,9 +1497,7 @@
       'RO-S 1.25x':      { name:'RO-S 1.25x',      type:'Scope', pts:10, unlockLevel:35 },
       'SDO 3.50x':       { name:'SDO 3.50x',       type:'Scope', pts:10, unlockLevel:37 },
       '1P87 1.50x':      { name:'1P87 1.50x',      type:'Scope', pts:10, unlockLevel:39 },
-
-      // Season 1 Hardware 1
-      'SU-230 LPVO':     { name:'SU-230 LPVO',     type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':     { name:'SU-230 LPVO',     type:'Scope', pts:20, unlockLevel: 'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory': { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
