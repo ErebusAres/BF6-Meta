@@ -596,6 +596,24 @@
       overscroll-behavior: contain;
       position: sticky;
       top: 24px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 229, 255, 0.45) rgba(6, 10, 14, 0.6);
+    }
+
+    .side-nav::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .side-nav::-webkit-scrollbar-track {
+      background: rgba(6, 10, 14, 0.8);
+      border-radius: 999px;
+    }
+
+    .side-nav::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(0, 229, 255, 0.85), rgba(0, 120, 150, 0.7));
+      border-radius: 999px;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      box-shadow: inset 0 0 6px rgba(0, 229, 255, 0.4);
     }
 
     .side-nav:not(.nav-ready) {
