@@ -3329,25 +3329,38 @@
       }
 
       renderChanges(level) {
-        const diff = this.diffAtLevel(level);
-        const previous = this.computeState(Math.max(this.minLevel - 1, level - 1));
+        if (!this.changesPanelEl) return;
         const container = this.changesPanelEl;
         container.innerHTML = '';
-        const isNotesView = this.activeBuildId && this.activeBuildId !== 'mastery' && this.activeBuildNote;
+
+        const activeBuild = this.buildById ? this.buildById[this.activeBuildId] : null;
+        const viewingBuild = activeBuild && activeBuild.type !== 'mastery';
+        if (viewingBuild) {
+          const title = document.createElement('h3');
+          title.textContent = this.activeBuildNote ? `${activeBuild.label} Notes` : `${activeBuild.label}`;
+          container.appendChild(title);
+          const body = document.createElement('div');
+          body.className = 'changes-empty';
+          if (this.activeBuildNote) {
+            body.innerHTML = this.formatNotesText(this.activeBuildNote);
+          } else {
+            body.textContent = 'No notes available for this build.';
+          }
+          container.appendChild(body);
+          return;
+        }
+
+        const diff = this.diffAtLevel(level);
+        const previous = this.computeState(Math.max(this.minLevel - 1, level - 1));
         const entries = Object.entries(diff);
-        const showNoteFallback = isNotesView && !entries.length;
         const title = document.createElement('h3');
-        title.textContent = showNoteFallback ? 'Notes' : 'Changes at this Level';
+        title.textContent = 'Changes at this Level';
         container.appendChild(title);
 
         if (!entries.length) {
           const empty = document.createElement('div');
           empty.className = 'changes-empty';
-          if (showNoteFallback) {
-            empty.innerHTML = this.formatNotesText(this.activeBuildNote);
-          } else {
-            empty.textContent = 'No changes unlocked at this level.';
-          }
+          empty.textContent = 'No changes unlocked at this level.';
           container.appendChild(empty);
           return;
         }
