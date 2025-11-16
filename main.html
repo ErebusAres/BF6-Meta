@@ -742,12 +742,6 @@
       transition: background var(--transition), border-color var(--transition), color var(--transition);
     }
 
-    .options-gear svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
-
     .options-gear:hover {
       background: rgba(0, 229, 255, 0.12);
       border-color: rgba(0, 229, 255, 0.55);
@@ -782,6 +776,35 @@
       border-color: rgba(0, 229, 255, 0.6);
       background: rgba(8, 16, 24, 0.9);
       box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
+    }
+
+    .options-floating-gear {
+      position: fixed;
+      top: clamp(12px, 4vw, 28px);
+      right: clamp(12px, 4vw, 28px);
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 229, 255, 0.6);
+      background: rgba(8, 16, 24, 0.92);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 80;
+      box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+
+    .options-floating-gear:hover {
+      transform: translateY(-1px);
+      background: rgba(0, 229, 255, 0.12);
+    }
+
+    .gear-symbol {
+      font-size: 20px;
+      line-height: 1;
     }
 
     .options-body {
@@ -2025,10 +2048,8 @@
       <div class="options-header">
         <span class="options-title">Options</span>
         <button class="options-gear" id="optionsGearButton" type="button" aria-expanded="true" aria-controls="optionsBody" aria-label="Hide options">
+          <span aria-hidden="true" class="gear-symbol">⚙️</span>
           <span class="sr-only">Toggle options</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M12 15.3a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6Zm9-3.3a1 1 0 0 1-.46.84l-1.74 1.07.1 2.02a1 1 0 0 1-1.24 1l-1.99-.53-1.42 1.48a1 1 0 0 1-1.45 0l-1.42-1.48-1.99.53a1 1 0 0 1-1.24-1l.1-2.02-1.74-1.07a1 1 0 0 1 0-1.68l1.74-1.07-.1-2.02a1 1 0 0 1 1.24-1l1.99.53 1.42-1.48a1 1 0 0 1 1.45 0l1.42 1.48 1.99-.53a1 1 0 0 1 1.24 1l-.1 2.02 1.74 1.07c.3.19.46.52.46.84Z" />
-          </svg>
         </button>
       </div>
       <div class="options-body" id="optionsBody">
@@ -2050,7 +2071,11 @@
       </div>
     </section>
   </div>
-<template id="weaponTemplate">
+  <button class="options-floating-gear" id="optionsFloatingButton" type="button" aria-label="Show options" hidden>
+    <span class="sr-only">Show options</span>
+    <span aria-hidden="true" class="gear-symbol">⚙️</span>
+  </button>
+  <template id="weaponTemplate">
     <section class="weapon-card" tabindex="0">
       <div class="weapon-header" draggable="true">
         <button class="drag-handle" type="button" title="Drag to reorder" aria-label="Drag to reorder" draggable="true">
@@ -3777,6 +3802,7 @@
     const weaponListEl = document.getElementById('weaponList');
     const weaponNavEl = document.getElementById('weaponNav');
     const layoutGridEl = document.querySelector('.layout-grid');
+    const floatingOptionsBtn = document.getElementById('optionsFloatingButton');
 
     function setTypeFilter(value) {
       currentTypeFilter = formatTypeKey(value || '');
@@ -4152,6 +4178,7 @@
 
       function applyOptionsVisibility(visible) {
         if (!optionsPanelEl) return;
+        optionsPanelEl.hidden = !visible;
         optionsPanelEl.classList.toggle('collapsed', !visible);
         optionsPanelEl.setAttribute('aria-hidden', visible ? 'false' : 'true');
         if (layoutGridEl) {
@@ -4160,6 +4187,12 @@
         if (optionsGearBtn) {
           optionsGearBtn.setAttribute('aria-expanded', visible ? 'true' : 'false');
           optionsGearBtn.setAttribute('aria-label', visible ? 'Hide options' : 'Show options');
+        }
+        if (floatingOptionsBtn) {
+          floatingOptionsBtn.hidden = visible;
+          floatingOptionsBtn.setAttribute('aria-hidden', visible ? 'true' : 'false');
+          floatingOptionsBtn.setAttribute('aria-expanded', visible ? 'true' : 'false');
+          floatingOptionsBtn.setAttribute('aria-label', visible ? 'Hide options' : 'Show options');
         }
       }
 
@@ -4179,10 +4212,17 @@
 
       if (optionsGearBtn && optionsPanelEl) {
         optionsGearBtn.addEventListener('click', () => {
-          const currentlyVisible = !optionsPanelEl.classList.contains('collapsed');
+          const currentlyVisible = !optionsPanelEl.hidden;
           const next = !currentlyVisible;
           applyOptionsVisibility(next);
           saveBool(OPTIONS_KEY, next);
+        });
+      }
+
+      if (floatingOptionsBtn) {
+        floatingOptionsBtn.addEventListener('click', () => {
+          applyOptionsVisibility(true);
+          saveBool(OPTIONS_KEY, true);
         });
       }
 
