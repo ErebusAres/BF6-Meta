@@ -33,6 +33,57 @@
       box-sizing: border-box;
     }
 
+    @keyframes metaInnerPulse {
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: scale(0.96);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes metaRingPulse {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(0.98);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes metaFlare {
+      0% {
+        opacity: 0.75;
+        transform: translateY(5px) scaleY(0.88);
+      }
+      50% {
+        opacity: 0.95;
+        transform: translateY(-4px) scaleY(1.08);
+      }
+      100% {
+        opacity: 0.75;
+        transform: translateY(5px) scaleY(0.88);
+      }
+    }
+
+    @keyframes metaEmbers {
+      0% {
+        background-position: 0% 0%, 60% 20%, 0% 0%, 0% 0%;
+      }
+      50% {
+        background-position: 20% 40%, 80% 50%, 20% 10%, 0% 0%;
+      }
+      100% {
+        background-position: 0% 0%, 60% 20%, 40% 20%, 0% 0%;
+      }
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -1848,80 +1899,64 @@
     }
 
     .meta-chip.rank-m {
-      background-image:
-        radial-gradient(circle at 18% 32%, rgba(255, 255, 255, 0.4), transparent 52%),
-        radial-gradient(circle at 78% 22%, rgba(255, 190, 90, 0.45), transparent 62%),
-        conic-gradient(from 10deg, rgba(255, 210, 140, 0.25), rgba(255, 110, 0, 0.4), rgba(255, 210, 140, 0.25)),
-        linear-gradient(140deg, #ffb347 0%, #ff6a00 45%, #a10d00 90%);
-      background-size: 170% 170%, 200% 200%, 320% 320%, 230% 230%;
-      background-position: 0% 20%, 60% 30%, 0% 0%, 0% 0%;
-      background-blend-mode: screen, screen, screen, normal;
-      border-color: rgba(255, 166, 43, 0.95);
-      color: #fff;
-      --chip-text-glow: 0 0 12px rgba(255, 182, 70, 0.95);
-      --chip-glow-color: rgba(255, 139, 51, 0.92);
-      --chip-glow-spread: 52px;
-      --chip-glow-speed: 1.7s;
+      color: #ffe6e6;
+      border-color: rgba(255, 90, 60, 0.95);
+      --chip-text-glow: 0 0 14px rgba(255, 130, 100, 0.95);
       box-shadow:
-        0 0 16px rgba(255, 140, 40, 0.65),
-        0 0 36px rgba(255, 90, 0, 0.4),
-        inset 0 0 18px rgba(255, 200, 125, 0.4);
-      filter: drop-shadow(0 0 8px rgba(255, 120, 32, 0.55));
-      transform-origin: center;
-      animation:
-        metaFireFlow 4.6s linear infinite,
-        chipGlowPulse var(--chip-glow-speed) ease-in-out infinite,
-        metaCorePulse 2.3s ease-in-out infinite;
+        0 0 26px rgba(255, 70, 40, 0.65),
+        inset 0 0 18px rgba(255, 170, 150, 0.55);
+      background-image:
+        radial-gradient(circle at 20% 35%, rgba(255, 255, 255, 0.55), transparent 60%),
+        radial-gradient(circle at 80% 15%, rgba(255, 120, 90, 0.5), transparent 70%),
+        linear-gradient(135deg, #2b0202 0%, #4a0508 55%, #120101 100%),
+        linear-gradient(135deg, #ff8f6b 0%, #ff2a0a 55%, #870000 100%);
+      background-blend-mode: screen, screen, normal, normal;
+      background-size: 170% 170%, 220% 220%, 160% 160%, 100% 100%;
+      position: relative;
+      overflow: hidden;
+      animation: metaEmbers 2.8s linear infinite;
+    }
+
+    .meta-chip .inner-glow {
+      display: none;
+    }
+
+    .meta-chip.rank-m .inner-glow {
+      display: block;
+      position: absolute;
+      inset: 4px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 48% 35%, rgba(255, 255, 255, 0.65), transparent 70%);
+      box-shadow: inset 0 0 28px rgba(255, 200, 200, 0.55);
+      opacity: 0.95;
+      animation: metaInnerPulse 1.6s ease-in-out infinite;
     }
 
     .meta-chip.rank-m::before {
-      content: "";
+      content: '';
       position: absolute;
-      inset: -44% -18%;
-      border-radius: 50%;
-      background-image:
-        radial-gradient(circle at 20% 95%, rgba(255, 255, 255, 0.55), transparent 52%),
-        radial-gradient(circle at 68% 58%, rgba(255, 128, 0, 0.65), transparent 72%),
-        radial-gradient(circle at 45% 25%, rgba(255, 210, 120, 0.35), transparent 65%),
-        repeating-conic-gradient(from 0deg, rgba(255, 220, 120, 0.2) 0deg 16deg, transparent 16deg 32deg);
-      background-size: 220% 220%, 210% 210%, 160% 190%, 380% 380%;
-      background-position: 20% 100%, 65% 55%, 44% 32%, 0% 0%;
-      background-blend-mode: screen;
-      mix-blend-mode: screen;
-      filter: blur(1.6px);
-      opacity: 0.8;
-      pointer-events: none;
-      animation: metaFirePlume 3s ease-in-out infinite, metaSparkDrift 10s linear infinite;
-      z-index: -2;
+      inset: 2px;
+      border-radius: inherit;
+      background: radial-gradient(circle, rgba(255, 120, 80, 0.35), transparent 75%);
+      box-shadow: 0 0 36px rgba(255, 70, 40, 0.5);
+      opacity: 0.9;
+      animation: metaRingPulse 2s ease-in-out infinite;
     }
 
     .meta-chip.rank-m::after {
-      content: "";
+      content: '';
       position: absolute;
-      inset: -12px 4px 4px;
-      background-image:
-        radial-gradient(circle at 52% -5%, rgba(255, 255, 255, 0.92), transparent 62%),
-        linear-gradient(180deg, rgba(255, 240, 210, 0.98) 0%, rgba(255, 190, 70, 0.9) 38%, rgba(255, 106, 0, 0.82) 78%, rgba(80, 10, 0, 0)),
-        repeating-linear-gradient(180deg, rgba(255, 221, 173, 0.5) 0 12px, rgba(255, 114, 0, 0.2) 12px 24px),
-        radial-gradient(circle at 28% 90%, rgba(255, 220, 140, 0.55), transparent 55%);
-      background-blend-mode: screen;
-      background-size:
-        150% 170%,
-        100% 125%,
-        90% 240%,
-        170% 210%;
-      background-position:
-        52% 0%,
-        50% 100%,
-        0% 110%,
-        36% 78%;
-      clip-path: polygon(6% 100%, 14% 58%, 22% 86%, 32% 22%, 42% 78%, 54% 12%, 66% 74%, 78% 18%, 90% 84%, 100% 32%, 100% 100%, 0% 100%);
+      top: -35%;
+      left: 50%;
+      width: 120%;
+      height: 160%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.5), rgba(255, 200, 120, 0.35), transparent 70%);
+      clip-path: polygon(15% 100%, 35% 40%, 45% 70%, 55% 30%, 70% 75%, 85% 20%, 100% 100%);
+      opacity: 1;
+      filter: blur(1.4px);
       mix-blend-mode: screen;
-      filter: blur(0.6px) drop-shadow(0 0 6px rgba(255, 150, 60, 0.5));
-      opacity: 0.98;
-      pointer-events: none;
-      animation: metaFlameRise 1.6s ease-in-out infinite, metaFlameClip 1.6s ease-in-out infinite, metaFlameTexture 1.25s linear infinite;
-      z-index: -1;
+      animation: metaFlare 1.15s ease-in-out infinite;
     }
 
     .meta-chip.rank-a {
@@ -2137,7 +2172,7 @@
           </button>
         </div>
         <div class="weapon-header-text" tabindex="0" role="button" aria-label="Toggle collapse" aria-expanded="true">
-          <div class="weapon-name"></div>          <div class="weapon-meta-row"><span class="meta-chip type-chip"></span><span class="meta-chip rank-chip"></span><span class="meta-chip range-chip"></span></div>
+          <div class="weapon-name"></div>          <div class="weapon-meta-row"><span class="meta-chip type-chip"></span><span class="meta-chip rank-chip"><span class="inner-glow" aria-hidden="true"></span></span><span class="meta-chip range-chip"></span></div>
           
           <div class="header-controls">
             <span class="header-level" aria-live="polite">LEVEL 1</span>
