@@ -1142,7 +1142,9 @@ const weaponConfigs = [
     tr: '4',
     baseline: miniscout_baseline,
     changes: miniscout_changes
-  }
+  },
+  // Test Builds - Comment out when publishing
+  /* */
 ];
 
 if (typeof window !== 'undefined' && window.autoBuilds && typeof window.autoBuilds.applyToWeaponConfigs === 'function') {

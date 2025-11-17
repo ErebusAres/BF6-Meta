@@ -5,6 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BF6 Mastery Loadout Tracker</title>
   <style>
+    @font-face {
+      font-family: "BF Headline Narrow";
+      src: url("fonts/BF_HEADLINE_NARROW-BOLD.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "BF Sub Headline";
+      src: url("fonts/BF_SUB_HEADLINE_BOLD.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "BF Text";
+      src: url("fonts/BF_TEXT_REGULAR.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "BF Mono";
+      src: url("fonts/BF_MONO_BOOK.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       color-scheme: dark;
       --bg: #05090d;
@@ -24,9 +56,20 @@
       --card-radius: 7px;
       --transition: 160ms ease;
       --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
-      --font: "Futura ND", "Futura", "Helvetica Neue", Arial, sans-serif;
+      --font-headline: "BF Headline Narrow", "Futura ND", "Futura", "Helvetica Neue", Arial, sans-serif;
+      --font-subhead: "BF Sub Headline", "Futura ND", "Futura", "Helvetica Neue", Arial, sans-serif;
+      --font-body: "BF Text", "Futura ND", "Futura", "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "BF Mono", "Consolas", "SFMono-Regular", "Roboto Mono", Menlo, monospace;
+      --font: var(--font-body);
       --ui-scale: 1; /* 1.0 = 100% */
       --level-slider-fill: 0%;
+      --tier-chip-font-size: 12px;
+      --tier-chip-padding-y: 4px;
+      --tier-chip-padding-x: 8px;
+      --tier-chip-radius: 999px;
+      --tier-chip-stroke: 0.55px;
+      --tier-chip-stroke-meta: 1.25px;
+      --tier-chip-transition: 200ms ease;
     }
 
     * {
@@ -84,6 +127,44 @@
       }
     }
 
+    /* Tier chip animation helpers */
+    @keyframes tierMetaPulse {
+      0% {
+        box-shadow:
+          0 0 12px rgba(255, 175, 64, 0.65),
+          0 0 28px rgba(255, 140, 0, 0.35),
+          inset 0 0 4px rgba(255, 255, 255, 0.35);
+        filter: brightness(1);
+      }
+      100% {
+        box-shadow:
+          0 0 18px rgba(255, 196, 110, 0.9),
+          0 0 42px rgba(255, 94, 0, 0.55),
+          inset 0 0 10px rgba(255, 255, 255, 0.45);
+        filter: brightness(1.08);
+      }
+    }
+
+    @keyframes tierMetaFlare {
+      0% {
+        transform: scale(0.85) translateY(8%);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1.05) translateY(-8%);
+        opacity: 0.4;
+      }
+    }
+
+    @keyframes tierShimmer {
+      0% {
+        transform: translateX(-120%);
+      }
+      100% {
+        transform: translateX(140%);
+      }
+    }
+
 
     .sr-only {
       position: absolute;
@@ -106,7 +187,7 @@
         linear-gradient(180deg, rgba(10, 18, 25, 0.9) 0%, rgba(5, 9, 13, 0.96) 60%, rgba(5, 9, 13, 1) 100%),
         var(--bg);
       color: var(--text);
-      font-family: var(--font);
+      font-family: var(--font-body);
       font-size: calc(16px * var(--ui-scale));
       line-height: 1.5;
       min-height: 100vh;
@@ -114,6 +195,49 @@
       justify-content: center;
       padding: clamp(16px, 4vw, 32px);
       overflow-x: auto;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: var(--font-body);
+    }
+
+    .weapon-drop-placeholder,
+    .chip,
+    .meta-chip,
+    .level-pill,
+    .favorite-toggle,
+    .collapse-toggle,
+    .collapse-box,
+    .drag-handle,
+    .build-tab,
+    .filter-heading,
+    .type-filter-item,
+    .options-title,
+    .option-heading,
+    .debug-command-row label,
+    .debug-card-title,
+    .side-nav-item,
+    .side-nav-type,
+    .attachments-header h2,
+    .ap-readout,
+    .card-meta,
+    .changes-panel h3,
+    .recommended-panel h3,
+    .recommended-empty,
+    .change-heading,
+    .changes-empty {
+      font-family: var(--font-subhead);
+    }
+
+    .ui-scale-value,
+    .level-display,
+    .ap-inline,
+    .card-level,
+    .ap-readout .ap-value {
+      font-family: var(--font-mono);
     }
 
     .layout-grid {
@@ -175,6 +299,7 @@
       font-weight: 700;
       letter-spacing: 0.02em;
       margin: 0;
+      font-family: var(--font-headline);
     }
 
     .page-subtitle {
@@ -248,17 +373,26 @@
     :root.reduce-animations .meta-chip,
     :root.reduce-animations .meta-chip::before,
     :root.reduce-animations .meta-chip::after,
+    :root.reduce-animations .chip,
+    :root.reduce-animations .chip::before,
+    :root.reduce-animations .chip::after,
     :root.reduce-animations .range-chip::after {
       animation: none !important;
     }
 
     :root.reduce-animations .meta-chip::before,
-    :root.reduce-animations .meta-chip::after {
+    :root.reduce-animations .meta-chip::after,
+    :root.reduce-animations .chip::before,
+    :root.reduce-animations .chip::after {
       content: none !important;
     }
 
     :root.reduce-animations .chip-flame-canvas {
       display: none !important;
+    }
+
+    :root.reduce-animations .debug-panel.visible {
+      animation: none !important;
     }
 
     .weapon-card.favorite {
@@ -310,6 +444,7 @@
       font-size: clamp(20px, 3.6vw, 26px);
       font-weight: 700;
       letter-spacing: 0.02em;
+      font-family: var(--font-headline);
     }
 
     .weapon-image-wrap {
@@ -374,7 +509,8 @@
       isolation: isolate;
     }
 
-    .chip-flame-wrap .meta-chip {
+    .chip-flame-wrap .meta-chip,
+    .chip-flame-wrap .chip {
       position: relative;
       z-index: 1;
     }
@@ -397,13 +533,219 @@
       opacity: 1;
     }
 
+    /* Shared chip base: pill silhouette, uppercase text, high-contrast glow to keep text legible */
+    .chip {
+      --chip-stroke-width: var(--tier-chip-stroke);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--tier-chip-padding-y) var(--tier-chip-padding-x);
+      border-radius: var(--tier-chip-radius);
+      font-size: var(--tier-chip-font-size);
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(32, 39, 45, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      text-shadow:
+        -1px -1px 2px rgba(0, 0, 0, 0.92),
+        1px -1px 2px rgba(0, 0, 0, 0.92),
+        -1px 1px 2px rgba(0, 0, 0, 0.92),
+        1px 1px 2px rgba(0, 0, 0, 0.92),
+        0 0 6px rgba(0, 0, 0, 0.88),
+        0 0 14px rgba(0, 0, 0, 0.75);
+      transition:
+        transform var(--tier-chip-transition),
+        box-shadow var(--tier-chip-transition),
+        background var(--tier-chip-transition),
+        filter var(--tier-chip-transition);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 24px;
+    }
+
+    .chip::after,
+    .chip::before {
+      pointer-events: none;
+    }
+
+    /* META tier — “Amazing Boom Pow”: legendary flame-drenched orange with halo + particle prep */
+    .chip.tier-meta {
+      --chip-stroke-width: var(--tier-chip-stroke-meta);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.34), transparent 62%),
+        linear-gradient(125deg, #fff4c6 0%, #ffc861 32%, #ff8a1f 65%, #ff4f1d 100%);
+      border-color: rgba(255, 168, 60, 0.95);
+      box-shadow:
+        0 0 18px rgba(255, 180, 70, 0.85),
+        0 0 42px rgba(255, 90, 0, 0.65);
+      animation: tierMetaPulse 1.1s ease-in-out infinite alternate;
+    }
+
+    .chip.tier-meta::before {
+      /* Halo supporting the optional canvas flame overlay */
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle, rgba(255, 222, 158, 0.95), rgba(255, 130, 16, 0.35), transparent 70%);
+      filter: blur(10px);
+      opacity: 0.55;
+      z-index: -1;
+      animation: tierMetaFlare 1s ease-in-out infinite alternate;
+    }
+
+    .chip.tier-meta::after {
+      /* Ember streak hugging the face */
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.65) 35%, transparent 65%);
+      mix-blend-mode: screen;
+      opacity: 0.35;
+      animation: tierMetaFlare 1.4s ease-in-out infinite alternate;
+    }
+
+    .chip.tier-meta:hover {
+      transform: translateY(-1px) scale(1.07);
+      box-shadow:
+        0 0 26px rgba(255, 194, 104, 0.95),
+        0 0 60px rgba(255, 102, 8, 0.8);
+      filter: brightness(1.08);
+      /* JS-driven flame/particle burst is triggered via hover on the parent wrapper */
+    }
+
+    /* A Tier — “Awesome!!”: violet prismatic enamel with bright glint + active shimmer */
+    .chip.tier-a {
+      background: linear-gradient(135deg, #fdf1ff 0%, #d095ff 35%, #a135ff 70%, #4e0dcd 100%);
+      border-color: rgba(173, 123, 255, 0.85);
+      box-shadow:
+        0 0 20px rgba(146, 96, 255, 0.55),
+        0 0 36px rgba(84, 34, 198, 0.45);
+      animation: tierMetaPulse 1.6s ease-in-out infinite alternate;
+    }
+
+    .chip.tier-a::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 5%, rgba(255, 255, 255, 0.85) 40%, transparent 70%);
+      animation: tierShimmer 1.8s linear infinite;
+      opacity: 0.9;
+    }
+
+    .chip.tier-a:hover {
+      box-shadow:
+        0 0 26px rgba(146, 96, 255, 0.75),
+        0 0 48px rgba(84, 34, 198, 0.65);
+      filter: brightness(1.1);
+      transform: translateY(-1px) scale(1.05);
+    }
+
+    .chip.tier-a:hover::after {
+      animation-duration: 1.2s;
+    }
+
+    /* B Tier — “Great!”: energetic blue plating with tempered shine */
+    .chip.tier-b {
+      background: linear-gradient(140deg, #e7f5ff 0%, #9fd7ff 35%, #3a96ff 70%, #1c54ff 100%);
+      border-color: rgba(69, 148, 255, 0.8);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 0 14px rgba(84, 163, 255, 0.45);
+    }
+
+    .chip.tier-b::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 10%, rgba(255, 255, 255, 0.55) 45%, transparent 75%);
+      opacity: 0.65;
+      animation: tierShimmer 2.8s linear infinite;
+    }
+
+    .chip.tier-b:hover {
+      transform: translateY(-1px) scale(1.03);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 0 20px rgba(84, 163, 255, 0.6),
+        0 10px 24px rgba(27, 73, 163, 0.35);
+    }
+
+    /* C Tier — “Good”: shimmering verdant plating */
+    .chip.tier-c {
+      background: linear-gradient(135deg, #e1ffe5 0%, #7fe0a3 40%, #2a8f55 85%);
+      border-color: rgba(76, 185, 120, 0.72);
+      box-shadow: 0 0 10px rgba(68, 161, 109, 0.35);
+    }
+
+    .chip.tier-c::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.35) 35%, transparent 70%);
+      animation: tierShimmer 3s linear infinite;
+      opacity: 0.55;
+    }
+
+    .chip.tier-c:hover {
+      filter: brightness(1.05);
+    }
+
+    /* D Tier — “Ok”: white tempered badge with soft aura */
+    .chip.tier-d {
+      background: linear-gradient(135deg, #ffffff 0%, #f0f3f7 55%, #ced5dc 100%);
+      border-color: rgba(235, 237, 240, 0.9);
+      box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.6),
+        0 0 16px rgba(255, 255, 255, 0.35);
+    }
+
+    .chip.tier-d:hover {
+      filter: brightness(1.06);
+      box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.75),
+        0 0 20px rgba(206, 213, 220, 0.5);
+    }
+
+    /* F Tier — “F Tier”: dusty charcoal plate with almost no shine */
+    .chip.tier-f {
+      background: linear-gradient(135deg, #5c6166 0%, #3a3d41 70%, #2b2d30 100%);
+      border-color: rgba(62, 66, 70, 0.7);
+      box-shadow:
+        inset 0 0 2px rgba(0, 0, 0, 0.4),
+        inset 0 -4px 10px rgba(0, 0, 0, 0.35);
+      filter: grayscale(0.15);
+    }
+
+    .chip.tier-f:hover {
+      filter: grayscale(0.15) brightness(1.02);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chip {
+        transition: none;
+      }
+
+      .chip.tier-meta,
+      .chip.tier-meta::before,
+      .chip.tier-meta::after,
+      .chip.tier-a::after,
+      .chip.tier-b::after,
+      .chip.tier-c::after {
+        animation: none !important;
+        filter: none;
+      }
+    }
+
     .meta-chip {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       padding: 4px 8px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: var(--tier-chip-font-size);
       font-weight: 800;
       letter-spacing: 0.09em;
       text-transform: uppercase;
@@ -416,36 +758,17 @@
       overflow: hidden;
       z-index: 0;
       isolation: isolate;
-      --chip-text-outline: rgba(0, 0, 0, 0.85);
+      --chip-text-outline: rgba(0, 0, 0, 0.95);
       --chip-text-glow: 0 0 0 transparent;
       text-shadow:
-        -0.7px -0.7px 0 var(--chip-text-outline),
-        0.7px -0.7px 0 var(--chip-text-outline),
-        -0.7px 0.7px 0 var(--chip-text-outline),
-        0.7px 0.7px 0 var(--chip-text-outline),
-        0 0 4px rgba(0, 0, 0, 0.65),
+        -1px -1px 2px rgba(0, 0, 0, 0.95),
+        1px -1px 2px rgba(0, 0, 0, 0.95),
+        -1px 1px 2px rgba(0, 0, 0, 0.95),
+        1px 1px 2px rgba(0, 0, 0, 0.95),
+        0 0 6px rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(0, 0, 0, 0.75),
         var(--chip-text-glow);
-      -webkit-text-stroke: 0.55px rgba(0, 0, 0, 0.6);
     }
-
-    .meta-chip.type-chip {
-      background: linear-gradient(135deg, rgba(0,229,255,0.18), rgba(0,229,255,0.08));
-      border-color: rgba(0,229,255,0.45);
-      color: #e9fbff;
-      text-shadow: 0 0 6px rgba(0,229,255,0.28);
-    }
-
-    .meta-chip.rank-a { background: linear-gradient(135deg, #00e5ff, #3aa6ff); border-color: rgba(0,229,255,0.55); color: #0a1620; }
-    .meta-chip.rank-b { background: linear-gradient(135deg, #14d672, #0fb862); border-color: rgba(20,214,114,0.55); color: #0c1d16; }
-    .meta-chip.rank-c { background: linear-gradient(135deg, #ffb15a, #ff8a3a); border-color: rgba(255,165,80,0.6); color: #23160c; }
-    .meta-chip.rank-d { background: linear-gradient(135deg, #ff6b6b, #ff4444); border-color: rgba(255,107,107,0.6); color: #2a0f12; }
-    .meta-chip.rank-unranked { background: linear-gradient(135deg, #7d5fff, #5a3dff); border-color: rgba(125,95,255,0.55); color: #f2f0ff; }
-
-    .meta-chip.range-1 { background: linear-gradient(135deg, #f1c40f, #d4a017); border-color: rgba(241,196,15,0.65); color: #132018; }
-    .meta-chip.range-2 { background: linear-gradient(135deg, #bdc3c7, #95a5a6); border-color: rgba(189,195,199,0.6); color: #141b1e; }
-    .meta-chip.range-3 { background: linear-gradient(135deg, #cd7f32, #b9732c); border-color: rgba(205,127,50,0.65); color: #210f08; }
-    .meta-chip.range-4 { background: linear-gradient(135deg, #5b7a8e, #3f5566); border-color: rgba(91,122,142,0.6); color: #e6eef5; }
-    .meta-chip.range-unranked { background: linear-gradient(135deg, #7d5fff, #5a3dff); border-color: rgba(125,95,255,0.55); color: #f2f0ff; }
 
     .level-pill {
       background: rgba(0, 229, 255, 0.12);
@@ -565,7 +888,7 @@
       border: 1px solid rgba(120, 160, 180, 0.45);
       background: rgba(8, 12, 16, 0.8);
       color: inherit;
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       padding: 4px 12px;
@@ -591,7 +914,7 @@
     }
 
     .filter-heading {
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.95);
@@ -608,7 +931,7 @@
       border: 1px solid rgba(120, 160, 180, 0.35);
       border-radius: 8px;
       padding: 6px 10px;
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       background: rgba(8, 12, 16, 0.85);
@@ -740,8 +1063,8 @@
       background: rgba(8, 12, 16, 0.85);
       border-radius: 10px;
       padding: 8px;
-      font-size: 12px;
-      letter-spacing: 0.04em;
+      font-size: 13px;
+      letter-spacing: 0.06em;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -793,8 +1116,8 @@
 
     .side-nav-type {
       color: var(--text-muted);
-      font-size: 11px;
-      letter-spacing: 0.04em;
+      font-size: 12px;
+      letter-spacing: 0.05em;
     }
 
     .side-nav-fav {
@@ -854,7 +1177,7 @@
     }
 
     .options-title {
-      font-size: 13px;
+      font-size: 14px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-muted);
@@ -908,6 +1231,141 @@
       border-color: rgba(0, 229, 255, 0.6);
       background: rgba(8, 16, 24, 0.9);
       box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
+    }
+
+    .debug-panel {
+      grid-column: 1 / -1;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--panel-border);
+      background: rgba(8, 12, 16, 0.85);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .debug-panel.visible {
+      animation: panelFadeIn 220ms ease;
+    }
+
+    @keyframes panelFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .debug-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .debug-close {
+      border: 1px solid rgba(70, 90, 110, 0.6);
+      background: rgba(4, 6, 8, 0.6);
+      color: var(--text);
+      border-radius: 10px;
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .debug-close:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      background: rgba(0, 229, 255, 0.08);
+    }
+
+    .debug-command-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .debug-command-row label {
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .debug-command-input {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #debugCommandInput {
+      flex: 1;
+      border-radius: 8px;
+      border: 1px solid rgba(80, 120, 140, 0.5);
+      background: rgba(12, 16, 20, 0.8);
+      color: var(--text);
+      padding: 8px 12px;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      font-family: inherit;
+    }
+
+    #debugCommandInput:focus {
+      outline: none;
+      border-color: rgba(0, 229, 255, 0.6);
+      box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.15);
+    }
+
+    .debug-hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .debug-status {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.04em;
+    }
+
+    .debug-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .debug-card {
+      border: 1px solid rgba(70, 90, 110, 0.5);
+      background: rgba(10, 16, 22, 0.85);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .debug-card-title {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .debug-chip-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .debug-chip-list .chip {
+      width: 100%;
+      justify-content: center;
     }
 
     .options-floating-gear {
@@ -964,7 +1422,7 @@
     }
 
     .option-heading {
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-muted);
@@ -1041,7 +1499,7 @@
     }
 
     .filter-heading {
-      font-size: 12px;
+      font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--text-muted);
@@ -1057,7 +1515,7 @@
       border-radius: 999px;
       border: 1px solid rgba(80, 120, 140, 0.4);
       padding: 4px 12px;
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       background: rgba(10, 16, 21, 0.85);
@@ -1563,7 +2021,7 @@
       align-items: center;
       gap: 8px;
       flex-wrap: nowrap;
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.78);
       white-space: nowrap;
@@ -1590,7 +2048,7 @@
       display: inline-flex;
       align-items: center;
       gap: 3px;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
       color: rgba(177, 191, 203, 0.9);
@@ -1614,7 +2072,7 @@
       padding: 4px 10px;
       border-radius: 999px;
       border: 1px solid rgba(78, 95, 110, 0.6);
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.86);
@@ -1858,90 +2316,6 @@
       box-shadow: 0 0 12px rgba(0, 229, 255, 0.25), inset 0 0 6px rgba(0, 229, 255, 0.25);
     }
 
-    .meta-chip.rank-m {
-      background: linear-gradient(135deg, #ffd479 0%, #ff8a3a 65%, #5a1c00 100%);
-      border-color: rgba(255, 168, 70, 0.85);
-      color: #fff;
-      --chip-text-glow: 0 0 8px rgba(255, 204, 140, 0.7);
-      box-shadow:
-        inset 0 2px 8px rgba(255, 255, 255, 0.18),
-        inset 0 -8px 18px rgba(255, 90, 0, 0.4),
-        0 4px 18px rgba(0, 0, 0, 0.35);
-    }
-
-    .meta-chip .inner-glow {
-      display: none;
-    }
-
-    .meta-chip.rank-m .inner-glow {
-      display: block;
-      position: absolute;
-      inset: 4px;
-      border-radius: inherit;
-      background: radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.35), transparent 60%);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    .meta-chip.rank-a {
-      background: linear-gradient(135deg, #6ee5ff 0%, #00b0ff 45%, #0e1c40 100%);
-      background-size: 220% 220%;
-      border-color: rgba(0, 191, 255, 0.82);
-      color: #fff;
-      --chip-text-glow: 0 0 8px rgba(103, 229, 255, 0.75);
-      --chip-glow-color: rgba(63, 200, 255, 0.6);
-      --chip-glow-spread: 32px;
-      --chip-glow-speed: 2.4s;
-      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 9s linear infinite;
-    }
-
-    .meta-chip.rank-b {
-      background: linear-gradient(135deg, #64f2b0 0%, #14d672 55%, #092017 100%);
-      background-size: 200% 200%;
-      border-color: rgba(20, 214, 114, 0.78);
-      color: #fff;
-      --chip-text-glow: 0 0 6px rgba(77, 230, 155, 0.65);
-      --chip-glow-color: rgba(26, 196, 124, 0.5);
-      --chip-glow-spread: 28px;
-      --chip-glow-speed: 2.8s;
-      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 11s linear infinite;
-    }
-
-    .meta-chip.rank-c {
-      background: linear-gradient(135deg, #ffd08f 0%, #ff9b4d 60%, #341608 100%);
-      background-size: 190% 190%;
-      border-color: rgba(255, 155, 77, 0.75);
-      color: #fff;
-      --chip-text-glow: 0 0 5px rgba(255, 166, 96, 0.5);
-      --chip-glow-color: rgba(255, 171, 92, 0.45);
-      --chip-glow-spread: 24px;
-      --chip-glow-speed: 3.2s;
-      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 13s linear infinite;
-    }
-
-    .meta-chip.rank-d {
-      background: linear-gradient(135deg, #ffafaf 0%, #ff5c5c 60%, #2b0a0f 100%);
-      background-size: 180% 180%;
-      border-color: rgba(255, 92, 92, 0.7);
-      color: #fff;
-      --chip-text-glow: 0 0 4px rgba(255, 118, 118, 0.45);
-      --chip-glow-color: rgba(255, 102, 102, 0.35);
-      --chip-glow-spread: 22px;
-      --chip-glow-speed: 3.6s;
-      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 16s linear infinite;
-    }
-
-    .meta-chip.rank-unranked {
-      background: linear-gradient(135deg, #b59aff 0%, #6a4dff 65%, #1e103c 100%);
-      background-size: 210% 210%;
-      border-color: rgba(125, 95, 255, 0.72);
-      color: #fff;
-      --chip-text-glow: 0 0 6px rgba(160, 135, 255, 0.55);
-      --chip-glow-color: rgba(125, 95, 255, 0.4);
-      --chip-glow-spread: 26px;
-      --chip-glow-speed: 4.2s;
-      animation: chipGlowPulse var(--chip-glow-speed) ease-in-out infinite, chipHueDrift 18s linear infinite;
-    }
 
     /* Type rating (TR) chips: #1 gold, #2 silver, #3 bronze, #4 dull blue */
     .meta-chip.range-1,
@@ -2078,6 +2452,21 @@
         </div>
       </div>
     </section>
+    <section class="debug-panel" id="debugPanel" role="region" aria-label="Debug console" hidden>
+      <div class="debug-panel-header">
+        <span class="options-title">Debug</span>
+        <button class="debug-close" type="button" id="debugPanelClose" aria-label="Hide debug console">&times;</button>
+      </div>
+      <div class="debug-command-row">
+        <label for="debugCommandInput">Command</label>
+        <div class="debug-command-input">
+          <input id="debugCommandInput" type="text" placeholder="Type command (e.g., chips) and press Enter" autocomplete="off" spellcheck="false" />
+          <span class="debug-hint">Press '/' to focus</span>
+        </div>
+      </div>
+      <div class="debug-status" id="debugStatusMessage" role="status" aria-live="polite">Available commands: chips</div>
+      <div class="debug-card-list" id="debugCardList" role="presentation"></div>
+    </section>
   </div>
   <button class="options-floating-gear" id="optionsFloatingButton" type="button" aria-label="Show options" hidden>
     <span class="sr-only">Show options</span>
@@ -2101,9 +2490,7 @@
             <span class="meta-chip type-chip"></span>
             <span class="chip-flame-wrap">
               <canvas class="chip-flame-canvas" aria-hidden="true"></canvas>
-              <span class="meta-chip rank-chip">
-                <span class="inner-glow" aria-hidden="true"></span>
-              </span>
+              <span class="chip rank-chip"></span>
             </span>
             <span class="meta-chip range-chip"></span>
           </div>
@@ -3010,21 +3397,13 @@
         }
         if (this.rankChipEl) {
           const r = (this.config.rank || '').toString().trim().toLowerCase();
-          const map = { m: 'META', a: 'A TIER', b: 'B TIER', c: 'C TIER', d: 'D TIER' };
-          const label = map[r] || 'UNRANKED';
-          let innerGlowEl = this.rankChipEl.querySelector('.inner-glow');
+          const labelMap = { m: 'META', a: 'A TIER', b: 'B TIER', c: 'C TIER', d: 'D TIER', f: 'F TIER' };
+          const classMap = { m: 'tier-meta', a: 'tier-a', b: 'tier-b', c: 'tier-c', d: 'tier-d', f: 'tier-f' };
+          const label = labelMap[r] || 'UNRANKED';
           this.rankChipEl.textContent = label;
-          if (!innerGlowEl) {
-            innerGlowEl = document.createElement('span');
-            innerGlowEl.className = 'inner-glow';
-            innerGlowEl.setAttribute('aria-hidden', 'true');
-          } else {
-            innerGlowEl.setAttribute('aria-hidden', 'true');
-          }
-          this.rankChipEl.appendChild(innerGlowEl);
-          this.rankChipEl.classList.remove('rank-m','rank-a','rank-b','rank-c','rank-d','rank-unranked');
-          const rankClass = r && map[r] ? ('rank-' + r) : 'rank-unranked';
-          this.rankChipEl.classList.add(rankClass);
+          this.rankChipEl.classList.remove('tier-meta','tier-a','tier-b','tier-c','tier-d','tier-f');
+          const tierClass = classMap[r] || 'tier-f';
+          this.rankChipEl.classList.add('chip', tierClass);
           this.applyRankFlameEffect(r === 'm');
         }
         if (this.rangeChipEl) {
@@ -4137,8 +4516,14 @@
     const template = document.getElementById('weaponTemplate');
     const weaponListEl = document.getElementById('weaponList');
     const weaponNavEl = document.getElementById('weaponNav');
-    const layoutGridEl = document.querySelector('.layout-grid');
-    const floatingOptionsBtn = document.getElementById('optionsFloatingButton');
+const layoutGridEl = document.querySelector('.layout-grid');
+const floatingOptionsBtn = document.getElementById('optionsFloatingButton');
+const debugPanelEl = document.getElementById('debugPanel');
+const debugPanelCloseBtn = document.getElementById('debugPanelClose');
+const debugCommandInput = document.getElementById('debugCommandInput');
+const debugCardListEl = document.getElementById('debugCardList');
+const debugStatusEl = document.getElementById('debugStatusMessage');
+const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
 
     function setTypeFilter(value) {
       currentTypeFilter = formatTypeKey(value || '');
@@ -4512,6 +4897,139 @@
       clearCardDropPlaceholder();
       renderWeaponList();
       currentDraggedId = null;
+    });
+
+    if (debugStatusEl && typeof DEBUG_STATUS_DEFAULT === 'string') {
+      debugStatusEl.textContent = DEBUG_STATUS_DEFAULT;
+    }
+    if (debugPanelEl) {
+      debugPanelEl.setAttribute('aria-hidden', 'true');
+    }
+
+    let debugPanelVisible = false;
+    const EDITABLE_INPUT_TYPES = ['text', 'search', 'url', 'tel', 'email', 'password', 'number'];
+
+    function isTextEntryElement(element) {
+      if (!element) return false;
+      if (element.isContentEditable) return true;
+      const tag = element.tagName ? element.tagName.toLowerCase() : '';
+      if (tag === 'textarea') return true;
+      if (tag === 'input') {
+        const type = (element.getAttribute('type') || 'text').toLowerCase();
+        return EDITABLE_INPUT_TYPES.includes(type);
+      }
+      return false;
+    }
+
+    function setDebugPanelVisible(visible) {
+      if (!debugPanelEl) return;
+      debugPanelVisible = Boolean(visible);
+      debugPanelEl.hidden = !debugPanelVisible;
+      debugPanelEl.classList.toggle('visible', debugPanelVisible);
+      debugPanelEl.setAttribute('aria-hidden', debugPanelVisible ? 'false' : 'true');
+      if (!debugPanelVisible && debugCommandInput && document.activeElement === debugCommandInput) {
+        debugCommandInput.blur();
+      }
+      if (!debugPanelVisible) {
+        setDebugStatus(DEBUG_STATUS_DEFAULT);
+      }
+    }
+
+    function focusDebugInput(selectText = true) {
+      if (!debugCommandInput) return;
+      debugCommandInput.focus();
+      if (selectText) {
+        debugCommandInput.select();
+      }
+    }
+
+    function ensureDebugPanelVisible() {
+      if (!debugPanelVisible) {
+        setDebugPanelVisible(true);
+      }
+    }
+
+    function setDebugStatus(message) {
+      if (debugStatusEl) {
+        debugStatusEl.textContent = message || DEBUG_STATUS_DEFAULT;
+      }
+    }
+
+    function renderDebugChipsCard() {
+      if (!debugCardListEl) return;
+      let card = debugCardListEl.querySelector('[data-debug-card="chips"]');
+      if (!card) {
+        card = document.createElement('div');
+        card.className = 'debug-card';
+        card.dataset.debugCard = 'chips';
+        card.innerHTML = `
+          <div class="debug-card-title">Tier Chips</div>
+          <div class="debug-chip-list"></div>
+        `;
+        debugCardListEl.appendChild(card);
+      }
+      const list = card.querySelector('.debug-chip-list');
+      if (!list) return;
+      list.innerHTML = '';
+      const tiers = [
+        { label: 'META', className: 'tier-meta' },
+        { label: 'A TIER', className: 'tier-a' },
+        { label: 'B TIER', className: 'tier-b' },
+        { label: 'C TIER', className: 'tier-c' },
+        { label: 'D TIER', className: 'tier-d' },
+        { label: 'F TIER', className: 'tier-f' }
+      ];
+      tiers.forEach((tier) => {
+        const chip = document.createElement('span');
+        chip.className = `chip ${tier.className}`;
+        chip.textContent = tier.label;
+        list.appendChild(chip);
+      });
+    }
+
+    function handleDebugCommand(inputValue) {
+      const raw = (inputValue || '').trim();
+      if (!raw) {
+        setDebugStatus('Enter a command (e.g., chips).');
+        return;
+      }
+      const normalized = raw.toLowerCase();
+      if (normalized === 'chips') {
+        ensureDebugPanelVisible();
+        renderDebugChipsCard();
+        setDebugStatus('Rendering tier chip preview.');
+      } else {
+        setDebugStatus(`Unknown command "${raw}". Try: chips.`);
+      }
+    }
+
+    if (debugCommandInput) {
+      debugCommandInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          handleDebugCommand(debugCommandInput.value);
+          debugCommandInput.value = '';
+        } else if (event.key === 'Escape') {
+          setDebugPanelVisible(false);
+        }
+      });
+    }
+
+    if (debugPanelCloseBtn) {
+      debugPanelCloseBtn.addEventListener('click', () => setDebugPanelVisible(false));
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === '/' && !event.altKey && !event.ctrlKey && !event.metaKey) {
+        const active = document.activeElement;
+        if (!isTextEntryElement(active)) {
+          event.preventDefault();
+          setDebugPanelVisible(true);
+          focusDebugInput(true);
+        }
+      } else if (event.key === 'Escape' && debugPanelVisible && (!debugCommandInput || document.activeElement !== debugCommandInput)) {
+        setDebugPanelVisible(false);
+      }
     });
 
     window.addEventListener('resize', () => {
