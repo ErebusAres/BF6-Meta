@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -83,6 +83,7 @@
         background-position: 0% 0%, 60% 20%, 40% 20%, 0% 0%;
       }
     }
+
 
     .sr-only {
       position: absolute;
@@ -247,17 +248,17 @@
     :root.reduce-animations .meta-chip,
     :root.reduce-animations .meta-chip::before,
     :root.reduce-animations .meta-chip::after,
-    :root.reduce-animations .range-chip::after,
-    :root.reduce-animations .meta-chip.rank-m::before,
-    :root.reduce-animations .meta-chip.rank-m::after {
+    :root.reduce-animations .range-chip::after {
       animation: none !important;
     }
 
     :root.reduce-animations .meta-chip::before,
-    :root.reduce-animations .meta-chip::after,
-    :root.reduce-animations .meta-chip.rank-m::before,
-    :root.reduce-animations .meta-chip.rank-m::after {
+    :root.reduce-animations .meta-chip::after {
       content: none !important;
+    }
+
+    :root.reduce-animations .chip-flame-canvas {
+      display: none !important;
     }
 
     .weapon-card.favorite {
@@ -364,6 +365,38 @@
       flex-wrap: wrap;
     }
 
+    .chip-flame-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      isolation: isolate;
+    }
+
+    .chip-flame-wrap .meta-chip {
+      position: relative;
+      z-index: 1;
+    }
+
+    .chip-flame-wrap .chip-flame-canvas {
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      pointer-events: none;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      z-index: 0;
+      transition: opacity 180ms ease;
+      filter: drop-shadow(0 8px 14px rgba(255, 115, 50, 0.35));
+    }
+
+    .chip-flame-wrap.has-flame .chip-flame-canvas {
+      opacity: 1;
+    }
+
     .meta-chip {
       display: inline-flex;
       align-items: center;
@@ -402,7 +435,6 @@
       text-shadow: 0 0 6px rgba(0,229,255,0.28);
     }
 
-    .meta-chip.rank-m { background: linear-gradient(135deg, #f1c40f, #d4a017); border-color: rgba(241,196,15,0.65); color: #132018; }
     .meta-chip.rank-a { background: linear-gradient(135deg, #00e5ff, #3aa6ff); border-color: rgba(0,229,255,0.55); color: #0a1620; }
     .meta-chip.rank-b { background: linear-gradient(135deg, #14d672, #0fb862); border-color: rgba(20,214,114,0.55); color: #0c1d16; }
     .meta-chip.rank-c { background: linear-gradient(135deg, #ffb15a, #ff8a3a); border-color: rgba(255,165,80,0.6); color: #23160c; }
@@ -1784,78 +1816,6 @@
       }
     }
 
-    @keyframes metaSparkDrift {
-      0% {
-        background-position:
-          25% 95%,
-          65% 55%,
-          0% 0%;
-      }
-      50% {
-        background-position:
-          45% 75%,
-          55% 35%,
-          30% 20%;
-      }
-      100% {
-        background-position:
-          20% 90%,
-          75% 60%,
-          60% 10%;
-      }
-    }
-
-    @keyframes metaFlameClip {
-      0% {
-        clip-path: polygon(6% 100%, 14% 58%, 22% 86%, 32% 20%, 42% 78%, 54% 10%, 66% 74%, 78% 18%, 90% 84%, 100% 32%, 100% 100%, 0% 100%);
-      }
-      50% {
-        clip-path: polygon(6% 100%, 16% 68%, 26% 46%, 34% 8%, 46% 64%, 58% 6%, 70% 58%, 84% 10%, 94% 70%, 100% 24%, 100% 100%, 0% 100%);
-      }
-      100% {
-        clip-path: polygon(6% 100%, 12% 55%, 22% 82%, 34% 18%, 46% 72%, 58% 14%, 70% 80%, 84% 26%, 94% 86%, 100% 38%, 100% 100%, 0% 100%);
-      }
-    }
-
-    @keyframes metaFlameRise {
-      0% {
-        transform: translateY(1px) scaleY(0.92);
-        opacity: 0.9;
-      }
-      50% {
-        transform: translateY(-2px) scaleY(1.08);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(1px) scaleY(0.94);
-        opacity: 0.9;
-      }
-    }
-
-    @keyframes metaFlameTexture {
-      0% {
-        background-position:
-          50% 0%,
-          50% 100%,
-          0% 110%;
-        opacity: 0.85;
-      }
-      50% {
-        background-position:
-          52% 15%,
-          48% 80%,
-          10% 60%;
-        opacity: 1;
-      }
-      100% {
-        background-position:
-          46% -10%,
-          52% 120%,
-          -10% 90%;
-        opacity: 0.9;
-      }
-    }
-
     @keyframes chipShimmer {
       0% {
         opacity: 0;
@@ -1899,22 +1859,14 @@
     }
 
     .meta-chip.rank-m {
-      color: #ffe6e6;
-      border-color: rgba(255, 90, 60, 0.95);
-      --chip-text-glow: 0 0 14px rgba(255, 130, 100, 0.95);
+      background: linear-gradient(135deg, #ffd479 0%, #ff8a3a 65%, #5a1c00 100%);
+      border-color: rgba(255, 168, 70, 0.85);
+      color: #fff;
+      --chip-text-glow: 0 0 8px rgba(255, 204, 140, 0.7);
       box-shadow:
-        0 0 26px rgba(255, 70, 40, 0.65),
-        inset 0 0 18px rgba(255, 170, 150, 0.55);
-      background-image:
-        radial-gradient(circle at 20% 35%, rgba(255, 255, 255, 0.55), transparent 60%),
-        radial-gradient(circle at 80% 15%, rgba(255, 120, 90, 0.5), transparent 70%),
-        linear-gradient(135deg, #2b0202 0%, #4a0508 55%, #120101 100%),
-        linear-gradient(135deg, #ff8f6b 0%, #ff2a0a 55%, #870000 100%);
-      background-blend-mode: screen, screen, normal, normal;
-      background-size: 170% 170%, 220% 220%, 160% 160%, 100% 100%;
-      position: relative;
-      overflow: hidden;
-      animation: metaEmbers 2.8s linear infinite;
+        inset 0 2px 8px rgba(255, 255, 255, 0.18),
+        inset 0 -8px 18px rgba(255, 90, 0, 0.4),
+        0 4px 18px rgba(0, 0, 0, 0.35);
     }
 
     .meta-chip .inner-glow {
@@ -1926,37 +1878,9 @@
       position: absolute;
       inset: 4px;
       border-radius: inherit;
-      background: radial-gradient(circle at 48% 35%, rgba(255, 255, 255, 0.65), transparent 70%);
-      box-shadow: inset 0 0 28px rgba(255, 200, 200, 0.55);
-      opacity: 0.95;
-      animation: metaInnerPulse 1.6s ease-in-out infinite;
-    }
-
-    .meta-chip.rank-m::before {
-      content: '';
-      position: absolute;
-      inset: 2px;
-      border-radius: inherit;
-      background: radial-gradient(circle, rgba(255, 120, 80, 0.35), transparent 75%);
-      box-shadow: 0 0 36px rgba(255, 70, 40, 0.5);
-      opacity: 0.9;
-      animation: metaRingPulse 2s ease-in-out infinite;
-    }
-
-    .meta-chip.rank-m::after {
-      content: '';
-      position: absolute;
-      top: -35%;
-      left: 50%;
-      width: 120%;
-      height: 160%;
-      transform: translateX(-50%);
-      background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.5), rgba(255, 200, 120, 0.35), transparent 70%);
-      clip-path: polygon(15% 100%, 35% 40%, 45% 70%, 55% 30%, 70% 75%, 85% 20%, 100% 100%);
-      opacity: 1;
-      filter: blur(1.4px);
-      mix-blend-mode: screen;
-      animation: metaFlare 1.15s ease-in-out infinite;
+      background: radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.35), transparent 60%);
+      opacity: 0.8;
+      pointer-events: none;
     }
 
     .meta-chip.rank-a {
@@ -2172,7 +2096,17 @@
           </button>
         </div>
         <div class="weapon-header-text" tabindex="0" role="button" aria-label="Toggle collapse" aria-expanded="true">
-          <div class="weapon-name"></div>          <div class="weapon-meta-row"><span class="meta-chip type-chip"></span><span class="meta-chip rank-chip"><span class="inner-glow" aria-hidden="true"></span></span><span class="meta-chip range-chip"></span></div>
+          <div class="weapon-name"></div>
+          <div class="weapon-meta-row">
+            <span class="meta-chip type-chip"></span>
+            <span class="chip-flame-wrap">
+              <canvas class="chip-flame-canvas" aria-hidden="true"></canvas>
+              <span class="meta-chip rank-chip">
+                <span class="inner-glow" aria-hidden="true"></span>
+              </span>
+            </span>
+            <span class="meta-chip range-chip"></span>
+          </div>
           
           <div class="header-controls">
             <span class="header-level" aria-live="polite">LEVEL 1</span>
@@ -2614,6 +2548,211 @@
       setDragActiveState(false);
     }
 
+    const chipFlameEffects = new Set();
+
+    function resizeActiveChipFlames() {
+      chipFlameEffects.forEach((effect) => effect.resize());
+    }
+
+    function updateChipFlameReducedMotion() {
+      const disabled = document.documentElement.classList.contains('reduce-animations');
+      chipFlameEffects.forEach((effect) => effect.handleReducedMotion(disabled));
+    }
+
+    class ChipFlameEffect {
+      constructor(chipEl) {
+        this.chipEl = chipEl;
+        this.wrapEl = chipEl ? chipEl.closest('.chip-flame-wrap') : null;
+        this.canvasEl = this.wrapEl ? this.wrapEl.querySelector('.chip-flame-canvas') : null;
+        this.ctx = this.canvasEl ? this.canvasEl.getContext('2d') : null;
+        this.isValid = Boolean(this.wrapEl && this.canvasEl && this.ctx);
+        if (!this.isValid) return;
+        this.visible = false;
+        this.reducedMotion = document.documentElement.classList.contains('reduce-animations');
+        this.particles = [];
+        this.pool = [];
+        this.maxParticles = 150;
+        this.emissionRate = 95;
+        this.emissionCarry = 0;
+        this.hoverBoost = 1;
+        this.running = false;
+        this.frameId = null;
+        this.pendingResize = true;
+        this.dpr = window.devicePixelRatio || 1;
+        this.spread = 0;
+        this.handlePointerEnter = () => {
+          this.hoverBoost = 1.6;
+        };
+        this.handlePointerLeave = () => {
+          this.hoverBoost = 1;
+        };
+        this.chipEl.addEventListener('pointerenter', this.handlePointerEnter);
+        this.chipEl.addEventListener('pointerleave', this.handlePointerLeave);
+        chipFlameEffects.add(this);
+      }
+
+      setDisplayed(displayed) {
+        if (!this.isValid) return;
+        this.visible = displayed;
+        if (!displayed || this.reducedMotion) {
+          this.stop();
+          if (this.wrapEl) this.wrapEl.classList.remove('has-flame');
+          return;
+        }
+        if (this.wrapEl) this.wrapEl.classList.add('has-flame');
+        this.resize();
+        this.start();
+      }
+
+      handleReducedMotion(disabled) {
+        this.reducedMotion = disabled;
+        if (disabled) {
+          this.stop();
+          if (this.wrapEl) this.wrapEl.classList.remove('has-flame');
+        } else if (this.visible) {
+          if (this.wrapEl) this.wrapEl.classList.add('has-flame');
+          this.resize();
+          this.start();
+        }
+      }
+
+      resize() {
+        if (!this.isValid) return;
+        if (!this.visible || this.reducedMotion || !this.chipEl.isConnected) {
+          this.pendingResize = true;
+          return;
+        }
+        const rect = this.chipEl.getBoundingClientRect();
+        if (!rect.width || !rect.height) {
+          this.pendingResize = true;
+          return;
+        }
+        const width = rect.width + 32;
+        const height = rect.height * 1.8;
+        this.canvasEl.style.width = `${width}px`;
+        this.canvasEl.style.height = `${height}px`;
+        this.dpr = window.devicePixelRatio || 1;
+        this.canvasEl.width = Math.max(1, Math.round(width * this.dpr));
+        this.canvasEl.height = Math.max(1, Math.round(height * this.dpr));
+        this.originX = this.canvasEl.width / 2;
+        this.originY = this.canvasEl.height - Math.max(this.canvasEl.height * 0.18, 10 * this.dpr);
+        this.spread = Math.max(12, rect.width * 0.35) * this.dpr;
+        this.pendingResize = false;
+      }
+
+      start() {
+        if (!this.isValid || this.running || !this.visible || this.reducedMotion) return;
+        if (this.pendingResize) this.resize();
+        if (this.pendingResize) return;
+        this.running = true;
+        this.emissionCarry = 0;
+        this.lastTime = performance.now();
+        const loop = (time) => {
+          if (!this.running) return;
+          if (!this.visible || this.reducedMotion || !this.chipEl.isConnected) {
+            this.stop();
+            return;
+          }
+          const delta = Math.min(time - this.lastTime, 64);
+          this.lastTime = time;
+          this.step(delta / 1000);
+          this.frameId = requestAnimationFrame(loop);
+        };
+        this.frameCallback = loop;
+        this.frameId = requestAnimationFrame(loop);
+      }
+
+      step(dt) {
+        this.emit(dt);
+        this.updateParticles(dt);
+        this.draw();
+      }
+
+      emit(dt) {
+        this.emissionCarry += this.emissionRate * dt * this.hoverBoost;
+        let count = Math.floor(this.emissionCarry);
+        this.emissionCarry -= count;
+        while (count-- > 0 && this.particles.length < this.maxParticles) {
+          this.spawnParticle();
+        }
+      }
+
+      spawnParticle() {
+        const particle = this.pool.pop() || {};
+        particle.x = this.originX + (Math.random() - 0.5) * this.spread * 2;
+        particle.y = this.originY + Math.random() * 6 * this.dpr;
+        particle.vx = (Math.random() - 0.5) * 40 * this.dpr;
+        particle.vy = -(60 + Math.random() * 80) * this.dpr;
+        particle.size = (6 + Math.random() * 10) * this.dpr;
+        particle.life = 0.6 + Math.random() * 0.5;
+        particle.age = 0;
+        particle.alpha = 1;
+        this.particles.push(particle);
+      }
+
+      updateParticles(dt) {
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const particle = this.particles[i];
+          particle.age += dt;
+          if (particle.age >= particle.life) {
+            this.pool.push(particle);
+            this.particles.splice(i, 1);
+            continue;
+          }
+          const t = particle.age / particle.life;
+          particle.x += particle.vx * dt;
+          particle.y += particle.vy * dt;
+          particle.vx *= 0.97;
+          particle.size += dt * 10 * this.dpr;
+          particle.alpha = 1 - t;
+        }
+      }
+
+      draw() {
+        if (!this.ctx) return;
+        this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+        if (!this.particles.length) return;
+        this.ctx.globalCompositeOperation = 'lighter';
+        for (const particle of this.particles) {
+          const alpha = particle.alpha;
+          const gradient = this.ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, particle.size);
+          gradient.addColorStop(0, `rgba(255,255,255,${0.85 * alpha})`);
+          gradient.addColorStop(0.35, `rgba(255,200,80,${0.7 * alpha})`);
+          gradient.addColorStop(0.7, `rgba(255,90,0,${0.4 * alpha})`);
+          gradient.addColorStop(1, 'rgba(0,0,0,0)');
+          this.ctx.fillStyle = gradient;
+          this.ctx.beginPath();
+          this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+        this.ctx.globalCompositeOperation = 'source-over';
+      }
+
+      stop() {
+        if (this.frameId) {
+          cancelAnimationFrame(this.frameId);
+          this.frameId = null;
+        }
+        this.running = false;
+        this.emissionCarry = 0;
+        this.particles.length = 0;
+        if (this.ctx) {
+          this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+        }
+      }
+
+      destroy() {
+        if (!this.isValid) return;
+        this.stop();
+        if (this.wrapEl) this.wrapEl.classList.remove('has-flame');
+        this.visible = false;
+        this.chipEl.removeEventListener('pointerenter', this.handlePointerEnter);
+        this.chipEl.removeEventListener('pointerleave', this.handlePointerLeave);
+        chipFlameEffects.delete(this);
+        this.isValid = false;
+      }
+    }
+
     class WeaponTracker {
       constructor(config) {
         this.config = config;
@@ -2652,11 +2791,11 @@
           : 100;
         this.slotLabels = { ...(config.slotLabels || {}) };
         for (const key of Object.keys(this.slotLabels)) {
-          this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
-        }
-        this.baseline = normalizeBaselineConfig(config.baseline, this.dbname);
-        this.changes = normalizeChangesConfig(config.changes, this.dbname);
-        this.slotKeys = this.buildSlotKeys();
+        this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
+      }
+      this.baseline = normalizeBaselineConfig(config.baseline, this.dbname);
+      this.changes = normalizeChangesConfig(config.changes, this.dbname);
+      this.slotKeys = this.buildSlotKeys();
         this.buildDefinitions = this.resolveBuildDefinitions();
         this.buildById = this.buildDefinitions.reduce((map, build) => {
           map[build.id] = build;
@@ -2680,6 +2819,8 @@
 
         this.arrowLayerEl = document.createElement('div');
         this.arrowLayerEl.className = 'arrow-layer';
+        this.rankFlameEffect = null;
+        this.isDisplayed = false;
       }
 
       resolveSlotType(payload) {
@@ -2790,6 +2931,28 @@
         return `SLOT ${slotKey}`;
       }
 
+      applyRankFlameEffect(isMeta) {
+        if (!this.rankChipEl) return;
+        if (isMeta) {
+          if (!this.rankFlameEffect) {
+            this.rankFlameEffect = new ChipFlameEffect(this.rankChipEl);
+          }
+          if (this.rankFlameEffect) {
+            this.rankFlameEffect.setDisplayed(this.isDisplayed);
+          }
+        } else if (this.rankFlameEffect) {
+          this.rankFlameEffect.destroy();
+          this.rankFlameEffect = null;
+        }
+      }
+
+      setDisplayed(displayed) {
+        this.isDisplayed = Boolean(displayed);
+        if (this.rankFlameEffect) {
+          this.rankFlameEffect.setDisplayed(this.isDisplayed);
+        }
+      }
+
       clampLevel(level) {
         const value = Math.round(level);
         return Math.max(this.minLevel, Math.min(this.maxLevel, value));
@@ -2849,9 +3012,20 @@
           const r = (this.config.rank || '').toString().trim().toLowerCase();
           const map = { m: 'META', a: 'A TIER', b: 'B TIER', c: 'C TIER', d: 'D TIER' };
           const label = map[r] || 'UNRANKED';
+          let innerGlowEl = this.rankChipEl.querySelector('.inner-glow');
           this.rankChipEl.textContent = label;
+          if (!innerGlowEl) {
+            innerGlowEl = document.createElement('span');
+            innerGlowEl.className = 'inner-glow';
+            innerGlowEl.setAttribute('aria-hidden', 'true');
+          } else {
+            innerGlowEl.setAttribute('aria-hidden', 'true');
+          }
+          this.rankChipEl.appendChild(innerGlowEl);
           this.rankChipEl.classList.remove('rank-m','rank-a','rank-b','rank-c','rank-d','rank-unranked');
-          this.rankChipEl.classList.add(r && map[r] ? ('rank-' + r) : 'rank-unranked');
+          const rankClass = r && map[r] ? ('rank-' + r) : 'rank-unranked';
+          this.rankChipEl.classList.add(rankClass);
+          this.applyRankFlameEffect(r === 'm');
         }
         if (this.rangeChipEl) {
           const code = (this.config.tr || '').toString().trim().toUpperCase();
@@ -4269,9 +4443,18 @@
           defaultOrder.every((id, index) => finalOrder[index] === id);
         displayOrder = matchesDefault ? defaultOrder : finalOrder;
       }
-        for (const id of displayOrder) {
+
+      const visibleIdSet = new Set(displayOrder);
+      trackers.forEach((tracker) => {
+        if (!visibleIdSet.has(tracker.id)) {
+          tracker.setDisplayed(false);
+        }
+      });
+
+      for (const id of displayOrder) {
         const tracker = idToTracker.get(id);
         tracker.attach(weaponListEl);
+        tracker.setDisplayed(true);
       }
       const navOrder = currentTypeFilter ? displayOrder : finalOrder;
       updateWeaponNav(navOrder);
@@ -4333,6 +4516,7 @@
 
     window.addEventListener('resize', () => {
       trackers.forEach((tracker) => tracker.refreshLayout());
+      resizeActiveChipFlames();
     });
 
     // UI Scale control & options setup
@@ -4415,6 +4599,7 @@
         if (reduceToggleSwitch) {
           reduceToggleSwitch.classList.toggle('on', enabled);
         }
+        updateChipFlameReducedMotion();
       }
 
       function applyOptionsVisibility(visible) {
