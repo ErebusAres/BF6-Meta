@@ -722,6 +722,15 @@ const weaponConfigs = [
       '30RND MAGAZINE',
       'FMJ'
     ],
+    custom: [
+      { custom: 'Community' },
+      'Double-Port Brake',
+      '415MM Prototype',
+      'Stippled Stubby',
+      '36RND Magazine',
+      'Frangible',
+      'CQ RDS 1.25X'
+    ],
     baseline: KORD_BASELINE,
     changes: KORD_CHANGES
   },
@@ -773,6 +782,23 @@ const weaponConfigs = [
       '30RND Magazine',
       'Polymer Case',
       'OSA-7 1.00X'
+    ]
+  },
+  {
+    id: 'nvo-228e',
+    dbname: 'nvo-228e',
+    rank: 'm',
+    tr: '4',
+    versatile: [
+      { Notes: 
+        "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
+      },
+      'Standard Suppressor',
+      '409MM Factory',
+      'Ribbed Stubby',
+      '40RND Magazine',
+      'FMJ',
+      'RO-S 1.25x'
     ]
   },
   {
