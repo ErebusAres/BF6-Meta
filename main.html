@@ -390,7 +390,7 @@
       height: 0;
       z-index: 0;
       transition: opacity 180ms ease;
-      filter: drop-shadow(0 8px 14px rgba(255, 115, 50, 0.35));
+      filter: drop-shadow(0 6px 10px rgba(255, 115, 50, 0.22));
     }
 
     .chip-flame-wrap.has-flame .chip-flame-canvas {
@@ -2571,8 +2571,8 @@
         this.reducedMotion = document.documentElement.classList.contains('reduce-animations');
         this.particles = [];
         this.pool = [];
-        this.maxParticles = 150;
-        this.emissionRate = 95;
+        this.maxParticles = 90;
+        this.emissionRate = 58;
         this.emissionCarry = 0;
         this.hoverBoost = 1;
         this.running = false;
@@ -2581,7 +2581,7 @@
         this.dpr = window.devicePixelRatio || 1;
         this.spread = 0;
         this.handlePointerEnter = () => {
-          this.hoverBoost = 1.6;
+          this.hoverBoost = 1.2;
         };
         this.handlePointerLeave = () => {
           this.hoverBoost = 1;
@@ -2627,8 +2627,8 @@
           this.pendingResize = true;
           return;
         }
-        const width = rect.width + 32;
-        const height = rect.height * 1.8;
+        const width = rect.width + 26;
+        const height = rect.height * 1.6;
         this.canvasEl.style.width = `${width}px`;
         this.canvasEl.style.height = `${height}px`;
         this.dpr = window.devicePixelRatio || 1;
@@ -2636,7 +2636,7 @@
         this.canvasEl.height = Math.max(1, Math.round(height * this.dpr));
         this.originX = this.canvasEl.width / 2;
         this.originY = this.canvasEl.height - Math.max(this.canvasEl.height * 0.18, 10 * this.dpr);
-        this.spread = Math.max(12, rect.width * 0.35) * this.dpr;
+        this.spread = Math.max(10, rect.width * 0.25) * this.dpr;
         this.pendingResize = false;
       }
 
@@ -2679,12 +2679,12 @@
 
       spawnParticle() {
         const particle = this.pool.pop() || {};
-        particle.x = this.originX + (Math.random() - 0.5) * this.spread * 2;
-        particle.y = this.originY + Math.random() * 6 * this.dpr;
-        particle.vx = (Math.random() - 0.5) * 40 * this.dpr;
-        particle.vy = -(60 + Math.random() * 80) * this.dpr;
-        particle.size = (6 + Math.random() * 10) * this.dpr;
-        particle.life = 0.6 + Math.random() * 0.5;
+        particle.x = this.originX + (Math.random() - 0.5) * this.spread * 1.4;
+        particle.y = this.originY + Math.random() * 4 * this.dpr;
+        particle.vx = (Math.random() - 0.5) * 26 * this.dpr;
+        particle.vy = -(48 + Math.random() * 60) * this.dpr;
+        particle.size = (5 + Math.random() * 7) * this.dpr;
+        particle.life = 0.55 + Math.random() * 0.4;
         particle.age = 0;
         particle.alpha = 1;
         this.particles.push(particle);
@@ -2716,9 +2716,9 @@
         for (const particle of this.particles) {
           const alpha = particle.alpha;
           const gradient = this.ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, particle.size);
-          gradient.addColorStop(0, `rgba(255,255,255,${0.85 * alpha})`);
-          gradient.addColorStop(0.35, `rgba(255,200,80,${0.7 * alpha})`);
-          gradient.addColorStop(0.7, `rgba(255,90,0,${0.4 * alpha})`);
+          gradient.addColorStop(0, `rgba(255,255,255,${0.75 * alpha})`);
+          gradient.addColorStop(0.35, `rgba(255,200,80,${0.55 * alpha})`);
+          gradient.addColorStop(0.7, `rgba(255,90,0,${0.32 * alpha})`);
           gradient.addColorStop(1, 'rgba(0,0,0,0)');
           this.ctx.fillStyle = gradient;
           this.ctx.beginPath();
