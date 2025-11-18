@@ -86,7 +86,7 @@
       'A-P2 1.75x': { name: 'A-P2 1.75x', type: 'Scope', pts: 10, unlockLevel: 36 },
       'MC-CO LPVO': { name: 'MC-CO LPVO', type: 'Scope', pts: 25, unlockLevel: 38 },
       'PAS-35 3.00x': { name: 'PAS-35 3.00x', type: 'Scope', pts: 25, unlockLevel: 39 },
-      'SU-230 LPVO': { name: 'SU-230 LPVO', type: 'Scope', pts: 20, unlockLevel: 'Season 1 Hardware 1 Assignment' },
+      'SU-230 LPVO': { name: 'SU-230 LPVO', type: 'Scope', pts: 20, unlockLevel: 'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None-Optic Accessory': { name: 'None', type: 'Optic Accessory', pts: 0, unlockLevel: 0 },
@@ -179,7 +179,7 @@
       'CQ RDS 1.25x': { name: 'CQ RDS 1.25x', type: 'Scope', pts: 10, unlockLevel: 17 },
       '1P87 1.50x': { name: '1P87 1.50x', type: 'Scope', pts: 10, unlockLevel: 18 },
       'RO-M 1.75x': { name: 'RO-M 1.75x', type: 'Scope', pts: 10, unlockLevel: 19 },
-      'ST Prism 5.00x': { name: 'ST Prism 5.00x', type: 'Scope', pts: 10, unlockLevel: 21 },
+      'ST Prisim 5.00x': { name: 'ST Prisim 5.00x', type: 'Scope', pts: 10, unlockLevel: 21 },
       'DVO LPVO': { name: 'DVO LPVO', type: 'Scope', pts: 25, unlockLevel: 22 },
       'BF-2M 2.50x': { name: 'BF-2M 2.50x', type: 'Scope', pts: 10, unlockLevel: 23 },
       'RO-S 1.25x': { name: 'RO-S 1.25x', type: 'Scope', pts: 10, unlockLevel: 24 },
@@ -305,7 +305,7 @@
       'A-P2 1.75x': { name: 'A-P2 1.75x', type: 'Scope', pts: 10, unlockLevel: 35 },
       'Grim 1.50x': { name: 'Grim 1.50x', type: 'Scope', pts: 25, unlockLevel: 37 },
       'MC-CO LPVO': { name: 'MC-CO LPVO', type: 'Scope', pts: 25, unlockLevel: 39 },
-      'SU-230 LPVO': { name: 'SU-230 LPVO', type: 'Scope', pts: 20, unlockLevel: 'Season 1 Hardware 1 Assignment' },
+      'SU-230 LPVO': { name: 'SU-230 LPVO', type: 'Scope', pts: 20, unlockLevel: 'Season 1 Hardware 1' },
       
       // Optic Accessories
       'None-Optic Accessory': { name: 'None', type: 'Optic Accessory', pts: 0, unlockLevel: 0 },
@@ -407,7 +407,7 @@
     'BF-2M 2.50x':           { name: 'BF-2M 2.50x',           type: 'Scope',              pts: 10, unlockLevel: 19 },
     'R4T 2.00x':             { name: 'R4T 2.00x',             type: 'Scope',              pts: 10, unlockLevel: 20 },
     'PVQ-31 4.00x':          { name: 'PVQ-31 4.00x',          type: 'Scope',              pts: 10, unlockLevel: 22 },
-    'ST Prism 5.00x':        { name: 'ST Prism 5.00x',        type: 'Scope',              pts: 10, unlockLevel: 23 },
+    'ST Prisim 5.00x':        { name: 'ST Prisim 5.00x',        type: 'Scope',              pts: 10, unlockLevel: 23 },
     'CCO 2.00x':             { name: 'CCO 2.00x',             type: 'Scope',              pts: 10, unlockLevel: 26 },
     'LDS 4.50x':             { name: 'LDS 4.50x',             type: 'Scope',              pts: 10, unlockLevel: 28 },
     'ROX 1.50x':             { name: 'ROX 1.50x',             type: 'Scope',              pts: 10, unlockLevel: 29 },
@@ -521,7 +521,7 @@
     'R4T 2.00x':          { name: 'R4T 2.00x',          type: 'Scope',              pts: 10, unlockLevel: 15 },
     'DVO LPVO':           { name: 'DVO LPVO',          type: 'Scope',              pts: 25, unlockLevel: 19 },
     'RO-M 1.75x':         { name: 'RO-M 1.75x',         type: 'Scope',              pts: 10, unlockLevel: 21 },
-    'ST Prism 5.00x':     { name: 'ST Prism 5.00x',     type: 'Scope',              pts: 10, unlockLevel: 22 },
+    'ST Prisim 5.00x':     { name: 'ST Prisim 5.00x',     type: 'Scope',              pts: 10, unlockLevel: 22 },
     'ROX 1.50x':          { name: 'ROX 1.50x',          type: 'Scope',              pts: 10, unlockLevel: 23 },
     'BF-2M 2.50x':        { name: 'BF-2M 2.50x',        type: 'Scope',              pts: 10, unlockLevel: 24 },
     'Mars-F LPVO':        { name: 'Mars-F LPVO',       type: 'Scope',              pts: 25, unlockLevel: 26 },
@@ -533,7 +533,7 @@
     'A-P2 1.75x':         { name: 'A-P2 1.75x',         type: 'Scope',              pts: 10, unlockLevel: 37 },
     'SF-G2 5.00x':        { name: 'SF-G2 5.00x',        type: 'Scope',              pts: 10, unlockLevel: 38 },
     'Grim 1.50x':         { name: 'Grim 1.50x',         type: 'Scope',              pts: 25, unlockLevel: 40 },
-    'SU-230 LPVO':        { name: 'SU-230 LPVO',        type: 'Scope',              pts: 20, unlockLevel: 'Season1Hardware1' },
+    'SU-230 LPVO':        { name: 'SU-230 LPVO',        type: 'Scope',              pts: 20, unlockLevel: 'Season 1 Hardware 1' },
 
     // Optic Accessories
     'None-Optic Accessory':  { name: 'None',                  type: 'Optic Accessory',     pts: 0,  unlockLevel: 0 },
@@ -753,7 +753,7 @@
       'DVO LPVO': { name:'DVO LPVO', type:'Scope', pts:25, unlockLevel:36 },
       'MC-CO LPVO': { name:'MC-CO LPVO', type:'Scope', pts:25, unlockLevel:37 },
       'PAS-35 3.00x': { name:'PAS-35 3.00x', type:'Scope', pts:25, unlockLevel:40 },
-      'SU-230 LPVO': { name:'SU-230 LPVO', type:'Scope', pts:20, unlockLevel:'Season1Hardware1' },
+      'SU-230 LPVO': { name:'SU-230 LPVO', type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory': { name:'None', type:'Optic Accessory', pts:0, unlockLevel:0 },
@@ -967,7 +967,7 @@
       'CQ RDS 1.25x':       { name:'CQ RDS 1.25x',       type:'Scope', pts:10, unlockLevel:38 },
       'SF-G2 5.00x':        { name:'SF-G2 5.00x',        type:'Scope', pts:10, unlockLevel:40 },
       // Season 1 Hardware 1 assignment
-      'SU-230 LPVO':        { name:'SU-230 LPVO',        type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':        { name:'SU-230 LPVO',        type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory':  { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
@@ -1041,7 +1041,7 @@
       'Magwell Flare':         { name:'Magwell Flare',    type:'Ergonomics', pts:10, unlockLevel:16 },
       'Match Trigger':         { name:'Match Trigger',    type:'Ergonomics', pts:15, unlockLevel:32 },
       // Season 1 Hardware 2 assignment
-      'Rail Cover':            { name:'Rail Cover',       type:'Ergonomics', pts:5,  unlockLevel:0 },
+      'Rail Cover':            { name:'Rail Cover',       type:'Ergonomics', pts:5,  unlockLevel: 'Season 1 Hardware 2' },
 
       // Ammunition
       'FMJ':                   { name:'FMJ',           type:'Ammunition', pts:5,  unlockLevel:0 },
@@ -1080,7 +1080,7 @@
       'CQ RDS 1.25x':       { name:'CQ RDS 1.25x',       type:'Scope', pts:10, unlockLevel:38 },
       'SF-G2 5.00x':        { name:'SF-G2 5.00x',        type:'Scope', pts:10, unlockLevel:40 },
       // Season 1 Hardware 1 assignment
-      'SU-230 LPVO':        { name:'SU-230 LPVO',        type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':        { name:'SU-230 LPVO',        type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory':  { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
@@ -1190,7 +1190,7 @@
       'R-MR 1.00x':         { name:'R-MR 1.00x',         type:'Scope', pts:10, unlockLevel:39 },
       'SF-G2 5.00x':        { name:'SF-G2 5.00x',        type:'Scope', pts:10, unlockLevel:40 },
       // Season 1 Hardware 1 assignment
-      'SU-230 LPVO':        { name:'SU-230 LPVO',        type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':        { name:'SU-230 LPVO',        type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory':  { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
@@ -1295,7 +1295,7 @@
       '3VZR 1.75x':       { name:'3VZR 1.75x',       type:'Scope', pts:10, unlockLevel:39 },
       'SF-G2 5.00x':      { name:'SF-G2 5.00x',      type:'Scope', pts:10, unlockLevel:40 },
       // Season 1 Hardware 1
-      'SU-230 LPVO':      { name:'SU-230 LPVO',      type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':      { name:'SU-230 LPVO',      type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory': { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
@@ -1400,7 +1400,7 @@
       'SF-G2 5.00x':      { name:'SF-G2 5.00x',      type:'Scope', pts:10, unlockLevel:38 },
       '3VZR 1.75x':       { name:'3VZR 1.75x',       type:'Scope', pts:10, unlockLevel:40 },
       // Season 1 Hardware 1
-      'SU-230 LPVO':      { name:'SU-230 LPVO',      type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':      { name:'SU-230 LPVO',      type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory': { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
@@ -1595,7 +1595,7 @@
       'RO-S 1.25x':      { name:'RO-S 1.25x',      type:'Scope', pts:10, unlockLevel:39 },
 
       // Season 1 Hardware 1
-      'SU-230 LPVO':     { name:'SU-230 LPVO',     type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':     { name:'SU-230 LPVO',     type:'Scope', pts:20, unlockLevel: 'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory': { name:'None',               type:'Optic Accessory', pts:0,  unlockLevel:0 },
@@ -1687,7 +1687,7 @@
       'NGFC LPVO':        { name:'NGFC LPVO',        type:'Scope', pts:25, unlockLevel:17 },
       'R4T 2.00x':        { name:'R4T 2.00x',        type:'Scope', pts:10, unlockLevel:19 },
       'R-MR 1.00x':       { name:'R-MR 1.00x',       type:'Scope', pts:10, unlockLevel:22 },
-      'ST Prism 5.00x':   { name:'ST Prism 5.00x',   type:'Scope', pts:10, unlockLevel:23 },
+      'ST Prisim 5.00x':  { name:'ST Prisim 5.00x',  type:'Scope', pts:10, unlockLevel:23 },
       'Grim 1.50x':       { name:'Grim 1.50x',       type:'Scope', pts:25, unlockLevel:25 },
       'Baker 3.00x':      { name:'Baker 3.00x',      type:'Scope', pts:10, unlockLevel:26 },
       '3VZR 1.75x':       { name:'3VZR 1.75x',       type:'Scope', pts:10, unlockLevel:27 },
@@ -1699,7 +1699,7 @@
       'SF-G2 5.00x':      { name:'SF-G2 5.00x',      type:'Scope', pts:10, unlockLevel:39 },
 
       // Season 1 Hardware 1
-      'SU-230 LPVO':      { name:'SU-230 LPVO',      type:'Scope', pts:20, unlockLevel:0 },
+      'SU-230 LPVO':      { name:'SU-230 LPVO',      type:'Scope', pts:20, unlockLevel:'Season 1 Hardware 1' },
 
       // Optic Accessories
       'None–Optic Accessory': { name:'None',              type:'Optic Accessory', pts:0,  unlockLevel:0 },
@@ -3454,7 +3454,7 @@
       'Iron Sights':           { name:'Iron Sights',           type:'Scope', pts:15, unlockLevel:0 },
       'DVO LPVO':              { name:'DVO LPVO',              type:'Scope', pts:25, unlockLevel:0 },
       'CCO 2.00x':             { name:'CCO 2.00x',             type:'Scope', pts:10, unlockLevel:1 },
-      'ST Prism 5.00x':        { name:'ST Prism 5.00x',        type:'Scope', pts:10, unlockLevel:2 },
+      'ST Prisim 5.00x':        { name:'ST Prisim 5.00x',        type:'Scope', pts:10, unlockLevel:2 },
       'SU-231 1.50x':          { name:'SU-231 1.50x',          type:'Scope', pts:10, unlockLevel:3 },
       'Mars-F LPVO':           { name:'Mars-F LPVO',           type:'Scope', pts:25, unlockLevel:5 },
       'Baker 3.00x':           { name:'Baker 3.00x',           type:'Scope', pts:10, unlockLevel:6 },
