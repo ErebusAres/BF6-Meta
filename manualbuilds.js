@@ -750,8 +750,8 @@ const MANUAL_RANKING_GROUPS = [
   {
     type: 'SMG',
     entries: [
-      { dbname: 'SGX', rank: 's', tr: '2' },
-      { dbname: 'USG-90', rank: 'm', tr: '1' },
+      { dbname: 'USG-90', rank: 's', tr: '1' },
+      { dbname: 'SGX', rank: 'm', tr: '2' },
       { dbname: 'PW5A3', rank: 'm', tr: '3' },
       { dbname: 'UMG-40', rank: 'm', tr: '4' },
       { dbname: 'SL9', rank: 'a', tr: '5' },
