@@ -47,12 +47,14 @@
     LMR27: { name: 'LMR27', type: 'DMR', image: 'lmr27.avif', maxLevel: 40, apMax: 100 },
     M87A1: { name: 'M87A1', type: 'Shotgun', image: 'm87a1.avif', maxLevel: 40, apMax: 100 },
     M1014: { name: 'M1014', type: 'Shotgun', image: 'm1014.avif', maxLevel: 40, apMax: 100 },
+    'DB-12': { name: 'DB-12', type: 'Shotgun', image: 'db-12.avif', maxLevel: 40, apMax: 100},
     '18.5KS-K': { name: '18.5KS-K', type: 'Shotgun', image: '18.5ks-k.avif', maxLevel: 40, apMax: 100 },
     'GGH-22': { name: 'GGH-22', type: 'Secondary', image: 'ggh-22.avif', maxLevel: 40, apMax: 60 },
     P18: { name: 'P18', type: 'Secondary', image: 'p18.avif', maxLevel: 40, apMax: 60 },
     'ES 5.7': { name: 'ES 5.7', type: 'Secondary', image: 'es5.7.avif', maxLevel: 40, apMax: 60 },
     M45A1: { name: 'M45A1', type: 'Secondary', image: 'm45a1.avif', maxLevel: 40, apMax: 60 },
-    M44: { name: 'M44', type: 'Secondary', image: 'm44.avif', maxLevel: 40, apMax: 60 }
+    M44: { name: 'M44', type: 'Secondary', image: 'm44.avif', maxLevel: 40, apMax: 60 },
+    'M357 TRAIT': { name: 'M357 TRAIT', type: 'Secondary', image: 'm357trait.avif', maxLevel: 40, apMax: 60 },
   };
 
   // Assault Rifles
@@ -4459,6 +4461,98 @@
       'Flechette':              { name:'Flechette', type:'Ammunition', pts:30, unlockLevel:26 },
     }
   };
+  target['DB-12'] = {
+    attachments: {
+      // Scopes
+      'Iron Sights': { name: 'Iron Sights', type: 'Scope', pts: 5, unlockLevel: 0 },
+      'SU-231 1.50x': { name: 'SU-231 1.50x', type: 'Scope', pts: 10, unlockLevel: 1 },
+      'Mini Flex 1.00x': { name: 'Mini Flex 1.00x', type: 'Scope', pts: 10, unlockLevel: 3 },
+      'RO-M 1.75x': { name: 'RO-M 1.75x', type: 'Scope', pts: 10, unlockLevel: 5 },
+      'CQ RDS 1.25x': { name: 'CQ RDS 1.25x', type: 'Scope', pts: 10, unlockLevel: 7 },
+      'BF-2M 2.50x': { name: 'BF-2M 2.50x', type: 'Scope', pts: 10, unlockLevel: 9 },
+      'ROX 1.50x': { name: 'ROX 1.50x', type: 'Scope', pts: 10, unlockLevel: 11 },
+      'CCO 2.00x': { name: 'CCO 2.00x', type: 'Scope', pts: 10, unlockLevel: 12 },
+      'Baker 3.00x': { name: 'Baker 3.00x', type: 'Scope', pts: 10, unlockLevel: 14 },
+      'Grim 1.50x': { name: 'Grim 1.50x', type: 'Scope', pts: 25, unlockLevel: 16 },
+      'ST Prisim 5.00x': { name: 'ST Prisim 5.00x', type: 'Scope', pts: 10, unlockLevel: 17 },
+      'A-P2 1.75x': { name: 'A-P2 1.75x', type: 'Scope', pts: 10, unlockLevel: 18 },
+      'OSA-7 1.00x': { name: 'OSA-7 1.00x', type: 'Scope', pts: 10, unlockLevel: 21 },
+      'PVQ-31 4.00x': { name: 'PVQ-31 4.00x', type: 'Scope', pts: 10, unlockLevel: 23 },
+      '2PRO 1.25x': { name: '2PRO 1.25x', type: 'Scope', pts: 10, unlockLevel: 24 },
+      'SDO 3.50x': { name: 'SDO 3.50x', type: 'Scope', pts: 10, unlockLevel: 26 },
+      '3VZR 1.75x': { name: '3VZR 1.75x', type: 'Scope', pts: 10, unlockLevel: 28 },
+      'R4T 2.00x': { name: 'R4T 2.00x', type: 'Scope', pts: 10, unlockLevel: 29 },
+      'R-MR 1.00x': { name: 'R-MR 1.00x', type: 'Scope', pts: 10, unlockLevel: 31 },
+      'Mars-F LPVO': { name: 'Mars-F LPVO', type: 'Scope', pts: 25, unlockLevel: 32 },
+      'RO-S 1.25x': { name: 'RO-S 1.25x', type: 'Scope', pts: 10, unlockLevel: 34 },
+      'SF-G2 5.00x': { name: 'SF-G2 5.00x', type: 'Scope', pts: 10, unlockLevel: 36 },
+      '1P87 1.50x': { name: '1P87 1.50x', type: 'Scope', pts: 10, unlockLevel: 37 },
+      'LDS 4.50x': { name: 'LDS 4.50x', type: 'Scope', pts: 10, unlockLevel: 38 },
+      'PAS-35 3.00x': { name: 'PAS-35 3.00x', type: 'Scope', pts: 25, unlockLevel: 40 },
+      'SU-230 LPVO': {
+        name: 'SU-230 LPVO',
+        type: 'Scope',
+        pts: 20,
+        unlockLevel: 'Season 1 Hardware 1',
+      },
+
+      // Optic Accessories
+      'None-Optic Accessory': { name: 'None', type: 'Optic Accessory', pts: 0, unlockLevel: 0 },
+      'Canted Iron Sights': { name: 'Canted Iron Sights', type: 'Optic Accessory', pts: 5, unlockLevel: 10 },
+      'Canted Reflex': { name: 'Canted Reflex', type: 'Optic Accessory', pts: 5, unlockLevel: 20 },
+
+      // Right Accessories
+      'None-Right Accessory': { name: 'None', type: 'Right Accessory', pts: 0, unlockLevel: 0 },
+      '5 MW Red': { name: '5 MW Red', type: 'Right Accessory', pts: 10, unlockLevel: 2 },
+      '5 MW Green': { name: '5 MW Green', type: 'Right Accessory', pts: 10, unlockLevel: 13 },
+      '50 MW Green': { name: '50 MW Green', type: 'Right Accessory', pts: 20, unlockLevel: 22 },
+      '50 MW Blue': { name: '50 MW Blue', type: 'Right Accessory', pts: 20, unlockLevel: 29 },
+      '120 MW Blue': { name: '120 MW Blue', type: 'Right Accessory', pts: 30, unlockLevel: 37 },
+
+      // Left Accessories
+      'None-Left Accessory': { name: 'None', type: 'Left Accessory', pts: 0, unlockLevel: 0 },
+      'Flashlight': { name: 'Flashlight', type: 'Left Accessory', pts: 10, unlockLevel: 6 },
+
+      // Muzzles
+      'None-Muzzle': { name: 'None', type: 'Muzzle', pts: 0, unlockLevel: 0 },
+      'Flash Hider': { name: 'Flash Hider', type: 'Muzzle', pts: 10, unlockLevel: 3 },
+      'CQB Suppressor': { name: 'CQB Suppressor', type: 'Muzzle', pts: 30, unlockLevel: 25 },
+
+      // Barrels
+      '18.9" Factory': { name: '18.9" Factory', type: 'Barrel', pts: 10, unlockLevel: 0 },
+
+      // Underbarrels
+      'None-Underbarrel': { name: 'None', type: 'Underbarrel', pts: 0, unlockLevel: 0 },
+      'Factory Angled': { name: 'Factory Angled', type: 'Underbarrel', pts: 15, unlockLevel: 0 },
+      'Folding Vertical': { name: 'Folding Vertical', type: 'Underbarrel', pts: 10, unlockLevel: 1 },
+      'Alloy Vertical': { name: 'Alloy Vertical', type: 'Underbarrel', pts: 20, unlockLevel: 4 },
+      'Folding Stubby': { name: 'Folding Stubby', type: 'Underbarrel', pts: 20, unlockLevel: 8 },
+      'Ribbed Vertical': { name: 'Ribbed Vertical', type: 'Underbarrel', pts: 20, unlockLevel: 11 },
+      '6H64 Vertical': { name: '6H64 Vertical', type: 'Underbarrel', pts: 25, unlockLevel: 15 },
+      'Slim Angled': { name: 'Slim Angled', type: 'Underbarrel', pts: 25, unlockLevel: 19 },
+      'Ribbed Stubby': { name: 'Ribbed Stubby', type: 'Underbarrel', pts: 30, unlockLevel: 23 },
+      'Canted Stubby': { name: 'Canted Stubby', type: 'Underbarrel', pts: 30, unlockLevel: 27 },
+      'Classic Vertical': { name: 'Classic Vertical', type: 'Underbarrel', pts: 35, unlockLevel: 31 },
+      'Stippled Stubby': { name: 'Stippled Stubby', type: 'Underbarrel', pts: 35, unlockLevel: 35 },
+      'Low-Profile Stubby': { name: 'Low-Profile Stubby', type: 'Underbarrel', pts: 45, unlockLevel: 39 },
+      'Slim Handstop': {
+        name: 'Slim Handstop',
+        type: 'Underbarrel',
+        pts: 15,
+        unlockLevel: 'Season 1 Hardware 4',
+      },
+
+      // Magazines
+      'None-Magazine': { name: 'None', type: 'Magazine', pts: 0, unlockLevel: 0 },
+      '7 Shell Dual Tubes': { name: '7 Shell Dual Tubes', type: 'Magazine', pts: 5, unlockLevel: 0 },
+
+      // Ammunition
+      'None-Ammunition': { name: 'None', type: 'Ammunition', pts: 0, unlockLevel: 0 },
+      'Buckshot': { name: 'Buckshot', type: 'Ammunition', pts: 10, unlockLevel: 0 },
+      'Slugs': { name: 'Slugs', type: 'Ammunition', pts: 40, unlockLevel: 17 },
+      'Flechette': { name: 'Flechette', type: 'Ammunition', pts: 30, unlockLevel: 33 },
+    },
+  };
   
   // Secondaries
   target['GGH-22'] = {
@@ -4687,6 +4781,57 @@
       'Hollow Point': { name:'Hollow Point', type:'Ammunition', pts:20, unlockLevel:19 },
     }
   };
+  target['M357 TRAIT'] = {
+  attachments: {
+    // Scopes
+    'Iron Sights': { name: 'Iron Sights', type: 'Scope', pts: 5, unlockLevel: 0 },
+    'CQ RDS 1.25x': { name: 'CQ RDS 1.25x', type: 'Scope', pts: 10, unlockLevel: 1 },
+    'RO-M 1.75x': { name: 'RO-M 1.75x', type: 'Scope', pts: 10, unlockLevel: 3 },
+    'SDO 3.50x': { name: 'SDO 3.50x', type: 'Scope', pts: 10, unlockLevel: 4 },
+    'Mini Flex 1.00x': { name: 'Mini Flex 1.00x', type: 'Scope', pts: 10, unlockLevel: 6 },
+    'SU-231 1.50x': { name: 'SU-231 1.50x', type: 'Scope', pts: 10, unlockLevel: 7 },
+    'ST Prisim 5.00x': { name: 'ST Prisim 5.00x', type: 'Scope', pts: 10, unlockLevel: 9 },
+    'A-P2 1.75x': { name: 'A-P2 1.75x', type: 'Scope', pts: 10, unlockLevel: 10 },
+    'OSA-7 1.00x': { name: 'OSA-7 1.00x', type: 'Scope', pts: 10, unlockLevel: 12 },
+    'BF-2M 2.50x': { name: 'BF-2M 2.50x', type: 'Scope', pts: 10, unlockLevel: 13 },
+    'CCO 2.00x': { name: 'CCO 2.00x', type: 'Scope', pts: 10, unlockLevel: 15 },
+    'ROX 1.50x': { name: 'ROX 1.50x', type: 'Scope', pts: 10, unlockLevel: 16 },
+    'PVQ-31 4.00x': { name: 'PVQ-31 4.00x', type: 'Scope', pts: 10, unlockLevel: 18 },
+    'RO-S 1.25x': { name: 'RO-S 1.25x', type: 'Scope', pts: 10, unlockLevel: 19 },
+    '3VZR 1.75x': { name: '3VZR 1.75x', type: 'Scope', pts: 10, unlockLevel: 21 },
+    'Baker 3.00x': { name: 'Baker 3.00x', type: 'Scope', pts: 10, unlockLevel: 22 },
+    'R-MR 1.00x': { name: 'R-MR 1.00x', type: 'Scope', pts: 10, unlockLevel: 24 },
+    '1P87 1.50x': { name: '1P87 1.50x', type: 'Scope', pts: 10, unlockLevel: 25 },
+    'LDS 4.50x': { name: 'LDS 4.50x', type: 'Scope', pts: 10, unlockLevel: 27 },
+    'R4T 2.00x': { name: 'R4T 2.00x', type: 'Scope', pts: 10, unlockLevel: 28 },
+    '2PRO 1.25x': { name: '2PRO 1.25x', type: 'Scope', pts: 10, unlockLevel: 30 },
+    'SF-G2 5.00x': { name: 'SF-G2 5.00x', type: 'Scope', pts: 10, unlockLevel: 31 },
+
+    // Barrels
+    '5" Factory': { name: '5" Factory', type: 'Barrel', pts: 10, unlockLevel: 0 },
+
+    // Underbarrels (lasers / flashlight for this gun)
+    'None-Underbarrel': { name: 'None', type: 'Underbarrel', pts: 0, unlockLevel: 0 },
+    '5 MW Red': { name: '5 MW Red', type: 'Underbarrel', pts: 10, unlockLevel: 2 },
+    'Flashlight': { name: 'Flashlight', type: 'Underbarrel', pts: 10, unlockLevel: 8 },
+    '5 MW Green': { name: '5 MW Green', type: 'Underbarrel', pts: 10, unlockLevel: 11 },
+    '50 MW Green': { name: '50 MW Green', type: 'Underbarrel', pts: 20, unlockLevel: 23 },
+    'Laser Light Combo Red': { name: 'Laser Light Combo Red', type: 'Underbarrel', pts: 20, unlockLevel: 17 },
+    'Laser Light Combo Green': { name: 'Laser Light Combo Green', type: 'Underbarrel', pts: 20, unlockLevel: 26 },
+
+    // Magazines
+    'None-Magazine': { name: 'None', type: 'Magazine', pts: 0, unlockLevel: 0 },
+    '8RND Speedloader': { name: '8RND Speedloader', type: 'Magazine', pts: 5, unlockLevel: 0 },
+    '8RND Moon Clip': { name: '8RND Moon Clip', type: 'Magazine', pts: 10, unlockLevel: 14 },
+
+    // Ammunition
+    'None-Ammunition': { name: 'None', type: 'Ammunition', pts: 0, unlockLevel: 0 },
+    'FMJ': { name: 'FMJ', type: 'Ammunition', pts: 5, unlockLevel: 0 },
+    'Tungsten Core': { name: 'Tungsten Core', type: 'Ammunition', pts: 5, unlockLevel: 5 },
+    'Frangible': { name: 'Frangible', type: 'Ammunition', pts: 20, unlockLevel: 20 },
+    'Hollow Point': { name: 'Hollow Point', type: 'Ammunition', pts: 20, unlockLevel: 29 },
+  }
+};
 
 
   for (const [name, meta] of Object.entries(weaponMetadata)) {

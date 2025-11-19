@@ -982,10 +982,36 @@ const weaponConfigs = [
     changes: RPKM_CHANGES
   },
   {
-    id: 'p18',
-    dbname: 'p18',
+    id: 'm357 trait',
+    dbname: 'm357 trait',
     rank: 'a',
     tr: '1',
+    versatile: [
+      {
+        Notes: "An eight-round revolver with a decent fire rate. Kills in a minimum of two shots in Multiplayer, regardless of head or body shot."
+      },
+      '5" Factory',
+      'Laser Light Combo Green',
+      '8RND Moon Clip',
+      'FMJ',
+      'OSA-7 1.00x',
+    ],
+    close: [
+      {
+        Notes: "An eight-round revolver with a decent fire rate. Kills in a minimum of two shots in Multiplayer, regardless of head or body shot."
+      },
+      '5" Factory',
+      'Laser Light Combo Green',
+      '8RND Moon Clip',
+      'FMJ',
+      'OSA-7 1.00x',
+    ]
+  },
+  {
+    id: 'p18',
+    dbname: 'p18',
+    rank: 'c',
+    tr: '3',
     versatile: [
       { Notes: 
         "The stock pistol offers moderate damage and a fast fire rate, but complicating muzzle rise may obscure targets."
@@ -1017,16 +1043,44 @@ const weaponConfigs = [
   {
     id: 'ggh-22',
     dbname: 'GGH-22',
-    rank: 'b',
-    tr: '4',
+    rank: 'c',
+    tr: '5',
     baseline: GGH_22_BASELINE,
     changes: GGH_22_CHANGES
+  },
+  {
+    id: 'db-12',
+    dbname: 'db-12',
+    rank: 'c',
+    tr:'1',
+    versatile: [
+      {
+        Notes: "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
+      },
+      'CQB Suppressor',
+      '18.9" Factory',
+      '50 MW Green',
+      '7 Shell Dual Tubes',
+      'Buckshot',
+      'OSA-7 1.00x'
+    ],
+    close: [
+      {
+        Notes: "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
+      },
+      'CQB Suppressor',
+      '18.9" Factory',
+      '50 MW Green',
+      '7 Shell Dual Tubes',
+      'Buckshot',
+      'OSA-7 1.00x'      
+    ]
   },
   {
     id: '18.5ks-k',
     dbname: '18.5ks-k',
     rank: 'c',
-    tr: '1',
+    tr: '4',
     versatile: [
       'CQB Suppressor',
       '430MM Cut',
