@@ -697,12 +697,157 @@ const qbz_192_changes = {
   ]
 };
 
+/* RANK KEY:
+S Meta (On Fire) = s
+Meta = m
+Contender = a
+Very Good = b
+Viable = c
+*/
+
+// Centralized rank/type-rating definitions so we can keep the ordering in one place.
+// Edit the entries below (or add new ones) to update rank/TR for each weapon.
+const MANUAL_RANKING_GROUPS = [
+  {
+    type: 'Assault Rifle',
+    entries: [
+      { dbname: 'KORD 6P67', rank: 's', tr: '1' },
+      { dbname: 'NVO-228E', rank: 'm', tr: '2' },
+      { dbname: 'B36A4', rank: 'm', tr: '3' },
+      { dbname: 'SOR-556 MK2', rank: 'm', tr: '4' },
+      { dbname: 'L85A3', rank: 'a', tr: '5' },
+      { dbname: 'AK4D', rank: 'b', tr: '6' },
+      { dbname: 'M433', rank: 'c', tr: '7' },
+      { dbname: 'TR-7', rank: 'c', tr: '8' }
+    ]
+  },
+  {
+    type: 'Carbine',
+    entries: [
+      { dbname: 'SG 553R', rank: 'm', tr: '1' },
+      { dbname: 'M4A1', rank: 'a', tr: '2' },
+      { dbname: 'GRT-BC', rank: 'a', tr: '3' },
+      { dbname: 'QBZ-192', rank: 'a', tr: '4' },
+      { dbname: 'M277', rank: 'b', tr: '5' },
+      { dbname: 'SOR-300SC', rank: 'b', tr: '6' },
+      { dbname: 'AK-205', rank: 'b', tr: '7' },
+      { dbname: 'M417 A2', rank: 'c', tr: '8' }
+    ]
+  },
+  {
+    type: 'LMG',
+    entries: [
+      { dbname: 'DRS-IAR', rank: 's', tr: '1' },
+      { dbname: 'KTS100 MK8', rank: 's', tr: '2' },
+      { dbname: 'M250', rank: 'm', tr: '3' },
+      { dbname: 'RPKM', rank: 'a', tr: '4' },
+      { dbname: 'L110', rank: 'a', tr: '5' },
+      { dbname: 'M60', rank: 'b', tr: '6' },
+      { dbname: 'M240L', rank: 'b', tr: '7' },
+      { dbname: 'M123K', rank: 'c', tr: '8' }
+    ]
+  },
+  {
+    type: 'SMG',
+    entries: [
+      { dbname: 'SGX', rank: 's', tr: '2' },
+      { dbname: 'USG-90', rank: 'm', tr: '1' },
+      { dbname: 'PW5A3', rank: 'm', tr: '3' },
+      { dbname: 'UMG-40', rank: 'm', tr: '4' },
+      { dbname: 'SL9', rank: 'a', tr: '5' },
+      { dbname: 'PW7A2', rank: 'a', tr: '6' },
+      { dbname: 'KV9', rank: 'b', tr: '7' },
+      { dbname: 'SCW-10', rank: 'c', tr: '8' }
+    ]
+  },
+  {
+    type: 'Sniper Rifle',
+    entries: [
+      { dbname: 'M2010 ESR', rank: 's', tr: '1' },
+      { dbname: 'SV-98', rank: 'a', tr: '2' },
+      { dbname: 'PSR', rank: 'b', tr: '3' },
+      { dbname: 'Mini Scout', rank: 'b', tr: '4' }
+    ]
+  },
+  {
+    type: 'DMR',
+    entries: [
+      { dbname: 'M39 EMR', rank: 'b', tr: '1' },
+      { dbname: 'SVDM', rank: 'b', tr: '2' },
+      { dbname: 'SVK-8.6', rank: 'b', tr: '3' },
+      { dbname: 'LMR27', rank: 'c', tr: '4' }
+    ]
+  },
+  {
+    type: 'Shotgun',
+    entries: [
+      { dbname: 'DB-12', rank: 'c', tr: '1' },
+      { dbname: 'M87A1', rank: 'c', tr: '2' },
+      { dbname: 'M1014', rank: 'c', tr: '3' },
+      { dbname: '18.5KS-K', rank: 'c', tr: '4' }
+    ]
+  },
+  {
+    type: 'Secondary',
+    entries: [
+      { dbname: 'M357 TRAIT', rank: 'a', tr: '1' },
+      { dbname: 'M44', rank: 'b', tr: '2' },
+      { dbname: 'P18', rank: 'c', tr: '3' },
+      { dbname: 'ES 5.7', rank: 'c', tr: '4' },
+      { dbname: 'GGH-22', rank: 'c', tr: '5' },
+      { dbname: 'M45A1', rank: 'c', tr: '6' }
+    ]
+  }
+];
+
+function normalizeManualRankKey(value) {
+  if (!value) return '';
+  return value.toString().toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function buildManualRankLookup(groups) {
+  const lookup = new Map();
+  if (!Array.isArray(groups)) return lookup;
+  groups.forEach((group) => {
+    const entries = Array.isArray(group && group.entries) ? group.entries : [];
+    entries.forEach((entry, index) => {
+      if (!entry) return;
+      // Default TR to the entry's index so reordering updates the type ranking automatically.
+      const manualRecord = {
+        rank: typeof entry.rank === 'string' ? entry.rank : '',
+        tr:
+          entry.tr !== undefined && entry.tr !== null && entry.tr !== ''
+            ? String(entry.tr)
+            : String(index + 1)
+      };
+      const key = normalizeManualRankKey(entry.dbname);
+      if (key) {
+        lookup.set(key, manualRecord);
+      }
+    });
+  });
+  return lookup;
+}
+
+function applyManualRankings(configs, lookup) {
+  if (!Array.isArray(configs) || !(lookup instanceof Map)) return;
+  configs.forEach((weapon) => {
+    if (!weapon) return;
+    const key = normalizeManualRankKey(weapon.dbname);
+    if (!key) return;
+    const manual = lookup.get(key);
+    if (!manual) return;
+    weapon.rank = manual.rank;
+    weapon.tr = manual.tr;
+  });
+}
+
+const manualRankLookup = buildManualRankLookup(MANUAL_RANKING_GROUPS);
+
 const weaponConfigs = [
   {
     id: 'kord-6p67',
     dbname: 'KORD 6P67',
-    rank: 'm',
-    tr: '1',
     versatile: [
       { Notes: "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>." },
       'Standard Suppressor',
@@ -737,8 +882,6 @@ const weaponConfigs = [
   {
     id: 'b36a4',
     dbname: 'b36a4',
-    rank: 'm',
-    tr: '2',
     versatile: [
       { Notes: "A decent, versatile AR that performs well over range with careful burst firing." },
       'Standard Suppressor',
@@ -762,8 +905,6 @@ const weaponConfigs = [
   {
     id: 'sor-556 mk2',
     dbname: 'sor-556 mk2',
-    rank: 'm',
-    tr: '3',
     versatile: [
       { Notes: "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing." },
       'Standard Suppressor',
@@ -787,8 +928,6 @@ const weaponConfigs = [
   {
     id: 'nvo-228e',
     dbname: 'nvo-228e',
-    rank: 'm',
-    tr: '4',
     versatile: [
       { Notes: 
         "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
@@ -804,8 +943,6 @@ const weaponConfigs = [
   {
     id: 'm4a1',
     dbname: 'm4a1',
-    rank: 'a',
-    tr: '1',
     versatile: [
       { Notes:
         "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
@@ -845,8 +982,6 @@ const weaponConfigs = [
   {
     id: 'sg 553r',
     dbname: 'sg 553r',
-    rank: 'b',
-    tr: '2',
     long: [
       { Notes: 
         "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
@@ -862,8 +997,6 @@ const weaponConfigs = [
   {
     id: 'qbz-192',
     dbname: 'QBZ-192',
-    rank: 'b',
-    tr: '3',
     long: [
       { Notes: 
         "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
@@ -881,8 +1014,6 @@ const weaponConfigs = [
   {
     id: 'm39 emr',
     dbname: 'm39 emr',
-    rank: 'b',
-    tr: '1',
     versatile: [
       { Notes: "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>." 
       },
@@ -897,8 +1028,6 @@ const weaponConfigs = [
   {
     id: 'svdm',
     dbname: 'svdm',
-    rank: 'c',
-    tr: '2',
     versatile: [
     { Notes: 
       "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
@@ -911,11 +1040,9 @@ const weaponConfigs = [
     'R4T 2.00X'
     ]
   },
-  {
-    id: 'drs-iar',
+  // LMGs
+  { id: 'drs-iar',
     dbname: 'drs-iar',
-    rank: 'm',
-    tr: '1',
     versatile: [
       { Notes: "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance." },
       'Compensated Brake',
@@ -926,11 +1053,8 @@ const weaponConfigs = [
       'RO-S 1.25X'
     ]
   },
-  {
-    id: 'kts100 mk8',
+  { id: 'kts100 mk8',
     dbname: 'kts100 mk8',
-    rank: 'm',
-    tr: '2',
     versatile: [
       { Notes: "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity." },
       'CQB Suppressor',
@@ -941,11 +1065,8 @@ const weaponConfigs = [
       'RO-S 1.25X'
     ]
   },
-  {
-    id: 'm250',
+  { id: 'm250',
     dbname: 'm250',
-    rank: 'm',
-    tr: '3',
     versatile: [
       { Notes: "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK." },
       ' CQB Suppressor',
@@ -957,19 +1078,7 @@ const weaponConfigs = [
       'RO-S 1.25X'
     ]
   },
-  {
-    id: 'l110',
-    dbname: 'L110',
-    rank: 'b',
-    tr: '5',
-    baseline: L110_BASELINE,
-    changes: L110_CHANGES
-  },
-  {
-    id: 'rpkm',
-    dbname: 'RPKM',
-    rank: 'b',
-    tr: '6',
+  { id: 'rpkm', dbname: 'RPKM',
     recommended: [
       'A-P2 1.75X',
       'LONG SUPPRESSOR',
@@ -981,11 +1090,15 @@ const weaponConfigs = [
     baseline: RPKM_BASELINE,
     changes: RPKM_CHANGES
   },
+  { id: 'l110',
+    dbname: 'L110',
+    baseline: L110_BASELINE,
+    changes: L110_CHANGES
+  },
+  // Secondaries
   {
     id: 'm357 trait',
     dbname: 'm357 trait',
-    rank: 'a',
-    tr: '1',
     versatile: [
       {
         Notes: "An eight-round revolver with a decent fire rate. Kills in a minimum of two shots in Multiplayer, regardless of head or body shot."
@@ -1010,8 +1123,6 @@ const weaponConfigs = [
   {
     id: 'p18',
     dbname: 'p18',
-    rank: 'c',
-    tr: '3',
     versatile: [
       { Notes: 
         "The stock pistol offers moderate damage and a fast fire rate, but complicating muzzle rise may obscure targets."
@@ -1028,8 +1139,6 @@ const weaponConfigs = [
   {
     id: 'm44',
     dbname: 'm44',
-    rank: 'b',
-    tr: '2',
     versatile: [
       { Notes: 
         "The six-shooting backup pocket rocket offers excellent hipfire and a devastating one-two punch, but harshly punishes any missed shots."
@@ -1043,16 +1152,12 @@ const weaponConfigs = [
   {
     id: 'ggh-22',
     dbname: 'GGH-22',
-    rank: 'c',
-    tr: '5',
     baseline: GGH_22_BASELINE,
     changes: GGH_22_CHANGES
   },
   {
     id: 'db-12',
     dbname: 'db-12',
-    rank: 'c',
-    tr:'1',
     versatile: [
       {
         Notes: "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
@@ -1079,8 +1184,6 @@ const weaponConfigs = [
   {
     id: '18.5ks-k',
     dbname: '18.5ks-k',
-    rank: 'c',
-    tr: '4',
     versatile: [
       'CQB Suppressor',
       '430MM Cut',
@@ -1094,8 +1197,6 @@ const weaponConfigs = [
   {
     id: 'm87a1',
     dbname: 'M87A1',
-    rank: 'c',
-    tr: '2',
     versatile: [
       { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
       'CQB SUPPRESSOR',
@@ -1112,8 +1213,6 @@ const weaponConfigs = [
   {
     id: 'sgx',
     dbname: 'sgx',
-    rank: 'm',
-    tr: '1',
     versatile: [
       { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
       'Compensated Brake',
@@ -1137,8 +1236,6 @@ const weaponConfigs = [
   {
     id: 'usg-90',
     dbname: 'USG-90',
-    rank: 'm',
-    tr: '2',
     close: [ 
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
@@ -1155,16 +1252,12 @@ const weaponConfigs = [
   {
     id: 'pw5a3',
     dbname: 'PW5A3',
-    rank: 'm',
-    tr: '3',
     baseline: PW5A3_BASELINE,
     changes: PW5A3_CHANGES
   },
   {
     id: 'sl9',
     dbname: 'sl9',
-    rank: 'm',
-    tr: '4',
     versatile: [
       { Notes: 
         "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
@@ -1190,16 +1283,12 @@ const weaponConfigs = [
   {
     id: 'umg40',
     dbname: 'UMG-40',
-    rank: 'a',
-    tr: '5',
     baseline: umg40_baseline,
     changes: umg40_changes
   },
   {
     id: 'm2010esr',
     dbname: 'M2010 ESR',
-    rank: 'm',
-    tr: '1',
     sniper: [
       { Notes: "The flagship <b>Sniper Rifle</b> with second-best velocity but best lethality, the <c>M2010 ESR</c> is your first and best choice. <b>Sweet Spot: 75-120m</b>." },
       '26" CARBON',
@@ -1226,16 +1315,12 @@ const weaponConfigs = [
   {
     id: 'miniscout',
     dbname: 'Mini Scout',
-    rank: 'b',
-    tr: '4',
     baseline: miniscout_baseline,
     changes: miniscout_changes
   },
   {
     id: 'scw-10',
     dbname: 'scw-10',
-    rank: 'd',
-    tr: '8',
     versatile: [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
@@ -1262,17 +1347,20 @@ const weaponConfigs = [
   {
   id: 'scw-10-2',
   dbname: 'scw-10',
-  rank: 'f',
-  tr: '10',
   close: [
     'SU-230 LPVO'
   ]
   }*/
 ];
 
+applyManualRankings(weaponConfigs, manualRankLookup);
+
 if (typeof window !== 'undefined' && window.autoBuilds && typeof window.autoBuilds.applyToWeaponConfigs === 'function') {
-  window.autoBuilds.applyToWeaponConfigs(weaponConfigs);
-  window.addEventListener('autobuilds:updated', () => {
+  const runAutoBuilds = () => {
     window.autoBuilds.applyToWeaponConfigs(weaponConfigs);
-  });
+    applyManualRankings(weaponConfigs, manualRankLookup);
+  };
+  runAutoBuilds();
+  window.addEventListener('autobuilds:updated', runAutoBuilds);
 }
+
