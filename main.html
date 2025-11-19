@@ -3852,7 +3852,10 @@
         } else if (isDefaultLevel) {
           levelBadge.textContent = 'Default';
         } else if (displayLevel !== undefined && displayLevel !== null && displayLevel !== '') {
-          levelBadge.textContent = `Level ${displayLevel}`;
+          const seasonHardwarePattern = /season\s+\d+\s+hardware\s+\d+/i;
+          levelBadge.textContent = typeof displayLevel === 'string' && seasonHardwarePattern.test(displayLevel)
+            ? displayLevel
+            : `Level ${displayLevel}`;
         } else {
           levelBadge.textContent = 'Unlocked';
         }
