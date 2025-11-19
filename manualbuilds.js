@@ -1236,17 +1236,29 @@ const weaponConfigs = [
   {
     id: 'usg-90',
     dbname: 'USG-90',
+    versatile: [
+    { Notes: 
+      "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
+    },
+    'CQB Suppressor',
+    '264MM Fluted',
+    '50 MW Green',
+    '50RND Magazine',
+    'Polymer Case',
+    'Improved Mag Catch',
+    'RO-S 1.25x'
+    ],
     close: [ 
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
     },
       'CQB SUPPRESSOR',
-      '407MM CIV-S',
+      '264MM Fluted',
+      '50 MW Blue',
       '50RND MAGAZINE',
       'Polymer Case',
       'Improved Mag Catch',
-      'RO-S 1.25X',
-      '120 MW Blue'
+      'OSA-7 1.00x'
     ]
   },
   {
