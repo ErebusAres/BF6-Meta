@@ -358,6 +358,15 @@
       border-color: rgba(0, 229, 255, 0.25);
       box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
       background: rgba(10, 16, 21, 0.62);
+      z-index: 300;
+    }
+
+    .weapon-card:focus-within {
+      z-index: 300;
+    }
+
+    .weapon-card.tooltip-active {
+      z-index: 1200;
     }
 
     .drag-active .weapon-card:hover:not(.dragging) {
@@ -1934,6 +1943,7 @@
 
     .slot-card {
       position: relative;
+      z-index: 0;
       background: rgba(16, 24, 30, 0.92);
       border-radius: var(--card-radius);
       border: 1px solid rgba(45, 58, 70, 0.7);
@@ -1942,6 +1952,11 @@
       flex-direction: column;
       gap: 6px;
       transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
+      overflow: visible;
+    }
+
+    .slot-card.tooltip-active {
+      z-index: 2000;
     }
 
     .slot-card.changed {
@@ -2077,6 +2092,128 @@
       text-transform: uppercase;
       color: rgba(177, 191, 203, 0.86);
       white-space: nowrap;
+    }
+
+    .card-level.has-tooltip {
+      position: relative;
+      cursor: help;
+      z-index: 10;
+    }
+
+    .card-level.has-tooltip:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .tooltip-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20000;
+    }
+
+    .tooltip-bubble {
+      pointer-events: none;
+      position: fixed;
+      left: -9999px;
+      top: -9999px;
+      transform: translate(-50%, calc(-100% - 20px));
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 229, 255, 0.45);
+      background: rgba(9, 14, 20, 0.96);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55);
+      min-width: 220px;
+      max-width: 280px;
+      color: rgba(223, 236, 247, 0.95);
+      font-size: 12px;
+      line-height: 1.45;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 120ms ease, transform 120ms ease;
+    }
+
+    .tooltip-bubble::before,
+    .tooltip-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .tooltip-bubble::before {
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 13px solid rgba(0, 229, 255, 0.6);
+      margin-top: -1px;
+    }
+
+    .tooltip-bubble::after {
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid rgba(9, 14, 20, 0.96);
+      margin-top: -2px;
+    }
+
+    .tooltip-bubble.tooltip-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, calc(-100% - 6px));
+    }
+
+    .assignment-tooltip {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .mastery-tooltip {
+      min-width: 200px;
+      max-width: 240px;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .mastery-tooltip .mastery-highlight {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .card-level.mastery-hint .mastery-tooltip {
+      min-width: 200px;
+      max-width: 240px;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .mastery-tooltip .mastery-highlight {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .assignment-tooltip-heading {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .assignment-tooltip-list {
+      margin: 0;
+      padding-left: 18px;
+      list-style: disc;
+    }
+
+    .assignment-tooltip-list li + li {
+      margin-top: 4px;
     }
 
     .slot-card.changed .card-level {
@@ -2430,7 +2567,7 @@
       <div class="options-header">
         <span class="options-title">Options</span>
         <button class="options-gear" id="optionsGearButton" type="button" aria-expanded="true" aria-controls="optionsBody" aria-label="Hide options">
-          <span aria-hidden="true" class="gear-symbol">⚙️</span>
+          <span aria-hidden="true" class="gear-symbol">??</span>
           <span class="sr-only">Toggle options</span>
         </button>
       </div>
@@ -2470,7 +2607,7 @@
   </div>
   <button class="options-floating-gear" id="optionsFloatingButton" type="button" aria-label="Show options" hidden>
     <span class="sr-only">Show options</span>
-    <span aria-hidden="true" class="gear-symbol">⚙️</span>
+    <span aria-hidden="true" class="gear-symbol">??</span>
   </button>
   <template id="weaponTemplate">
     <section class="weapon-card" tabindex="0">
@@ -2557,6 +2694,109 @@
     const INDENT = 36;
     const CARD_PAD = 12;
     const ARROW_STROKE = 3;
+    const TOOLTIP_VIEWPORT_PADDING = 24;
+    let tooltipLayerEl = null;
+    const SEASON_HARDWARE_ASSIGNMENTS = {
+      'season 1 hardware 1': {
+        id: 'S1H1',
+        label: 'Season 1 Hardware 1',
+        criteria: ['Deal 3000 damage beyond 75m', 'Get 35 headshot kills']
+      },
+      'season 1 hardware 2': {
+        id: 'S1H2',
+        label: 'Season 1 Hardware 2',
+        criteria: ['Complete S1H1', 'Suppress 10 enemies with LMGs', 'Deal 1500 damage in a match']
+      },
+      'season 1 hardware 3': {
+        id: 'S1H3',
+        label: 'Season 1 Hardware 3',
+        criteria: ['Complete S1H2', 'Get 30 kills with the GGH-22 or M44', 'Get 5 headshot kills with pistols']
+      },
+      'season 1 hardware 4': {
+        id: 'S1H4',
+        label: 'Season 1 Hardware 4',
+        criteria: ['Complete S1H3', 'Deal 1500 hipfire damage', 'Get 50 close quarter kills (<15m)']
+      }
+    };
+
+    function getSeasonHardwareAssignment(value) {
+      if (!value) return null;
+      const normalized = String(value)
+        .toLowerCase()
+        .replace(/\bassignment\b/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return normalized && SEASON_HARDWARE_ASSIGNMENTS[normalized] ? SEASON_HARDWARE_ASSIGNMENTS[normalized] : null;
+    }
+
+    function clampNumber(value, min, max) {
+      if (!Number.isFinite(value)) return min;
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function ensureTooltipLayer() {
+      if (tooltipLayerEl && tooltipLayerEl.isConnected) return tooltipLayerEl;
+      tooltipLayerEl = document.createElement('div');
+      tooltipLayerEl.className = 'tooltip-layer';
+      document.body.appendChild(tooltipLayerEl);
+      return tooltipLayerEl;
+    }
+
+    function attachFloatingTooltip(target, tooltip) {
+      if (!target || !tooltip || target.dataset.tooltipInteractionsBound === 'true') return;
+      const layer = ensureTooltipLayer();
+      layer.appendChild(tooltip);
+      const card = target.closest('.weapon-card');
+      const slotCard = target.closest('.slot-card');
+      let active = false;
+
+      const updatePosition = () => {
+        if (!active || !target.isConnected || !tooltip.isConnected) return;
+        const rect = target.getBoundingClientRect();
+        const viewportWidth = Math.max(
+          window.innerWidth || 0,
+          document.documentElement.clientWidth || 0
+        );
+        const minX = TOOLTIP_VIEWPORT_PADDING;
+        const maxX = Math.max(minX, viewportWidth - TOOLTIP_VIEWPORT_PADDING);
+        const clampedX = clampNumber(rect.left + rect.width / 2, minX, maxX);
+        tooltip.style.left = `${clampedX}px`;
+        tooltip.style.top = `${rect.top}px`;
+      };
+
+      const show = () => {
+        if (active) {
+          updatePosition();
+          return;
+        }
+        active = true;
+        tooltip.classList.add('tooltip-visible');
+        if (card) card.classList.add('tooltip-active');
+        if (slotCard) slotCard.classList.add('tooltip-active');
+        updatePosition();
+        window.addEventListener('scroll', updatePosition, true);
+        window.addEventListener('resize', updatePosition);
+      };
+
+      const hide = () => {
+        if (!active) return;
+        active = false;
+        tooltip.classList.remove('tooltip-visible');
+        if (card) card.classList.remove('tooltip-active');
+        if (slotCard) slotCard.classList.remove('tooltip-active');
+        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', updatePosition);
+      };
+
+      target.addEventListener('pointerenter', show);
+      target.addEventListener('mouseenter', show);
+      target.addEventListener('focus', show);
+      target.addEventListener('pointerleave', hide);
+      target.addEventListener('mouseleave', hide);
+      target.addEventListener('blur', hide);
+      target.dataset.tooltipInteractionsBound = 'true';
+    }
+
 
     document.documentElement.style.setProperty('--indent', `${INDENT}px`);
     document.documentElement.style.setProperty('--card-padding', `${CARD_PAD}px`);
@@ -3843,6 +4083,9 @@
         const displayLevelRaw = options.level ?? data.unlockLevel;
         const displayLevel =
           typeof displayLevelRaw === 'string' ? displayLevelRaw.trim() : displayLevelRaw;
+        const matchesSeasonHardware =
+          typeof displayLevel === 'string' && /season\s+\d+\s+hardware\s+\d+/i.test(displayLevel);
+        const assignmentDetails = matchesSeasonHardware ? getSeasonHardwareAssignment(displayLevel) : null;
         const isDefaultLevel =
           displayLevel === 0 ||
           displayLevel === '0' ||
@@ -3851,11 +4094,20 @@
           levelBadge.textContent = 'Unlocked';
         } else if (isDefaultLevel) {
           levelBadge.textContent = 'Default';
+        } else if (assignmentDetails) {
+          const displayText =
+            typeof displayLevel === 'string' && displayLevel !== ''
+              ? displayLevel
+              : assignmentDetails.label;
+          levelBadge.textContent = displayText;
+          this.applyAssignmentTooltip(levelBadge, assignmentDetails);
+        } else if (matchesSeasonHardware && typeof displayLevel === 'string') {
+          levelBadge.textContent = displayLevel;
         } else if (displayLevel !== undefined && displayLevel !== null && displayLevel !== '') {
-          const seasonHardwarePattern = /season\s+\d+\s+hardware\s+\d+/i;
-          levelBadge.textContent = typeof displayLevel === 'string' && seasonHardwarePattern.test(displayLevel)
-            ? displayLevel
-            : `Level ${displayLevel}`;
+          const levelText =
+            typeof displayLevel === 'string' ? displayLevel : `Level ${displayLevel}`;
+          levelBadge.textContent = levelText;
+          this.applyMasteryLevelTooltip(levelBadge, levelText);
         } else {
           levelBadge.textContent = 'Unlocked';
         }
@@ -3871,6 +4123,78 @@
         }
 
         return card;
+      }
+
+      applyAssignmentTooltip(target, assignmentDetails) {
+        if (!target || !assignmentDetails) return;
+        target.classList.add('assignment-hardware', 'has-tooltip');
+        target.setAttribute('tabindex', '0');
+        target.setAttribute('role', 'note');
+        const criteriaText = Array.isArray(assignmentDetails.criteria)
+          ? assignmentDetails.criteria.join('; ')
+          : '';
+        if (criteriaText) {
+          const ariaDescription = `${assignmentDetails.label} assignment criteria: ${criteriaText}`;
+          target.setAttribute('aria-label', ariaDescription);
+          target.setAttribute('aria-description', ariaDescription);
+        }
+        const tooltip = document.createElement('div');
+        tooltip.className = 'assignment-tooltip tooltip-bubble';
+        tooltip.setAttribute('role', 'tooltip');
+        const heading = document.createElement('div');
+        heading.className = 'assignment-tooltip-heading';
+        heading.textContent = 'Assignment Criteria';
+        tooltip.appendChild(heading);
+        if (Array.isArray(assignmentDetails.criteria) && assignmentDetails.criteria.length) {
+          const list = document.createElement('ul');
+          list.className = 'assignment-tooltip-list';
+          assignmentDetails.criteria.forEach((criterion) => {
+            const item = document.createElement('li');
+            item.textContent = criterion;
+            list.appendChild(item);
+          });
+          tooltip.appendChild(list);
+        }
+        target.appendChild(tooltip);
+        attachFloatingTooltip(target, tooltip);
+      }
+
+      applyMasteryLevelTooltip(target, levelText) {
+        if (!target || levelText === undefined || levelText === null) return;
+        const normalizedText =
+          typeof levelText === 'string' ? levelText : `Level ${levelText}`;
+        if (!/level/i.test(normalizedText)) return;
+        const match = normalizedText.match(/(\d+)/);
+        if (!match) return;
+        const masteryLevel = Number.parseInt(match[1], 10);
+        if (!Number.isFinite(masteryLevel)) return;
+        const weaponNameRaw =
+          (typeof this.displayName === 'string' && this.displayName.trim()) ||
+          (this.dbEntry && typeof this.dbEntry.name === 'string' && this.dbEntry.name.trim()) ||
+          'this weapon';
+        const weaponName = toUpperSafe(weaponNameRaw);
+        const tooltip = `Reach mastery ${masteryLevel} with the ${weaponName}`;
+        target.classList.add('mastery-hint', 'has-tooltip');
+        target.setAttribute('tabindex', '0');
+        target.setAttribute('role', 'note');
+        target.setAttribute('aria-description', tooltip);
+        target.setAttribute('aria-label', `${normalizedText}. ${tooltip}`);
+        const tooltipEl = document.createElement('div');
+        tooltipEl.className = 'mastery-tooltip tooltip-bubble';
+        tooltipEl.setAttribute('role', 'tooltip');
+        const prefix = document.createElement('span');
+        prefix.textContent = 'Reach mastery ';
+        const levelSpan = document.createElement('span');
+        levelSpan.className = 'mastery-highlight';
+        levelSpan.textContent = masteryLevel;
+        const middle = document.createElement('span');
+        middle.textContent = ' with the ';
+        const weaponSpan = document.createElement('span');
+        weaponSpan.className = 'mastery-highlight';
+        weaponSpan.textContent = weaponName;
+        tooltipEl.append(prefix, levelSpan, middle, weaponSpan);
+        target.appendChild(tooltipEl);
+        attachFloatingTooltip(target, tooltipEl);
       }
 
       createPlaceholderCard() {
@@ -5196,4 +5520,9 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
   </script>
 </body>
 </html>
+
+
+
+
+
 

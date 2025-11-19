@@ -1203,7 +1203,17 @@ const weaponConfigs = [
     'FMJ',
     'Iron Sights'
       ]
-  }
+  },
+  /* Test Build 
+  {
+  id: 'scw-10-2',
+  dbname: 'scw-10',
+  rank: 'f',
+  tr: '10',
+  close: [
+    'SU-230 LPVO'
+  ]
+  }*/
 ];
 
 if (typeof window !== 'undefined' && window.autoBuilds && typeof window.autoBuilds.applyToWeaponConfigs === 'function') {
