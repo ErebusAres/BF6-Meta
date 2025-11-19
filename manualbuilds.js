@@ -712,15 +712,15 @@ const weaponConfigs = [
       'FMJ',
       'RO-S 1.25X'
     ],
-    recommended: [
-      { Notes: "Test" },
-      'OSA-7 1.00X',
-      'SINGLE-PORT BRAKE',
-      '415MM PROTOTYPE',
-      '5 MW RED',
-      'RIBBED VERTICAL',
+    close: [
+      { Notes: "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>." },
+      'Linear Comp',
+      '415MM Factory',
+      '50 MW Blue',
+      'RIBBED Stubby',
       '30RND MAGAZINE',
-      'FMJ'
+      'Polymer Case',
+      'OSA-7 1.00X'
     ],
     custom: [
       { custom: 'Community' },
@@ -806,6 +806,30 @@ const weaponConfigs = [
     dbname: 'm4a1',
     rank: 'a',
     tr: '1',
+    versatile: [
+      { Notes:
+        "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
+      },
+      'Compensated Brake',
+      '12.5" Mid',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes:
+        "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
+      },
+      'Linear Comp',
+      '11.5" Commando',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'Polymer Case',
+      'OSA-7 1.00X'
+    ],
     long: [
       { Notes:
         "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
@@ -1036,14 +1060,24 @@ const weaponConfigs = [
     dbname: 'sgx',
     rank: 'm',
     tr: '1',
-    close: [
+    versatile: [
       { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
-      'CQB SUPPRESSOR',
-      '8" Extended',
+      'Compensated Brake',
+      '6" Fluted',
+      'Slim Angled',
       '41RND Magazine',
       'FMJ',
-      'IRON SIGHTS',
-      '50 MW Blue'
+      'OSA-7 1.00X'
+    ],
+    close: [
+      { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
+      'linear comp',
+      '8" Extended',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '36RND Magazine',
+      'FMJ',
+      'IRON SIGHTS'
     ]
   },
   {
@@ -1143,8 +1177,33 @@ const weaponConfigs = [
     baseline: miniscout_baseline,
     changes: miniscout_changes
   },
-  // Test Builds - Comment out when publishing
-  /* */
+  {
+    id: 'scw-10',
+    dbname: 'scw-10',
+    rank: 'd',
+    tr: '8',
+    versatile: [
+      {
+        Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
+      },
+      '6.8" Factory',
+      'Ribbed Stubby',
+      '25RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      {
+        Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
+      },
+    'Extended Barrel',
+    '5 MW Green',
+    'Slim Angled',
+    '25RND Magazine',
+    'FMJ',
+    'Iron Sights'
+      ]
+  }
 ];
 
 if (typeof window !== 'undefined' && window.autoBuilds && typeof window.autoBuilds.applyToWeaponConfigs === 'function') {
