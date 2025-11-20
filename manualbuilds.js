@@ -938,6 +938,18 @@ const weaponConfigs = [
       '40RND Magazine',
       'FMJ',
       'RO-S 1.25x'
+    ],
+    close: [
+      { Notes: 
+        "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
+      },
+      'Linear Comp',
+      '409MM Cut',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'Polymer Case',
+      'OSA-7 1.00x'      
     ]
   },
   {
@@ -1265,7 +1277,34 @@ const weaponConfigs = [
     id: 'pw5a3',
     dbname: 'PW5A3',
     baseline: PW5A3_BASELINE,
-    changes: PW5A3_CHANGES
+    changes: PW5A3_CHANGES,
+    versatile: [
+      {
+        Notes:
+        "The familiar-feeling <c>MP5</c> packs excellent accuracy with a midrange TTK, making it extremely dependable even in midrange."
+      },
+      'Double-Port Brake',
+      '245MM Custom',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'FMJ',
+      'Iron Sights'
+    ],
+    close: [
+      {
+        Notes:
+        "The familiar-feeling <c>MP5</c> packs excellent accuracy with a midrange TTK, making it extremely dependable even in midrange."
+      },
+      'Linear Comp',
+      '245MM Custom',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'FMJ',
+      'Improved Mag Catch',
+      'Iron Sights'      
+    ]
   },
   {
     id: 'sl9',
@@ -1296,7 +1335,33 @@ const weaponConfigs = [
     id: 'umg40',
     dbname: 'UMG-40',
     baseline: umg40_baseline,
-    changes: umg40_changes
+    changes: umg40_changes,
+     versatile: [
+    {
+      Notes:
+        'The classic UMP boasts impressive accuracy, but one of the slowest TTKs in the SMG category, which is fine – because sometimes hitting your shots is a lot better than missing due to spread.',
+    },
+    'CQB Suppressor',
+    '305MM Custom',
+    'Ribbed Stubby',
+    '36RND Magazine',
+    'FMJ',
+    'CQB Sights'
+  ],
+
+  close: [
+    {
+      Notes:
+        'The classic UMP boasts impressive accuracy, but one of the slowest TTKs in the SMG category, which is fine – because sometimes hitting your shots is a lot better than missing due to spread.',
+    },
+    'Linear Comp',
+    '305MM Custom',
+    '50 MW Blue',
+    'Ribbed Stubby',
+    '36RND Magazine',
+    'FMJ',
+    'CQB Sights'
+  ]
   },
   {
     id: 'm2010esr',
