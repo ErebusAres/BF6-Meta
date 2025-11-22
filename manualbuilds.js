@@ -711,91 +711,91 @@ const MANUAL_RANKING_GROUPS = [
   {
     type: 'Assault Rifle',
     entries: [
-      { dbname: 'KORD 6P67', rank: 's', tr: '1' },
-      { dbname: 'NVO-228E', rank: 'm', tr: '2' },
-      { dbname: 'B36A4', rank: 'm', tr: '3' },
-      { dbname: 'SOR-556 MK2', rank: 'm', tr: '4' },
-      { dbname: 'L85A3', rank: 'a', tr: '5' },
-      { dbname: 'AK4D', rank: 'b', tr: '6' },
-      { dbname: 'M433', rank: 'c', tr: '7' },
-      { dbname: 'TR-7', rank: 'c', tr: '8' }
+      { dbname: 'NVO-228E', rank: 's' },
+      { dbname: 'KORD 6P67', rank: 's' },
+      { dbname: 'M433', rank: 'a' },
+      { dbname: 'B36A4', rank: 'a' },
+      { dbname: 'L85A3', rank: 'b' },
+      { dbname: 'SOR-556 MK2', rank: 'b' },
+      { dbname: 'AK4D', rank: 'c' },
+      { dbname: 'TR-7', rank: 'd' }
     ]
   },
   {
     type: 'Carbine',
     entries: [
-      { dbname: 'SG 553R', rank: 'm', tr: '1' },
-      { dbname: 'M4A1', rank: 'a', tr: '2' },
-      { dbname: 'GRT-BC', rank: 'a', tr: '3' },
-      { dbname: 'QBZ-192', rank: 'a', tr: '4' },
-      { dbname: 'M277', rank: 'b', tr: '5' },
-      { dbname: 'SOR-300SC', rank: 'b', tr: '6' },
-      { dbname: 'AK-205', rank: 'b', tr: '7' },
-      { dbname: 'M417 A2', rank: 'c', tr: '8' }
+      { dbname: 'SG 553R', rank: 'a' },
+      { dbname: 'M4A1', rank: 'b' },
+      { dbname: 'GRT-BC', rank: 'b' },
+      { dbname: 'QBZ-192', rank: 'b' },
+      { dbname: 'M277', rank: 'c' },
+      { dbname: 'SOR-300SC', rank: 'c' },
+      { dbname: 'AK-205', rank: 'c' },
+      { dbname: 'M417 A2', rank: 'd' }
     ]
   },
   {
     type: 'LMG',
     entries: [
-      { dbname: 'DRS-IAR', rank: 's', tr: '1' },
-      { dbname: 'KTS100 MK8', rank: 's', tr: '2' },
-      { dbname: 'M250', rank: 'm', tr: '3' },
-      { dbname: 'RPKM', rank: 'a', tr: '4' },
-      { dbname: 'L110', rank: 'a', tr: '5' },
-      { dbname: 'M60', rank: 'b', tr: '6' },
-      { dbname: 'M240L', rank: 'b', tr: '7' },
-      { dbname: 'M123K', rank: 'c', tr: '8' }
+      { dbname: 'DRS-IAR', rank: 's' },
+      { dbname: 'KTS100 MK8', rank: 'a' },
+      { dbname: 'M250', rank: 'a' },
+      { dbname: 'L110', rank: 'a' },
+      { dbname: 'RPKM', rank: 'b' },
+      { dbname: 'M240L', rank: 'c' },
+      { dbname: 'M60', rank: 'c' },
+      { dbname: 'M123K', rank: 'c' }
     ]
   },
   {
     type: 'SMG',
     entries: [
-      { dbname: 'USG-90', rank: 's', tr: '1' },
-      { dbname: 'SGX', rank: 'm', tr: '2' },
-      { dbname: 'PW5A3', rank: 'm', tr: '3' },
-      { dbname: 'UMG-40', rank: 'm', tr: '4' },
-      { dbname: 'SL9', rank: 'a', tr: '5' },
-      { dbname: 'PW7A2', rank: 'a', tr: '6' },
-      { dbname: 'KV9', rank: 'b', tr: '7' },
-      { dbname: 'SCW-10', rank: 'c', tr: '8' }
+      { dbname: 'USG-90', rank: 's' },
+      { dbname: 'PW5A3', rank: 's' },
+      { dbname: 'SGX', rank: 'a' },
+      { dbname: 'UMG-40', rank: 'b' },
+      { dbname: 'PW7A2', rank: 'b' },
+      { dbname: 'SL9', rank: 'b' },
+      { dbname: 'KV9', rank: 'c' },
+      { dbname: 'SCW-10', rank: 'd' }
     ]
   },
   {
     type: 'Sniper Rifle',
     entries: [
-      { dbname: 'M2010 ESR', rank: 's', tr: '1' },
-      { dbname: 'SV-98', rank: 'a', tr: '2' },
-      { dbname: 'PSR', rank: 'b', tr: '3' },
-      { dbname: 'Mini Scout', rank: 'b', tr: '4' }
+      { dbname: 'M2010 ESR', rank: 's' },
+      { dbname: 'SV-98', rank: 'b' },
+      { dbname: 'PSR', rank: 'c' },
+      { dbname: 'Mini Scout', rank: 'c' }
     ]
   },
   {
     type: 'DMR',
     entries: [
-      { dbname: 'M39 EMR', rank: 'b', tr: '1' },
-      { dbname: 'SVDM', rank: 'b', tr: '2' },
-      { dbname: 'SVK-8.6', rank: 'b', tr: '3' },
-      { dbname: 'LMR27', rank: 'c', tr: '4' }
+      { dbname: 'M39 EMR', rank: 'c' },
+      { dbname: 'SVDM', rank: 'c' },
+      { dbname: 'SVK-8.6', rank: 'c' },
+      { dbname: 'LMR27', rank: 'd' }
     ]
   },
   {
     type: 'Shotgun',
     entries: [
-      { dbname: 'DB-12', rank: 'c', tr: '1' },
-      { dbname: 'M87A1', rank: 'c', tr: '2' },
-      { dbname: 'M1014', rank: 'c', tr: '3' },
-      { dbname: '18.5KS-K', rank: 'c', tr: '4' }
+      { dbname: 'DB-12', rank: 'd' },
+      { dbname: 'M87A1', rank: 'd' },
+      { dbname: 'M1014', rank: 'd' },
+      { dbname: '18.5KS-K', rank: 'd' }
     ]
   },
   {
     type: 'Secondary',
     entries: [
-      { dbname: 'M357 TRAIT', rank: 'a', tr: '1' },
-      { dbname: 'M44', rank: 'b', tr: '2' },
-      { dbname: 'P18', rank: 'c', tr: '3' },
-      { dbname: 'ES 5.7', rank: 'c', tr: '4' },
-      { dbname: 'GGH-22', rank: 'c', tr: '5' },
-      { dbname: 'M45A1', rank: 'c', tr: '6' }
+      { dbname: 'M357 TRAIT', rank: 'b' },
+      { dbname: 'M44', rank: 'c' },
+      { dbname: 'P18', rank: 'd' },
+      { dbname: 'ES 5.7', rank: 'd' },
+      { dbname: 'GGH-22', rank: 'd' },
+      { dbname: 'M45A1', rank: 'd' }
     ]
   }
 ];
@@ -812,13 +812,10 @@ function buildManualRankLookup(groups) {
     const entries = Array.isArray(group && group.entries) ? group.entries : [];
     entries.forEach((entry, index) => {
       if (!entry) return;
-      // Default TR to the entry's index so reordering updates the type ranking automatically.
+      // Force TR to follow top-to-bottom placement so reordering updates the type ranking automatically.
       const manualRecord = {
         rank: typeof entry.rank === 'string' ? entry.rank : '',
-        tr:
-          entry.tr !== undefined && entry.tr !== null && entry.tr !== ''
-            ? String(entry.tr)
-            : String(index + 1)
+        tr: String(index + 1)
       };
       const key = normalizeManualRankKey(entry.dbname);
       if (key) {
@@ -862,8 +859,8 @@ const weaponConfigs = [
       'Linear Comp',
       '415MM Factory',
       '50 MW Blue',
-      'RIBBED Stubby',
-      '30RND MAGAZINE',
+      'Ribbed Stubby',
+      '30RND FAST MAG',
       'Polymer Case',
       'OSA-7 1.00X'
     ],
@@ -937,7 +934,7 @@ const weaponConfigs = [
       'Ribbed Stubby',
       '40RND Magazine',
       'FMJ',
-      'RO-S 1.25x'
+      'RO-S 1.25X'
     ],
     close: [
       { Notes: 
@@ -949,7 +946,30 @@ const weaponConfigs = [
       'Ribbed Stubby',
       '30RND Magazine',
       'Polymer Case',
-      'OSA-7 1.00x'      
+      'OSA-7 1.00X'      
+    ]
+  },
+  {
+    id: 'm433',
+    dbname: 'M433',
+    versatile: [
+      { Notes: "An inconsistent, difficult-to-control AR that leads the AR category in TTK but struggles with any engagement beyond midrange." },
+      'Standard Suppressor',
+      '16.5" Rifle',
+      'Stippled Stubby',
+      '36RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: "An inconsistent, difficult-to-control AR that leads the AR category in TTK but struggles with any engagement beyond midrange." },
+      'Linear Comp',
+      '14.5" Standard',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'Polymer Case',
+      'OSA-7 1.00X'
     ]
   },
   {
@@ -994,16 +1014,28 @@ const weaponConfigs = [
   {
     id: 'sg 553r',
     dbname: 'sg 553r',
-    long: [
+    versatile: [
       { Notes: 
         "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
       },
       'Standard Suppressor',
-      '303MM LB',
-      '6H64 Vertical',
+      '240MM SB',
+      'Ribbed Stubby',
       '40RND Magazine',
       'FMJ',
-      'Baker 3.00X'
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: 
+        "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
+      },
+      'Linear Comp',
+      '240MM SB',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'Polymer Case',
+      'OSA-7 1.00X'
     ]
   },
   {
@@ -1052,9 +1084,18 @@ const weaponConfigs = [
     'R4T 2.00X'
     ]
   },
-  // LMGs
+// LMGs
   { id: 'drs-iar',
     dbname: 'drs-iar',
+    long: [
+      { Notes: "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance." },
+      'Compensated Brake',
+      '20" SDM-R',
+      'Low-Profile Stubby',
+      '30RND Fast Mag',
+      'FMJ',
+      'CCO 2.00X'
+    ],
     versatile: [
       { Notes: "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance." },
       'Compensated Brake',
@@ -1067,6 +1108,15 @@ const weaponConfigs = [
   },
   { id: 'kts100 mk8',
     dbname: 'kts100 mk8',
+    long: [
+      { Notes: "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity." },
+      'Compensated Brake',
+      '508MM MK8',
+      'Low-Profile Stubby',
+      '45RND Fast Mag',
+      'FMJ',
+      'CCO 2.00X'
+    ],
     versatile: [
       { Notes: "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity." },
       'CQB Suppressor',
@@ -1079,9 +1129,18 @@ const weaponConfigs = [
   },
   { id: 'm250',
     dbname: 'm250',
+    long: [
+      { Notes: "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK." },
+      'Compensated Brake',
+      '556MM Prototype',
+      'Low-Profile Stubby',
+      '50RND Belt Pouch',
+      'FMJ',
+      'CCO 2.00X'
+    ],
     versatile: [
       { Notes: "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK." },
-      ' CQB Suppressor',
+      'CQB Suppressor',
       '556MM Prototype',
       '5 MW Red',
       'Ribbed Stubby',
@@ -1091,6 +1150,24 @@ const weaponConfigs = [
     ]
   },
   { id: 'rpkm', dbname: 'RPKM',
+    long: [
+      { Notes: "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity." },
+      'Compensated Brake',
+      '590MM Factory',
+      'Low-Profile Stubby',
+      '30RND Fast Mag',
+      'FMJ',
+      'CCO 2.00X'
+    ],
+    versatile: [
+      { Notes: "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity." },
+      'CQB Suppressor',
+      '600MM Tabuk',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
     recommended: [
       'A-P2 1.75X',
       'LONG SUPPRESSOR',
@@ -1104,6 +1181,24 @@ const weaponConfigs = [
   },
   { id: 'l110',
     dbname: 'L110',
+    long: [
+      { Notes: "A classic 100-round suppressive monster with moderate accuracy." },
+      'Compensated Brake',
+      '465MM LB',
+      'Low-Profile Stubby',
+      '100RND Belt Pouch',
+      'FMJ',
+      'CCO 2.00X'
+    ],
+    versatile: [
+      { Notes: "A classic 100-round suppressive monster with moderate accuracy." },
+      'Compensated Brake',
+      '349MM Fluted',
+      'Stippled Stubby',
+      '100RND Belt Pouch',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
     baseline: L110_BASELINE,
     changes: L110_CHANGES
   },
@@ -1119,7 +1214,7 @@ const weaponConfigs = [
       'Laser Light Combo Green',
       '8RND Moon Clip',
       'FMJ',
-      'OSA-7 1.00x',
+      'OSA-7 1.00X',
     ],
     close: [
       {
@@ -1129,7 +1224,7 @@ const weaponConfigs = [
       'Laser Light Combo Green',
       '8RND Moon Clip',
       'FMJ',
-      'OSA-7 1.00x',
+      'OSA-7 1.00X',
     ]
   },
   {
@@ -1157,8 +1252,8 @@ const weaponConfigs = [
       },
       '8.37" Long',
       '6RND Speedloader',
-      'Hollow point',
-      'Iron sights'
+      'Hollow Point',
+      'Iron Sights'
     ]
   },
   {
@@ -1179,7 +1274,7 @@ const weaponConfigs = [
       '50 MW Green',
       '7 Shell Dual Tubes',
       'Buckshot',
-      'OSA-7 1.00x'
+      'OSA-7 1.00X'
     ],
     close: [
       {
@@ -1190,7 +1285,7 @@ const weaponConfigs = [
       '50 MW Green',
       '7 Shell Dual Tubes',
       'Buckshot',
-      'OSA-7 1.00x'      
+      'OSA-7 1.00X'      
     ]
   },
   {
@@ -1236,7 +1331,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
-      'linear comp',
+      'Linear Comp',
       '8" Extended',
       '50 MW Blue',
       'Ribbed Stubby',
@@ -1252,25 +1347,25 @@ const weaponConfigs = [
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
     },
-    'CQB Suppressor',
-    '264MM Fluted',
-    '50 MW Green',
-    '50RND Magazine',
-    'Polymer Case',
-    'Improved Mag Catch',
-    'RO-S 1.25x'
+      'CQB Suppressor',
+      '264MM Fluted',
+      '50 MW Green',
+      '50RND Magazine',
+      'Polymer Case',
+      'Improved Mag Catch',
+      'RO-S 1.25X'
     ],
     close: [ 
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
     },
-      'CQB SUPPRESSOR',
-      '264MM Fluted',
+      'Linear Comp',
+      '264MM Factory',
       '50 MW Blue',
       '50RND MAGAZINE',
       'Polymer Case',
       'Improved Mag Catch',
-      'OSA-7 1.00x'
+      'OSA-7 1.00X'
     ]
   },
   {
