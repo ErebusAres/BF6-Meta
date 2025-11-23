@@ -1012,6 +1012,29 @@ const weaponConfigs = [
     ]
   },
   {
+    id: 'grt-bc',
+    dbname: 'GRT-BC',
+    versatile: [
+      { Notes: "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil." },
+      'CQB Suppressor',
+      '10" Factory',
+      'Ribbed Stubby',
+      '36RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil." },
+      'Linear Comp',
+      '10" Factory',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'Polymer Case',
+      'OSA-7 1.00X'
+    ]
+  },
+  {
     id: 'sg 553r',
     dbname: 'sg 553r',
     versatile: [
@@ -1041,16 +1064,28 @@ const weaponConfigs = [
   {
     id: 'qbz-192',
     dbname: 'QBZ-192',
-    long: [
+    versatile: [
       { Notes: 
         "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
       },
       'Standard Suppressor',
-      '14.5" Common',
-      '6H64 Vertical',
+      '10.5" Factory',
+      'Ribbed Stubby',
       '40RND Magazine',
       'FMJ',
-      'Baker 3.00x'
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: 
+        "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
+      },
+      'Linear Comp',
+      '10.5" Factory',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'Polymer Case',
+      'OSA-7 1.00X'
     ],
     baseline: qbz_192_baseline,
     changes: qbz_192_changes
@@ -1202,6 +1237,69 @@ const weaponConfigs = [
     baseline: L110_BASELINE,
     changes: L110_CHANGES
   },
+  { id: 'm240l',
+    dbname: 'M240L',
+    long: [
+      { Notes: "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category." },
+      'Compensated Brake',
+      '24\" Bravo',
+      'Low-Profile Stubby',
+      '75RND Belt Box',
+      'FMJ',
+      'CCO 2.00X'
+    ],
+    versatile: [
+      { Notes: "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category." },
+      'Compensated Brake',
+      '20\" OH',
+      'Ribbed Stubby',
+      '75RND Belt Box',
+      'FMJ',
+      'RO-S 1.25X'
+    ]
+  },
+  { id: 'm60',
+    dbname: 'M60',
+    long: [
+      { Notes: "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil." },
+      'Compensated Brake',
+      '22\" E3 Long',
+      'Low-Profile Stubby',
+      '50RND Loose Belt',
+      'FMJ',
+      'CCO 2.00X'
+    ],
+    versatile: [
+      { Notes: "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil." },
+      'Double-Port Brake',
+      '17\" Fluted',
+      'Ribbed Stubby',
+      '50RND Loose Belt',
+      'FMJ',
+      'RO-S 1.25X'
+    ]
+  },
+  { id: 'm123k',
+    dbname: 'M123K',
+    long: [
+      { Notes: "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements." },
+      'Compensated Brake',
+      '612MM VMW',
+      'Low-Profile Stubby',
+      '100RND Belt Pouch',
+      'FMJ',
+      'CCO 2.00X'
+    ],
+    versatile: [
+      { Notes: "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements." },
+      'Compensated Brake',
+      '370MM Compact',
+      'Low-Profile Stubby',
+      '100RND Belt Pouch',
+      'FMJ',
+      'RO-S 1.25X'
+    ]
+  },
   // Secondaries
   {
     id: 'm357 trait',
@@ -1289,9 +1387,46 @@ const weaponConfigs = [
     ]
   },
   {
+    id: 'm1014',
+    dbname: 'm1014',
+    versatile: [
+      {
+        Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
+      },
+      'CQB Suppressor',
+      '18.5" Factory',
+      '50 MW Blue',
+      'Adjustable Angled',
+      '6 Shell Tube',
+      'Buckshot',
+      'Iron Sights'
+    ],
+    close: [
+      {
+        Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
+      },
+      'CQB Suppressor',
+      '18.5" Factory',
+      '50 MW Blue',
+      'Adjustable Angled',
+      '6 Shell Tube',
+      'Buckshot',
+      'Iron Sights'
+    ]
+  },
+  {
     id: '18.5ks-k',
     dbname: '18.5ks-k',
     versatile: [
+      'CQB Suppressor',
+      '430MM Cut',
+      '50 MW Blue',
+      'Folding Stubby',
+      '8RND Magazine',
+      'Buckshot',
+      'Iron Sights'
+    ],
+    close: [
       'CQB Suppressor',
       '430MM Cut',
       '50 MW Blue',
@@ -1306,16 +1441,24 @@ const weaponConfigs = [
     dbname: 'M87A1',
     versatile: [
       { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
-      'CQB SUPPRESSOR',
-      '20" FACTORY',
-      '50 MW GREEN',
+      'CQB Suppressor',
+      '20" Factory',
+      '50 MW Green',
       'Adjustable Angled',
-      '5 SHELL TUBE',
+      '5 Shell Tube',
       'Buckshot',
       'Mini Flex 1.00X'
     ],
-    baseline: M87A1_BASELINE,
-    changes: M87A1_CHANGES
+    close: [
+      { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
+      'CQB Suppressor',
+      '20" Factory',
+      '50 MW Blue',
+      'Adjustable Angled',
+      '5 Shell Tube',
+      'Buckshot',
+      'Iron Sights'
+    ]
   },
   {
     id: 'sgx',
@@ -1402,6 +1545,30 @@ const weaponConfigs = [
     ]
   },
   {
+    id: 'pw7a2',
+    dbname: 'PW7A2',
+    versatile: [
+      { Notes: "The <c>PW7A2</c> makes up for its extremely low damage with an incredible fire rate and competitive TTK. You'll constantly be reloading, but constantly piling bodies." },
+      'CQB Suppressor',
+      '180MM Standard',
+      '50 MW Blue',
+      'Slim Angled',
+      '30RND Magazine',
+      'FMJ',
+      'Iron Sights'
+    ],
+    close: [
+      { Notes: "The <c>PW7A2</c> makes up for its extremely low damage with an incredible fire rate and competitive TTK. You'll constantly be reloading, but constantly piling bodies." },
+      'Compensated Brake',
+      '180MM Standard',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'FMJ',
+      'Iron Sights'
+    ]
+  },
+  {
     id: 'sl9',
     dbname: 'sl9',
     versatile: [
@@ -1422,6 +1589,29 @@ const weaponConfigs = [
       '3.9" Factory',
       '50 MW Blue',
       '60RND Magazine',
+      'FMJ',
+      'Iron Sights'
+    ]
+  },
+  {
+    id: 'kv9',
+    dbname: 'KV9',
+    versatile: [
+      { Notes: "With a Mach-5 fire rate but so little magazine capacity, the <c>KV9</c> can shred exactly one or two opponents before forcing a reload. Requires very thoughtful and tactical use." },
+      'Double-Port Brake',
+      '5.5\" Factory',
+      'Full Angled',
+      '27RND Magazine',
+      'FMJ',
+      'Iron Sights'
+    ],
+    close: [
+      { Notes: "With a Mach-5 fire rate but so little magazine capacity, the <c>KV9</c> can shred exactly one or two opponents before forcing a reload. Requires very thoughtful and tactical use." },
+      'Single-Port Brake',
+      '5.5\" Factory',
+      '5 MW Green',
+      'Slim Angled',
+      '27RND Magazine',
       'FMJ',
       'Iron Sights'
     ]
@@ -1487,8 +1677,49 @@ const weaponConfigs = [
   {
     id: 'miniscout',
     dbname: 'Mini Scout',
+    sniper: [
+      { Notes: "The only Sniper without a Sweet Spot, the Mini Scout trades damage for a fast rechamber and best-in-class Velocity, and remains the hardest to use." },
+      'Standard Suppressor',
+      '18\" Extended',
+      'Range Finder',
+      'Anti-Glare Coating',
+      'Full Angled',
+      '10RND Magazine',
+      'Frangible',
+      'S-VPS 6.00X'
+    ],
     baseline: miniscout_baseline,
     changes: miniscout_changes
+  },
+  {
+    id: 'sv-98',
+    dbname: 'SV-98',
+    sniper: [
+      { Notes: "The <c>SV-98</c> has an extremely satisfying feel to it, but numerically pales behind other snipers. Sweet Spot: 54-90m." },
+      '730MM 3LR',
+      'Range Finder',
+      'Anti-Glare Coating',
+      'Full Angled',
+      '10RND Magazine',
+      'Match Grade',
+      'DLC Bolt',
+      'S-VPS 6.00X'
+    ]
+  },
+  {
+    id: 'psr',
+    dbname: 'PSR',
+    sniper: [
+      { Notes: "A hard-hitting, bolt-action with a large magazine, ideal for distance sniping in a target-rich environment. Sweet Spot: 100-150m." },
+      '27\" MK22',
+      'Range Finder',
+      'Anti-Glare Coating',
+      'Full Angled',
+      '7RND Magazine',
+      'Match Grade',
+      'DLC Bolt',
+      'S-VPS 6.00X'
+    ]
   },
   {
     id: 'scw-10',
