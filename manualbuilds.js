@@ -1075,18 +1075,6 @@ const weaponConfigs = [
       'FMJ',
       'RO-S 1.25X'
     ],
-    close: [
-      { Notes: 
-        "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
-      },
-      'Linear Comp',
-      '10.5" Factory',
-      '50 MW Blue',
-      'Ribbed Stubby',
-      '30RND Fast Mag',
-      'Polymer Case',
-      'OSA-7 1.00X'
-    ],
     custom: [
       { custom: 'Fast Movement, Excellent Hipfire' },
       'Linear Comp',
