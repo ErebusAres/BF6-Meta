@@ -724,8 +724,8 @@ const MANUAL_RANKING_GROUPS = [
   {
     type: 'Carbine',
     entries: [
+      { dbname: 'M4A1', rank: 's' },
       { dbname: 'SG 553R', rank: 'a' },
-      { dbname: 'M4A1', rank: 'b' },
       { dbname: 'GRT-BC', rank: 'b' },
       { dbname: 'QBZ-192', rank: 'b' },
       { dbname: 'M277', rank: 'c' },
@@ -979,9 +979,9 @@ const weaponConfigs = [
       { Notes:
         "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
       },
-      'Compensated Brake',
-      '12.5" Mid',
-      '50 MW Blue',
+      'Long Suppressor',
+      '14.5" Carbine',
+      '5 MW Green',
       'Ribbed Stubby',
       '30RND Magazine',
       'FMJ',
@@ -1087,8 +1087,123 @@ const weaponConfigs = [
       'Polymer Case',
       'OSA-7 1.00X'
     ],
+    custom: [
+      { custom: 'Fast Movement, Excellent Hipfire' },
+      'Linear Comp',
+      '10.5" Factory',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'Polymer Case',
+      'OSA-7 1.00X'
+    ],
     baseline: qbz_192_baseline,
     changes: qbz_192_changes
+  },
+  {
+    id: 'm277',
+    dbname: 'M277',
+    versatile: [
+      { Notes: "While entirely unimpressive in full-auto, the <c>M277</c>'s true potential lies in its DMR-like performance in semi-auto." },
+      'Compensated Brake',
+      '16" Rifle',
+      'Ribbed Stubby',
+      '25RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ]
+  },
+  {
+    id: 'sor-300sc',
+    dbname: 'SOR-300SC',
+    versatile: [
+      { Notes: "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs." },
+      'Standard Suppressor',
+      '9" Factory',
+      'Ribbed Stubby',
+      '40RND Magazine',
+      'FMJ',
+      'CCO 2.00X'
+    ],
+    close: [
+      { Notes: "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs." },
+      'Linear Comp',
+      '9" Fluted',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'FMJ',
+      'OSA-7 1.00X'
+    ]
+  },
+  {
+    id: 'ak-205',
+    dbname: 'AK-205',
+    versatile: [
+      { Notes: "One of the most accurate weapons counterbalanced by having some of the least damage and most punishing range dropoffs. Guaranteed to hit its shots, but not guaranteed to win the gunfights." },
+      'Standard Suppressor',
+      '314MM Factory',
+      'Ribbed Stubby',
+      '40RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: "One of the most accurate weapons counterbalanced by having some of the least damage and most punishing range dropoffs. Guaranteed to hit its shots, but not guaranteed to win the gunfights." },
+      'Linear Comp',
+      '314MM Factory',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Fast Mag',
+      'Polymer Case',
+      'OSA-7 1.00X'
+    ]
+  },
+  {
+    id: 'm417 a2',
+    dbname: 'M417 A2',
+    versatile: [
+      { Notes: "A hard-hitting but spiky and magazine-limited weapon that has potential that is difficult to unearth. Handle with care." },
+      'Standard Suppressor',
+      '16.5" Rifle',
+      'Ribbed Stubby',
+      '25RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: "A hard-hitting but spiky and magazine-limited weapon that has potential that is difficult to unearth. Handle with care." },
+      'Linear Comp',
+      '12" Assaulter',
+      '50 MW Blue',
+      'Slim Angled',
+      '25RND Magazine',
+      'Polymer Case',
+      'Iron Sights'
+    ]
+  },
+  {
+    id: 'l85a3',
+    dbname: 'L85A3',
+    versatile: [
+      { Notes: "A middle of the pack AR that does not excel in any particular area, but tends to hit its shots." },
+      'Standard Suppressor',
+      '518MM Factory',
+      'Ribbed Stubby',
+      '40RND Magazine',
+      'FMJ',
+      'RO-S 1.25X'
+    ],
+    close: [
+      { Notes: "A middle of the pack AR that does not excel in any particular area, but tends to hit its shots." },
+      'Linear Comp',
+      '442MM CQB',
+      '50 MW Blue',
+      'Ribbed Stubby',
+      '30RND Magazine',
+      'Polymer Case',
+      'OSA-7 1.00X'
+    ]
   },
   {
     id: 'm39 emr',
