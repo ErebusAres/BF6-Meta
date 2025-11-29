@@ -2768,6 +2768,7 @@
   <script>
     const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
     const DEFAULT_BUILD_UPDATED_AT = '11/23/2025';
+    const DEFAULT_BASELINE_CHANGES_UPDATED_AT = '11/18/2025';
     const INDENT = 36;
     const CARD_PAD = 12;
     const ARROW_STROKE = 3;
@@ -2815,6 +2816,12 @@
       if (value === undefined || value === null) return null;
       const text = String(value).trim();
       return text || null;
+    }
+
+    function isUpdatedMarker(entry) {
+      if (!entry || typeof entry !== 'object') return null;
+      const value = entry.Updated || entry.updated || entry.updatedAt;
+      return normalizeUpdatedAt(value);
     }
 
     function resolveBuildUpdatedAt(config, buildId, sourceKey) {
@@ -3132,11 +3139,17 @@
     function normalizeChangesConfig(raw, dbName) {
       if (!raw || typeof raw !== 'object') return raw || {};
       const normalized = {};
+      const updatedByLevel = {};
       for (const [level, definition] of Object.entries(raw)) {
         if (Array.isArray(definition)) {
           const map = {};
           for (const entry of definition) {
             if (entry == null) continue;
+            const updatedMarker = isUpdatedMarker(entry);
+            if (updatedMarker) {
+              updatedByLevel[level] = updatedMarker;
+              continue;
+            }
             const slotKey = normalizeSlotKeyFromPayload(entry, dbName);
             if (!slotKey) continue;
             if (isRemovalPayload(entry)) {
@@ -3150,6 +3163,7 @@
           normalized[level] = definition;
         }
       }
+      normalized.__updatedByLevel = updatedByLevel;
       return normalized;
     }
 
@@ -3524,16 +3538,23 @@
         for (const key of Object.keys(this.slotLabels)) {
         this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
       }
-      const hasBaselineConfig = Boolean(config.baseline);
-      const hasChangesConfig = Boolean(config.changes);
-      this.baseline = normalizeBaselineConfig(config.baseline, this.dbname);
-      this.changes = normalizeChangesConfig(config.changes, this.dbname);
-        this.baselineUpdated = hasBaselineConfig
-          ? normalizeUpdatedAt(config.baselineUpdated) || DEFAULT_BUILD_UPDATED_AT
-          : null;
-        this.changesUpdated = hasChangesConfig
-          ? normalizeUpdatedAt(config.changesUpdated) || DEFAULT_BUILD_UPDATED_AT
-          : null;
+        const hasBaselineConfig = Boolean(config.baseline);
+        const hasChangesConfig = Boolean(config.changes);
+        this.baseline = normalizeBaselineConfig(config.baseline, this.dbname);
+        this.changes = normalizeChangesConfig(config.changes, this.dbname);
+        this.changeUpdatedByLevel =
+          (this.changes && this.changes.__updatedByLevel) || {};
+        if (this.changes && this.changes.__updatedByLevel) {
+          delete this.changes.__updatedByLevel;
+        }
+        this.baselineUpdated = normalizeUpdatedAt(config.baselineUpdated);
+        if (!this.baselineUpdated && hasBaselineConfig) {
+          this.baselineUpdated = DEFAULT_BASELINE_CHANGES_UPDATED_AT;
+        }
+        this.changesUpdated = normalizeUpdatedAt(config.changesUpdated);
+        if (!this.changesUpdated && hasChangesConfig) {
+          this.changesUpdated = DEFAULT_BASELINE_CHANGES_UPDATED_AT;
+        }
         this.slotKeys = this.buildSlotKeys();
         this.updatedFallback = resolveBuildUpdatedAt(config, null, null);
         this.activeBuildUpdatedAt = this.updatedFallback;
@@ -4521,20 +4542,29 @@
         if (!this.changesPanelEl) return;
         const container = this.changesPanelEl;
         container.innerHTML = '';
-        const appendUpdatedAt = () => {
+        const appendUpdatedAt = (mode, level) => {
           const pieces = [];
-          const buildUpdated = normalizeUpdatedAt(
-            this.activeBuildUpdatedAt || this.updatedFallback || DEFAULT_BUILD_UPDATED_AT
-          );
-          if (buildUpdated) pieces.push(`Build: ${buildUpdated}`);
-          const baselineUpdated = normalizeUpdatedAt(this.baselineUpdated);
-          if (baselineUpdated) pieces.push(`Baseline: ${baselineUpdated}`);
-          const changesUpdated = normalizeUpdatedAt(this.changesUpdated);
-          if (changesUpdated) pieces.push(`Changes: ${changesUpdated}`);
+          if (mode === 'build') {
+            const buildUpdated = normalizeUpdatedAt(
+              this.activeBuildUpdatedAt || this.updatedFallback || DEFAULT_BUILD_UPDATED_AT
+            );
+            if (buildUpdated) pieces.push(`Last Updated: ${buildUpdated}`);
+          } else {
+            const baselineUpdated = normalizeUpdatedAt(this.baselineUpdated) || DEFAULT_BASELINE_CHANGES_UPDATED_AT;
+            const changesUpdated =
+              normalizeUpdatedAt(this.changeUpdatedByLevel && this.changeUpdatedByLevel[level]) ||
+              normalizeUpdatedAt(this.changesUpdated) ||
+              DEFAULT_BASELINE_CHANGES_UPDATED_AT;
+            if (level <= this.minLevel && baselineUpdated) {
+              pieces.push(`Baseline: ${baselineUpdated}`);
+            } else if (level > this.minLevel && changesUpdated) {
+              pieces.push(`Changes: ${changesUpdated}`);
+            }
+          }
           if (!pieces.length) return;
           const footer = document.createElement('div');
           footer.className = 'build-updated';
-          footer.textContent = `Last Updated — ${pieces.join(' • ')}`;
+          footer.textContent = mode === 'build' ? pieces[0] : `Last Updated — ${pieces.join(' • ')}`;
           container.appendChild(footer);
         };
 
@@ -4552,7 +4582,7 @@
             body.textContent = 'No notes available for this build.';
           }
           container.appendChild(body);
-          appendUpdatedAt();
+          appendUpdatedAt('build', level);
           return;
         }
 
@@ -4568,7 +4598,7 @@
           empty.className = 'changes-empty';
           empty.textContent = 'No changes unlocked at this level.';
           container.appendChild(empty);
-          appendUpdatedAt();
+          appendUpdatedAt('mastery', level);
           return;
         }
 
@@ -4629,7 +4659,7 @@
 
           container.appendChild(row);
         }
-        appendUpdatedAt();
+        appendUpdatedAt('mastery', level);
       }
 
       formatNotesText(note) {
@@ -4722,7 +4752,7 @@
       }
 
       getBuildPayloadEntries(build) {
-        if (!build || build.type !== 'list') return { entries: [], note: null };
+        if (!build || build.type !== 'list') return { entries: [], note: null, updatedAt: null };
         const payload = build.payload;
         let items = [];
         if (Array.isArray(payload)) {
@@ -4735,6 +4765,7 @@
           }
         }
         let note = null;
+        let updatedAt = null;
         const filtered = [];
         for (const item of items) {
           if (item && typeof item === 'object') {
@@ -4743,18 +4774,25 @@
               note = noteValue.trim();
               continue;
             }
+            if (!updatedAt && (item.Updated || item.updated || item.updatedAt)) {
+              updatedAt = normalizeUpdatedAt(item.Updated || item.updated || item.updatedAt);
+              continue;
+            }
           }
           filtered.push(item);
         }
-        return { entries: filtered, note };
+        return { entries: filtered, note, updatedAt };
       }
 
       renderBuildAttachments(build) {
         if (!this.slotsEl) return null;
-        const { entries, note } = this.getBuildPayloadEntries(build);
+        const { entries, note, updatedAt: payloadUpdatedAt } = this.getBuildPayloadEntries(build);
         this.activeBuildNote = note;
         this.activeBuildUpdatedAt =
-          (build && normalizeUpdatedAt(build.updatedAt)) || this.updatedFallback || DEFAULT_BUILD_UPDATED_AT;
+          payloadUpdatedAt ||
+          (build && normalizeUpdatedAt(build.updatedAt)) ||
+          this.updatedFallback ||
+          DEFAULT_BUILD_UPDATED_AT;
         this.slotsEl.innerHTML = '';
         this.arrowLayerEl.innerHTML = '';
         if (!entries.length) {

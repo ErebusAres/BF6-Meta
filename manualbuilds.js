@@ -1501,6 +1501,7 @@ const weaponConfigs = [
       {
         Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
       },
+      { Updated: '11/28/2025' },
       'CQB Suppressor',
       '18.5" Factory',
       '50 MW Blue',
@@ -1513,6 +1514,7 @@ const weaponConfigs = [
       {
         Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
       },
+      { Updated: '11/28/2025' },
       'CQB Suppressor',
       '18.5" Factory',
       '50 MW Blue',
@@ -1841,6 +1843,7 @@ const weaponConfigs = [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
+      { Updated: '11/28/2025' },
       '6.8" Factory',
       'Ribbed Stubby',
       '25RND Magazine',
@@ -1851,6 +1854,7 @@ const weaponConfigs = [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
+    { Updated: '11/28/2025' },
     'Standard Suppressor',
     '6.8" Factory',
     '5 MW Green',
