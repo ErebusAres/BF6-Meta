@@ -753,11 +753,11 @@ const MANUAL_RANKING_GROUPS = [
       { dbname: 'USG-90', rank: 's' },
       { dbname: 'PW5A3', rank: 's' },
       { dbname: 'SGX', rank: 'a' },
+      { dbname: 'SCW-10', rank: 'a' },
       { dbname: 'UMG-40', rank: 'b' },
       { dbname: 'PW7A2', rank: 'b' },
       { dbname: 'SL9', rank: 'b' },
-      { dbname: 'KV9', rank: 'c' },
-      { dbname: 'SCW-10', rank: 'd' }
+      { dbname: 'KV9', rank: 'c' }
     ]
   },
   {
