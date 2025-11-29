@@ -1492,6 +1492,11 @@ const weaponConfigs = [
   {
     id: 'm1014',
     dbname: 'm1014',
+    lastUpdated: '11/28/2025',
+    buildUpdated: {
+      versatile: '11/28/2025',
+      close: '11/28/2025'
+    },
     versatile: [
       {
         Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
@@ -1827,6 +1832,11 @@ const weaponConfigs = [
   {
     id: 'scw-10',
     dbname: 'scw-10',
+    lastUpdated: '11/28/2025',
+    buildUpdated: {
+      versatile: '11/28/2025',
+      close: '11/28/2025'
+    },
     versatile: [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
@@ -1841,12 +1851,14 @@ const weaponConfigs = [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
-    'Extended Barrel',
+    'Standard Suppressor',
+    '6.8" Factory',
     '5 MW Green',
     'Slim Angled',
-    '25RND Magazine',
+    '20RND Magazine',
     'FMJ',
-    'Iron Sights'
+    'Improved Mag Catch',
+    'RO-S 1.25X'
       ]
   },
   /* Test Build 

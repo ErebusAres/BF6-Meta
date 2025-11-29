@@ -2330,6 +2330,15 @@
       color: var(--text-muted);
     }
 
+    .build-updated {
+      margin-top: 2px;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
     /* Recommended build panel matches changes styling */
     .recommended-panel {
       background: rgba(16, 24, 30, 0.92);
@@ -2758,6 +2767,7 @@
   <script src="manualbuilds.js"></script>
   <script>
     const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
+    const DEFAULT_BUILD_UPDATED_AT = '11/23/2025';
     const INDENT = 36;
     const CARD_PAD = 12;
     const ARROW_STROKE = 3;
@@ -2799,6 +2809,33 @@
     function clampNumber(value, min, max) {
       if (!Number.isFinite(value)) return min;
       return Math.min(Math.max(value, min), max);
+    }
+
+    function normalizeUpdatedAt(value) {
+      if (value === undefined || value === null) return null;
+      const text = String(value).trim();
+      return text || null;
+    }
+
+    function resolveBuildUpdatedAt(config, buildId, sourceKey) {
+      if (!config || typeof config !== 'object') return DEFAULT_BUILD_UPDATED_AT;
+      const defaultValue =
+        normalizeUpdatedAt(config.lastUpdated || config.updatedAt) || DEFAULT_BUILD_UPDATED_AT;
+      const rawMap = config.buildUpdated || config.updatedByBuild || config.buildUpdatedAt;
+      const map = rawMap && typeof rawMap === 'object' ? rawMap : null;
+      const normalizedId = (buildId || '').toString().toLowerCase();
+      const normalizedSource = (sourceKey || '').toString().toLowerCase();
+      if (map) {
+        for (const [key, value] of Object.entries(map)) {
+          if (!key) continue;
+          const matchKey = key.toString().toLowerCase();
+          if (matchKey === normalizedId || matchKey === normalizedSource) {
+            const resolved = normalizeUpdatedAt(value);
+            if (resolved) return resolved;
+          }
+        }
+      }
+      return defaultValue;
     }
 
     function ensureTooltipLayer() {
@@ -3487,9 +3524,19 @@
         for (const key of Object.keys(this.slotLabels)) {
         this.slotLabels[key] = toUpperSafe(this.slotLabels[key]);
       }
+      const hasBaselineConfig = Boolean(config.baseline);
+      const hasChangesConfig = Boolean(config.changes);
       this.baseline = normalizeBaselineConfig(config.baseline, this.dbname);
       this.changes = normalizeChangesConfig(config.changes, this.dbname);
-      this.slotKeys = this.buildSlotKeys();
+        this.baselineUpdated = hasBaselineConfig
+          ? normalizeUpdatedAt(config.baselineUpdated) || DEFAULT_BUILD_UPDATED_AT
+          : null;
+        this.changesUpdated = hasChangesConfig
+          ? normalizeUpdatedAt(config.changesUpdated) || DEFAULT_BUILD_UPDATED_AT
+          : null;
+        this.slotKeys = this.buildSlotKeys();
+        this.updatedFallback = resolveBuildUpdatedAt(config, null, null);
+        this.activeBuildUpdatedAt = this.updatedFallback;
         this.buildDefinitions = this.resolveBuildDefinitions();
         this.buildById = this.buildDefinitions.reduce((map, build) => {
           map[build.id] = build;
@@ -4474,6 +4521,22 @@
         if (!this.changesPanelEl) return;
         const container = this.changesPanelEl;
         container.innerHTML = '';
+        const appendUpdatedAt = () => {
+          const pieces = [];
+          const buildUpdated = normalizeUpdatedAt(
+            this.activeBuildUpdatedAt || this.updatedFallback || DEFAULT_BUILD_UPDATED_AT
+          );
+          if (buildUpdated) pieces.push(`Build: ${buildUpdated}`);
+          const baselineUpdated = normalizeUpdatedAt(this.baselineUpdated);
+          if (baselineUpdated) pieces.push(`Baseline: ${baselineUpdated}`);
+          const changesUpdated = normalizeUpdatedAt(this.changesUpdated);
+          if (changesUpdated) pieces.push(`Changes: ${changesUpdated}`);
+          if (!pieces.length) return;
+          const footer = document.createElement('div');
+          footer.className = 'build-updated';
+          footer.textContent = `Last Updated — ${pieces.join(' • ')}`;
+          container.appendChild(footer);
+        };
 
         const activeBuild = this.buildById ? this.buildById[this.activeBuildId] : null;
         const viewingBuild = activeBuild && activeBuild.type !== 'mastery';
@@ -4489,6 +4552,7 @@
             body.textContent = 'No notes available for this build.';
           }
           container.appendChild(body);
+          appendUpdatedAt();
           return;
         }
 
@@ -4504,6 +4568,7 @@
           empty.className = 'changes-empty';
           empty.textContent = 'No changes unlocked at this level.';
           container.appendChild(empty);
+          appendUpdatedAt();
           return;
         }
 
@@ -4562,9 +4627,10 @@
             row.appendChild(detail);
           }
 
-        container.appendChild(row);
+          container.appendChild(row);
+        }
+        appendUpdatedAt();
       }
-    }
 
       formatNotesText(note) {
         if (!note || typeof note !== 'string') return '';
@@ -4601,6 +4667,19 @@
         { id: 'mid', label: 'Medium Range', keys: ['mid', 'mediumrange'] },
         { id: 'custom', label: 'Custom', keys: ['custom'] }
       ];
+        const defaultUpdatedAt = this.updatedFallback || DEFAULT_BUILD_UPDATED_AT;
+        const updatedRaw = this.config.buildUpdated || this.config.updatedByBuild || this.config.buildUpdatedAt;
+        const updatedMap = {};
+        if (updatedRaw && typeof updatedRaw === 'object') {
+          for (const [key, value] of Object.entries(updatedRaw)) {
+            if (!key) continue;
+            const normalizedKey = key.toString().trim().toLowerCase();
+            const normalizedValue = normalizeUpdatedAt(value);
+            if (normalizedKey && normalizedValue) {
+              updatedMap[normalizedKey] = normalizedValue;
+            }
+          }
+        }
         const lookup = {};
         for (const info of recognized) {
           for (const key of info.keys) {
@@ -4609,7 +4688,7 @@
         }
         const builds = [];
         if (this.hasMasteryData()) {
-          builds.push({ id: 'mastery', label: 'Mastery', type: 'mastery' });
+          builds.push({ id: 'mastery', label: 'Mastery', type: 'mastery', updatedAt: defaultUpdatedAt });
         }
         const seen = new Set(builds.map((build) => build.id));
         for (const key of Object.keys(this.config)) {
@@ -4628,12 +4707,15 @@
         }
         if (payload == null) continue;
         seen.add(buildId);
+        const buildKey = buildId ? buildId.toString().toLowerCase() : '';
+        const updatedAt = updatedMap[buildKey] || updatedMap[normalized] || defaultUpdatedAt;
         builds.push({
           id: buildId,
           label,
           type: 'list',
           payload,
-          sourceKey: key
+          sourceKey: key,
+          updatedAt
           });
         }
         return builds;
@@ -4671,6 +4753,8 @@
         if (!this.slotsEl) return null;
         const { entries, note } = this.getBuildPayloadEntries(build);
         this.activeBuildNote = note;
+        this.activeBuildUpdatedAt =
+          (build && normalizeUpdatedAt(build.updatedAt)) || this.updatedFallback || DEFAULT_BUILD_UPDATED_AT;
         this.slotsEl.innerHTML = '';
         this.arrowLayerEl.innerHTML = '';
         if (!entries.length) {
@@ -4900,6 +4984,7 @@
             this.updateLevelDisplayForBuild(stats);
             this.renderChanges(level);
           } else {
+            this.activeBuildUpdatedAt = this.updatedFallback || DEFAULT_BUILD_UPDATED_AT;
             this.renderSlots(level);
             this.renderChanges(level);
             this.activeBuildNote = null;
