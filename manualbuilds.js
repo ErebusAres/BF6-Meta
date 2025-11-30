@@ -979,6 +979,7 @@ const weaponConfigs = [
       { Notes:
         "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
       },
+      { Updated: '11/23/2025' },
       'Long Suppressor',
       '14.5" Carbine',
       '5 MW Green',
@@ -991,6 +992,7 @@ const weaponConfigs = [
       { Notes:
         "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
       },
+      { Updated: '11/22/2025' },
       'Linear Comp',
       '11.5" Commando',
       '50 MW Blue',
@@ -998,17 +1000,6 @@ const weaponConfigs = [
       '30RND Magazine',
       'Polymer Case',
       'OSA-7 1.00X'
-    ],
-    long: [
-      { Notes:
-        "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
-      },
-      'Standard Suppressor',
-      '14.5" Carbine',
-      'Classic Vertical',
-      '36RND Magazine',
-      'FMJ',
-      'Baker 3.00X'
     ]
   },
   {
@@ -1016,15 +1007,18 @@ const weaponConfigs = [
     dbname: 'GRT-BC',
     versatile: [
       { Notes: "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil." },
-      'CQB Suppressor',
-      '10" Factory',
+      { Updated: '11/29/2025' },
+      'Lightened Suppressor',
+      '14.5" ALT',
+      '5 MW Green',
       'Ribbed Stubby',
-      '36RND Magazine',
+      '30RND Magazine',
       'FMJ',
       'RO-S 1.25X'
     ],
     close: [
       { Notes: "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil." },
+      { Updated: '11/22/2025' },
       'Linear Comp',
       '10" Factory',
       '50 MW Blue',
@@ -1093,12 +1087,14 @@ const weaponConfigs = [
     dbname: 'M277',
     versatile: [
       { Notes: "While entirely unimpressive in full-auto, the <c>M277</c>'s true potential lies in its DMR-like performance in semi-auto." },
-      'Compensated Brake',
-      '16" Rifle',
-      'Ribbed Stubby',
-      '25RND Magazine',
+      { Updated: '11/29/2025' },
+      'Lightened Suppressor',
+      '16" Custom',
+      '5 MW Green',
+      'Slim Angled',
+      '20RND Fast Mag',
       'FMJ',
-      'RO-S 1.25X'
+      'R4T 2.00X'
     ]
   },
   {
@@ -1220,6 +1216,20 @@ const weaponConfigs = [
     '20RND Fast Mag',
     'FMJ',
     'R4T 2.00X'
+    ]
+  },
+  {
+    id: 'svk-8.6',
+    dbname: 'svk-8.6',
+    versatile: [
+      { Notes: "Capable of one-shot headshot kills with Hollow Point rounds, the <c>SVK</c> stays true to its role as a light, lean marksman's tool." },
+      { Updated: '11/29/2025' },
+      'Lightened Suppressor',
+      '560MM Factory',
+      'Ribbed Stubby',
+      '10RND Fast Mag',
+      'FMJ',
+      'Baker 3.00X'
     ]
   },
 // LMGs
@@ -1365,6 +1375,7 @@ const weaponConfigs = [
     dbname: 'M60',
     long: [
       { Notes: "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil." },
+      { Updated: '11/22/2025' },
       'Compensated Brake',
       '22\" E3 Long',
       'Low-Profile Stubby',
@@ -1374,8 +1385,10 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil." },
-      'Double-Port Brake',
-      '17\" Fluted',
+      { Updated: '11/29/2025' },
+      'Lightened Suppressor',
+      '22\" E3 Long',
+      '5 MW Green',
       'Ribbed Stubby',
       '50RND Loose Belt',
       'FMJ',
@@ -1492,11 +1505,6 @@ const weaponConfigs = [
   {
     id: 'm1014',
     dbname: 'm1014',
-    lastUpdated: '11/28/2025',
-    buildUpdated: {
-      versatile: '11/28/2025',
-      close: '11/28/2025'
-    },
     versatile: [
       {
         Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
@@ -1685,8 +1693,9 @@ const weaponConfigs = [
       { Notes: 
         "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
       },
+      { Updated: '11/29/2025' },
+      'Standard Suppressor',
       '11" Heavy',
-      'Factory Angled',
       '60RND Magazine',
       'FMJ',
       'RO-S 1.25X'
@@ -1695,6 +1704,7 @@ const weaponConfigs = [
       { Notes: 
         "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
       },
+      { Updated: '11/22/2025' },
       'Single-Port Brake',
       '3.9" Factory',
       '50 MW Blue',
@@ -1834,16 +1844,11 @@ const weaponConfigs = [
   {
     id: 'scw-10',
     dbname: 'scw-10',
-    lastUpdated: '11/28/2025',
-    buildUpdated: {
-      versatile: '11/28/2025',
-      close: '11/28/2025'
-    },
     versatile: [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
-      { Updated: '11/28/2025' },
+      { Updated: '11/22/2025' },
       '6.8" Factory',
       'Ribbed Stubby',
       '25RND Magazine',
@@ -1854,16 +1859,16 @@ const weaponConfigs = [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
-    { Updated: '11/28/2025' },
-    'Standard Suppressor',
-    '6.8" Factory',
-    '5 MW Green',
-    'Slim Angled',
-    '20RND Magazine',
-    'FMJ',
-    'Improved Mag Catch',
-    'RO-S 1.25X'
-      ]
+      { Updated: '11/27/2025' },
+      'Standard Suppressor',
+      '6.8" Factory',
+      '5 MW Green',
+      'Slim Angled',
+      '20RND Magazine',
+      'FMJ',
+      'Improved Mag Catch',
+      'RO-S 1.25X'
+    ]
   },
   /* Test Build 
   {
