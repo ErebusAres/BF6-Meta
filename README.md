@@ -5,7 +5,11 @@ Live site: https://erebusares.github.io/BF6-Meta/main.html
 A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock paths, and ranking data. Everything on the site is driven by the data in `manualbuilds.js`.
 
 ## Disclaimer
-This is an unofficial, community-maintained reference. Use at your own risk. Attachment values, unlock paths, and ranks can change with patches, so the information may be stale at any time. This won’t improve your aim or game sense—it just gives you builds to try. Confirm in-game details and recent patch notes when something looks off.
+- Unofficial, community-maintained reference; use at your own risk.
+- Attachment values, unlock paths, and ranks can change with patches, so info may be stale at any time.
+- Parts of the site were built with AI—I'm a hobbyist, not a professional developer.
+- This won't improve your aim or game sense; it just gives you builds to try.
+- Confirm in-game details and recent patch notes when something looks off.
 
 ## Contributing
 - Anyone can contribute - open a PR with fixes, new builds, balance notes, or layout tweaks.
