@@ -213,6 +213,47 @@ const RPKM_CHANGES = {
     }
   ]
 };
+const NVO228E_BASELINE = ['Flash Hider', '409MM Factory Barrel', 'Iron Sights', '30RND Magazine', 'FMJ Rounds'];
+const NVO228E_CHANGES = {
+  2: [
+    { name: "Folding Vertical Grip", replaced: "None" },  // Underbarrel (Level 2 unlock) – adds recoil control
+    { name: "MINI FLEX 1.00X Optic", replaced: "Iron Sights" }  // Optic (Level 2 reflex sight) – clearer picture
+  ],
+  3: [
+    { name: "30RND Fast Mag", replaced: "30RND Magazine" } // Magazine (Level 3 unlock) – faster reloads:contentReference[oaicite:35]{index=35}
+  ],
+  4: [
+    { name: "Single-Port Brake", replaced: "Flash Hider" } // Muzzle (Level 4) – +2 recoil control:contentReference[oaicite:36]{index=36}
+  ],
+  6: [
+    { name: "5mW Green Laser", replaced: "None" }          // Right Accessory (Level 6) – improves hip-fire accuracy:contentReference[oaicite:37]{index=37}
+  ],
+  9: [
+    { name: "Alloy Vertical Grip", replaced: "Folding Vertical Grip" } // Underbarrel (Level 9) – same control, no mobility penalty:contentReference[oaicite:38]{index=38}
+  ],
+  10: [
+    { name: "458MM Custom Barrel", replaced: "409MM Factory Barrel" } // Barrel (Level 10) – +167m/s velocity for range:contentReference[oaicite:39]{index=39}
+  ],
+  11: [
+    { name: "Double-Port Brake", replaced: "Single-Port Brake" } // Muzzle (Level 11) – further recoil reduction:contentReference[oaicite:40]{index=40}
+  ],
+  16: [
+    { name: "6H64 Vertical Grip", replaced: "Alloy Vertical Grip" } // Underbarrel (Level 16) – major recoil control upgrade:contentReference[oaicite:41]{index=41}
+  ],
+  17: [
+    { name: "BAKER 3.00X Scope", replaced: "MINI FLEX 1.00X Optic" } // Optic (Level 17) – 3× scope for mid-long range precision
+  ],
+  22: [
+    { name: "50mW Green Laser", replaced: "5mW Green Laser" } // Right Accessory (Level 22) – max hip-fire boost (+22):contentReference[oaicite:42]{index=42}
+  ],
+  32: [
+    { name: "120mW Blue Laser", replaced: "50mW Green Laser" } // Right Accessory (Level 32) – +22 hip-fire *and* +4 mobility:contentReference[oaicite:43]{index=43}
+  ],
+  38: [
+    { name: "Compensated Brake", replaced: "Double-Port Brake" } // Muzzle (Level 38) – top-tier recoil control:contentReference[oaicite:44]{index=44}
+  ]
+};
+
 const M87A1_BASELINE = ['20" FACTORY', 'BUCKSHOT', '7 SHELL TUBE', 'IRON SIGHTS'];
 const M87A1_CHANGES = {
   4: ['5 MW RED'],
@@ -959,7 +1000,9 @@ const weaponConfigs = [
       '30RND Magazine',
       'FMJ',
       'Mini Flex 1.00X'      
-    ]
+    ],
+    baseline: NVO228E_BASELINE,
+    changes: NVO228E_CHANGES
   },
   {
     id: 'm433',
