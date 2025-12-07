@@ -1,5 +1,4 @@
 const KORD_BASELINE = ['415MM FACTORY', 'FOLDING VERTICAL', 'FMJ', 'SINGLE-PORT BRAKE', '30RND MAGAZINE', 'CCO 2.00X'];
-
 const KORD_CHANGES = {
   2: ['FLASHLIGHT'],
   3: [
@@ -75,7 +74,6 @@ const KORD_CHANGES = {
   ]
 };
 const PW5A3_BASELINE = ['225MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'IRON SIGHTS'];
-
 const PW5A3_CHANGES = {
   3: [
     {
@@ -213,10 +211,11 @@ const RPKM_CHANGES = {
     }
   ]
 };
+
 const NVO228E_BASELINE = ['Flash Hider', '409MM Factory Barrel', 'Iron Sights', '30RND Magazine', 'FMJ Rounds'];
 const NVO228E_CHANGES = {
   2: [
-    { name: "Folding Vertical Grip", replaced: "None" },  // Underbarrel (Level 2 unlock) – adds recoil control
+    { name: "Folding Vertical Grip" },  // Underbarrel (Level 2 unlock) – adds recoil control
     { name: "MINI FLEX 1.00X Optic", replaced: "Iron Sights" }  // Optic (Level 2 reflex sight) – clearer picture
   ],
   3: [
@@ -226,7 +225,7 @@ const NVO228E_CHANGES = {
     { name: "Single-Port Brake", replaced: "Flash Hider" } // Muzzle (Level 4) – +2 recoil control:contentReference[oaicite:36]{index=36}
   ],
   6: [
-    { name: "5mW Green Laser", replaced: "None" }          // Right Accessory (Level 6) – improves hip-fire accuracy:contentReference[oaicite:37]{index=37}
+    { name: "5mW Green Laser" }          // Right Accessory (Level 6) – improves hip-fire accuracy:contentReference[oaicite:37]{index=37}
   ],
   9: [
     { name: "Alloy Vertical Grip", replaced: "Folding Vertical Grip" } // Underbarrel (Level 9) – same control, no mobility penalty:contentReference[oaicite:38]{index=38}
