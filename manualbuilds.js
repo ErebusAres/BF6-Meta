@@ -2047,7 +2047,8 @@ const weaponConfigs = [
   {
     id: 'usg-90',
     dbname: 'USG-90',
-    lastUpdated: '12/06/2025',
+    baselineUpdated: '12/06/2025',
+    changesUpdated: '12/06/2025',
     versatile: [
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
