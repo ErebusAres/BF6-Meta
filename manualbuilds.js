@@ -212,44 +212,44 @@ const RPKM_CHANGES = {
   ]
 };
 
-const NVO228E_BASELINE = ['Flash Hider', '409MM Factory Barrel', 'Iron Sights', '30RND Magazine', 'FMJ Rounds'];
+const NVO228E_BASELINE = ['Flash Hider', '409mm Factory', 'Iron Sights', '30RND Magazine', 'FMJ'];
 const NVO228E_CHANGES = {
   2: [
-    { name: "Folding Vertical Grip" },  // Underbarrel (Level 2 unlock) – adds recoil control
-    { name: "MINI FLEX 1.00X Optic", replaced: "Iron Sights" }  // Optic (Level 2 reflex sight) – clearer picture
+    { name: "Folding Vertical" },  // Underbarrel (Level 2 unlock) Ã¢â‚¬â€œ adds recoil control
+    { name: "Mini Flex 1.00x", replaced: "Iron Sights" }  // Optic (Level 2 reflex sight) Ã¢â‚¬â€œ clearer picture
   ],
   3: [
-    { name: "30RND Fast Mag", replaced: "30RND Magazine" } // Magazine (Level 3 unlock) – faster reloads:contentReference[oaicite:35]{index=35}
+    { name: "30RND Fast Mag", replaced: "30RND Magazine" } // Magazine (Level 3 unlock) Ã¢â‚¬â€œ faster reloads:contentReference[oaicite:35]{index=35}
   ],
   4: [
-    { name: "Single-Port Brake", replaced: "Flash Hider" } // Muzzle (Level 4) – +2 recoil control:contentReference[oaicite:36]{index=36}
+    { name: "Single-Port Brake", replaced: "Flash Hider" } // Muzzle (Level 4) Ã¢â‚¬â€œ +2 recoil control:contentReference[oaicite:36]{index=36}
   ],
   6: [
-    { name: "5mW Green Laser" }          // Right Accessory (Level 6) – improves hip-fire accuracy:contentReference[oaicite:37]{index=37}
+    { name: "5 MW Green" }          // Right Accessory (Level 6) Ã¢â‚¬â€œ improves hip-fire accuracy:contentReference[oaicite:37]{index=37}
   ],
   9: [
-    { name: "Alloy Vertical Grip", replaced: "Folding Vertical Grip" } // Underbarrel (Level 9) – same control, no mobility penalty:contentReference[oaicite:38]{index=38}
+    { name: "Alloy Vertical", replaced: "Folding Vertical" } // Underbarrel (Level 9) Ã¢â‚¬â€œ same control, no mobility penalty:contentReference[oaicite:38]{index=38}
   ],
   10: [
-    { name: "458MM Custom Barrel", replaced: "409MM Factory Barrel" } // Barrel (Level 10) – +167m/s velocity for range:contentReference[oaicite:39]{index=39}
+    { name: "458mm Custom", replaced: "409mm Factory" } // Barrel (Level 10) Ã¢â‚¬â€œ +167m/s velocity for range:contentReference[oaicite:39]{index=39}
   ],
   11: [
-    { name: "Double-Port Brake", replaced: "Single-Port Brake" } // Muzzle (Level 11) – further recoil reduction:contentReference[oaicite:40]{index=40}
+    { name: "Double-Port Brake", replaced: "Single-Port Brake" } // Muzzle (Level 11) Ã¢â‚¬â€œ further recoil reduction:contentReference[oaicite:40]{index=40}
   ],
   16: [
-    { name: "6H64 Vertical Grip", replaced: "Alloy Vertical Grip" } // Underbarrel (Level 16) – major recoil control upgrade:contentReference[oaicite:41]{index=41}
+    { name: "6H64 Vertical", replaced: "Alloy Vertical" } // Underbarrel (Level 16) Ã¢â‚¬â€œ major recoil control upgrade:contentReference[oaicite:41]{index=41}
   ],
   17: [
-    { name: "BAKER 3.00X Scope", replaced: "MINI FLEX 1.00X Optic" } // Optic (Level 17) – 3× scope for mid-long range precision
+    { name: "Baker 3.00x", replaced: "Mini Flex 1.00x" } // Optic (Level 17) Ã¢â‚¬â€œ 3Ãƒâ€” scope for mid-long range precision
   ],
   22: [
-    { name: "50mW Green Laser", replaced: "5mW Green Laser" } // Right Accessory (Level 22) – max hip-fire boost (+22):contentReference[oaicite:42]{index=42}
+    { name: "50 MW Green", replaced: "5 MW Green" } // Right Accessory (Level 22) Ã¢â‚¬â€œ max hip-fire boost (+22):contentReference[oaicite:42]{index=42}
   ],
   32: [
-    { name: "120mW Blue Laser", replaced: "50mW Green Laser" } // Right Accessory (Level 32) – +22 hip-fire *and* +4 mobility:contentReference[oaicite:43]{index=43}
+    { name: "120 MW Blue", replaced: "50 MW Green" } // Right Accessory (Level 32) Ã¢â‚¬â€œ +22 hip-fire *and* +4 mobility:contentReference[oaicite:43]{index=43}
   ],
   38: [
-    { name: "Compensated Brake", replaced: "Double-Port Brake" } // Muzzle (Level 38) – top-tier recoil control:contentReference[oaicite:44]{index=44}
+    { name: "Compensated Brake", replaced: "Double-Port Brake" } // Muzzle (Level 38) Ã¢â‚¬â€œ top-tier recoil control:contentReference[oaicite:44]{index=44}
   ]
 };
 
@@ -981,11 +981,11 @@ const weaponConfigs = [
       },
       { Updated: '11/22/2025' },
       'Standard Suppressor',
-      '409MM Factory',
+      '409mm Factory',
       'Ribbed Stubby',
       '40RND Magazine',
       'FMJ',
-      'RO-S 1.25X'
+      'RO-S 1.25x'
     ],
     close: [
       { Notes: 
@@ -993,12 +993,12 @@ const weaponConfigs = [
       },
       { Updated: '12/01/2025' },
       'Long Suppressor',
-      '409MM Fluted',
+      '409mm Fluted',
       '5 MW Green',
       'Slim Angled',
       '30RND Magazine',
       'FMJ',
-      'Mini Flex 1.00X'      
+      'Mini Flex 1.00x'      
     ],
     baseline: NVO228E_BASELINE,
     changes: NVO228E_CHANGES
