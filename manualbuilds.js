@@ -73,6 +73,62 @@ const KORD_CHANGES = {
     }
   ]
 };
+
+const USG90_BASELINE = [ 'SU-231 1.50X', 'Flash Hider', '264MM FACTORY', '50RND MAGAZINE', 'FMJ' ];
+const USG90_CHANGES = {
+  1: [
+    { name: 'Single-Port Brake',
+      replaced: ['Flash Hider']
+    }
+  ],
+  4: [
+    { name: 'OSA-7 1.00X',
+      replaced: ['SU-231 1.50X']
+    }
+  ],
+  5: [
+    { name: '5 MW RED' }
+  ],
+  11: [
+    { name: 'Double-Port Brake',
+      replaced: ['Single-Port Brake']
+    }
+  ],
+  12: [
+    { name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+  13: [
+    { name: 'Improved Mag Catch' }
+  ],
+  16: [
+    { name: 'Compensated Brake',
+      replaced: ['Double-Port Brake']
+    }
+  ],
+  17: [
+    { name: 'Polymer Case',
+      replaced: ['FMJ']
+    }
+  ],
+  18: [
+    { name: '50 MW GREEN',
+      replaced: ['5 MW GREEN']
+    }
+  ],
+  36: [
+    { name: '120 MW BLUE',
+      replaced: ['50 MW GREEN']
+    }
+  ],
+  38: [
+    { name: 'Lightened Suppressor',
+      replaced: ['Compensated Brake']
+    }
+  ]
+};
+
 const PW5A3_BASELINE = ['225MM FACTORY', 'FOLDING VERTICAL', 'FMJ', '30RND MAGAZINE', 'IRON SIGHTS'];
 const PW5A3_CHANGES = {
   3: [
@@ -1991,7 +2047,7 @@ const weaponConfigs = [
   {
     id: 'usg-90',
     dbname: 'USG-90',
-    lastUpdated: '12/01/2025',
+    lastUpdated: '12/06/2025',
     versatile: [
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
@@ -2017,7 +2073,9 @@ const weaponConfigs = [
       'FMJ',
       'Improved Mag Catch',
       'Mini Flex 1.00X'
-    ]
+    ],
+    baseline: USG90_BASELINE,
+    changes: USG90_CHANGES
   },
   {
     id: 'pw5a3',
