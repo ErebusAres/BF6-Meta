@@ -7,7 +7,7 @@ A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock pa
 ## Disclaimer
 - Unofficial, community-maintained reference; use at your own risk.
 - Attachment values, unlock paths, and ranks can change with patches, so info may be stale at any time.
-- Parts of the site were built with AI—I'm a hobbyist, not a professional developer.
+- Parts of the site were built with AI - I'm a hobbyist, not a professional developer.
 - This won't improve your aim or game sense; it just gives you builds to try.
 - Confirm in-game details and recent patch notes when something looks off.
 
