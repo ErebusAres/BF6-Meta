@@ -309,6 +309,33 @@ const NVO228E_CHANGES = {
   ]
 };
 
+const B36A4_BASELINE = ['480MM FACTORY', 'FMJ', '30RND MAGAZINE', 'IRON SIGHTS'];
+const B36A4_CHANGES = {
+  1: ['FOLDING VERTICAL'],  // unlock vertical grips
+  2: [
+    { name: 'MINI FLEX 1.00X', replaced: ['IRON SIGHTS'] },  // unlock Mini Flex scope
+    { name: 'ALLOY VERTICAL', replaced: ['FOLDING VERTICAL'] }
+  ],
+  5: ['510MM FLUTED', '30RND FAST MAG'],  // improved barrel and fast mag
+  9: [
+    { name: 'DOUBLE-PORT BRAKE', replaced: ['FLASH HIDER'] }
+  ],
+  15: ['5 MW RED'],  // first laser
+  17: [
+    { name: '5 MW GREEN', replaced: ['5 MW RED'] }
+  ],
+  18: ['FOLDING STUBBY'],  // add stubby grips
+  19: [
+    { name: 'RIBBED STUBBY', replaced: ['FOLDING STUBBY'] }
+  ],
+  22: [
+    { name: '50 MW GREEN', replaced: ['5 MW GREEN'] }
+  ],
+  33: [
+    { name: '50 MW BLUE', replaced: ['50 MW GREEN'] }
+  ]
+};
+
 const M87A1_BASELINE = ['20" FACTORY', 'BUCKSHOT', '7 SHELL TUBE', 'IRON SIGHTS'];
 const M87A1_CHANGES = {
   4: ['5 MW RED'],
@@ -807,53 +834,53 @@ const MANUAL_RANKING_GROUPS = [
   {
     type: 'Assault Rifle',
     entries: [
-      { dbname: 'NVO-228E', rank: 's' },
       { dbname: 'KORD 6P67', rank: 's' },
+      { dbname: 'B36A4', rank: 's' },
+      { dbname: 'TR-7', rank: 's' },
       { dbname: 'M433', rank: 'a' },
-      { dbname: 'B36A4', rank: 'a' },
-      { dbname: 'L85A3', rank: 'b' },
+      { dbname: 'AK4D', rank: 'a' },
+      { dbname: 'NVO-228E', rank: 'a' },
       { dbname: 'SOR-556 MK2', rank: 'b' },
-      { dbname: 'AK4D', rank: 'c' },
-      { dbname: 'TR-7', rank: 'd' }
+      { dbname: 'L85A3', rank: 'b' }
     ]
   },
   {
     type: 'Carbine',
     entries: [
       { dbname: 'M4A1', rank: 's' },
-      { dbname: 'SG 553R', rank: 'a' },
-      { dbname: 'GRT-BC', rank: 'b' },
+      { dbname: 'SG 553R', rank: 's' },
+      { dbname: 'M277', rank: 'a' },
+      { dbname: 'GRT-BC', rank: 'a' },
+      { dbname: 'M417 A2', rank: 'b' },
       { dbname: 'QBZ-192', rank: 'b' },
-      { dbname: 'M277', rank: 'c' },
       { dbname: 'SOR-300SC', rank: 'c' },
-      { dbname: 'AK-205', rank: 'c' },
-      { dbname: 'M417 A2', rank: 'd' }
+      { dbname: 'AK-205', rank: 'c' }
     ]
   },
   {
     type: 'LMG',
     entries: [
       { dbname: 'DRS-IAR', rank: 's' },
+      { dbname: 'M250', rank: 's' },
       { dbname: 'KTS100 MK8', rank: 'a' },
-      { dbname: 'M250', rank: 'a' },
       { dbname: 'L110', rank: 'a' },
       { dbname: 'RPKM', rank: 'b' },
-      { dbname: 'M240L', rank: 'c' },
-      { dbname: 'M60', rank: 'c' },
-      { dbname: 'M123K', rank: 'c' }
+      { dbname: 'M240L', rank: 'b' },
+      { dbname: 'M123K', rank: 'b' },
+      { dbname: 'M60', rank: 'b' }
     ]
   },
   {
     type: 'SMG',
     entries: [
-      { dbname: 'USG-90', rank: 's' },
       { dbname: 'PW5A3', rank: 's' },
-      { dbname: 'SGX', rank: 'a' },
+      { dbname: 'SGX', rank: 's' },
       { dbname: 'SCW-10', rank: 'a' },
-      { dbname: 'UMG-40', rank: 'b' },
+      { dbname: 'KV9', rank: 'b' },
       { dbname: 'PW7A2', rank: 'b' },
-      { dbname: 'SL9', rank: 'b' },
-      { dbname: 'KV9', rank: 'c' }
+      { dbname: 'UMG-40', rank: 'b' },
+      { dbname: 'USG-90', rank: 'c' },
+      { dbname: 'SL9', rank: 'c' }
     ]
   },
   {
@@ -868,30 +895,30 @@ const MANUAL_RANKING_GROUPS = [
   {
     type: 'DMR',
     entries: [
-      { dbname: 'M39 EMR', rank: 'c' },
-      { dbname: 'SVDM', rank: 'c' },
-      { dbname: 'SVK-8.6', rank: 'c' },
+      { dbname: 'SVDM', rank: 'b' },
+      { dbname: 'SVK-8.6', rank: 'b' },
+      { dbname: 'M39 EMR', rank: 'b' },
       { dbname: 'LMR27', rank: 'd' }
     ]
   },
   {
     type: 'Shotgun',
     entries: [
-      { dbname: 'DB-12', rank: 'd' },
-      { dbname: 'M87A1', rank: 'd' },
-      { dbname: 'M1014', rank: 'd' },
-      { dbname: '18.5KS-K', rank: 'd' }
+      { dbname: 'M1014', rank: 'b' },
+      { dbname: 'M87A1', rank: 'b' },
+      { dbname: '18.5KS-K', rank: 'c' },
+      { dbname: 'DB-12', rank: 'c' }
     ]
   },
   {
     type: 'Secondary',
     entries: [
-      { dbname: 'M357 TRAIT', rank: 'b' },
-      { dbname: 'M44', rank: 'c' },
-      { dbname: 'P18', rank: 'd' },
-      { dbname: 'ES 5.7', rank: 'd' },
-      { dbname: 'GGH-22', rank: 'd' },
-      { dbname: 'M45A1', rank: 'd' }
+      { dbname: 'M44', rank: 'a' },
+      { dbname: 'M45A1', rank: 'b' },
+      { dbname: 'ES 5.7', rank: 'c' },
+      { dbname: 'GGH-22', rank: 'c' },
+      { dbname: 'P18', rank: 'c' },
+      { dbname: 'M357 TRAIT', rank: 'c' }
     ]
   }
 ];
@@ -941,10 +968,10 @@ const weaponConfigs = [
   {
     id: 'kord-6p67',
     dbname: 'KORD 6P67',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '415MM Prototype',
       '50 MW Blue',
@@ -955,7 +982,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '415MM Fluted',
       '5 MW Green',
@@ -979,10 +1006,12 @@ const weaponConfigs = [
   {
     id: 'b36a4',
     dbname: 'b36a4',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
+    baselineUpdated: '12/07/2025',
+    changesUpdated: '12/07/2025',
     versatile: [
       { Notes: "A decent, versatile AR that performs well over range with careful burst firing." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '510MM DMR',
       '50 MW Blue',
@@ -993,7 +1022,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A decent, versatile AR that performs well over range with careful burst firing." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '480MM Fluted',
       '5 MW Green',
@@ -1001,15 +1030,17 @@ const weaponConfigs = [
       '30RND Fast Mag',
       'FMJ',
       'Iron Sights'
-    ]
+    ],
+    baseline: B36A4_BASELINE,
+    changes: B36A4_CHANGES
   },
   {
     id: 'sor-556 mk2',
     dbname: 'sor-556 mk2',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '18\" Custom',
       '50 MW Blue',
@@ -1020,7 +1051,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '14.5" Factory',
       '5 MW Green',
@@ -1033,12 +1064,12 @@ const weaponConfigs = [
   {
     id: 'nvo-228e',
     dbname: 'nvo-228e',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: 
         "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '458MM Custom',
       '5 MW Green',
@@ -1051,14 +1082,14 @@ const weaponConfigs = [
       { Notes: 
         "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
-      '409mm Fluted',
+      '409MM Fluted',
       '5 MW Green',
       'Slim Angled',
       '30RND Magazine',
       'FMJ',
-      'Mini Flex 1.00x'      
+      'Mini Flex 1.00X'      
     ],
     baseline: NVO228E_BASELINE,
     changes: NVO228E_CHANGES
@@ -1066,10 +1097,10 @@ const weaponConfigs = [
   {
     id: 'm433',
     dbname: 'M433',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "An inconsistent, difficult-to-control AR that leads the AR category in TTK but struggles with any engagement beyond midrange." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '18.9\" Prototype',
       '50 MW Blue',
@@ -1080,7 +1111,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "An inconsistent, difficult-to-control AR that leads the AR category in TTK but struggles with any engagement beyond midrange." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '16.5" Fluted',
       '5 MW Green',
@@ -1093,12 +1124,12 @@ const weaponConfigs = [
   {
     id: 'm4a1',
     dbname: 'm4a1',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes:
         "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '14.5" Carbine',
       '5 MW Green',
@@ -1111,7 +1142,7 @@ const weaponConfigs = [
       { Notes:
         "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '12.5\" Fluted',
       '5 MW Green',
@@ -1124,13 +1155,12 @@ const weaponConfigs = [
   {
     id: 'grt-bc',
     dbname: 'GRT-BC',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil." },
-      { Updated: '12/06/2025' },
-      'Lightened Suppressor',
+      { Updated: '12/07/2025' },
+      'Long Suppressor',
       '14.5" ALT',
-      '5 MW Green',
       'Ribbed Stubby',
       '30RND Magazine',
       'FMJ',
@@ -1138,10 +1168,10 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '10" Factory',
-      '50 MW Blue',
+      '5 MW Green',
       'Ribbed Stubby',
       '30RND Magazine',
       'FMJ',
@@ -1151,12 +1181,12 @@ const weaponConfigs = [
   {
     id: 'sg 553r',
     dbname: 'sg 553r',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: 
         "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '303MM LB',
       '5 MW Green',
@@ -1169,7 +1199,7 @@ const weaponConfigs = [
       { Notes: 
         "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '240MM Fluted',
       '5 MW Green',
@@ -1182,12 +1212,12 @@ const weaponConfigs = [
   {
     id: 'qbz-192',
     dbname: 'QBZ-192',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: 
         "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '14.5\" Common',
       '50 MW Blue',
@@ -1200,7 +1230,7 @@ const weaponConfigs = [
       { Notes: 
         "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '10.5\" Factory',
       '50 MW Blue',
@@ -1215,10 +1245,10 @@ const weaponConfigs = [
   {
     id: 'm277',
     dbname: 'M277',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "While entirely unimpressive in full-auto, the <c>M277</c>'s true potential lies in its DMR-like performance in semi-auto." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '16" Custom',
       '5 MW Green',
@@ -1230,7 +1260,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "While entirely unimpressive in full-auto, the <c>M277</c>'s true potential lies in its DMR-like performance in semi-auto." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '13\" Fluted',
       '5 MW Green',
@@ -1243,10 +1273,10 @@ const weaponConfigs = [
   {
     id: 'sor-300sc',
     dbname: 'SOR-300SC',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '10.5\" Custom',
       '5 MW Green',
@@ -1257,7 +1287,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '9" Fluted',
       '5 MW Green',
@@ -1270,10 +1300,10 @@ const weaponConfigs = [
   {
     id: 'ak-205',
     dbname: 'AK-205',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "One of the most accurate weapons counterbalanced by having some of the least damage and most punishing range dropoffs. Guaranteed to hit its shots, but not guaranteed to win the gunfights." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '314MM Prototype',
       '50 MW Blue',
@@ -1284,7 +1314,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "One of the most accurate weapons counterbalanced by having some of the least damage and most punishing range dropoffs. Guaranteed to hit its shots, but not guaranteed to win the gunfights." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '314MM Factory',
       '50 MW Blue',
@@ -1297,10 +1327,10 @@ const weaponConfigs = [
   {
     id: 'm417 a2',
     dbname: 'M417 A2',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "A hard-hitting but spiky and magazine-limited weapon that has potential that is difficult to unearth. Handle with care." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '16.5" Rifle',
       '5 MW Green',
@@ -1311,7 +1341,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A hard-hitting but spiky and magazine-limited weapon that has potential that is difficult to unearth. Handle with care." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '12" Assaulter',
       '5 MW Green',
@@ -1324,10 +1354,10 @@ const weaponConfigs = [
   {
     id: 'l85a3',
     dbname: 'L85A3',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "A middle of the pack AR that does not excel in any particular area, but tends to hit its shots." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '646MM LSW',
       '50 MW Blue',
@@ -1338,7 +1368,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A middle of the pack AR that does not excel in any particular area, but tends to hit its shots." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '518MM Fluted',
       '5 MW Green',
@@ -1351,20 +1381,21 @@ const weaponConfigs = [
   {
     id: 'ak4d',
     dbname: 'AK4D',
-    lastUpdated: '12/01/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "A low-capacity, high-damage AR that performs moderately well. Requires constant reload maintenance." },
-      { Updated: '11/18/2025' },
-      'Double-Port Brake',
-      '600MM Fluted',
-      'Folding Stubby',
-      '30RND Magazine',
+      { Updated: '12/07/2025' },
+      'Lightened Suppressor',
+      '600MM DMR',
+      '5 MW Green',
+      'Slim Angled',
+      '20RND Fast Mag',
       'FMJ',
-      'RO-S 1.25X'
+      'RO-M 1.75X'
     ],
     close: [
       { Notes: "A low-capacity, high-damage AR that performs moderately well. Requires constant reload maintenance." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '409MM US',
       '5 MW Green',
@@ -1377,20 +1408,20 @@ const weaponConfigs = [
   {
     id: 'tr-7',
     dbname: 'TR-7',
-    lastUpdated: '12/01/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "A close-range slaughterhouse with incredible TTK, but enormous recoil and plenty of spread limits this AR's midrange capability." },
-      { Updated: '11/18/2025' },
-      'Double-Port Brake',
+      { Updated: '12/07/2025' },
+      'Linear Comp',
       '432MM Fluted',
       'Ribbed Stubby',
       '25RND Fast Mag',
       'FMJ',
-      'RO-S 1.25X'
+      'RO-M 1.75X'
     ],
     close: [
       { Notes: "A close-range slaughterhouse with incredible TTK, but enormous recoil and plenty of spread limits this AR's midrange capability." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '432MM Fluted',
       '5 MW Green',
@@ -1403,11 +1434,11 @@ const weaponConfigs = [
   {
     id: 'm39 emr',
     dbname: 'm39 emr',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>." 
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '22" Factory',
       'Slim Angled',
@@ -1418,7 +1449,7 @@ const weaponConfigs = [
     close: [
       { Notes: "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>." 
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '18\" EBR',
       '50 MW Blue',
@@ -1431,12 +1462,12 @@ const weaponConfigs = [
   {
     id: 'svdm',
     dbname: 'svdm',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
     { Notes: 
       "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
     },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '620MM Classic',
       'Slim Angled',
@@ -1448,7 +1479,7 @@ const weaponConfigs = [
     { Notes: 
       "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
     },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '565MM Fluted',
       '5 MW Green',
@@ -1461,10 +1492,10 @@ const weaponConfigs = [
   {
     id: 'svk-8.6',
     dbname: 'svk-8.6',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "Capable of one-shot headshot kills with Hollow Point rounds, the <c>SVK</c> stays true to its role as a light, lean marksman's tool." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '560MM Factory',
       'Slim Angled',
@@ -1474,7 +1505,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "Capable of one-shot headshot kills with Hollow Point rounds, the <c>SVK</c> stays true to its role as a light, lean marksman's tool." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '457MM Urban',
       '5 MW Green',
@@ -1487,10 +1518,10 @@ const weaponConfigs = [
   {
     id: 'lmr27',
     dbname: 'LMR27',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "With a fast fire rate, low damage, small magazine, and a punishing reload, the <c>LMR27</c> is high risk for low reward. Difficult." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '24\" Extended',
       'Factory Angled',
@@ -1500,7 +1531,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "With a fast fire rate, low damage, small magazine, and a punishing reload, the <c>LMR27</c> is high risk for low reward. Difficult." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '21.5\" Fluted',
       'Factory Angled',
@@ -1513,7 +1544,7 @@ const weaponConfigs = [
 // LMGs
   { id: 'drs-iar',
     dbname: 'drs-iar',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance." },
       { Updated: '11/22/2025' },
@@ -1526,7 +1557,7 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '20" SDM-R',
       '50 MW Blue',
@@ -1537,7 +1568,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '16.5\" Fluted',
       '5 MW Green',
@@ -1549,7 +1580,7 @@ const weaponConfigs = [
   },
   { id: 'kts100 mk8',
     dbname: 'kts100 mk8',
-    lastUpdated: '12/01/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity." },
       { Updated: '11/22/2025' },
@@ -1562,17 +1593,18 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity." },
-      { Updated: '11/22/2025' },
-      'CQB Suppressor',
+      { Updated: '12/07/2025' },
+      'Long Suppressor',
       '508MM MK8',
-      'Ribbed Stubby',
-      '45RND Fast Mag',
-      'Polymer Case',
-      'RO-S 1.25X'
+      '50 MW Blue',
+      'Slim Angled',
+      '45RND Magazine',
+      'FMJ',
+      'RO-M 1.75X'
     ],
     close: [
       { Notes: "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '330MM MK3',
       '50 MW Blue',
@@ -1584,7 +1616,7 @@ const weaponConfigs = [
   },
   { id: 'm250',
     dbname: 'm250',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK." },
       { Updated: '11/22/2025' },
@@ -1597,7 +1629,7 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '556MM Prototype',
       '50 MW Blue',
@@ -1608,7 +1640,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '556MM Prototype',
       '50 MW Blue',
@@ -1619,7 +1651,7 @@ const weaponConfigs = [
     ]
   },
   { id: 'rpkm', dbname: 'RPKM',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity." },
       { Updated: '11/22/2025' },
@@ -1632,7 +1664,7 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '590MM Factory',
       '50 MW Blue',
@@ -1643,10 +1675,10 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '521MM Boar-F',
-      '5 MW Blue',
+      '50 MW Blue',
       'Slim Angled',
       '30RND Fast Mag',
       'FMJ',
@@ -1665,7 +1697,7 @@ const weaponConfigs = [
   },
   { id: 'l110',
     dbname: 'L110',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "A classic 100-round suppressive monster with moderate accuracy." },
       { Updated: '11/22/2025' },
@@ -1678,7 +1710,7 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "A classic 100-round suppressive monster with moderate accuracy." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '465MM LB',
       '50 MW Blue',
@@ -1689,7 +1721,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A classic 100-round suppressive monster with moderate accuracy." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '349MM Fluted',
       '5 MW Green',
@@ -1703,7 +1735,7 @@ const weaponConfigs = [
   },
   { id: 'm240l',
     dbname: 'M240L',
-    lastUpdated: '12/01/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category." },
       { Updated: '11/22/2025' },
@@ -1716,17 +1748,18 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category." },
-      { Updated: '11/22/2025' },
-      'Compensated Brake',
-      '20\" OH',
-      'Ribbed Stubby',
-      '75RND Belt Box',
+      { Updated: '12/07/2025' },
+      'Long Suppressor',
+      '24\" Bravo',
+      '50 MW Blue',
+      'Slim Angled',
+      '50RND Loose Belt',
       'FMJ',
-      'RO-S 1.25X'
+      'RO-M 1.75X'
     ],
     close: [
       { Notes: "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '20\" OH',
       '5 MW Green',
@@ -1738,7 +1771,7 @@ const weaponConfigs = [
   },
   { id: 'm60',
     dbname: 'M60',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil." },
       { Updated: '11/22/2025' },
@@ -1751,7 +1784,7 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '22\" E3 Long',
       '50 MW Blue',
@@ -1762,7 +1795,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '17\" Fluted',
       '5 MW Green',
@@ -1774,7 +1807,7 @@ const weaponConfigs = [
   },
   { id: 'm123k',
     dbname: 'M123K',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     long: [
       { Notes: "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements." },
       { Updated: '11/22/2025' },
@@ -1787,17 +1820,18 @@ const weaponConfigs = [
     ],
     versatile: [
       { Notes: "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements." },
-      { Updated: '12/06/2025' },
-      'Compensated Brake',
-      '370MM Compact',
-      'Low-Profile Stubby',
+      { Updated: '12/07/2025' },
+      'Lightened Suppressor',
+      '612MM VMW',
+      '5 MW Green',
+      'Ribbed Stubby',
       '100RND Belt Pouch',
       'FMJ',
       'RO-M 1.75X'
     ],
     close: [
       { Notes: "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '370MM Compact',
       '5 MW Green',
@@ -1811,28 +1845,27 @@ const weaponConfigs = [
   {
     id: 'm357 trait',
     dbname: 'm357 trait',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       {
         Notes: "An eight-round revolver with a decent fire rate. Kills in a minimum of two shots in Multiplayer, regardless of head or body shot."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       '5" Factory',
       'Laser/Light Combo Green',
       '8RND Moon Clip',
-      'FMJ',
       'Mini Flex 1.00X'
     ]
   },
   {
     id: 'p18',
     dbname: 'p18',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: 
         "The stock pistol offers moderate damage and a fast fire rate, but complicating muzzle rise may obscure targets."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '3.9" Factory',
       'Flashlight',
@@ -1844,12 +1877,12 @@ const weaponConfigs = [
   {
     id: 'm44',
     dbname: 'm44',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: 
         "The six-shooting backup pocket rocket offers excellent hipfire and a devastating one-two punch, but harshly punishes any missed shots."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       '5.12\" Compact',
       '6RND Speedloader',
       'Hollow Point',
@@ -1859,10 +1892,10 @@ const weaponConfigs = [
   {
     id: 'm45a1',
     dbname: 'M45A1',
-    lastUpdated: '11/18/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "Guaranteed to grant style points, the <c>M45A1</c> packs high damage but demands high accuracy to compensate for its low magazine capacity." },
-      { Updated: '11/18/2025' },
+      { Updated: '12/07/2025' },
       'Single-Port Brake',
       '5\" Factory',
       '11RND Magazine',
@@ -1871,29 +1904,29 @@ const weaponConfigs = [
       'Iron Sights'
     ]
   },
-  {
+    {
     id: 'es 5.7',
     dbname: 'ES 5.7',
-    lastUpdated: '11/18/2025',
-    versatile: [
-      { Notes: "A low-damage, fast-firing implement that really falls behind TTK-wise." },
-      { Updated: '11/18/2025' },
-      'Standard Suppressor',
-      '122MM Factory',
-      '5 MW Green',
-      '20RND Magazine',
-      'FMJ',
-      'Improved Mag Catch',
-      'Iron Sights'
-    ]
-  },
+      lastUpdated: '12/07/2025',
+      versatile: [
+        { Notes: "A low-damage, fast-firing implement that really falls behind TTK-wise." },
+        { Updated: '12/07/2025' },
+        'Standard Suppressor',
+        '122MM Factory',
+        'Flashlight',
+        '20RND Magazine',
+        'FMJ',
+        'Improved Mag Catch',
+        'Iron Sights'
+      ]
+    },
   {
     id: 'ggh-22',
     dbname: 'GGH-22',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "An enthusiastic choice that excels in no category, but offers the familiar, satisfying feeling and performance." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '114MM Factory',
       'Flashlight',
@@ -1908,7 +1941,7 @@ const weaponConfigs = [
   {
     id: 'db-12',
     dbname: 'db-12',
-    lastUpdated: '12/01/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       {
         Notes: "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
@@ -1925,7 +1958,7 @@ const weaponConfigs = [
       {
         Notes: "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'CQB Suppressor',
       '18.9" Factory',
       '50 MW Blue',
@@ -1937,25 +1970,12 @@ const weaponConfigs = [
   {
     id: 'm1014',
     dbname: 'm1014',
-    lastUpdated: '12/01/2025',
-    versatile: [
-      {
-        Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
-      },
-      { Updated: '11/27/2025' },
-      'CQB Suppressor',
-      '18.5" Factory',
-      '50 MW Blue',
-      'Adjustable Angled',
-      '6 Shell Tube',
-      'Buckshot',
-      'Iron Sights'
-    ],
+    lastUpdated: '12/07/2025',
     close: [
       {
         Notes: "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'CQB Suppressor',
       '18.5" Factory',
       '50 MW Blue',
@@ -1967,35 +1987,25 @@ const weaponConfigs = [
   },
   {
     id: '18.5ks-k',
-    dbname: '18.5ks-k',
-    lastUpdated: '12/01/2025',
-    versatile: [
-      { Updated: '11/18/2025' },
-      'CQB Suppressor',
-      '430MM Cut',
-      '50 MW Blue',
-      'Folding Stubby',
-      '8RND Magazine',
-      'Buckshot',
-      'Iron Sights'
-    ],
-    close: [
-      { Updated: '12/01/2025' },
-      'Flash Hider',
-      '430MM Factory',
-      'Slim Handstop',
-      '8RND Fast Mag',
-      'Slugs',
-      'Mini Flex 1.00X'
-    ]
-  },
+      dbname: '18.5ks-k',
+      lastUpdated: '12/07/2025',
+      close: [
+        { Updated: '12/07/2025' },
+        'Flash Hider',
+        '430MM Factory',
+        'Slim Handstop',
+        '8RND Fast Mag',
+        'Slugs',
+        'Mini Flex 1.00X'
+      ]
+    },
   {
     id: 'm87a1',
     dbname: 'M87A1',
-    lastUpdated: '12/01/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
-      { Updated: '11/18/2025' },
+      { Updated: '12/07/2025' },
       'CQB Suppressor',
       '20" Factory',
       '50 MW Green',
@@ -2006,11 +2016,11 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'CQB Suppressor',
       '20" Factory',
-      '50 MW Blue',
-      'Slim Handstop',
+        '50 MW Blue',
+        'Slim Handstop',
       '5 Shell Tube',
       'Buckshot',
       'Mini Flex 1.00X'
@@ -2019,10 +2029,10 @@ const weaponConfigs = [
   {
     id: 'sgx',
     dbname: 'sgx',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '8\" Extended',
       '50 MW Blue',
@@ -2033,7 +2043,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '6\" Fluted',
       '50 MW Blue',
@@ -2046,13 +2056,13 @@ const weaponConfigs = [
   {
     id: 'usg-90',
     dbname: 'USG-90',
-    baselineUpdated: '12/06/2025',
-    changesUpdated: '12/06/2025',
+    baselineUpdated: '12/07/2025',
+    changesUpdated: '12/07/2025',
     versatile: [
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
     },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '407MM CIV-S',
       '120 MW Blue',
@@ -2065,7 +2075,7 @@ const weaponConfigs = [
     { Notes: 
       "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer." 
     },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '264MM Fluted',
       '120 MW Blue',
@@ -2082,13 +2092,13 @@ const weaponConfigs = [
     dbname: 'PW5A3',
     baseline: PW5A3_BASELINE,
     changes: PW5A3_CHANGES,
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       {
         Notes:
         "The familiar-feeling <c>MP5</c> packs excellent accuracy with a midrange TTK, making it extremely dependable even in midrange."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '245MM Custom',
       '50 MW Blue',
@@ -2102,7 +2112,7 @@ const weaponConfigs = [
         Notes:
         "The familiar-feeling <c>MP5</c> packs excellent accuracy with a midrange TTK, making it extremely dependable even in midrange."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '225MM Factory',
       '120 MW Blue',
@@ -2115,10 +2125,10 @@ const weaponConfigs = [
   {
     id: 'pw7a2',
     dbname: 'PW7A2',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "The <c>PW7A2</c> makes up for its extremely low damage with an incredible fire rate and competitive TTK. You'll constantly be reloading, but constantly piling bodies." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '180MM Prototype',
       '50 MW Blue',
@@ -2129,7 +2139,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "The <c>PW7A2</c> makes up for its extremely low damage with an incredible fire rate and competitive TTK. You'll constantly be reloading, but constantly piling bodies." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '180MM Prototype',
       '50 MW Blue',
@@ -2143,12 +2153,12 @@ const weaponConfigs = [
   {
     id: 'sl9',
     dbname: 'sl9',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: 
         "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '11" Heavy',
       '50 MW Blue',
@@ -2161,7 +2171,7 @@ const weaponConfigs = [
       { Notes: 
         "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '9" Factory',
       '60RND Magazine',
@@ -2172,10 +2182,10 @@ const weaponConfigs = [
   {
     id: 'kv9',
     dbname: 'KV9',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       { Notes: "With a Mach-5 fire rate but so little magazine capacity, the <c>KV9</c> can shred exactly one or two opponents before forcing a reload. Requires very thoughtful and tactical use." },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '6.5\" Extended',
       'Slim Angled',
@@ -2185,7 +2195,7 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "With a Mach-5 fire rate but so little magazine capacity, the <c>KV9</c> can shred exactly one or two opponents before forcing a reload. Requires very thoughtful and tactical use." },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Flash Hider',
       '5.5\" Factory',
       'Slim Angled',
@@ -2199,15 +2209,16 @@ const weaponConfigs = [
     dbname: 'UMG-40',
     baseline: umg40_baseline,
     changes: umg40_changes,
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       {
         Notes:
           'The classic UMP boasts impressive accuracy, but one of the slowest TTKs in the SMG category, which is fine - because sometimes hitting your shots is a lot better than missing due to spread.',
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Long Suppressor',
       '305MM Custom-H',
+      '50 MW Blue',
       'Slim Angled',
       '36RND Magazine',
       'FMJ',
@@ -2218,7 +2229,7 @@ const weaponConfigs = [
         Notes:
           'The classic UMP boasts impressive accuracy, but one of the slowest TTKs in the SMG category, which is fine - because sometimes hitting your shots is a lot better than missing due to spread.',
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Standard Suppressor',
       '200MM Fluted',
       '50 MW Blue',
@@ -2231,12 +2242,12 @@ const weaponConfigs = [
   {
     id: 'scw-10',
     dbname: 'scw-10',
-    lastUpdated: '12/06/2025',
+    lastUpdated: '12/07/2025',
     versatile: [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
-      { Updated: '12/06/2025' },
+      { Updated: '12/07/2025' },
       'Lightened Suppressor',
       '200MM Custom-H',
       'Slim Angled',
@@ -2248,7 +2259,7 @@ const weaponConfigs = [
       {
         Notes: "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
-      { Updated: '12/01/2025' },
+      { Updated: '12/07/2025' },
       'Flash Hider',
       '6.8" Factory',
       'Slim Angled',
