@@ -1100,7 +1100,7 @@ const weaponConfigs = [
       { Updated: '12/07/2025' },
       'Long Suppressor',
       '415MM Prototype',
-      '50 MW Blue',
+      '50 MW Green',
       'Slim Angled',
       '30RND Magazine',
       'FMJ',
@@ -1547,11 +1547,11 @@ const weaponConfigs = [
     ],
     close: [
       { Notes: "A close-range slaughterhouse with incredible TTK, but enormous recoil and plenty of spread limits this AR's midrange capability." },
-      { Updated: '12/07/2025' },
+      { Updated: '12/09/2025' },
       'Long Suppressor',
       '432MM Fluted',
       '5 MW Green',
-      'Slim Angled',
+      '6H64 Vertical',
       '20RND Magazine',
       'FMJ',
       'Mini Flex 1.00X'
@@ -2219,6 +2219,8 @@ const weaponConfigs = [
     baseline: PW5A3_BASELINE,
     changes: PW5A3_CHANGES,
     lastUpdated: '12/07/2025',
+    baselineUpdated: '12/07/2025',
+    changesUpdated: '12/07/2025',
     versatile: [
       {
         Notes:
