@@ -336,6 +336,132 @@ const B36A4_CHANGES = {
   ]
 };
 
+const TR7_BASELINE = ['17" FACTORY', 'FMJ', '20RND MAGAZINE', 'IRON SIGHTS'];
+const TR7_CHANGES = {
+  1: ['FOLDING VERTICAL'],
+
+  2: [
+    {
+      name: 'MINI FLEX 1.00X',
+      replaced: ['IRON SIGHTS']
+    }
+  ],
+
+  3: [
+    {
+      name: 'ALLOY VERTICAL',
+      replaced: ['FOLDING VERTICAL']
+    }
+  ],
+
+  5: [
+    {
+      name: 'RIBBED VERTICAL',
+      replaced: ['ALLOY VERTICAL']
+    }
+  ],
+
+  6: ['5 MW RED'],
+
+  7: [
+    {
+      name: '20" LONG',
+      replaced: ['17" FACTORY']
+    }
+  ],
+
+  9: [
+    {
+      name: '6H64 VERTICAL',
+      replaced: ['RIBBED VERTICAL']
+    }
+  ],
+
+  10: ['20RND FAST MAG'],
+
+  11: [
+    'FOLDING STUBBY',
+    {
+      name: '5 MW GREEN',
+      replaced: ['5 MW RED']
+    }
+  ],
+
+  15: [
+    {
+      name: 'RIBBED STUBBY',
+      replaced: ['FOLDING STUBBY', '6H64 VERTICAL']
+    }
+  ],
+
+  18: [
+    {
+      name: '50 MW GREEN',
+      replaced: ['5 MW GREEN']
+    }
+  ],
+
+  22: [
+    {
+      name: '50 MW BLUE',
+      replaced: ['50 MW GREEN']
+    }
+  ],
+
+  23: ['IMPROVED MAG CATCH'],
+
+  25: [
+    {
+      name: '432MM FLUTED',
+      replaced: ['20" LONG']
+    },
+    'MATCH TRIGGER'
+  ],
+
+  26: [
+    {
+      name: '25RND MAGAZINE',
+      replaced: ['20RND FAST MAG']
+    }
+  ],
+
+  30: [
+    {
+      name: '30RND MAGAZINE',
+      replaced: ['25RND MAGAZINE']
+    }
+  ],
+
+  31: [
+    {
+      name: 'COMPENSATED BRAKE',
+      replaced: ['DOUBLE-PORT BRAKE']
+    }
+  ],
+
+  32: [
+    {
+      name: 'POLYMER CASE',
+      replaced: ['FMJ']
+    }
+  ],
+
+  35: [
+    {
+      name: '25RND FAST MAG',
+      replaced: ['30RND MAGAZINE']
+    }
+  ],
+
+  39: [
+    {
+      name: 'STIPPLED STUBBY',
+      replaced: ['RIBBED STUBBY']
+    }
+  ]
+};
+
+
 const M87A1_BASELINE = ['20" FACTORY', 'BUCKSHOT', '7 SHELL TUBE', 'IRON SIGHTS'];
 const M87A1_CHANGES = {
   4: ['5 MW RED'],
