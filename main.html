@@ -1069,17 +1069,32 @@
     }
 
     .return-link {
-      border: none;
-      background: none;
-      padding: 0;
+      border: 1px solid rgba(0, 229, 255, 0.5);
+      background: rgba(0, 229, 255, 0.12);
+      padding: 6px 12px;
+      border-radius: 999px;
       color: var(--accent);
       cursor: pointer;
-      text-decoration: underline;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.08em;
+      text-decoration: none;
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      box-shadow:
+        0 0 0 1px rgba(0, 229, 255, 0.12),
+        0 10px 30px rgba(0, 229, 255, 0.1);
     }
 
-    .return-link:hover { color: #6df1ff; }
+    .return-link:hover,
+    .return-link:focus-visible {
+      color: #6df1ff;
+      background: rgba(0, 229, 255, 0.18);
+      border-color: rgba(0, 229, 255, 0.8);
+      box-shadow:
+        0 0 0 1px rgba(0, 229, 255, 0.24),
+        0 12px 34px rgba(0, 229, 255, 0.2);
+      transform: translateY(-1px);
+      outline: none;
+    }
 
     .favorite-toggle:hover,
     .collapse-toggle:hover,
@@ -1218,18 +1233,31 @@
     }
 
     .side-nav-empty .return-link {
-      border: none;
-      background: none;
+      border: 1px solid rgba(0, 229, 255, 0.5);
+      background: rgba(0, 229, 255, 0.12);
       color: var(--accent);
       cursor: pointer;
-      text-decoration: underline;
+      text-decoration: none;
       letter-spacing: 0.08em;
-      font-weight: 700;
-      padding: 0;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      box-shadow:
+        0 0 0 1px rgba(0, 229, 255, 0.12),
+        0 10px 30px rgba(0, 229, 255, 0.1);
     }
 
-    .side-nav-empty .return-link:hover {
+    .side-nav-empty .return-link:hover,
+    .side-nav-empty .return-link:focus-visible {
       color: #6df1ff;
+      background: rgba(0, 229, 255, 0.18);
+      border-color: rgba(0, 229, 255, 0.8);
+      box-shadow:
+        0 0 0 1px rgba(0, 229, 255, 0.24),
+        0 12px 34px rgba(0, 229, 255, 0.2);
+      transform: translateY(-1px);
+      outline: none;
     }
 
     .side-nav:not(.nav-ready) {
@@ -5245,11 +5273,10 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
         <div class="favorites-empty-actions">
           <button type="button" class="favorite-toggle favorite-demo" aria-pressed="false" title="Demo favorite toggle">
             <span aria-hidden="true" class="favorite-icon">☆</span>
-            <span class="favorite-text">Favorite</span>
           </button>
           <span class="favorites-empty-body">(try it out — this one doesn't save)</span>
         </div>
-        <p class="favorites-empty-body">Click <button type="button" class="return-link" data-reset-filter>[ here ]</button> to return to All weapons.</p>
+        <p class="favorites-empty-body">Click <button type="button" class="return-link" data-reset-filter>HERE</button> to return to All weapons.</p>
       `;
       attachFavoritesEmptyInteractions(card);
       return card;
@@ -5260,10 +5287,7 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
       box.className = 'side-nav-empty';
       box.innerHTML = `
         <div class="side-nav-empty-title">You don't have any favorites 😢</div>
-        <p class="side-nav-empty-note">Tap the star on a weapon to pin it.</p>
-        <div class="side-nav-empty-actions">
-          <button type="button" class="return-link" data-reset-filter>[ here ]</button>
-          <span class="side-nav-empty-note">to view all weapons again.</span>
+        <p class="side-nav-empty-note">Tap the star on a weapon to pin it HERE.</p>
         </div>
       `;
       attachFavoritesEmptyInteractions(box);
