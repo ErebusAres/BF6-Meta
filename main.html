@@ -1016,6 +1016,71 @@
       background: rgba(0, 229, 255, 0.12);
     }
 
+    .favorites-empty-card {
+      border: 1px dashed rgba(0, 229, 255, 0.4);
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(0, 229, 255, 0.02));
+      border-radius: 14px;
+      padding: 18px;
+      margin: 10px;
+      box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.12), 0 12px 28px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .favorites-empty-title {
+      font-size: 16px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .favorites-empty-body {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .favorites-empty-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .favorite-toggle.favorite-demo {
+      min-width: 0;
+      padding: 8px 12px;
+      gap: 8px;
+      border-style: dashed;
+    }
+
+    .favorite-toggle.favorite-demo .favorite-text {
+      display: inline !important;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+
+    .favorite-toggle.favorite-demo .favorite-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .return-link {
+      border: none;
+      background: none;
+      padding: 0;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .return-link:hover { color: #6df1ff; }
+
     .favorite-toggle:hover,
     .collapse-toggle:hover,
     .collapse-box:hover,
@@ -1113,6 +1178,58 @@
       border-radius: 999px;
       border: 1px solid rgba(0, 229, 255, 0.35);
       box-shadow: inset 0 0 6px rgba(0, 229, 255, 0.4);
+    }
+
+    .side-nav-empty {
+      border: 1px dashed rgba(0, 229, 255, 0.4);
+      background: radial-gradient(circle at 12% 20%, rgba(0, 229, 255, 0.12), transparent 40%),
+        radial-gradient(circle at 88% 16%, rgba(0, 229, 255, 0.12), transparent 42%),
+        rgba(8, 12, 16, 0.85);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      color: rgba(200, 214, 225, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .side-nav-empty .side-nav-empty-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .side-nav-empty .side-nav-empty-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .side-nav-empty .side-nav-empty-actions {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .side-nav-empty .return-link {
+      border: none;
+      background: none;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      padding: 0;
+    }
+
+    .side-nav-empty .return-link:hover {
+      color: #6df1ff;
     }
 
     .side-nav:not(.nav-ready) {
@@ -5098,6 +5215,61 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
       });
     }
 
+    function attachFavoritesEmptyInteractions(container) {
+      if (!container) return;
+      const demoBtn = container.querySelector('.favorite-toggle.favorite-demo');
+      if (demoBtn) {
+        demoBtn.addEventListener('click', () => {
+          const pressed = demoBtn.getAttribute('aria-pressed') === 'true';
+          const next = !pressed;
+          demoBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+          const icon = demoBtn.querySelector('.favorite-icon');
+          const label = demoBtn.querySelector('.favorite-text');
+          if (icon) icon.textContent = next ? '★' : '☆';
+          if (label) label.textContent = next ? 'Favorited' : 'Favorite';
+        });
+      }
+
+      const resetButtons = container.querySelectorAll('[data-reset-filter]');
+      resetButtons.forEach((btn) => {
+        btn.addEventListener('click', () => setTypeFilter(''));
+      });
+    }
+
+    function createFavoritesEmptyCard() {
+      const card = document.createElement('div');
+      card.className = 'favorites-empty-card';
+      card.innerHTML = `
+        <div class="favorites-empty-title">You don't have any favorites 😢</div>
+        <p class="favorites-empty-body">Click the star on a weapon card to pin it to your favorites.</p>
+        <div class="favorites-empty-actions">
+          <button type="button" class="favorite-toggle favorite-demo" aria-pressed="false" title="Demo favorite toggle">
+            <span aria-hidden="true" class="favorite-icon">☆</span>
+            <span class="favorite-text">Favorite</span>
+          </button>
+          <span class="favorites-empty-body">(try it out — this one doesn't save)</span>
+        </div>
+        <p class="favorites-empty-body">Click <button type="button" class="return-link" data-reset-filter>[ here ]</button> to return to All weapons.</p>
+      `;
+      attachFavoritesEmptyInteractions(card);
+      return card;
+    }
+
+    function createFavoritesNavEmpty() {
+      const box = document.createElement('div');
+      box.className = 'side-nav-empty';
+      box.innerHTML = `
+        <div class="side-nav-empty-title">You don't have any favorites 😢</div>
+        <p class="side-nav-empty-note">Tap the star on a weapon to pin it.</p>
+        <div class="side-nav-empty-actions">
+          <button type="button" class="return-link" data-reset-filter>[ here ]</button>
+          <span class="side-nav-empty-note">to view all weapons again.</span>
+        </div>
+      `;
+      attachFavoritesEmptyInteractions(box);
+      return box;
+    }
+
   function deriveDefaultTypeOrder(trackersList) {
     const trackersCopy = [...trackersList];
     trackersCopy.sort((a, b) => {
@@ -5224,6 +5396,14 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
 
     function updateWeaponNav(order) {
       if (!weaponNavEl) return;
+      const isFavoritesEmpty = currentTypeFilter === FAVORITES_FILTER && (!order || order.length === 0);
+      weaponNavEl.innerHTML = '';
+      if (isFavoritesEmpty) {
+        weaponNavEl.appendChild(createFavoritesNavEmpty());
+        weaponNavEl.classList.add('nav-ready');
+        return;
+      }
+
       const idToTracker = trackerMap;
       const ul = document.createElement('ul');
       ul.className = 'side-nav-list';
@@ -5257,7 +5437,6 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
         }
         ul.appendChild(li);
       }
-      weaponNavEl.innerHTML = '';
       weaponNavEl.appendChild(ul);
       weaponNavEl.classList.add("nav-ready");
     }
@@ -5374,7 +5553,8 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
 
       weaponListEl.innerHTML = '';
       let displayOrder = finalOrder;
-      if (currentTypeFilter === FAVORITES_FILTER) {
+      const isFavoritesFilter = currentTypeFilter === FAVORITES_FILTER;
+      if (isFavoritesFilter) {
         displayOrder = finalOrder.filter((id) => {
           const tracker = idToTracker.get(id);
           return tracker && tracker.isFavorite();
@@ -5405,10 +5585,16 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
         }
       });
 
-      for (const id of displayOrder) {
-        const tracker = idToTracker.get(id);
-        tracker.attach(weaponListEl);
-        tracker.setDisplayed(true);
+      if (displayOrder.length === 0) {
+        if (isFavoritesFilter) {
+          weaponListEl.appendChild(createFavoritesEmptyCard());
+        }
+      } else {
+        for (const id of displayOrder) {
+          const tracker = idToTracker.get(id);
+          tracker.attach(weaponListEl);
+          tracker.setDisplayed(true);
+        }
       }
       const navOrder = currentTypeFilter ? displayOrder : finalOrder;
       updateWeaponNav(navOrder);
