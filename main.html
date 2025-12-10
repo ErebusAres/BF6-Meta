@@ -3172,21 +3172,53 @@
       const store = typeof window !== 'undefined' && window.localStorage ? window.localStorage : null;
       let data = { weapons: {}, order: [] };
 
-      const raw = store ? store.getItem(KEY) : null;
+      function safeGet(key) {
+        if (!store) return null;
+        try {
+          return store.getItem(key);
+        } catch (error) {
+          console.warn('Unable to read persisted state from localStorage', error);
+          return null;
+        }
+      }
+
+      function safeSet(key, value) {
+        if (!store) return;
+        try {
+          store.setItem(key, value);
+        } catch (error) {
+          console.warn('Unable to save persisted state to localStorage', error);
+        }
+      }
+
+      function safeRemove(key) {
+        if (!store) return;
+        try {
+          store.removeItem(key);
+        } catch (error) {
+          console.warn('Unable to clear invalid persisted state in localStorage', error);
+        }
+      }
+
+      const raw = safeGet(KEY);
       const sanitized = typeof raw === 'string' ? raw.trim() : '';
       if (sanitized && (sanitized.startsWith('{') || sanitized.startsWith('['))) {
-        const parsed = JSON.parse(sanitized);
-        if (parsed && typeof parsed === 'object') {
-          data = {
-            weapons: parsed.weapons && typeof parsed.weapons === 'object' ? parsed.weapons : {},
-            order: Array.isArray(parsed.order) ? parsed.order : []
-          };
+        try {
+          const parsed = JSON.parse(sanitized);
+          if (parsed && typeof parsed === 'object') {
+            data = {
+              weapons: parsed.weapons && typeof parsed.weapons === 'object' ? parsed.weapons : {},
+              order: Array.isArray(parsed.order) ? parsed.order : []
+            };
+          }
+        } catch (error) {
+          safeRemove(KEY);
+          console.warn('Ignoring invalid persisted state in localStorage', error);
         }
       }
 
       function save() {
-        if (!store) return;
-        store.setItem(KEY, JSON.stringify(data));
+        safeSet(KEY, JSON.stringify(data));
       }
 
       function ensureWeapon(id) {
@@ -5200,6 +5232,8 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
         if (!tracker) continue;
         const li = document.createElement('li');
         li.className = 'side-nav-item';
+        li.setAttribute('role', 'button');
+        li.tabIndex = 0;
         li.dataset.weaponId = id;
         enableNavDrag(li);
         const name = document.createElement('span');
@@ -5243,13 +5277,23 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
       window.scrollTo({ top: targetTop, behavior: 'smooth' });
     }
 
+    function handleNavActivation(target) {
+      const item = target.closest('.side-nav-item');
+      if (!item) return;
+      const id = item.dataset.weaponId;
+      const tracker = trackers.find((t) => t.id === id);
+      scrollToTracker(tracker);
+    }
+
     if (weaponNavEl) {
       weaponNavEl.addEventListener('click', (event) => {
-        const item = event.target.closest('.side-nav-item');
-        if (!item) return;
-        const id = item.dataset.weaponId;
-        const tracker = trackers.find((t) => t.id === id);
-        scrollToTracker(tracker);
+        handleNavActivation(event.target);
+      });
+
+      weaponNavEl.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        handleNavActivation(event.target);
+        event.preventDefault();
       });
 
       weaponNavEl.addEventListener('dragover', (event) => {
