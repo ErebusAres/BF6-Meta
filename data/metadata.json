@@ -1,0 +1,352 @@
+{
+  "KORD 6P67": {
+    "name": "KORD 6P67",
+    "type": "Assault Rifle",
+    "image": "kord.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SOR-556 MK2": {
+    "name": "SOR-556 MK2",
+    "type": "Assault Rifle",
+    "image": "sor-556.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "B36A4": {
+    "name": "B36A4",
+    "type": "Assault Rifle",
+    "image": "b36a4.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "L85A3": {
+    "name": "L85A3",
+    "type": "Assault Rifle",
+    "image": "l85a3.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M433": {
+    "name": "M433",
+    "type": "Assault Rifle",
+    "image": "m433.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "NVO-228E": {
+    "name": "NVO-228E",
+    "type": "Assault Rifle",
+    "image": "nvo-228e.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "AK4D": {
+    "name": "AK4D",
+    "type": "Assault Rifle",
+    "image": "ak4d.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "TR-7": {
+    "name": "TR-7",
+    "type": "Assault Rifle",
+    "image": "tr-7.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M4A1": {
+    "name": "M4A1",
+    "type": "Carbine",
+    "image": "m4a1.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M277": {
+    "name": "M277",
+    "type": "Carbine",
+    "image": "m277.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "AK-205": {
+    "name": "AK-205",
+    "type": "Carbine",
+    "image": "ak-205.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M417 A2": {
+    "name": "M417 A2",
+    "type": "Carbine",
+    "image": "m417a2.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "GRT-BC": {
+    "name": "GRT-BC",
+    "type": "Carbine",
+    "image": "grt-bc.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "QBZ-192": {
+    "name": "QBZ-192",
+    "type": "Carbine",
+    "image": "qbz-192.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SG 553R": {
+    "name": "SG 553R",
+    "type": "Carbine",
+    "image": "sg-553r.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SOR-300SC": {
+    "name": "SOR-300SC",
+    "type": "Carbine",
+    "image": "sor-300sc.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "RPKM": {
+    "name": "RPKM",
+    "type": "LMG",
+    "image": "rpkm.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "L110": {
+    "name": "L110",
+    "type": "LMG",
+    "image": "l110.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "DRS-IAR": {
+    "name": "DRS-IAR",
+    "type": "LMG",
+    "image": "drs-iar.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M60": {
+    "name": "M60",
+    "type": "LMG",
+    "image": "m60.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M123K": {
+    "name": "M123K",
+    "type": "LMG",
+    "image": "m123k.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "KTS100 MK8": {
+    "name": "KTS100 MK8",
+    "type": "LMG",
+    "image": "kts100.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M240L": {
+    "name": "M240L",
+    "type": "LMG",
+    "image": "m240l.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M250": {
+    "name": "M250",
+    "type": "LMG",
+    "image": "m250.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "PW5A3": {
+    "name": "PW5A3",
+    "type": "SMG",
+    "image": "pw5a3.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "UMG-40": {
+    "name": "UMG-40",
+    "type": "SMG",
+    "image": "umg-40.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SGX": {
+    "name": "SGX",
+    "type": "SMG",
+    "image": "sgx.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SCW-10": {
+    "name": "SCW-10",
+    "type": "SMG",
+    "image": "scw-10.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SL9": {
+    "name": "SL9",
+    "type": "SMG",
+    "image": "sl9.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "PW7A2": {
+    "name": "PW7A2",
+    "type": "SMG",
+    "image": "pw7a2.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "KV9": {
+    "name": "KV9",
+    "type": "SMG",
+    "image": "kv9.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "USG-90": {
+    "name": "USG-90",
+    "type": "SMG",
+    "image": "usg-90.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M2010 ESR": {
+    "name": "M2010 ESR",
+    "type": "Sniper Rifle",
+    "image": "m2010-esr.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "Mini Scout": {
+    "name": "Mini Scout",
+    "type": "Sniper Rifle",
+    "image": "miniscout.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "PSR": {
+    "name": "PSR",
+    "type": "Sniper Rifle",
+    "image": "psr.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SV-98": {
+    "name": "SV-98",
+    "type": "Sniper Rifle",
+    "image": "sv-98.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M39 EMR": {
+    "name": "M39 EMR",
+    "type": "DMR",
+    "image": "m39-emr.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SVDM": {
+    "name": "SVDM",
+    "type": "DMR",
+    "image": "svdm.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "SVK-8.6": {
+    "name": "SVK-8.6",
+    "type": "DMR",
+    "image": "svk-86.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "LMR27": {
+    "name": "LMR27",
+    "type": "DMR",
+    "image": "lmr27.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M87A1": {
+    "name": "M87A1",
+    "type": "Shotgun",
+    "image": "m87a1.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "M1014": {
+    "name": "M1014",
+    "type": "Shotgun",
+    "image": "m1014.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "DB-12": {
+    "name": "DB-12",
+    "type": "Shotgun",
+    "image": "db-12.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "18.5KS-K": {
+    "name": "18.5KS-K",
+    "type": "Shotgun",
+    "image": "18.5ks-k.avif",
+    "maxLevel": 40,
+    "apMax": 100
+  },
+  "GGH-22": {
+    "name": "GGH-22",
+    "type": "Secondary",
+    "image": "ggh-22.avif",
+    "maxLevel": 40,
+    "apMax": 60
+  },
+  "P18": {
+    "name": "P18",
+    "type": "Secondary",
+    "image": "p18.avif",
+    "maxLevel": 40,
+    "apMax": 60
+  },
+  "ES 5.7": {
+    "name": "ES 5.7",
+    "type": "Secondary",
+    "image": "es5.7.avif",
+    "maxLevel": 40,
+    "apMax": 60
+  },
+  "M45A1": {
+    "name": "M45A1",
+    "type": "Secondary",
+    "image": "m45a1.avif",
+    "maxLevel": 40,
+    "apMax": 60
+  },
+  "M44": {
+    "name": "M44",
+    "type": "Secondary",
+    "image": "m44.avif",
+    "maxLevel": 40,
+    "apMax": 60
+  },
+  "M357 TRAIT": {
+    "name": "M357 TRAIT",
+    "type": "Secondary",
+    "image": "m357trait.avif",
+    "maxLevel": 40,
+    "apMax": 60
+  }
+}

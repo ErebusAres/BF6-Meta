@@ -1,0 +1,242 @@
+[
+  {
+    "type": "Assault Rifle",
+    "entries": [
+      {
+        "dbname": "KORD 6P67",
+        "rank": "s"
+      },
+      {
+        "dbname": "B36A4",
+        "rank": "s"
+      },
+      {
+        "dbname": "TR-7",
+        "rank": "s"
+      },
+      {
+        "dbname": "M433",
+        "rank": "a"
+      },
+      {
+        "dbname": "AK4D",
+        "rank": "a"
+      },
+      {
+        "dbname": "NVO-228E",
+        "rank": "a"
+      },
+      {
+        "dbname": "SOR-556 MK2",
+        "rank": "b"
+      },
+      {
+        "dbname": "L85A3",
+        "rank": "b"
+      }
+    ]
+  },
+  {
+    "type": "Carbine",
+    "entries": [
+      {
+        "dbname": "M4A1",
+        "rank": "s"
+      },
+      {
+        "dbname": "SG 553R",
+        "rank": "s"
+      },
+      {
+        "dbname": "M277",
+        "rank": "a"
+      },
+      {
+        "dbname": "GRT-BC",
+        "rank": "a"
+      },
+      {
+        "dbname": "M417 A2",
+        "rank": "b"
+      },
+      {
+        "dbname": "QBZ-192",
+        "rank": "b"
+      },
+      {
+        "dbname": "SOR-300SC",
+        "rank": "c"
+      },
+      {
+        "dbname": "AK-205",
+        "rank": "c"
+      }
+    ]
+  },
+  {
+    "type": "LMG",
+    "entries": [
+      {
+        "dbname": "DRS-IAR",
+        "rank": "s"
+      },
+      {
+        "dbname": "M250",
+        "rank": "s"
+      },
+      {
+        "dbname": "KTS100 MK8",
+        "rank": "a"
+      },
+      {
+        "dbname": "L110",
+        "rank": "a"
+      },
+      {
+        "dbname": "RPKM",
+        "rank": "b"
+      },
+      {
+        "dbname": "M240L",
+        "rank": "b"
+      },
+      {
+        "dbname": "M123K",
+        "rank": "b"
+      },
+      {
+        "dbname": "M60",
+        "rank": "b"
+      }
+    ]
+  },
+  {
+    "type": "SMG",
+    "entries": [
+      {
+        "dbname": "PW5A3",
+        "rank": "s"
+      },
+      {
+        "dbname": "SGX",
+        "rank": "s"
+      },
+      {
+        "dbname": "SCW-10",
+        "rank": "a"
+      },
+      {
+        "dbname": "KV9",
+        "rank": "b"
+      },
+      {
+        "dbname": "PW7A2",
+        "rank": "b"
+      },
+      {
+        "dbname": "UMG-40",
+        "rank": "b"
+      },
+      {
+        "dbname": "USG-90",
+        "rank": "c"
+      },
+      {
+        "dbname": "SL9",
+        "rank": "c"
+      }
+    ]
+  },
+  {
+    "type": "Sniper Rifle",
+    "entries": [
+      {
+        "dbname": "M2010 ESR",
+        "rank": "s"
+      },
+      {
+        "dbname": "SV-98",
+        "rank": "b"
+      },
+      {
+        "dbname": "PSR",
+        "rank": "c"
+      },
+      {
+        "dbname": "Mini Scout",
+        "rank": "c"
+      }
+    ]
+  },
+  {
+    "type": "DMR",
+    "entries": [
+      {
+        "dbname": "SVDM",
+        "rank": "b"
+      },
+      {
+        "dbname": "SVK-8.6",
+        "rank": "b"
+      },
+      {
+        "dbname": "M39 EMR",
+        "rank": "b"
+      },
+      {
+        "dbname": "LMR27",
+        "rank": "d"
+      }
+    ]
+  },
+  {
+    "type": "Shotgun",
+    "entries": [
+      {
+        "dbname": "M1014",
+        "rank": "b"
+      },
+      {
+        "dbname": "M87A1",
+        "rank": "b"
+      },
+      {
+        "dbname": "18.5KS-K",
+        "rank": "c"
+      },
+      {
+        "dbname": "DB-12",
+        "rank": "c"
+      }
+    ]
+  },
+  {
+    "type": "Secondary",
+    "entries": [
+      {
+        "dbname": "M44",
+        "rank": "a"
+      },
+      {
+        "dbname": "M45A1",
+        "rank": "b"
+      },
+      {
+        "dbname": "ES 5.7",
+        "rank": "c"
+      },
+      {
+        "dbname": "GGH-22",
+        "rank": "c"
+      },
+      {
+        "dbname": "P18",
+        "rank": "c"
+      },
+      {
+        "dbname": "M357 TRAIT",
+        "rank": "c"
+      }
+    ]
+  }
+]

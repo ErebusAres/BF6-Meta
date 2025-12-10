@@ -1,0 +1,1142 @@
+{
+  "weapon_baseline": {
+    "KORD 6P67": [
+      "415MM FACTORY",
+      "FOLDING VERTICAL",
+      "FMJ",
+      "SINGLE-PORT BRAKE",
+      "30RND MAGAZINE",
+      "CCO 2.00X"
+    ],
+    "b36a4": [
+      "480MM FACTORY",
+      "FMJ",
+      "30RND MAGAZINE",
+      "IRON SIGHTS"
+    ],
+    "nvo-228e": [
+      "Flash Hider",
+      "409mm Factory",
+      "Iron Sights",
+      "30RND Magazine",
+      "FMJ"
+    ],
+    "QBZ-192": [
+      "10.5\" FACTORY",
+      "FOLDING VERTICAL",
+      "FMJ",
+      "36RND MAGAZINE",
+      "CCO 2.00X",
+      "RAIL COVER"
+    ],
+    "RPKM": [
+      "590MM FACTORY",
+      "FOLDING VERTICAL",
+      "FMJ",
+      "FLASH HIDER",
+      "40RND MAGAZINE",
+      "MINI FLEX 1.00X"
+    ],
+    "L110": [
+      "349MM SB",
+      "CLASSIC GRIP POD",
+      "FMJ",
+      "5 MW GREEN",
+      "100RND BELT POUCH",
+      "R4T 2.00X"
+    ],
+    "GGH-22": [
+      "114MM FACTORY",
+      "5 MW RED",
+      "FMJ",
+      "15RND MAGAZINE",
+      "IRON SIGHTS"
+    ],
+    "USG-90": [
+      "SU-231 1.50X",
+      "Flash Hider",
+      "264MM FACTORY",
+      "50RND MAGAZINE",
+      "FMJ"
+    ],
+    "PW5A3": [
+      "225MM FACTORY",
+      "FOLDING VERTICAL",
+      "FMJ",
+      "30RND MAGAZINE",
+      "IRON SIGHTS"
+    ],
+    "UMG-40": [
+      "200MM FACTORY",
+      "FOLDING VERTICAL",
+      "FMJ",
+      "30RND MAGAZINE",
+      "R4T 2.00X"
+    ]
+  },
+  "weapon_changes": {
+    "KORD 6P67": {
+      "2": [
+        "FLASHLIGHT"
+      ],
+      "3": [
+        {
+          "name": "ALLOY VERTICAL",
+          "replaced": [
+            "FOLDING VERTICAL"
+          ]
+        }
+      ],
+      "6": [
+        {
+          "name": "RIBBED VERTICAL",
+          "replaced": [
+            "ALLOY VERTICAL"
+          ]
+        }
+      ],
+      "7": [
+        {
+          "name": "415MM PROTOTYPE",
+          "replaced": [
+            "415MM FACTORY"
+          ]
+        }
+      ],
+      "8": [
+        {
+          "name": "6H64 VERTICAL",
+          "replaced": [
+            "RIBBED VERTICAL"
+          ]
+        }
+      ],
+      "12": [
+        {
+          "name": "RED LASER",
+          "replaced": [
+            "FLASHLIGHT"
+          ]
+        }
+      ],
+      "13": [
+        {
+          "name": "36RND MAGAZINE",
+          "replaced": [
+            "30RND MAGAZINE"
+          ]
+        }
+      ],
+      "15": [
+        {
+          "name": "3VZR 1.75X",
+          "replaced": [
+            "CCO 2.00X"
+          ]
+        }
+      ],
+      "16": [
+        {
+          "name": "CLASSIC VERTICAL",
+          "replaced": [
+            "6H64 VERTICAL"
+          ]
+        },
+        {
+          "name": "RO-M 1.75X",
+          "replaced": [
+            "3VZR 1.75X"
+          ]
+        }
+      ],
+      "20": [
+        {
+          "name": "COMPENSATED BRAKE",
+          "replaced": [
+            "SINGLE-PORT BRAKE"
+          ]
+        },
+        {
+          "remove": "FLASHLIGHT"
+        }
+      ],
+      "24": [
+        {
+          "name": "STANDARD SUPPRESSOR",
+          "replaced": [
+            "COMPENSATED BRAKE"
+          ]
+        }
+      ],
+      "32": [
+        {
+          "name": "LONG SUPPRESSOR",
+          "replaced": [
+            "STANDARD SUPPRESSOR"
+          ]
+        }
+      ]
+    },
+    "b36a4": {
+      "1": [
+        "FOLDING VERTICAL"
+      ],
+      "2": [
+        {
+          "name": "MINI FLEX 1.00X",
+          "replaced": [
+            "IRON SIGHTS"
+          ]
+        },
+        {
+          "name": "ALLOY VERTICAL",
+          "replaced": [
+            "FOLDING VERTICAL"
+          ]
+        }
+      ],
+      "5": [
+        "510MM FLUTED",
+        "30RND FAST MAG"
+      ],
+      "9": [
+        {
+          "name": "DOUBLE-PORT BRAKE",
+          "replaced": [
+            "FLASH HIDER"
+          ]
+        }
+      ],
+      "15": [
+        "5 MW RED"
+      ],
+      "17": [
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "5 MW RED"
+          ]
+        }
+      ],
+      "18": [
+        "FOLDING STUBBY"
+      ],
+      "19": [
+        {
+          "name": "RIBBED STUBBY",
+          "replaced": [
+            "FOLDING STUBBY"
+          ]
+        }
+      ],
+      "22": [
+        {
+          "name": "50 MW GREEN",
+          "replaced": [
+            "5 MW GREEN"
+          ]
+        }
+      ],
+      "33": [
+        {
+          "name": "50 MW BLUE",
+          "replaced": [
+            "50 MW GREEN"
+          ]
+        }
+      ]
+    },
+    "nvo-228e": {
+      "2": [
+        {
+          "name": "Folding Vertical"
+        },
+        {
+          "name": "Mini Flex 1.00x",
+          "replaced": "Iron Sights"
+        }
+      ],
+      "3": [
+        {
+          "name": "30RND Fast Mag",
+          "replaced": "30RND Magazine"
+        }
+      ],
+      "4": [
+        {
+          "name": "Single-Port Brake",
+          "replaced": "Flash Hider"
+        }
+      ],
+      "6": [
+        {
+          "name": "5 MW Green"
+        }
+      ],
+      "9": [
+        {
+          "name": "Alloy Vertical",
+          "replaced": "Folding Vertical"
+        }
+      ],
+      "10": [
+        {
+          "name": "458mm Custom",
+          "replaced": "409mm Factory"
+        }
+      ],
+      "11": [
+        {
+          "name": "Double-Port Brake",
+          "replaced": "Single-Port Brake"
+        }
+      ],
+      "16": [
+        {
+          "name": "6H64 Vertical",
+          "replaced": "Alloy Vertical"
+        }
+      ],
+      "17": [
+        {
+          "name": "Baker 3.00x",
+          "replaced": "Mini Flex 1.00x"
+        }
+      ],
+      "22": [
+        {
+          "name": "50 MW Green",
+          "replaced": "5 MW Green"
+        }
+      ],
+      "32": [
+        {
+          "name": "120 MW Blue",
+          "replaced": "50 MW Green"
+        }
+      ],
+      "38": [
+        {
+          "name": "Compensated Brake",
+          "replaced": "Double-Port Brake"
+        }
+      ]
+    },
+    "QBZ-192": {
+      "2": [
+        "LINEAR COMP"
+      ],
+      "3": [
+        {
+          "name": "ALLOY VERTICAL",
+          "replaced": [
+            "FOLDING VERTICAL"
+          ]
+        },
+        {
+          "name": "RO-M 1.75X",
+          "replaced": [
+            "CCO 2.00X"
+          ]
+        }
+      ],
+      "5": [
+        "5 MW RED"
+      ],
+      "6": [
+        {
+          "name": "RIBBED VERTICAL",
+          "replaced": [
+            "ALLOY VERTICAL"
+          ]
+        }
+      ],
+      "8": [
+        {
+          "name": "FLASHLIGHT",
+          "slot": 5
+        }
+      ],
+      "9": [
+        {
+          "name": "FOLDING STUBBY",
+          "replaced": [
+            "RIBBED VERTICAL"
+          ]
+        }
+      ],
+      "12": [
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "5 MW RED"
+          ]
+        }
+      ],
+      "14": [
+        {
+          "name": "POLYMER CASE",
+          "replaced": [
+            "FMJ"
+          ]
+        }
+      ],
+      "16": [
+        {
+          "name": "14.5\" COMMON",
+          "replaced": [
+            "10.5\" FACTORY"
+          ]
+        },
+        {
+          "remove": "5 MW GREEN"
+        }
+      ],
+      "18": [
+        {
+          "name": "SLIM ANGLED",
+          "replaced": [
+            "FOLDING STUBBY"
+          ]
+        }
+      ],
+      "23": [
+        {
+          "name": "CANTED STUBBY",
+          "replaced": [
+            "SLIM ANGLED"
+          ]
+        },
+        {
+          "name": "FMJ",
+          "replaced": [
+            "POLYMER CASE"
+          ]
+        }
+      ],
+      "25": [
+        {
+          "name": "FULL ANGLED",
+          "replaced": [
+            "CANTED STUBBY"
+          ]
+        },
+        {
+          "name": "POLYMER CASE",
+          "replaced": [
+            "FMJ"
+          ]
+        }
+      ],
+      "36": [
+        {
+          "name": "STIPPLED STUBBY",
+          "replaced": [
+            "FULL ANGLED"
+          ]
+        },
+        {
+          "remove": "5 MW GREEN"
+        }
+      ],
+      "39": [
+        {
+          "name": "LOW-PROFILE STUBBY",
+          "replaced": [
+            "STIPPLED STUBBY"
+          ]
+        },
+        {
+          "name": "FMJ",
+          "replaced": [
+            "POLYMER CASE"
+          ]
+        },
+        {
+          "remove": "RAIL COVER"
+        }
+      ]
+    },
+    "RPKM": {
+      "2": [
+        {
+          "name": "RO-M 1.75X",
+          "replaced": [
+            "MINI FLEX 1.00X"
+          ]
+        }
+      ],
+      "4": [
+        {
+          "name": "ALLOY VERTICAL",
+          "replaced": [
+            "FOLDING VERTICAL"
+          ]
+        }
+      ],
+      "5": [
+        "5 MW RED"
+      ],
+      "6": [
+        {
+          "name": "RIBBED VERTICAL",
+          "replaced": [
+            "ALLOY VERTICAL"
+          ]
+        }
+      ],
+      "8": [
+        "FLASHLIGHT"
+      ],
+      "9": [
+        {
+          "name": "FOLDING STUBBY",
+          "replaced": [
+            "RIBBED VERTICAL"
+          ]
+        }
+      ],
+      "12": [
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "5 MW RED"
+          ]
+        }
+      ],
+      "18": [
+        {
+          "name": "SLIM ANGLED",
+          "replaced": [
+            "FOLDING STUBBY"
+          ]
+        },
+        {
+          "remove": "FLASHLIGHT"
+        }
+      ],
+      "21": [
+        {
+          "name": "600MM TABUK",
+          "replaced": [
+            "590MM FACTORY"
+          ]
+        }
+      ],
+      "23": [
+        {
+          "name": "CANTED STUBBY",
+          "replaced": [
+            "SLIM ANGLED"
+          ]
+        },
+        {
+          "remove": "5 MW GREEN"
+        }
+      ],
+      "25": [
+        {
+          "name": "FULL ANGLED",
+          "replaced": [
+            "CANTED STUBBY"
+          ]
+        },
+        {
+          "name": "POLYMER CASE",
+          "replaced": [
+            "FMJ"
+          ]
+        }
+      ],
+      "35": [
+        {
+          "name": "STIPPLED STUBBY",
+          "replaced": [
+            "FULL ANGLED"
+          ]
+        },
+        {
+          "name": "FMJ",
+          "replaced": [
+            "POLYMER CASE"
+          ]
+        }
+      ],
+      "38": [
+        {
+          "name": "590MM FACTORY",
+          "replaced": [
+            "600MM TABUK"
+          ]
+        },
+        {
+          "name": "ADJUSTABLE ANGLED",
+          "replaced": [
+            "STIPPLED STUBBY"
+          ]
+        },
+        {
+          "name": "SYNTHETIC TIP",
+          "replaced": [
+            "FMJ"
+          ]
+        },
+        {
+          "name": "LIGHTENED SUPPRESSOR",
+          "replaced": [
+            "FLASH HIDER"
+          ]
+        }
+      ]
+    },
+    "L110": {
+      "2": [
+        "SINGLE-PORT BRAKE"
+      ],
+      "3": [
+        {
+          "name": "465MM LB",
+          "replaced": [
+            "349MM SB"
+          ]
+        }
+      ],
+      "5": [
+        {
+          "name": "RO-M 1.75X",
+          "replaced": [
+            "R4T 2.00X"
+          ]
+        }
+      ],
+      "7": [
+        {
+          "name": "LINEAR COMP",
+          "replaced": [
+            "SINGLE-PORT BRAKE"
+          ]
+        }
+      ],
+      "8": [
+        "FLASHLIGHT"
+      ],
+      "9": [
+        {
+          "name": "FOLDING STUBBY",
+          "replaced": [
+            "CLASSIC GRIP POD"
+          ]
+        }
+      ],
+      "15": [
+        {
+          "name": "HOLLOW POINT",
+          "replaced": [
+            "FMJ"
+          ]
+        }
+      ],
+      "16": [
+        {
+          "name": "SLIM ANGLED",
+          "replaced": [
+            "FOLDING STUBBY"
+          ]
+        }
+      ],
+      "17": [
+        {
+          "name": "FMJ",
+          "replaced": [
+            "HOLLOW POINT"
+          ]
+        },
+        {
+          "name": "COMPENSATED BRAKE",
+          "replaced": [
+            "LINEAR COMP"
+          ]
+        }
+      ],
+      "18": [
+        {
+          "name": "50 MW GREEN",
+          "replaced": [
+            "5 MW GREEN"
+          ]
+        },
+        {
+          "remove": "FLASHLIGHT"
+        }
+      ],
+      "21": [
+        {
+          "name": "CANTED STUBBY",
+          "replaced": [
+            "SLIM ANGLED"
+          ]
+        }
+      ],
+      "23": [
+        {
+          "name": "STANDARD SUPPRESSOR",
+          "replaced": [
+            "COMPENSATED BRAKE"
+          ]
+        }
+      ],
+      "24": [
+        {
+          "name": "FULL ANGLED",
+          "replaced": [
+            "CANTED STUBBY"
+          ]
+        }
+      ],
+      "28": [
+        {
+          "name": "LONG SUPPRESSOR",
+          "replaced": [
+            "STANDARD SUPPRESSOR"
+          ]
+        }
+      ],
+      "35": [
+        {
+          "name": "STIPPLED STUBBY",
+          "replaced": [
+            "FULL ANGLED"
+          ]
+        },
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "50 MW GREEN"
+          ]
+        }
+      ],
+      "37": [
+        {
+          "name": "349MM FLUTED",
+          "replaced": [
+            "465MM LB"
+          ]
+        },
+        {
+          "remove": "50 MW GREEN"
+        }
+      ],
+      "39": [
+        {
+          "name": "FULL ANGLED",
+          "replaced": [
+            "STIPPLED STUBBY"
+          ]
+        },
+        {
+          "name": "LIGHTENED SUPPRESSOR",
+          "replaced": [
+            "LONG SUPPRESSOR"
+          ]
+        }
+      ]
+    },
+    "GGH-22": {
+      "2": [
+        {
+          "name": "ROX 1.50X",
+          "replaced": [
+            "IRON SIGHTS"
+          ]
+        }
+      ],
+      "4": [
+        "IMPROVED MAG CATCH"
+      ],
+      "5": [
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "5 MW RED"
+          ]
+        }
+      ],
+      "7": [
+        "SINGLE-PORT BRAKE"
+      ],
+      "9": [
+        {
+          "name": "114MM PENCIL",
+          "replaced": [
+            "114MM FACTORY"
+          ]
+        },
+        {
+          "remove": "IMPROVED MAG CATCH"
+        }
+      ],
+      "12": [
+        {
+          "name": "114MM FACTORY",
+          "replaced": [
+            "114MM PENCIL"
+          ]
+        },
+        "IMPROVED MAG CATCH",
+        {
+          "name": "20RND MAGAZINE",
+          "replaced": [
+            "15RND MAGAZINE"
+          ]
+        },
+        {
+          "remove": "5 MW GREEN"
+        }
+      ],
+      "15": [
+        {
+          "name": "114MM PENCIL",
+          "replaced": [
+            "114MM FACTORY"
+          ]
+        },
+        {
+          "name": "STANDARD SUPPRESSOR",
+          "replaced": [
+            "SINGLE-PORT BRAKE"
+          ]
+        },
+        {
+          "name": "15RND MAGAZINE",
+          "replaced": [
+            "20RND MAGAZINE"
+          ]
+        },
+        {
+          "remove": "IMPROVED MAG CATCH"
+        }
+      ],
+      "18": [
+        {
+          "name": "A-P2 1.75X",
+          "replaced": [
+            "ROX 1.50X"
+          ]
+        }
+      ]
+    },
+    "USG-90": {
+      "1": [
+        {
+          "name": "Single-Port Brake",
+          "replaced": [
+            "Flash Hider"
+          ]
+        }
+      ],
+      "4": [
+        {
+          "name": "OSA-7 1.00X",
+          "replaced": [
+            "SU-231 1.50X"
+          ]
+        }
+      ],
+      "5": [
+        {
+          "name": "5 MW RED"
+        }
+      ],
+      "11": [
+        {
+          "name": "Double-Port Brake",
+          "replaced": [
+            "Single-Port Brake"
+          ]
+        }
+      ],
+      "12": [
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "5 MW RED"
+          ]
+        }
+      ],
+      "13": [
+        {
+          "name": "Improved Mag Catch"
+        }
+      ],
+      "16": [
+        {
+          "name": "Compensated Brake",
+          "replaced": [
+            "Double-Port Brake"
+          ]
+        }
+      ],
+      "17": [
+        {
+          "name": "Polymer Case",
+          "replaced": [
+            "FMJ"
+          ]
+        }
+      ],
+      "18": [
+        {
+          "name": "50 MW GREEN",
+          "replaced": [
+            "5 MW GREEN"
+          ]
+        }
+      ],
+      "36": [
+        {
+          "name": "120 MW BLUE",
+          "replaced": [
+            "50 MW GREEN"
+          ]
+        }
+      ],
+      "38": [
+        {
+          "name": "Lightened Suppressor",
+          "replaced": [
+            "Compensated Brake"
+          ]
+        }
+      ]
+    },
+    "PW5A3": {
+      "3": [
+        {
+          "name": "ALLOY VERTICAL",
+          "replaced": [
+            "FOLDING VERTICAL"
+          ]
+        }
+      ],
+      "5": [
+        {
+          "name": "30RND FAST MAG",
+          "replaced": [
+            "30RND MAGAZINE"
+          ]
+        }
+      ],
+      "6": [
+        {
+          "name": "RIBBED VERTICAL",
+          "replaced": [
+            "ALLOY VERTICAL"
+          ]
+        }
+      ],
+      "9": [
+        "STANDARD SUPPRESSOR"
+      ],
+      "12": [
+        "245MM CUSTOM",
+        "IMPROVED MAG CATCH"
+      ],
+      "14": [
+        {
+          "name": "6H64 VERTICAL",
+          "replaced": [
+            "RIBBED VERTICAL"
+          ]
+        }
+      ],
+      "21": [
+        {
+          "name": "CLASSIC VERTICAL",
+          "replaced": [
+            "6H64 VERTICAL"
+          ]
+        }
+      ],
+      "28": [
+        {
+          "name": "6H64 VERTICAL",
+          "replaced": [
+            "CLASSIC VERTICAL"
+          ]
+        },
+        {
+          "name": "40RND MAGAZINE",
+          "replaced": [
+            "30RND FAST MAG"
+          ]
+        }
+      ]
+    },
+    "UMG-40": {
+      "3": [
+        "5 MW RED"
+      ],
+      "7": [
+        {
+          "name": "ALLOY VERTICAL",
+          "replaced": [
+            "FOLDING VERTICAL"
+          ]
+        },
+        {
+          "name": "A-P2 1.75X",
+          "replaced": [
+            "R4T 2.00X"
+          ]
+        }
+      ],
+      "8": [
+        "LINEAR COMP"
+      ],
+      "11": [
+        {
+          "name": "RIBBED VERTICAL",
+          "replaced": [
+            "ALLOY VERTICAL"
+          ]
+        }
+      ],
+      "12": [
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "5 MW RED"
+          ]
+        }
+      ],
+      "14": [
+        {
+          "name": "FOLDING STUBBY",
+          "replaced": [
+            "RIBBED VERTICAL"
+          ]
+        },
+        "RO-M 1.75X"
+      ],
+      "17": [
+        {
+          "name": "SLIM ANGLED",
+          "replaced": [
+            "FOLDING STUBBY"
+          ]
+        }
+      ],
+      "18": [
+        {
+          "name": "HOLLOW POINT",
+          "replaced": [
+            "FMJ"
+          ]
+        }
+      ],
+      "19": [
+        {
+          "name": "COMPENSATED BRAKE",
+          "replaced": [
+            "LINEAR COMP"
+          ]
+        }
+      ],
+      "22": [
+        {
+          "name": "FMJ",
+          "replaced": [
+            "HOLLOW POINT"
+          ]
+        },
+        {
+          "name": "FLASHLIGHT",
+          "slot": 8
+        }
+      ],
+      "23": [
+        "50 MW GREEN"
+      ],
+      "24": [
+        {
+          "name": "STANDARD SUPPRESSOR",
+          "replaced": [
+            "COMPENSATED BRAKE"
+          ]
+        }
+      ],
+      "26": [
+        {
+          "name": "305MM CUSTOM",
+          "replaced": [
+            "200MM FACTORY"
+          ]
+        },
+        {
+          "remove": "FLASHLIGHT"
+        }
+      ],
+      "28": [
+        {
+          "name": "LONG SUPPRESSOR",
+          "replaced": [
+            "STANDARD SUPPRESSOR"
+          ]
+        }
+      ],
+      "29": [
+        {
+          "name": "CANTED STUBBY",
+          "replaced": [
+            "SLIM ANGLED"
+          ]
+        },
+        {
+          "name": "5 MW GREEN",
+          "replaced": [
+            "50 MW GREEN"
+          ]
+        }
+      ],
+      "36": [
+        {
+          "name": "STIPPLED STUBBY",
+          "replaced": [
+            "CANTED STUBBY"
+          ]
+        },
+        {
+          "remove": "5 MW GREEN"
+        }
+      ],
+      "37": [
+        {
+          "name": "LIGHTENED SUPPRESSOR",
+          "replaced": [
+            "LONG SUPPRESSOR"
+          ]
+        }
+      ],
+      "39": [
+        {
+          "name": "SLIM ANGLED",
+          "replaced": [
+            "STIPPLED STUBBY"
+          ]
+        },
+        {
+          "name": "SYNTHETIC TIP",
+          "replaced": [
+            "FMJ"
+          ]
+        },
+        {
+          "name": "STANDARD SUPPRESSOR",
+          "replaced": [
+            "LIGHTENED SUPPRESSOR"
+          ]
+        }
+      ]
+    }
+  }
+}
