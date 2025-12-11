@@ -1,56 +1,56 @@
 {
   "KORD 6P67": {
     "name": "KORD 6P67",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "kord.avif",
     "maxLevel": 40,
     "apMax": 100
   },
   "SOR-556 MK2": {
     "name": "SOR-556 MK2",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "sor-556.avif",
     "maxLevel": 40,
     "apMax": 100
   },
   "B36A4": {
     "name": "B36A4",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "b36a4.avif",
     "maxLevel": 40,
     "apMax": 100
   },
   "L85A3": {
     "name": "L85A3",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "l85a3.avif",
     "maxLevel": 40,
     "apMax": 100
   },
   "M433": {
     "name": "M433",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "m433.avif",
     "maxLevel": 40,
     "apMax": 100
   },
   "NVO-228E": {
     "name": "NVO-228E",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "nvo-228e.avif",
     "maxLevel": 40,
     "apMax": 100
   },
   "AK4D": {
     "name": "AK4D",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "ak4d.avif",
     "maxLevel": 40,
     "apMax": 100
   },
   "TR-7": {
     "name": "TR-7",
-    "type": "Assault Rifle",
+    "type": "Assault",
     "image": "tr-7.avif",
     "maxLevel": 40,
     "apMax": 100

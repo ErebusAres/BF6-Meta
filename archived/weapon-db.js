@@ -5,14 +5,14 @@
       : {};
 
   const weaponMetadata = {
-    'KORD 6P67': { name: 'KORD 6P67', type: 'Assault Rifle', image: 'kord.avif', maxLevel: 40, apMax: 100 },
-    'SOR-556 MK2': { name: 'SOR-556 MK2', type: 'Assault Rifle', image: 'sor-556.avif', maxLevel: 40, apMax: 100 },
-    B36A4: { name: 'B36A4', type: 'Assault Rifle', image: 'b36a4.avif', maxLevel: 40, apMax: 100 },
-    L85A3: { name: 'L85A3', type: 'Assault Rifle', image: 'l85a3.avif', maxLevel: 40, apMax: 100 },
-    M433: { name: 'M433', type: 'Assault Rifle', image: 'm433.avif', maxLevel: 40, apMax: 100 },
-    'NVO-228E': { name: 'NVO-228E', type: 'Assault Rifle', image: 'nvo-228e.avif', maxLevel: 40, apMax: 100 },
-    AK4D: { name: 'AK4D', type: 'Assault Rifle', image: 'ak4d.avif', maxLevel: 40, apMax: 100 },
-    'TR-7': { name: 'TR-7', type: 'Assault Rifle', image: 'tr-7.avif', maxLevel: 40, apMax: 100 },
+    'KORD 6P67': { name: 'KORD 6P67', type: 'Assault', image: 'kord.avif', maxLevel: 40, apMax: 100 },
+    'SOR-556 MK2': { name: 'SOR-556 MK2', type: 'Assault', image: 'sor-556.avif', maxLevel: 40, apMax: 100 },
+    B36A4: { name: 'B36A4', type: 'Assault', image: 'b36a4.avif', maxLevel: 40, apMax: 100 },
+    L85A3: { name: 'L85A3', type: 'Assault', image: 'l85a3.avif', maxLevel: 40, apMax: 100 },
+    M433: { name: 'M433', type: 'Assault', image: 'm433.avif', maxLevel: 40, apMax: 100 },
+    'NVO-228E': { name: 'NVO-228E', type: 'Assault', image: 'nvo-228e.avif', maxLevel: 40, apMax: 100 },
+    AK4D: { name: 'AK4D', type: 'Assault', image: 'ak4d.avif', maxLevel: 40, apMax: 100 },
+    'TR-7': { name: 'TR-7', type: 'Assault', image: 'tr-7.avif', maxLevel: 40, apMax: 100 },
     M4A1: { name: 'M4A1', type: 'Carbine', image: 'm4a1.avif', maxLevel: 40, apMax: 100 },
     M277: { name: 'M277', type: 'Carbine', image: 'm277.avif', maxLevel: 40, apMax: 100 },
     'AK-205': { name: 'AK-205', type: 'Carbine', image: 'ak-205.avif', maxLevel: 40, apMax: 100 },
@@ -57,7 +57,7 @@
     'M357 TRAIT': { name: 'M357 TRAIT', type: 'Secondary', image: 'm357trait.avif', maxLevel: 40, apMax: 60 },
   };
 
-  // Assault Rifles
+  // Assault
   target['KORD 6P67'] = {
     attachments: {
       // Scopes

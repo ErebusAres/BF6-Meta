@@ -958,7 +958,7 @@ Viable = c
 // Edit the entries below (or add new ones) to update rank/TR for each weapon.
 const MANUAL_RANKING_GROUPS = [
   {
-    type: 'Assault Rifle',
+    type: 'Assault',
     entries: [
       { dbname: 'KORD 6P67', rank: 's' },
       { dbname: 'B36A4', rank: 's' },

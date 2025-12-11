@@ -236,7 +236,7 @@ const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battl
     }
 
     const TYPE_ORDER = [
-      'ASSAULT RIFLE',
+      'ASSAULT',
       'CARBINE',
       'DMR',
       'LMG',
