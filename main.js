@@ -84,6 +84,21 @@
   window.weapon_changes = (buildsMastery && (buildsMastery.weapon_changes || buildsMastery.changes)) || {};
   window.weaponConfigs = Array.isArray(buildsMain) ? buildsMain : [];
   const weaponConfigs = window.weaponConfigs;
+  const rankingIndex = new Map();
+  (ranking || []).forEach((group) => {
+    (group.entries || []).forEach((entry) => {
+      const key = (entry.dbname || entry.id || '').toString().trim().toUpperCase();
+      if (key) rankingIndex.set(key, { rank: entry.rank, type: group.type });
+    });
+  });
+  weaponConfigs.forEach((cfg) => {
+    const key = (cfg.dbname || cfg.name || cfg.id || '').toString().trim().toUpperCase();
+    const info = key ? rankingIndex.get(key) : null;
+    if (info) {
+      if (!cfg.rank && info.rank) cfg.rank = info.rank;
+      if (!cfg.type && info.type) cfg.type = info.type;
+    }
+  });
 const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
     const DEFAULT_BUILD_UPDATED_AT = '11/23/2025';
     const DEFAULT_BASELINE_CHANGES_UPDATED_AT = '11/18/2025';
@@ -1320,7 +1335,20 @@ const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battl
 
       handleDragStart(event) {
         // Do not start reordering when dragging from interactive header controls or image
-        if (event && event.target && event.target.closest && (event.target.closest('.header-controls') || event.target.closest('.weapon-image') || event.target.closest('.weapon-image-wrap') || event.target.closest('.control-stack') || event.target.closest('.collapse-box') || event.target.closest('.favorite-toggle'))) {
+        if (
+          event &&
+          event.target &&
+          event.target.closest &&
+          (event.target.closest('.header-controls') ||
+            event.target.closest('.header-level-wrap') ||
+            event.target.closest('.header-slider-row') ||
+            event.target.closest('.level-stepper') ||
+            event.target.closest('.weapon-image') ||
+            event.target.closest('.weapon-image-wrap') ||
+            event.target.closest('.control-stack') ||
+            event.target.closest('.collapse-box') ||
+            event.target.closest('.favorite-toggle'))
+        ) {
           event.preventDefault();
           return;
         }
@@ -2358,7 +2386,7 @@ const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battl
       render() {
         const level = this.state.level;
         if (this.levelPillEl) this.levelPillEl.textContent = `Level ${level}`;
-        if (this.headerLevelEl) this.headerLevelEl.textContent = `LEVEL ${level}`;
+        if (this.headerLevelEl) this.headerLevelEl.textContent = `LV. ${level}`;
         if (this.levelDisplayEl) this.levelDisplayEl.textContent = `Viewing mastery unlocks at level ${level}.`;
         if (this.levelDownBtn) this.levelDownBtn.disabled = level === this.minLevel;
         if (this.levelUpBtn) this.levelUpBtn.disabled = level === this.maxLevel;
@@ -2463,18 +2491,36 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
         <p class="side-nav-empty-note">Tap the star on a weapon to pin it HERE.</p>
         </div>
       `;
-      attachFavoritesEmptyInteractions(box);
-      return box;
-    }
+    attachFavoritesEmptyInteractions(box);
+    return box;
+  }
+
+  function rankWeight(tracker) {
+    const raw = (tracker?.config?.rank || tracker?.rank || '').toString().trim().toLowerCase();
+    const compact = raw.replace(/[^a-z]/g, '');
+    const first = compact.charAt(0);
+    if (compact === 'meta' || first === 's' || first === 'm') return 0;
+    if (first === 'a') return 1;
+    if (first === 'b') return 2;
+    if (first === 'c') return 3;
+    if (first === 'd') return 4;
+    if (first === 'f') return 5;
+    return 10;
+  }
+
+  function compareTrackerOrder(a, b) {
+    const aRank = rankWeight(a);
+    const bRank = rankWeight(b);
+    if (aRank !== bRank) return aRank - bRank;
+    const aTr = Number.isFinite(a?.typeRatingValue) ? a.typeRatingValue : Number.MAX_SAFE_INTEGER;
+    const bTr = Number.isFinite(b?.typeRatingValue) ? b.typeRatingValue : Number.MAX_SAFE_INTEGER;
+    if (aTr !== bTr) return aTr - bTr;
+    return (a?.displayName || '').localeCompare(b?.displayName || '');
+  }
 
   function deriveDefaultTypeOrder(trackersList) {
     const trackersCopy = [...trackersList];
-    trackersCopy.sort((a, b) => {
-      const aIndex = TYPE_INDEX[a.typeKey] ?? TYPE_ORDER.length;
-      const bIndex = TYPE_INDEX[b.typeKey] ?? TYPE_ORDER.length;
-      if (aIndex !== bIndex) return aIndex - bIndex;
-      return (a.displayName || '').localeCompare(b.displayName || '');
-    });
+    trackersCopy.sort(compareTrackerOrder);
     return trackersCopy.map((tracker) => tracker.id);
   }
 
@@ -2500,10 +2546,10 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
       updateTypeFilterSelection();
     }
 
-    function computeBaseOrder(idToTracker) {
-      const storedOrder = storage.getOrder();
-      const baseOrder = [];
-      const seen = new Set();
+  function computeBaseOrder(idToTracker) {
+    const storedOrder = storage.getOrder();
+    const baseOrder = [];
+    const seen = new Set();
       for (const id of storedOrder) {
         if (idToTracker.has(id) && !seen.has(id)) {
           baseOrder.push(id);
@@ -2733,46 +2779,17 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
     }
 
     function renderWeaponList() {
-      const storedOrder = storage.getOrder();
-      const idToTracker = trackerMap;
-      const baseOrder = computeBaseOrder(idToTracker);
-
-      const favorites = baseOrder.filter((id) => idToTracker.get(id).isFavorite());
-      const others = baseOrder.filter((id) => !idToTracker.get(id).isFavorite());
-      const finalOrder = favorites.concat(others);
-
-      const storedMatches =
-        storedOrder.length === finalOrder.length &&
-        finalOrder.every((id, index) => storedOrder[index] === id);
-      if (!storedMatches) {
-        storage.setOrder(finalOrder);
-      }
+      const sortedTrackers = [...trackers].sort(compareTrackerOrder);
+      const finalOrder = sortedTrackers.map((tracker) => tracker.id);
+      storage.setOrder(finalOrder);
 
       weaponListEl.innerHTML = '';
       let displayOrder = finalOrder;
       const isFavoritesFilter = currentTypeFilter === FAVORITES_FILTER;
       if (isFavoritesFilter) {
-        displayOrder = finalOrder.filter((id) => {
-          const tracker = idToTracker.get(id);
-          return tracker && tracker.isFavorite();
-        });
+        displayOrder = sortedTrackers.filter((tracker) => tracker.isFavorite()).map((tracker) => tracker.id);
       } else if (currentTypeFilter) {
-        const filtered = finalOrder
-          .map((id) => idToTracker.get(id))
-          .filter((tracker) => tracker && tracker.typeKey === currentTypeFilter);
-        filtered.sort((a, b) => {
-          const aVal = Number.isFinite(a.typeRatingValue) ? a.typeRatingValue : Number.MAX_SAFE_INTEGER;
-          const bVal = Number.isFinite(b.typeRatingValue) ? b.typeRatingValue : Number.MAX_SAFE_INTEGER;
-          if (aVal !== bVal) return aVal - bVal;
-          return (a.displayName || '').localeCompare(b.displayName || '');
-        });
-        displayOrder = filtered.map((tracker) => tracker.id);
-      } else {
-        const defaultOrder = deriveDefaultTypeOrder(trackers);
-        const matchesDefault =
-          defaultOrder.length === finalOrder.length &&
-          defaultOrder.every((id, index) => finalOrder[index] === id);
-        displayOrder = matchesDefault ? defaultOrder : finalOrder;
+        displayOrder = sortedTrackers.filter((tracker) => tracker && tracker.typeKey === currentTypeFilter).map((tracker) => tracker.id);
       }
 
       const visibleIdSet = new Set(displayOrder);
@@ -3144,4 +3161,3 @@ const DEBUG_STATUS_DEFAULT = 'Available commands: chips';
       applyScale(initial);
     })();
 })();
-

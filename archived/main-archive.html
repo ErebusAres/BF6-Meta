@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BF6 Mastery Loadout Tracker</title>
+    <link rel="stylesheet" href="style/styles.css" />
+</head>
+<body>
+  <div class="layout-grid">
+    <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
+    <div class="app-shell">
+      <div class="app">
+        <header class="page-header">
+          <h1 class="page-title">Mastery Loadout Tracker</h1>
+          <p class="page-subtitle">Track multiple mastery weapons, compare their attachment unlocks, and keep your favorites pinned for fast reference.</p>
+        </header>
+        <div class="weapon-list" id="weaponList"></div>
+      </div>
+    </div>
+    <section class="options-panel ui-scale-panel" id="uiScalePanel" role="region" aria-label="Options">
+      <div class="options-header">
+        <span class="options-title">Options</span>
+        <button class="options-gear" id="optionsGearButton" type="button" aria-expanded="true" aria-controls="optionsBody" aria-label="Hide options">
+          <span aria-hidden="true" class="gear-symbol">⚙️</span>
+          <span class="sr-only">Toggle options</span>
+        </button>
+      </div>
+      <div class="options-body" id="optionsBody">
+        <div class="option-card ui-scale-card">
+          <div class="ui-scale-heading">
+            <span class="option-heading">UI Scale</span>
+            <output class="ui-scale-value" id="uiScaleValue" for="uiScaleSlider">100%</output>
+          </div>
+          <input type="range" class="ui-scale-slider" id="uiScaleSlider" min="50" max="200" step="5" value="100" aria-label="UI scale" />
+        </div>
+        <button class="option-card options-toggle" type="button" id="reduceAnimationsToggle" aria-pressed="false">
+          <span class="option-heading">Reduce Animations</span>
+          <span class="toggle-switch" aria-hidden="true"></span>
+        </button>
+        <div class="filter-section option-card">
+          <div class="filter-heading">Filter by Type</div>
+          <div class="type-filter-list" id="typeFilterList" role="tablist"></div>
+        </div>
+      </div>
+    </section>
+    <section class="debug-panel" id="debugPanel" role="region" aria-label="Debug console" hidden>
+      <div class="debug-panel-header">
+        <span class="options-title">Debug</span>
+        <button class="debug-close" type="button" id="debugPanelClose" aria-label="Hide debug console">&times;</button>
+      </div>
+      <div class="debug-command-row">
+        <label for="debugCommandInput">Command</label>
+        <div class="debug-command-input">
+          <input id="debugCommandInput" type="text" placeholder="Type command (e.g., chips) and press Enter" autocomplete="off" spellcheck="false" />
+          <span class="debug-hint">Press '/' to focus</span>
+        </div>
+      </div>
+      <div class="debug-status" id="debugStatusMessage" role="status" aria-live="polite">Available commands: chips</div>
+      <div class="debug-card-list" id="debugCardList" role="presentation"></div>
+    </section>
+  </div>
+  <button class="options-floating-gear" id="optionsFloatingButton" type="button" aria-label="Show options" hidden>
+    <span class="sr-only">Show options</span>
+    <span aria-hidden="true" class="gear-symbol">⚙️</span>
+  </button>
+  <template id="weaponTemplate">
+    <section class="weapon-card" tabindex="0">
+      <div class="weapon-header" draggable="true">
+        <button class="drag-handle" type="button" title="Drag to reorder" aria-label="Drag to reorder" draggable="true">
+          <span aria-hidden="true">&#9776;</span>
+        </button>
+        <div class="control-stack">
+          <button class="collapse-box" type="button" aria-label="Toggle collapse" aria-expanded="true">&#9662;</button>
+          <button class="favorite-toggle" type="button" aria-pressed="false" title="Toggle favorite">
+            <span aria-hidden="true">&#9734;</span>
+          </button>
+        </div>
+        <div class="weapon-header-text" tabindex="0" role="button" aria-label="Toggle collapse" aria-expanded="true">
+          <div class="weapon-name"></div>
+          <div class="weapon-meta-row">
+            <span class="meta-chip type-chip"></span>
+            <span class="chip-flame-wrap">
+              <canvas class="chip-flame-canvas" aria-hidden="true"></canvas>
+              <span class="chip rank-chip"></span>
+            </span>
+            <span class="meta-chip range-chip"></span>
+          </div>
+        </div>
+        <div class="weapon-visual">
+          <div class="weapon-image-wrap placeholder">
+            <img class="weapon-image" alt="" loading="lazy" draggable="false" />
+            <div class="weapon-image-ph">No Image Yet</div>
+          </div>
+          <div class="header-level-wrap">
+            <div class="header-level-row">
+              <span class="header-level" aria-live="polite">LV. 1</span>
+              <div class="level-stepper" role="group" aria-label="Adjust level">
+                <button class="level-button level-up" type="button" aria-label="Increase level">+</button>
+                <button class="level-button level-down" type="button" aria-label="Decrease level">-</button>
+              </div>
+            </div>
+            <div class="header-slider-row">
+              <input class="level-slider" type="range" min="1" max="40" step="1" value="1" aria-label="Set level">
+            </div>
+          </div>
+        </div>
+        <div class="level-pill"></div>
+        <button class="collapse-toggle" type="button" aria-expanded="true">Hide</button>
+      </div>
+      <div class="weapon-body">
+        <div class="level-display"></div>
+        <div class="build-tabs" hidden>
+          <div class="build-tablist" role="tablist"></div>
+        </div>
+        <div class="weapon-layout">
+          <section class="attachments-panel">
+          <div class="attachments-header">
+            <h2>Attachments</h2>
+            <div class="ap-header">
+              <div class="ap-meter"></div>
+              <div class="ap-readout">
+                <span class="ap-value"></span>
+                <span class="ap-max"></span>
+              </div>
+            </div>
+            </div>
+            <div class="slots"></div>
+          </section>
+          <aside class="side-column">
+            <section class="changes-panel">
+              <h3>Changes at this Level</h3>
+              <div class="changes-empty">No changes unlocked at this level.</div>
+            </section>
+            <section class="recommended-panel" hidden>
+              <h3>Recommended Build</h3>
+              <div class="ap-total ap-total-recommended">
+              <div class="ap-meter"></div>
+              <div class="ap-readout">
+                <span class="ap-value"></span>
+                <span class="ap-max"></span>
+              </div>
+              </div>
+              <div class="recommended-list"></div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </template>
+    <script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+
+

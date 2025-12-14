@@ -1,28 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BF6 Mastery Loadout Tracker</title>
-    <link rel="stylesheet" href="style/styles.css" />
+  <title>BF6 Meta - Strip View</title>
+  <link rel="stylesheet" href="style/styles.css" />
 </head>
 <body>
   <div class="layout-grid">
     <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
     <div class="app-shell">
       <div class="app">
-        <header class="page-header">
-          <h1 class="page-title">Mastery Loadout Tracker</h1>
-          <p class="page-subtitle">Track multiple mastery weapons, compare their attachment unlocks, and keep your favorites pinned for fast reference.</p>
-        </header>
-        <div class="weapon-list" id="weaponList"></div>
+        <main class="strip-page">
+          <header class="strip-header">
+            <div class="strip-header-top">
+              <div class="strip-title-group">
+                <h1 class="page-title">Mastery Loadout Tracker - Strip View</h1>
+                <p class="page-subtitle">Full-width strips with favorites, rank end-caps, and expandable build/mastery/attachments tabs.</p>
+              </div>
+              <div class="strip-actions">
+                <div class="strip-search-wrap">
+                  <div class="strip-search-row">
+                    <label class="sr-only" for="stripSearchInput">Search weapons</label>
+                    <input id="stripSearchInput" class="strip-search" type="search" placeholder="Search weapons..." autocomplete="off" />
+                    <button type="button" class="strip-search-help-btn" id="stripSearchHelp" aria-expanded="false" aria-controls="stripSearchHelpPanel" title="Search tips">?</button>
+                  </div>
+                  <div class="strip-search-help-panel" id="stripSearchHelpPanel" hidden>
+                    <div class="strip-search-help-title">Search tips</div>
+                    <ul>
+                      <li>Type a name or type (e.g., assault) to filter.</li>
+                      <li>Ranks: use #1, #2, etc. to show that rank only.</li>
+                      <li>Levels: LV=10, LV&gt;10, LV&lt;20, LV5-15, LV>=30, LV<=5.</li>
+                      <li>Mix terms: "assault #1 LV&gt;10" stacks all filters.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+          <div id="stripList" class="strip-list">
+            <div class="loading">Loading weapons...</div>
+          </div>
+        </main>
       </div>
     </div>
     <section class="options-panel ui-scale-panel" id="uiScalePanel" role="region" aria-label="Options">
       <div class="options-header">
         <span class="options-title">Options</span>
         <button class="options-gear" id="optionsGearButton" type="button" aria-expanded="true" aria-controls="optionsBody" aria-label="Hide options">
-          <span aria-hidden="true" class="gear-symbol">⚙️</span>
+          <span aria-hidden="true" class="gear-symbol">⚙</span>
           <span class="sr-only">Toggle options</span>
         </button>
       </div>
@@ -44,112 +71,2024 @@
         </div>
       </div>
     </section>
-    <section class="debug-panel" id="debugPanel" role="region" aria-label="Debug console" hidden>
-      <div class="debug-panel-header">
-        <span class="options-title">Debug</span>
-        <button class="debug-close" type="button" id="debugPanelClose" aria-label="Hide debug console">&times;</button>
-      </div>
-      <div class="debug-command-row">
-        <label for="debugCommandInput">Command</label>
-        <div class="debug-command-input">
-          <input id="debugCommandInput" type="text" placeholder="Type command (e.g., chips) and press Enter" autocomplete="off" spellcheck="false" />
-          <span class="debug-hint">Press '/' to focus</span>
-        </div>
-      </div>
-      <div class="debug-status" id="debugStatusMessage" role="status" aria-live="polite">Available commands: chips</div>
-      <div class="debug-card-list" id="debugCardList" role="presentation"></div>
-    </section>
   </div>
   <button class="options-floating-gear" id="optionsFloatingButton" type="button" aria-label="Show options" hidden>
     <span class="sr-only">Show options</span>
-    <span aria-hidden="true" class="gear-symbol">⚙️</span>
+    <span aria-hidden="true" class="gear-symbol">⚙</span>
   </button>
-  <template id="weaponTemplate">
-    <section class="weapon-card" tabindex="0">
-      <div class="weapon-header" draggable="true">
-        <button class="drag-handle" type="button" title="Drag to reorder" aria-label="Drag to reorder" draggable="true">
-          <span aria-hidden="true">&#9776;</span>
-        </button>
-        <div class="control-stack">
-          <button class="collapse-box" type="button" aria-label="Toggle collapse" aria-expanded="true">&#9662;</button>
-          <button class="favorite-toggle" type="button" aria-pressed="false" title="Toggle favorite">
-            <span aria-hidden="true">&#9734;</span>
+
+  <template id="weaponStripTemplate">
+    <article class="weapon-strip" data-weapon-id="">
+      <div class="strip-top">
+        <div class="rank-endcap">
+          <div class="rank-top"><span class="rank-text">META</span></div>
+        </div>
+        <div class="strip-main">
+          <div class="strip-summary" role="button" tabindex="0" aria-expanded="false">
+            <div class="summary-left">
+              <div class="summary-info">
+                <div class="summary-line">
+                  <div class="summary-name">Weapon</div>
+                  <span class="meta-chip range-chip tr-chip">#1</span>
+                  <span class="meta-chip type-chip summary-type">TYPE</span>
+                </div>
+              </div>
+            </div>
+            <div class="summary-right">
+              <div class="summary-level-block">
+                <div class="summary-level-label" aria-live="polite">
+                  <span class="summary-level-prefix">LV.</span>
+                  <span class="summary-level-value">1</span>
+                </div>
+                <div class="level-stepper summary-level-stepper" role="group" aria-label="Adjust level">
+                  <button class="level-button summary-level-up" type="button" aria-label="Increase level">+</button>
+                  <button class="level-button summary-level-down" type="button" aria-label="Decrease level">-</button>
+                </div>
+              </div>
+              <div class="summary-thumb">
+                <img class="summary-image" alt="" loading="lazy" />
+                <span class="summary-thumb-ph">No image</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fav-endcap">
+          <button class="strip-drag-handle" type="button" title="Drag to reorder favorites" aria-label="Drag to reorder favorites" draggable="true">
+            <span aria-hidden="true">&#9776;</span>
           </button>
+          <button class="favorite-btn" type="button" aria-pressed="false" title="Toggle favorite"><span class="fav-icon">&#9734;</span></button>
         </div>
-        <div class="weapon-header-text" tabindex="0" role="button" aria-label="Toggle collapse" aria-expanded="true">
-          <div class="weapon-name"></div>
-          <div class="weapon-meta-row">
-            <span class="meta-chip type-chip"></span>
-            <span class="chip-flame-wrap">
-              <canvas class="chip-flame-canvas" aria-hidden="true"></canvas>
-              <span class="chip rank-chip"></span>
-            </span>
-            <span class="meta-chip range-chip"></span>
-          </div>
-          
-          <div class="header-controls">
-            <span class="header-level" aria-live="polite">LEVEL 1</span>
-            <span class="header-sep" aria-hidden="true">&bull;</span>
-            <button class="level-button level-down" type="button" aria-label="Decrease level">-</button>
-            <input class="level-slider" type="range" min="1" max="40" step="1" value="1" aria-label="Set level">
-            <button class="level-button level-up" type="button" aria-label="Increase level">+</button>
-          </div>
-        </div>
-        <div class="weapon-image-wrap placeholder">
-          <img class="weapon-image" alt="" loading="lazy" draggable="false" />
-          <div class="weapon-image-ph">No Image Yet</div>
-        </div>
-        <div class="level-pill"></div>
-        <button class="collapse-toggle" type="button" aria-expanded="true">Hide</button>
       </div>
-      <div class="weapon-body">
-        <div class="level-display"></div>
-        <div class="build-tabs" hidden>
-          <div class="build-tablist" role="tablist"></div>
+      <div class="strip-detail" hidden>
+        <div class="strip-tabs" role="tablist">
+          <button class="tab" data-tab="mastery" role="tab" aria-selected="false">Mastery</button>
+          <button class="tab" data-tab="attachments" role="tab" aria-selected="false">Attachments</button>
         </div>
-        <div class="weapon-layout">
-          <section class="attachments-panel">
-          <div class="attachments-header">
+          <div class="tab-panels">
+          <div class="tab-panel" data-panel="mastery">
+            <div class="mastery-level-controls header-controls">
+              <span class="header-level mastery-level-label" aria-live="polite">LV. 1</span>
+              <span class="header-sep" aria-hidden="true">&bull;</span>
+              <button class="level-button mastery-level-down" type="button" aria-label="Decrease level">-</button>
+              <input class="level-slider mastery-slider" type="range" min="1" max="40" step="1" value="1" aria-label="Set mastery level">
+              <button class="level-button mastery-level-up" type="button" aria-label="Increase level">+</button>
+            </div>
+            <div class="mastery-layout weapon-layout">
+              <section class="attachments-panel mastery-attachments">
+                <div class="attachments-header">
+                  <h2>Attachments</h2>
+                  <div class="ap-header">
+                    <div class="ap-meter mastery-ap-meter"></div>
+                    <div class="ap-readout">
+                      <span class="ap-value mastery-ap-value">0</span>
+                      <span class="ap-max mastery-ap-max">/ 0</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="slots mastery-slots"></div>
+              </section>
+              <aside class="side-column">
+                <section class="changes-panel mastery-changes">
+                  <h3>Changes at this Level</h3>
+                  <div class="changes-body"></div>
+                </section>
+              </aside>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="attachments">
+            <div class="attachments-grid"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </template>
+  <script>
+    (() => {
+      const stripList = document.getElementById('stripList');
+      const template = document.getElementById('weaponStripTemplate');
+      const navEl = document.getElementById('weaponNav');
+      const typeFilterList = document.getElementById('typeFilterList');
+      const searchInput = document.getElementById('stripSearchInput');
+      const searchHelpBtn = document.getElementById('stripSearchHelp');
+      const searchHelpPanel = document.getElementById('stripSearchHelpPanel');
+      const searchWrap = document.querySelector('.strip-search-wrap');
+      const uiScaleSlider = document.getElementById('uiScaleSlider');
+      const uiScaleValue = document.getElementById('uiScaleValue');
+      const reduceAnimationsToggle = document.getElementById('reduceAnimationsToggle');
+      const optionsPanel = document.getElementById('uiScalePanel');
+      const optionsGearButton = document.getElementById('optionsGearButton');
+      const optionsBody = document.getElementById('optionsBody');
+      const optionsFloatingButton = document.getElementById('optionsFloatingButton');
+      const layoutGridEl = document.querySelector('.layout-grid');
+
+      const UI_SCALE_KEY = 'bf6-meta-ui-scale';
+      const REDUCE_KEY = 'bf6-meta-reduce-animations';
+      const OPTIONS_KEY = 'bf6-meta-options-visible';
+      const TYPE_FILTER_KEY = 'bf6-meta-type-filter';
+      const FAVORITES_KEY = 'bf6-meta-strip-favorites';
+      const FAVORITE_ORDER_KEY = 'bf6-meta-strip-favorite-order';
+      const CARD_STATE_KEY = 'bf6-meta-strip-card-state';
+      const MASTERY_LEVEL_KEY = 'bf6-meta-strip-mastery-level';
+      const TAB_STATE_KEY = 'bf6-meta-strip-tab-state';
+      const FAVORITES_FILTER = 'FAVORITES';
+
+      const AP_ICON_URL = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';
+      const rankMap = {
+        s: { label: 'META', className: 'tier-s' },
+        meta: { label: 'META', className: 'tier-meta' },
+        a: { label: 'A-TIER', className: 'tier-a' },
+        b: { label: 'B-TIER', className: 'tier-b' },
+        c: { label: 'C-TIER', className: 'tier-c' },
+        d: { label: 'D-TIER', className: 'tier-d' },
+        f: { label: 'F-TIER', className: 'tier-f' }
+      };
+      const toKey = (val) => (typeof val === 'string' ? val.trim().toUpperCase() : '');
+      const normalizeRank = (val) => (typeof val === 'string' ? val.trim().toLowerCase() : '');
+      const friendly = (text) => text ? text.replace(/[_-]/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase()) : '';
+      const SLOT_KEY_BY_TYPE = {
+        'BARREL': '1',
+        'UNDERBARREL': '2',
+        'AMMUNITION': '3',
+        'MUZZLE': '4',
+        'RIGHT ACCESSORY': '5',
+        'MAGAZINE': '6',
+        'SCOPE': '7',
+        'LEFT ACCESSORY': '8',
+        'TOP ACCESSORY': '9',
+        'OPTIC ACCESSORY': '10',
+        'ERGONOMICS': '11'
+      };
+      const SLOT_NAME_BY_KEY = Object.entries(SLOT_KEY_BY_TYPE).reduce((map, [type, key]) => {
+        if (!map[key]) map[key] = type;
+        return map;
+      }, {});
+      const toUpperSafe = (val) => (typeof val === 'string' ? val.toUpperCase() : val);
+      const CARD_PAD = 12;
+      const ARROW_STROKE = 3;
+      let currentDragId = null;
+      let stripDropPlaceholder = null;
+      let navDropPlaceholder = null;
+      let draggingStripNode = null;
+      let dragActive = false;
+      let searchHelpOpen = false;
+
+      async function loadJson(file) {
+        const url = new URL('./data/' + file, document.baseURI);
+        try {
+          const res = await fetch(url.toString(), { cache: 'no-cache', mode: 'same-origin' });
+          if (!res.ok) throw new Error(res.status);
+          return await res.json();
+        } catch (err) {
+          if (url.protocol === 'file:') {
+            return new Promise((resolve, reject) => {
+              const xhr = new XMLHttpRequest();
+              xhr.overrideMimeType('application/json');
+              xhr.open('GET', url.toString(), true);
+              xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                  if (xhr.status === 0 && xhr.responseText) resolve(JSON.parse(xhr.responseText));
+                  else if (xhr.status >= 200 && xhr.status < 300) resolve(JSON.parse(xhr.responseText));
+                  else reject(err);
+                }
+              };
+              xhr.onerror = () => reject(err);
+              xhr.send();
+            });
+          }
+          throw err;
+        }
+      }
+
+      const loadingError = (msg) => {
+        stripList.innerHTML = '<div style="padding:12px;border:1px solid rgba(255,59,59,0.4);border-radius:10px;color:#fff;">' + msg + '</div>';
+      };
+
+      let weaponsData = [];
+      let currentTypeFilter = loadTypeFilter();
+      let FAVORITES = loadFavorites();
+      let favoriteOrder = loadFavoriteOrder();
+      let searchQuery = '';
+      const cardState = loadCardState();
+      const masteryLevels = loadMasteryLevels();
+      const tabState = loadTabState();
+      if (searchInput) {
+        searchInput.addEventListener('input', (ev) => {
+          searchQuery = (ev.target.value || '').toString().trim();
+          renderStrips();
+        });
+      }
+      if (searchHelpBtn) {
+        const setVisible = (visible) => {
+          searchHelpOpen = visible;
+          searchHelpBtn.setAttribute('aria-expanded', visible ? 'true' : 'false');
+          if (searchHelpPanel) searchHelpPanel.hidden = !visible;
+        };
+        searchHelpBtn.addEventListener('click', () => setVisible(!searchHelpOpen));
+        document.addEventListener('click', (ev) => {
+          if (!searchHelpOpen) return;
+          if (searchWrap && searchWrap.contains(ev.target)) return;
+          setVisible(false);
+        });
+        document.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape' && searchHelpOpen) {
+            setVisible(false);
+          }
+        });
+      }
+
+      (async () => {
+        let metadata = {}, attachmentsDb = {}, ranking = [], mastery = {}, builds = [];
+        try {
+          [metadata, attachmentsDb, ranking, mastery, builds] = await Promise.all([
+            loadJson('metadata.json'),
+            loadJson('attachments.json'),
+            loadJson('ranking.json'),
+            loadJson('builds-mastery.json'),
+            loadJson('builds-main.json')
+          ]);
+        } catch (error) {
+          console.error(error);
+          loadingError('Failed to load data files.');
+          return;
+        }
+
+        const baselineMap = mastery.weapon_baseline || mastery.baseline || {};
+        const changesMap = mastery.weapon_changes || mastery.changes || {};
+        const rankingIndex = new Map();
+        (ranking || []).forEach((group) => {
+          (group.entries || []).forEach((entry) => rankingIndex.set(toKey(entry.dbname), { rank: entry.rank, type: group.type }));
+        });
+
+        const weapons = (builds || []).map((cfg) => {
+          const name = cfg.dbname || cfg.name || cfg.id || 'Unknown';
+          const meta = metadata[name] || metadata[toKey(name)] || metadata[name?.toLowerCase?.()] || {};
+          const attachEntry = attachmentsDb[name] || attachmentsDb[toKey(name)] || attachmentsDb[name?.toLowerCase?.()] || {};
+          const attachLookup = new Map();
+          Object.values((attachEntry.attachments || {})).forEach((att) => {
+            const key = toKey(att.name);
+            if (key) attachLookup.set(key, att);
+          });
+          const rankInfo = cfg.rank || (rankingIndex.get(toKey(name)) || {}).rank || '';
+          return {
+            id: cfg.id || name.replace(/\s+/g, '-').toLowerCase(),
+            displayName: meta.name || name,
+            type: meta.type || (rankingIndex.get(toKey(name)) || {}).type || 'Unknown',
+            typeKey: (meta.type || (rankingIndex.get(toKey(name)) || {}).type || 'Unknown').toUpperCase(),
+            image: meta.image,
+            maxLevel: meta.maxLevel || 40,
+            apMax: meta.apMax || meta.apmax || 100,
+            builds: cfg,
+            baseline: cfg.baseline || baselineMap[name] || baselineMap[toKey(name)] || [],
+            changes: cfg.changes || changesMap[name] || changesMap[toKey(name)] || {},
+            rank: rankInfo,
+            tr: cfg.tr || cfg.typeRating || cfg.range || (cfg.tr === 0 ? '0' : null),
+            attachments: attachEntry.attachments || {},
+            attachmentLookup: attachLookup
+          };
+        });
+
+        weaponsData = weapons;
+        syncFavoriteOrder(new Set(weapons.map((w) => w.id)));
+        renderTypeFilters(weaponsData);
+        renderStrips();
+      })();
+
+      const defaultWeaponSort = (a, b) => {
+        const aTr = Number(a.tr);
+        const bTr = Number(b.tr);
+        if (Number.isFinite(aTr) && Number.isFinite(bTr) && aTr !== bTr) return aTr - bTr;
+        return (a.displayName || '').localeCompare(b.displayName || '');
+      };
+
+      function getMasteryLevelValue(weapon) {
+        const saved = masteryLevels.get(weapon.id)?.level;
+        const num = Number(saved);
+        if (Number.isFinite(num)) {
+          const max = Number(weapon.maxLevel) || 40;
+          return Math.min(max, Math.max(1, num));
+        }
+        return 1;
+      }
+
+      function parseSearchQuery(raw) {
+        const result = { terms: [], rankFilters: [], levelFilters: [] };
+        if (!raw) return result;
+        const tokens = raw.split(/\s+/).filter(Boolean);
+        tokens.forEach((tok) => {
+          const rankMatch = tok.match(/^#(\d+)$/);
+          if (rankMatch) {
+            result.rankFilters.push(parseInt(rankMatch[1], 10));
+            return;
+          }
+          const lvRange = tok.match(/^lv\s*(\d+)\s*-\s*(\d+)$/i);
+          if (lvRange) {
+            const min = parseInt(lvRange[1], 10);
+            const max = parseInt(lvRange[2], 10);
+            if (Number.isFinite(min) && Number.isFinite(max)) {
+              result.levelFilters.push({ type: 'between', min: Math.min(min, max), max: Math.max(min, max) });
+              return;
+            }
+          }
+          const lvCompare = tok.match(/^lv\s*([<>]=?|=)\s*(\d+)$/i);
+          if (lvCompare) {
+            const op = lvCompare[1];
+            const value = parseInt(lvCompare[2], 10);
+            if (Number.isFinite(value)) {
+              result.levelFilters.push({ type: 'compare', op, value });
+              return;
+            }
+          }
+          const lvExact = tok.match(/^lv\s*(\d+)$/i);
+          if (lvExact) {
+            const value = parseInt(lvExact[1], 10);
+            if (Number.isFinite(value)) {
+              result.levelFilters.push({ type: 'compare', op: '=', value });
+              return;
+            }
+          }
+          result.terms.push(tok.toLowerCase());
+        });
+        return result;
+      }
+
+      function matchesLevelFilters(weapon, filters) {
+        if (!filters.length) return true;
+        const level = getMasteryLevelValue(weapon);
+        return filters.every((rule) => {
+          if (!rule) return true;
+          if (rule.type === 'between') {
+            return level >= rule.min && level <= rule.max;
+          }
+          if (rule.type === 'compare') {
+            switch (rule.op) {
+              case '>': return level > rule.value;
+              case '<': return level < rule.value;
+              case '>=': return level >= rule.value;
+              case '<=': return level <= rule.value;
+              case '=':
+              default:
+                return level === rule.value;
+            }
+          }
+          return true;
+        });
+      }
+
+      function getFilteredWeapons() {
+        let filtered = weaponsData.slice();
+        if (currentTypeFilter === FAVORITES_FILTER) {
+          filtered = weaponsData.filter((w) => FAVORITES.has(w.id));
+        } else if (currentTypeFilter) {
+          filtered = weaponsData.filter((w) => w.typeKey === currentTypeFilter);
+        }
+        const parsedQuery = parseSearchQuery(searchQuery);
+        const hasTerms = parsedQuery.terms.length > 0;
+        const hasRankFilters = parsedQuery.rankFilters.length > 0;
+        const hasLevelFilters = parsedQuery.levelFilters.length > 0;
+        if (hasTerms || hasRankFilters || hasLevelFilters) {
+          filtered = filtered.filter((w) => {
+            if (hasRankFilters) {
+              const trNum = Number(w.tr);
+              if (!Number.isFinite(trNum) || !parsedQuery.rankFilters.includes(trNum)) return false;
+            }
+            if (hasLevelFilters && !matchesLevelFilters(w, parsedQuery.levelFilters)) return false;
+            if (hasTerms) {
+              const name = (w.displayName || '').toLowerCase();
+              const type = (w.type || '').toLowerCase();
+              for (const term of parsedQuery.terms) {
+                if (!(name.includes(term) || type.includes(term))) return false;
+              }
+            }
+            return true;
+          });
+        }
+        if (currentTypeFilter === FAVORITES_FILTER) {
+          syncFavoriteOrder(new Set(weaponsData.map((w) => w.id)));
+          const orderIndex = new Map();
+          favoriteOrder.forEach((id, idx) => orderIndex.set(id, idx));
+          filtered.sort((a, b) => {
+            const aIdx = orderIndex.has(a.id) ? orderIndex.get(a.id) : Number.MAX_SAFE_INTEGER;
+            const bIdx = orderIndex.has(b.id) ? orderIndex.get(b.id) : Number.MAX_SAFE_INTEGER;
+            if (aIdx !== bIdx) return aIdx - bIdx;
+            return defaultWeaponSort(a, b);
+          });
+        } else {
+          filtered.sort(defaultWeaponSort);
+        }
+        return filtered;
+      }
+
+      function renderStrips() {
+        if (!stripList) return;
+        finishStripDrag();
+        stripList.innerHTML = '';
+        const filtered = getFilteredWeapons();
+        const favoritesView = currentTypeFilter === FAVORITES_FILTER;
+        const hasFavorites = FAVORITES.size > 0;
+        const allowReorder = favoritesView && filtered.length > 0;
+        stripList.classList.toggle('reorder-enabled', allowReorder);
+        if (filtered.length === 0) {
+          if (favoritesView && !hasFavorites) {
+            stripList.appendChild(createFavoritesEmptyCard());
+          } else {
+            const message = favoritesView ? 'No favorites match this search.' : 'No weapons available for this filter.';
+            stripList.innerHTML = `<div class="loading">${message}</div>`;
+          }
+          renderNav([]);
+          return;
+        }
+        filtered.forEach((weapon) => {
+          const node = createStrip(weapon, { allowReorder: allowReorder && FAVORITES.has(weapon.id) });
+          stripList.appendChild(node);
+          alignRankEndcap(node);
+          requestAnimationFrame(() => alignRankEndcap(node));
+        });
+        renderNav(filtered);
+      }
+
+      function attachFavoritesEmptyInteractions(container) {
+        if (!container) return;
+        const demoBtn = container.querySelector('.favorite-demo');
+        if (demoBtn) {
+          demoBtn.addEventListener('click', () => {
+            const pressed = demoBtn.getAttribute('aria-pressed') === 'true';
+            const next = !pressed;
+            demoBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+            const icon = demoBtn.querySelector('.favorite-icon, .fav-icon');
+            const label = demoBtn.querySelector('.favorite-text');
+            if (icon) icon.textContent = next ? '\u2605' : '\u2606';
+            if (label) label.textContent = next ? 'Favorited' : 'Favorite';
+          });
+        }
+        const resetButtons = container.querySelectorAll('[data-reset-filter]');
+        resetButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentTypeFilter = '';
+            saveTypeFilter('');
+            renderTypeFilters(weaponsData);
+            renderStrips();
+          });
+        });
+        const mini = container.querySelector('.favorites-empty-mini');
+        if (mini) {
+          mini.replaceChildren();
+        }
+      }
+
+      function createFavoritesEmptyCard() {
+        const card = document.createElement('div');
+        card.className = 'favorites-empty-card';
+        card.innerHTML = `
+          <div class="favorites-empty-title">You don't have any favorites 😢</div>
+          <p class="favorites-empty-body">Your favorite weapons will appear here for quick access.<br/>
+            You can drag and drop favorites to reorder how they appear.</p>
+          <p class="favorites-empty-body">Click the star on a weapon card to pin it to your favorites.<br/>Try it out, below:</p>
+          <div class="favorites-empty-actions">
+            <button type="button" class="favorite-toggle favorite-demo" aria-pressed="false" title="Demo favorite toggle">
+              <span aria-hidden="true" class="favorite-icon">&#9734;</span>
+              <span class="favorite-text sr-only">Favorite</span>
+            </button>
+            <span class="favorites-empty-body">— this one doesn't save, though.</span>
+          </div>
+
+          <p class="favorites-empty-body">Click <button type="button" class="return-link" data-reset-filter>HERE</button> to return to All weapons.</p>
+        `;
+        attachFavoritesEmptyInteractions(card);
+        return card;
+      }
+
+      function createFavoritesNavEmpty() {
+        const box = document.createElement('div');
+        box.className = 'side-nav-empty';
+        box.innerHTML = `
+          <div class="side-nav-empty-title">You don't have any favorites 😢</div>
+          <p class="side-nav-empty-note">Tap the star on a weapon to pin it HERE.</p>
+        `;
+        attachFavoritesEmptyInteractions(box);
+        return box;
+      }
+
+      function renderNav(weapons) {
+        if (!navEl) return;
+        navEl.innerHTML = '';
+        navEl.hidden = false;
+        navEl.classList.add('nav-ready');
+        navEl.style.visibility = 'visible';
+        navEl.style.pointerEvents = 'auto';
+        const list = document.createElement('div');
+        list.className = 'side-nav-list';
+        const favoritesView = currentTypeFilter === FAVORITES_FILTER;
+        if (favoritesView && (!weapons || !weapons.length)) {
+          navEl.appendChild(createFavoritesNavEmpty());
+          return;
+        }
+        weapons.forEach((weapon) => {
+          const item = document.createElement('button');
+          item.className = 'side-nav-item';
+          item.type = 'button';
+          item.dataset.weaponId = weapon.id;
+          item.innerHTML = `
+            <span class="side-nav-name">${weapon.displayName}</span>
+            <span class="side-nav-type">${weapon.type}</span>
+            <span class="side-nav-fav" aria-hidden="true">${FAVORITES.has(weapon.id) ? "&#9733;" : ""}</span>
+          `;
+          if (FAVORITES.has(weapon.id)) item.classList.add('is-favorite');
+          item.addEventListener('click', () => scrollToStrip(weapon.id));
+          const allowNavDrag = favoritesView && FAVORITES.has(weapon.id);
+          item.draggable = allowNavDrag;
+          if (allowNavDrag) {
+            item.addEventListener('dragstart', handleNavDragStart);
+            item.addEventListener('dragend', handleNavDragEnd);
+          }
+          list.appendChild(item);
+        });
+        navEl.appendChild(list);
+      }
+
+      function scrollToStrip(id) {
+        const el = stripList.querySelector(`[data-weapon-id="${id}"]`);
+        if (!el) return;
+        const summary = el.querySelector('.strip-summary') || el;
+        const rect = summary.getBoundingClientRect();
+        const currentTop = rect.top + window.scrollY;
+        const target = currentTop - window.innerHeight * 0.25 + rect.height / 2;
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      }
+
+      function setDragActiveState(active) {
+        if (dragActive === active) return;
+        dragActive = active;
+        document.body.classList.toggle('drag-active', active);
+        if (stripList) stripList.classList.toggle('drag-active', active);
+        if (navEl) navEl.classList.toggle('drag-active', active);
+      }
+
+      function getStripDropPlaceholder(height) {
+        if (!stripDropPlaceholder) {
+          stripDropPlaceholder = document.createElement('div');
+          stripDropPlaceholder.className = 'weapon-drop-placeholder';
+          stripDropPlaceholder.setAttribute('aria-hidden', 'true');
+          stripDropPlaceholder.textContent = 'Drop weapon here';
+        }
+        if (height) {
+          const safe = Math.max(60, Math.round(height));
+          stripDropPlaceholder.style.height = `${safe}px`;
+        }
+        return stripDropPlaceholder;
+      }
+
+      function clearStripDropPlaceholder() {
+        if (stripDropPlaceholder && stripDropPlaceholder.parentNode) {
+          stripDropPlaceholder.parentNode.removeChild(stripDropPlaceholder);
+        }
+      }
+
+      function getNavDropPlaceholder() {
+        if (!navDropPlaceholder) {
+          navDropPlaceholder = document.createElement('button');
+          navDropPlaceholder.className = 'side-nav-item nav-drop-placeholder';
+          navDropPlaceholder.setAttribute('aria-hidden', 'true');
+          navDropPlaceholder.textContent = 'Drop weapon here';
+          navDropPlaceholder.type = 'button';
+          navDropPlaceholder.draggable = false;
+        }
+        return navDropPlaceholder;
+      }
+
+      function clearNavDropPlaceholder() {
+        if (navDropPlaceholder && navDropPlaceholder.parentNode) {
+          navDropPlaceholder.parentNode.removeChild(navDropPlaceholder);
+        }
+      }
+
+      function beginStripDrag(node, id, event) {
+        if (!node || !id || currentTypeFilter !== FAVORITES_FILTER || !stripList) {
+          if (event && event.preventDefault) event.preventDefault();
+          return;
+        }
+        currentDragId = id;
+        draggingStripNode = node;
+        node.classList.add('dragging');
+        const placeholder = getStripDropPlaceholder(node.getBoundingClientRect().height || node.offsetHeight || 72);
+        if (node.nextSibling) stripList.insertBefore(placeholder, node.nextSibling);
+        else stripList.appendChild(placeholder);
+        setDragActiveState(true);
+        if (event && event.dataTransfer) {
+          event.dataTransfer.effectAllowed = 'move';
+          try { event.dataTransfer.setData('text/plain', id); } catch (_) {}
+        }
+      }
+
+      function finishStripDrag() {
+        if (draggingStripNode) draggingStripNode.classList.remove('dragging');
+        draggingStripNode = null;
+        currentDragId = null;
+        clearStripDropPlaceholder();
+        clearNavDropPlaceholder();
+        setDragActiveState(false);
+      }
+
+      function handleStripDragOver(event) {
+        if (!currentDragId || currentTypeFilter !== FAVORITES_FILTER || !stripList) return;
+        event.preventDefault();
+        const placeholder = getStripDropPlaceholder();
+        const target = event.target.closest('.weapon-strip');
+        if (!target || target.dataset.weaponId === currentDragId) {
+          if (placeholder && placeholder.parentNode !== stripList) stripList.appendChild(placeholder);
+          return;
+        }
+        const rect = target.getBoundingClientRect();
+        const before = event.clientY < rect.top + rect.height / 2;
+        const reference = before ? target : target.nextSibling;
+        if (placeholder !== reference) {
+          const h = (draggingStripNode?.getBoundingClientRect().height || target.getBoundingClientRect().height || 72);
+          placeholder.style.height = `${Math.max(60, Math.round(h))}px`;
+          stripList.insertBefore(placeholder, reference);
+        }
+      }
+
+      function handleStripDrop(event) {
+        if (!currentDragId || currentTypeFilter !== FAVORITES_FILTER || !stripList) return;
+        event.preventDefault();
+        const nodes = Array.from(stripList.children).filter((node) => node.classList.contains('weapon-strip') || node === stripDropPlaceholder);
+        let insertIndex = nodes.indexOf(stripDropPlaceholder);
+        if (insertIndex === -1) insertIndex = nodes.length;
+        const beforeCount = nodes.slice(0, insertIndex).filter((node) => node !== stripDropPlaceholder && node.dataset && node.dataset.weaponId && node.dataset.weaponId !== currentDragId).length;
+        const order = nodes
+          .filter((node) => node !== stripDropPlaceholder && node.dataset && node.dataset.weaponId && node.dataset.weaponId !== currentDragId)
+          .map((node) => node.dataset.weaponId);
+        const safeIndex = Math.min(beforeCount, order.length);
+        order.splice(safeIndex, 0, currentDragId);
+        favoriteOrder = mergeFavoriteOrder(order);
+        saveFavoriteOrder(favoriteOrder);
+        finishStripDrag();
+        renderStrips();
+      }
+
+      if (stripList) {
+        stripList.addEventListener('dragover', handleStripDragOver);
+        stripList.addEventListener('drop', handleStripDrop);
+      }
+
+      function handleNavDragStart(event) {
+        if (currentTypeFilter !== FAVORITES_FILTER) return;
+        const item = event.currentTarget;
+        const id = item?.dataset?.weaponId;
+        if (!id || !FAVORITES.has(id)) {
+          event.preventDefault();
+          return;
+        }
+        if (currentDragId && currentDragId !== id) {
+          event.preventDefault();
+          return;
+        }
+        currentDragId = id;
+        setDragActiveState(true);
+        item.classList.add('dragging');
+        if (event.dataTransfer) {
+          event.dataTransfer.effectAllowed = 'move';
+          try { event.dataTransfer.setData('text/plain', id); } catch (_) {}
+        }
+      }
+
+      function handleNavDragEnd(event) {
+        const item = event && event.currentTarget;
+        if (item) item.classList.remove('dragging');
+        clearNavDropPlaceholder();
+        clearStripDropPlaceholder();
+        currentDragId = null;
+        setDragActiveState(false);
+      }
+
+      function handleNavDragOver(event) {
+        if (!currentDragId || currentTypeFilter !== FAVORITES_FILTER) return;
+        if (!navEl || !navEl.contains(event.target)) return;
+        const listEl = navEl.querySelector('.side-nav-list');
+        if (!listEl) return;
+        event.preventDefault();
+        const placeholder = getNavDropPlaceholder();
+        const dropItem = event.target.closest('.side-nav-item');
+        if (dropItem && dropItem !== placeholder) {
+          const rect = dropItem.getBoundingClientRect();
+          const before = event.clientY < rect.top + rect.height / 2;
+          if (before) listEl.insertBefore(placeholder, dropItem);
+          else listEl.insertBefore(placeholder, dropItem.nextSibling);
+        } else if (placeholder.parentNode !== listEl) {
+          listEl.appendChild(placeholder);
+        }
+      }
+
+      function handleNavDrop(event) {
+        if (!currentDragId || currentTypeFilter !== FAVORITES_FILTER) return;
+        const listEl = navEl?.querySelector('.side-nav-list');
+        if (!listEl) return;
+        const navItems = Array.from(listEl.children);
+        if (!navItems.length) return;
+        event.preventDefault();
+        const dropItem = event.target.closest('.side-nav-item');
+        const domOrder = navItems.map((item) => item.dataset.weaponId);
+        const filteredOrder = domOrder.filter(Boolean);
+        let insertIndex = filteredOrder.length;
+        if (navDropPlaceholder && navDropPlaceholder.parentNode === listEl) {
+          const placeholderIndex = navItems.indexOf(navDropPlaceholder);
+          if (placeholderIndex !== -1) {
+            const beforeNodes = navItems.slice(0, placeholderIndex);
+            insertIndex = beforeNodes.reduce((count, node) => count + (node.dataset && node.dataset.weaponId ? 1 : 0), 0);
+          }
+        } else if (dropItem) {
+          const dropId = dropItem.dataset.weaponId;
+          if (dropId) {
+            const dropIndex = filteredOrder.indexOf(dropId);
+            if (dropIndex !== -1) {
+              const rect = dropItem.getBoundingClientRect();
+              const before = event.clientY < rect.top + rect.height / 2;
+              insertIndex = before ? dropIndex : dropIndex + 1;
+            }
+          }
+        }
+        const order = filteredOrder.filter((id) => id && id !== currentDragId);
+        if (insertIndex > order.length) insertIndex = order.length;
+        order.splice(insertIndex, 0, currentDragId);
+        favoriteOrder = mergeFavoriteOrder(order);
+        saveFavoriteOrder(favoriteOrder);
+        handleNavDragEnd(event);
+        renderStrips();
+      }
+
+      if (navEl) {
+        navEl.addEventListener('dragover', handleNavDragOver);
+        navEl.addEventListener('drop', handleNavDrop);
+      }
+
+      function renderTypeFilters(weapons) {
+        if (!typeFilterList) return;
+        const types = Array.from(new Set(weapons.map((w) => w.typeKey))).sort();
+        typeFilterList.innerHTML = '';
+        const addBtn = (label, key = '') => {
+          const btn = document.createElement('button');
+          btn.className = 'type-filter-item';
+          btn.type = 'button';
+          btn.textContent = label;
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-selected', key === currentTypeFilter ? 'true' : 'false');
+          btn.classList.toggle('active', key === currentTypeFilter);
+          btn.addEventListener('click', () => {
+            currentTypeFilter = key;
+            saveTypeFilter(key);
+            renderTypeFilters(weapons);
+            renderStrips();
+          });
+          typeFilterList.appendChild(btn);
+        };
+        addBtn('All', '');
+        addBtn('Favorites', FAVORITES_FILTER);
+        types.forEach((t) => addBtn(t, t));
+      }
+      function createStrip(weapon, options = {}) {
+        const { allowReorder = false } = options;
+        const node = template.content.firstElementChild.cloneNode(true);
+        node.dataset.weaponId = weapon.id;
+
+        const rankKey = normalizeRank(weapon.rank);
+        const rankInfo = rankMap[rankKey] || rankMap.meta || { label: 'UNRATED', className: '' };
+        const endcap = node.querySelector('.rank-endcap');
+        const rankText = endcap.querySelector('.rank-text');
+        endcap.classList.add(rankInfo.className);
+        rankText.textContent = rankInfo.label;
+
+        node.querySelector('.summary-name').textContent = weapon.displayName;
+        const trPill = node.querySelector('.tr-chip');
+        const trValue = weapon.tr || weapon.type || '';
+        const normalizedTr = String(weapon.tr ?? '').trim();
+        let rangeClass = 'range-unranked';
+        const trNum = Number(normalizedTr);
+        if (Number.isFinite(trNum) && trNum >= 1) {
+          const clamped = Math.min(8, Math.max(1, trNum));
+          rangeClass = `range-${clamped}`;
+          trPill.textContent = `#${clamped}`;
+        } else if (normalizedTr) {
+          trPill.textContent = `#${normalizedTr}`;
+        } else {
+          trPill.textContent = '#?';
+        }
+        trPill.className = 'meta-chip range-chip tr-chip';
+        trPill.classList.add(rangeClass);
+        const typeChip = node.querySelector('.summary-type');
+        typeChip.textContent = weapon.type ? weapon.type.toUpperCase() : 'UNKNOWN';
+        const lvlVal = node.querySelector('.summary-level-value');
+        lvlVal.textContent = '1';
+
+        const thumb = node.querySelector('.summary-thumb');
+        const img = node.querySelector('.summary-image');
+        const showPlaceholder = () => thumb.classList.add('placeholder');
+        const hidePlaceholder = () => thumb.classList.remove('placeholder');
+        if (weapon.image) {
+          img.src = `style/images/${weapon.image}`;
+          img.alt = weapon.displayName;
+        } else {
+          showPlaceholder();
+        }
+        img.addEventListener('error', () => { showPlaceholder(); alignRankEndcap(node); });
+        img.addEventListener('load', () => { hidePlaceholder(); alignRankEndcap(node); });
+
+        const favBtn = node.querySelector('.favorite-btn');
+        const dragHandle = node.querySelector('.strip-drag-handle');
+        if (dragHandle && dragHandle.parentElement) dragHandle.remove();
+        const dragRegion = node.querySelector('.strip-top');
+        if (dragRegion) {
+          dragRegion.draggable = allowReorder;
+          if (allowReorder) {
+            dragRegion.addEventListener('dragstart', (ev) => {
+              if (ev && ev.target && ev.target.closest && ev.target.closest('.favorite-btn')) {
+                ev.preventDefault();
+                return;
+              }
+              beginStripDrag(node, weapon.id, ev);
+            });
+            dragRegion.addEventListener('dragend', finishStripDrag);
+          } else {
+            dragRegion.addEventListener('dragstart', (ev) => ev.preventDefault());
+          }
+        }
+        const applyFavorite = (state) => {
+          favBtn.setAttribute('aria-pressed', state ? 'true' : 'false');
+          favBtn.querySelector('.fav-icon').textContent = state ? '\u2605' : '\u2606';
+          node.classList.toggle('is-favorite', state);
+        };
+        applyFavorite(FAVORITES.has(weapon.id));
+        favBtn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const active = FAVORITES.has(weapon.id);
+          const next = !active;
+          if (next) {
+            FAVORITES.add(weapon.id);
+            if (!favoriteOrder.includes(weapon.id)) favoriteOrder.push(weapon.id);
+          } else {
+            FAVORITES.delete(weapon.id);
+            favoriteOrder = favoriteOrder.filter((id) => id !== weapon.id);
+          }
+          saveFavorites(FAVORITES);
+          saveFavoriteOrder(favoriteOrder);
+          applyFavorite(next);
+          if (currentTypeFilter === FAVORITES_FILTER) {
+            renderStrips();
+          } else {
+            renderNav(getFilteredWeapons());
+          }
+        });
+
+        const summary = node.querySelector('.strip-summary');
+        const detail = node.querySelector('.strip-detail');
+        const caret = summary.querySelector('.summary-caret');
+        if (caret) caret.textContent = '^';
+        summary.addEventListener('click', () => toggleDetail(node));
+        summary.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggleDetail(node); }
+        });
+
+        const tabsEl = node.querySelector('.strip-tabs');
+        const panelsEl = node.querySelector('.tab-panels');
+
+        function setActiveTab(id) {
+          const tabs = Array.from(node.querySelectorAll('.strip-tabs .tab'));
+          const panels = Array.from(node.querySelectorAll('.tab-panel'));
+          tabs.forEach((btn) => {
+            const active = btn.dataset.tab === id;
+            btn.classList.toggle('is-active', active);
+            btn.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          panels.forEach((panel) => panel.classList.toggle('is-active', panel.dataset.panel === id));
+          saveTabStateEntry(weapon.id, id);
+          if (id === 'mastery' && node.__refreshMastery) {
+            node.__refreshMastery();
+          }
+        }
+
+        function wireTabs() {
+          const tabs = Array.from(node.querySelectorAll('.strip-tabs .tab'));
+          tabs.forEach((btn) => {
+            btn.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              setActiveTab(btn.dataset.tab);
+            });
+          });
+        }
+
+        renderBuildTabs(tabsEl, panelsEl, weapon, setActiveTab, wireTabs);
+
+        const open = cardState.get(weapon.id)?.open === true ? true : false;
+        detail.hidden = !open;
+        summary.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (caret) caret.textContent = open ? 'v' : '^';
+        const firstBuildTab = tabsEl?.querySelector('.tab[data-tab^="build-"]');
+        const initialTab = resolveInitialTab(weapon, tabsEl, firstBuildTab);
+        setActiveTab(initialTab);
+        setupMastery(node, weapon, lvlVal);
+        // attachments render happens inside mastery refresh using current level
+        alignRankEndcap(node);
+
+        return node;
+      }
+
+      function alignRankEndcap(node) {
+        if (!node) return;
+        const summary = node.querySelector('.strip-summary');
+        const rankTop = node.querySelector('.rank-top');
+        const rankEndcap = node.querySelector('.rank-endcap');
+        const favEndcap = node.querySelector('.fav-endcap');
+        if (!summary || !rankTop || !rankEndcap) return;
+        const h = summary.offsetHeight || 0;
+        if (h > 0) {
+          rankEndcap.style.height = `${h}px`;
+          rankEndcap.style.minHeight = `${h}px`;
+          rankTop.style.height = `${h}px`;
+          rankTop.style.minHeight = `${h}px`;
+          if (favEndcap) {
+            favEndcap.style.height = `${h}px`;
+            favEndcap.style.minHeight = `${h}px`;
+          }
+        }
+      }
+
+      function toggleDetail(node, forceOpen) {
+        const detail = node.querySelector('.strip-detail');
+        const summary = node.querySelector('.strip-summary');
+        const expanded = forceOpen !== undefined ? forceOpen : detail.hidden;
+        detail.hidden = !expanded;
+        summary.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        summary.querySelector('.summary-caret').textContent = expanded ? 'v' : '^';
+        alignRankEndcap(node);
+        saveCardStateEntry(node.dataset.weaponId, expanded);
+      }
+
+      function renderBuildTabs(tabsEl, panelsEl, weapon, setActiveTab, wireTabs) {
+        if (!tabsEl || !panelsEl) return;
+        const excludeKeys = new Set(['id', 'dbname', 'baseline', 'changes', 'lastUpdated', 'rank', 'tr']);
+        const entries = [];
+
+        Object.entries(weapon.builds || {}).forEach(([key, value]) => {
+          const keyNorm = (key || '').toString().toLowerCase();
+          const labelNorm = friendly(key).toLowerCase();
+          const looksLikeMastery = keyNorm.includes('mastery') || labelNorm.includes('mastery');
+          if (excludeKeys.has(key) || looksLikeMastery) return;
+          if (!Array.isArray(value)) return;
+          entries.push({ key, label: friendly(key), list: value, updated: weapon.builds.lastUpdated });
+        });
+
+        // Remove any existing build tabs/panels
+        Array.from(tabsEl.querySelectorAll('.tab')).forEach((btn) => {
+          if (btn.dataset.tab && btn.dataset.tab.startsWith('build-')) btn.remove();
+        });
+        Array.from(panelsEl.querySelectorAll('.tab-panel')).forEach((panel) => {
+          if (panel.dataset.panel && panel.dataset.panel.startsWith('build-')) panel.remove();
+        });
+
+        const masterTab = tabsEl.querySelector('.tab[data-tab="mastery"]');
+        const attachTab = tabsEl.querySelector('.tab[data-tab="attachments"]');
+        const insertBefore = masterTab || attachTab || null;
+
+        entries.forEach((entry) => {
+          const tabId = `build-${entry.key}`;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'tab';
+          btn.dataset.tab = tabId;
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-selected', 'false');
+          btn.textContent = entry.label;
+          if (insertBefore) tabsEl.insertBefore(btn, insertBefore); else tabsEl.appendChild(btn);
+
+          const panel = document.createElement('div');
+          panel.className = 'tab-panel build-panel';
+          panel.dataset.panel = tabId;
+
+          const layout = document.createElement('div');
+          layout.className = 'weapon-layout';
+
+          const attachmentsSection = document.createElement('section');
+          attachmentsSection.className = 'attachments-panel';
+          const apUsed = sumAttachmentPoints(entry.list, weapon);
+          const apMax = weapon.apMax || 100;
+          const header = document.createElement('div');
+          header.className = 'attachments-header';
+          const meterEl = buildApMeter(apUsed, apMax);
+          header.innerHTML = `
             <h2>Attachments</h2>
             <div class="ap-header">
-              <div class="ap-meter"></div>
               <div class="ap-readout">
-                <span class="ap-value"></span>
-                <span class="ap-max"></span>
+                <span class="ap-value">${apUsed}</span>
+                <span class="ap-sep">/</span>
+                <span class="ap-max">${apMax}</span>
               </div>
             </div>
-            </div>
-            <div class="slots"></div>
-          </section>
-          <aside class="side-column">
-            <section class="changes-panel">
-              <h3>Changes at this Level</h3>
-              <div class="changes-empty">No changes unlocked at this level.</div>
-            </section>
-            <section class="recommended-panel" hidden>
-              <h3>Recommended Build</h3>
-              <div class="ap-total ap-total-recommended">
-              <div class="ap-meter"></div>
-              <div class="ap-readout">
-                <span class="ap-value"></span>
-                <span class="ap-max"></span>
-              </div>
-              </div>
-              <div class="recommended-list"></div>
-            </section>
-          </aside>
-        </div>
-      </div>
-    </section>
-  </template>
-    <script src="main.js"></script>
+          `;
+          attachmentsSection.appendChild(header);
+          header.querySelector('.ap-header').prepend(meterEl);
+          const slots = document.createElement('div');
+          slots.className = 'slots';
+
+          const { attachments, notes, updated } = splitBuildList(entry.list, weapon);
+          if (attachments.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'summary-level';
+            empty.style.color = 'var(--text-muted)';
+            empty.textContent = 'No attachments listed.';
+            slots.appendChild(empty);
+          } else {
+            attachments.forEach((att) => {
+              const name = typeof att === 'string' ? att : att?.name;
+              const attType = att?.type;
+              const attLvl = att?.level ?? att?.unlockLevel;
+              const attPts = att?.pts;
+              const slot = document.createElement('div');
+              slot.className = 'slot-card';
+              const meta = weapon.attachmentLookup.get(toKey(name)) || {};
+              const lvlRaw = attLvl ?? meta.unlockLevel;
+              const lvlLabel = (lvlRaw === 0 || lvlRaw === '0' || lvlRaw === null || lvlRaw === undefined)
+                ? 'Default'
+                : (lvlRaw === 'Unlocked' ? 'Unlocked' : `Level ${lvlRaw}`);
+              slot.innerHTML = `
+                <div class="card-top">
+                  <div class="card-info">
+                    <div class="card-title">${name || 'Attachment'}</div>
+                    <div class="card-meta">
+                      <span class="meta-type">${attType || meta.type || weapon.type}</span>
+                      ${(attPts !== undefined || meta.pts !== undefined) ? `<span class="meta-separator">•</span>` : ''}
+                      ${attPts !== undefined
+                        ? `<span class="ap-inline"><span class="ap-icon"><img src="${AP_ICON_URL}" alt="AP"></span><span class="ap-num">${attPts}</span></span>`
+                        : (meta.pts !== undefined ? `<span class="ap-inline"><span class="ap-icon"><img src="${AP_ICON_URL}" alt="AP"></span><span class="ap-num">${meta.pts}</span></span>` : '')}
+                    </div>
+                  </div>
+                  <div class="card-level">${lvlLabel}</div>
+                </div>
+              `;
+              slots.appendChild(slot);
+            });
+          }
+          attachmentsSection.appendChild(slots);
+
+          const changesSection = document.createElement('section');
+          changesSection.className = 'changes-panel';
+          changesSection.innerHTML = `<h3>${entry.label} Notes</h3>`;
+          if (notes.length) {
+            const noteWrap = document.createElement('div');
+            noteWrap.className = 'note-text';
+            noteWrap.innerHTML = notes.map(renderRichText).join('<br>');
+            changesSection.appendChild(noteWrap);
+          } else {
+            const empty = document.createElement('div');
+            empty.className = 'changes-empty';
+            empty.textContent = 'No notes provided.';
+            changesSection.appendChild(empty);
+          }
+          if (updated) {
+            const updatedEl = document.createElement('div');
+            updatedEl.className = 'build-updated';
+            updatedEl.textContent = `Last Updated: ${updated}`;
+            changesSection.appendChild(updatedEl);
+          }
+
+          layout.appendChild(attachmentsSection);
+          layout.appendChild(changesSection);
+          panel.appendChild(layout);
+          const anchor = panelsEl.querySelector('.tab-panel[data-panel="mastery"]') || panelsEl.firstChild;
+          panelsEl.insertBefore(panel, anchor);
+        });
+
+        wireTabs();
+      }
+
+      function resolveInitialTab(weapon, tabsEl, firstBuildTab) {
+        const saved = tabState.get(weapon.id)?.tab;
+        if (saved && tabsEl && tabsEl.querySelector(`.tab[data-tab="${saved}"]`)) return saved;
+        if (firstBuildTab) return firstBuildTab.dataset.tab;
+        return 'mastery';
+      }
+
+      function sumAttachmentPoints(list, weapon) {
+        let total = 0;
+        (list || []).forEach((item) => {
+          if (item && typeof item === 'object' && typeof item.pts === 'number') {
+            total += Number(item.pts);
+            return;
+          }
+          const name = typeof item === 'string' ? item : item?.name;
+          const meta = weapon?.attachmentLookup?.get?.(toKey(name));
+          if (meta && typeof meta.pts === 'number') total += Number(meta.pts);
+        });
+        return total;
+      }
+
+      function buildApMeter(apUsed, apMax) {
+        const meter = document.createElement('div');
+        meter.className = 'ap-meter';
+        if (apUsed > apMax) meter.classList.add('ap-overcap');
+        const cells = 10;
+        const ratio = apMax ? apUsed / apMax : 0;
+        for (let i = 0; i < cells; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'ap-cell';
+          const fill1 = document.createElement('div');
+          fill1.className = 'ap-fill first';
+          const fill2 = document.createElement('div');
+          fill2.className = 'ap-fill second';
+          const icon = document.createElement('div');
+          icon.className = 'ap-icon';
+          const img = document.createElement('img');
+          img.src = AP_ICON_URL;
+          img.alt = 'AP';
+          icon.appendChild(img);
+          cell.append(fill1, fill2, icon);
+          const segment = (i + 1) / cells;
+          if (ratio >= segment) cell.classList.add('full');
+          else if (ratio >= segment - (1 / cells)) cell.classList.add('half');
+          meter.appendChild(cell);
+        }
+        return meter;
+      }
+
+      function splitBuildList(list, weapon) {
+        const attachments = [];
+        const notes = [];
+        let updated = weapon.builds.lastUpdated || '';
+        (list || []).forEach((item) => {
+          if (typeof item === 'string') attachments.push(item);
+          else if (item && typeof item === 'object') {
+            if (item.Notes || item.notes) notes.push(item.Notes || item.notes);
+            if (item.Updated || item.updated) updated = item.Updated || item.updated;
+            if (item.custom) notes.push(`Custom: ${item.custom}`);
+            if (item.name) attachments.push(item.name);
+          }
+        });
+        return { attachments, notes, updated };
+      }
+
+      function setupMastery(node, weapon, summaryLevelEl) {
+        const slider = node.querySelector('.mastery-slider');
+        const levelDown = node.querySelector('.mastery-level-down');
+        const levelUp = node.querySelector('.mastery-level-up');
+        const levelLabel = node.querySelector('.mastery-level-label');
+        const summaryLevelDown = node.querySelector('.summary-level-down');
+        const summaryLevelUp = node.querySelector('.summary-level-up');
+        const masterySlotsEl = node.querySelector('.mastery-slots');
+        const masteryChangesEl = node.querySelector('.mastery-changes .changes-body');
+        const masteryChangesHeader = node.querySelector('.mastery-changes h3');
+        const attachmentsGrid = node.querySelector('.attachments-grid');
+        const apMeterEl = node.querySelector('.mastery-ap-meter');
+        const apValueEl = node.querySelector('.mastery-ap-value');
+        const apMaxEl = node.querySelector('.mastery-ap-max');
+
+        const slotKeys = collectSlotKeys(weapon);
+        const slotLabelMap = slotKeys.reduce((map, key) => {
+          map[key] = SLOT_NAME_BY_KEY[key] || key;
+          return map;
+        }, {});
+
+        const arrowLayer = document.createElement('div');
+        arrowLayer.className = 'arrow-layer';
+        if (masterySlotsEl) masterySlotsEl.appendChild(arrowLayer);
+
+        slider.max = weapon.maxLevel;
+        const savedLevel = masteryLevels.get(weapon.id)?.level;
+        const initialLevel = Math.min(weapon.maxLevel, Math.max(1, Number(savedLevel) || 1));
+        slider.value = initialLevel;
+
+        function refreshLevel(level) {
+          const clamped = Math.min(weapon.maxLevel, Math.max(1, Number(level) || 1));
+          slider.value = clamped;
+          levelLabel.textContent = `LV. ${clamped}`;
+          summaryLevelEl.textContent = clamped;
+          if (masteryChangesHeader) masteryChangesHeader.textContent = `CHANGES AT LEVEL ${clamped}`;
+          saveMasteryLevelEntry(weapon.id, clamped);
+
+          const current = computeMasteryState(weapon, slotKeys, clamped);
+          const previous = computeMasteryState(weapon, slotKeys, Math.max(1, clamped - 1));
+          const diff = diffMasteryAtLevel(weapon, slotKeys, clamped);
+
+          renderMasteryAttachments(
+            masterySlotsEl,
+            weapon,
+            slotKeys,
+            slotLabelMap,
+            current,
+            previous,
+            diff,
+            apMeterEl,
+            apValueEl,
+            apMaxEl,
+            arrowLayer
+          );
+          renderMasteryChanges(masteryChangesEl, slotLabelMap, diff, previous, clamped);
+          if (attachmentsGrid) renderAttachments(attachmentsGrid, weapon, clamped);
+        }
+
+        refreshLevel(initialLevel);
+
+        slider.addEventListener('input', () => refreshLevel(Number(slider.value)));
+        if (levelDown) levelDown.addEventListener('click', () => refreshLevel(Number(slider.value) - 1));
+        if (levelUp) levelUp.addEventListener('click', () => refreshLevel(Number(slider.value) + 1));
+        if (summaryLevelDown)
+          summaryLevelDown.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            refreshLevel(Number(slider.value) - 1);
+          });
+        if (summaryLevelUp)
+          summaryLevelUp.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            refreshLevel(Number(slider.value) + 1);
+          });
+
+        node.__refreshMastery = () => refreshLevel(Number(slider.value));
+      }
+
+      function slotKeyForPayload(payload, weapon) {
+        if (!payload) return null;
+        if (typeof payload === 'object') {
+          if (payload.slot !== undefined) return String(payload.slot);
+          if (payload.slotKey !== undefined) return String(payload.slotKey);
+          if (payload.slotName) return String(payload.slotName);
+        }
+        const name = typeof payload === 'string' ? payload : (payload.name || payload.remove || payload.removed || '');
+        const meta = name ? weapon?.attachmentLookup?.get?.(toKey(name)) : null;
+        const type = payload && payload.type ? payload.type : meta?.type;
+        if (type) {
+          const normalized = toUpperSafe(type.toString().trim());
+          return SLOT_KEY_BY_TYPE[normalized] || normalized;
+        }
+        return name ? toUpperSafe(name) : null;
+      }
+
+      function normalizeEntry(payload, weapon, unlockLevel, slotKey) {
+        if (!payload) return null;
+        const base = {};
+        const name = typeof payload === 'string' ? payload : (payload.name || payload.remove || payload.removed || '');
+        const meta = name ? weapon?.attachmentLookup?.get?.(toKey(name)) : null;
+        if (meta) Object.assign(base, meta);
+        if (payload && typeof payload === 'object') Object.assign(base, payload);
+        if (!base.name && name) base.name = name;
+        if (base.name) base.name = toUpperSafe(base.name);
+        if (base.type || meta?.type) base.type = toUpperSafe(base.type || meta?.type);
+        if (unlockLevel !== undefined && unlockLevel !== null) {
+          base.unlockLevel = unlockLevel;
+        } else if (base.unlockLevel === undefined && meta && meta.unlockLevel !== undefined) {
+          base.unlockLevel = meta.unlockLevel;
+        }
+        if (payload && typeof payload === 'object' && payload.replaced) {
+          const arr = Array.isArray(payload.replaced) ? payload.replaced : [payload.replaced];
+          base.replaced = arr.map((entry) => {
+            if (typeof entry === 'string') return toUpperSafe(entry);
+            if (entry && typeof entry === 'object') {
+              const copy = { ...entry };
+              if (copy.name) copy.name = toUpperSafe(copy.name);
+              return copy;
+            }
+            return entry;
+          });
+        }
+        if (slotKey) base.slotKey = slotKey;
+        return base;
+      }
+
+      function collectSlotKeys(weapon) {
+        const set = new Set();
+        const add = (payload) => {
+          const key = slotKeyForPayload(payload, weapon);
+          if (key) set.add(key);
+        };
+        (weapon.baseline || []).forEach(add);
+        Object.values(weapon.changes || {}).forEach((list) => (list || []).forEach(add));
+        return Array.from(set).sort((a, b) => {
+          const na = Number(a); const nb = Number(b);
+          const aNum = Number.isFinite(na); const bNum = Number.isFinite(nb);
+          if (aNum && bNum) return na - nb;
+          if (aNum) return -1;
+          if (bNum) return 1;
+          return a.localeCompare(b);
+        });
+      }
+
+      function computeMasteryState(weapon, slotKeys, level) {
+        const state = {};
+        (weapon.baseline || []).forEach((item) => {
+          const slot = slotKeyForPayload(item, weapon);
+          if (!slot) return;
+          const entry = normalizeEntry(item, weapon, 0, slot);
+          if (entry && state[slot] === undefined) state[slot] = entry;
+        });
+        const sorted = Object.entries(weapon.changes || {})
+          .map(([lvl, list]) => [Number(lvl), list])
+          .filter(([lvl]) => Number.isFinite(lvl) && lvl <= level)
+          .sort((a, b) => a[0] - b[0]);
+        sorted.forEach(([lvl, list]) => {
+          (list || []).forEach((item) => {
+            const slot = slotKeyForPayload(item, weapon);
+            if (!slot) return;
+            const isRemoval =
+              item === null ||
+              (item && typeof item === 'object' && (item.remove || item.removed || item.action === 'remove'));
+            if (isRemoval) {
+              state[slot] = null;
+              return;
+            }
+            const entry = normalizeEntry(
+              item,
+              weapon,
+              item && item.unlockLevel !== undefined ? item.unlockLevel : lvl,
+              slot
+            );
+            if (entry) state[slot] = entry;
+          });
+        });
+        return state;
+      }
+
+      function diffMasteryAtLevel(weapon, slotKeys, level) {
+        const diff = {};
+        const list = (weapon.changes && weapon.changes[level]) || [];
+        (list || []).forEach((item) => {
+          const slot = slotKeyForPayload(item, weapon);
+          if (!slot) return;
+          const isRemoval =
+            item === null ||
+            (item && typeof item === 'object' && (item.remove || item.removed || item.action === 'remove'));
+          if (isRemoval) {
+            diff[slot] = null;
+            return;
+          }
+          const entry = normalizeEntry(
+            item,
+            weapon,
+            item && item.unlockLevel !== undefined ? item.unlockLevel : level,
+            slot
+          );
+          if (entry) diff[slot] = entry;
+        });
+        return diff;
+      }
+
+      function createApDisplay(value) {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return null;
+        const wrapper = document.createElement('span');
+        wrapper.className = 'ap-inline';
+        const icon = document.createElement('span');
+        icon.className = 'ap-icon';
+        const img = document.createElement('img');
+        img.src = AP_ICON_URL;
+        img.alt = 'AP';
+        icon.appendChild(img);
+        const text = document.createElement('span');
+        text.className = 'ap-num';
+        text.textContent = `${num}`;
+        wrapper.append(icon, text);
+        return wrapper;
+      }
+
+      function createAttachmentCard(data, options = {}) {
+        if (!data) return null;
+        const card = document.createElement('div');
+        card.className = 'slot-card';
+        if (options.old) card.classList.add('old');
+        if (options.changed) card.classList.add('changed');
+        if (options.indented) card.classList.add('indented');
+        if (options.removed) card.classList.add('removed');
+
+        const top = document.createElement('div');
+        top.className = 'card-top';
+
+        const info = document.createElement('div');
+        info.className = 'card-info';
+
+        const title = document.createElement('div');
+        title.className = 'card-title';
+        title.textContent = toUpperSafe(data.name || 'ATTACHMENT');
+        info.appendChild(title);
+
+        const meta = document.createElement('div');
+        meta.className = 'card-meta';
+        const type = document.createElement('span');
+        type.className = 'meta-type';
+        type.textContent = toUpperSafe(data.type || 'ATTACHMENT');
+        meta.appendChild(type);
+
+        if (typeof data.pts === 'number') {
+          const separator = document.createElement('span');
+          separator.className = 'meta-separator';
+          separator.textContent = '\u2022';
+          meta.appendChild(separator);
+
+          const pts = createApDisplay(data.pts);
+          if (pts) {
+            pts.classList.add('meta-pts');
+            meta.appendChild(pts);
+          }
+        }
+
+        info.appendChild(meta);
+        top.appendChild(info);
+
+        const levelBadge = document.createElement('div');
+        levelBadge.className = 'card-level';
+        const displayLevel = data.unlockLevel;
+        const isDefaultLevel =
+          displayLevel === 0 ||
+          displayLevel === '0' ||
+          (typeof displayLevel === 'number' && Number.isFinite(displayLevel) && displayLevel === 0);
+        if (isDefaultLevel) {
+          levelBadge.textContent = 'Default';
+        } else if (displayLevel !== undefined && displayLevel !== null && displayLevel !== '') {
+          const levelText = typeof displayLevel === 'string' ? displayLevel : `Level ${displayLevel}`;
+          levelBadge.textContent = levelText;
+        } else {
+          levelBadge.textContent = 'Unlocked';
+        }
+        top.appendChild(levelBadge);
+
+        card.appendChild(top);
+        return card;
+      }
+
+      function renderMasteryAttachments(
+        container,
+        weapon,
+        slotKeys,
+        slotLabelMap,
+        current,
+        previous,
+        diff,
+        apMeterEl,
+        apValueEl,
+        apMaxEl,
+        arrowLayer
+      ) {
+        if (!container) return;
+        const apMax = weapon.apMax || weapon.apmax || 100;
+        const apUsed = sumAttachmentPoints(Object.values(current || {}).filter(Boolean), weapon);
+        if (apValueEl) apValueEl.textContent = apUsed;
+        if (apMaxEl) apMaxEl.textContent = `/ ${apMax}`;
+        if (apMeterEl) {
+          apMeterEl.innerHTML = '';
+          const meter = buildApMeter(apUsed, apMax);
+          apMeterEl.appendChild(meter);
+        }
+
+        const pairs = [];
+        container.innerHTML = '';
+
+        slotKeys.forEach((slot) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'slot-wrapper';
+          const label = document.createElement('div');
+          label.className = 'slot-label';
+          label.textContent = toUpperSafe(slotLabelMap[slot] || slot);
+          wrapper.appendChild(label);
+          let hasCard = false;
+
+          const change = Object.prototype.hasOwnProperty.call(diff, slot) ? diff[slot] : undefined;
+          const prev = previous ? previous[slot] : null;
+
+          if (change !== undefined) {
+            if (change === null) {
+              if (prev) {
+                const oldCard = createAttachmentCard(prev, { old: true, removed: true, level: prev.unlockLevel });
+                if (oldCard) {
+                  wrapper.appendChild(oldCard);
+                  hasCard = true;
+                }
+              }
+            } else {
+              const replacedMeta = Array.isArray(change.replaced) ? change.replaced : [];
+              let oldCardData = prev ? { ...prev } : null;
+              let oldLevel = oldCardData && Number.isFinite(oldCardData.unlockLevel)
+                ? oldCardData.unlockLevel
+                : change.unlockLevel;
+
+              if (!oldCardData && replacedMeta.length) {
+                const first = replacedMeta.find((entry) => entry && entry.name) || replacedMeta[0];
+                if (first) {
+                  const meta = typeof first === 'string'
+                    ? weapon?.attachmentLookup?.get?.(toKey(first))
+                    : weapon?.attachmentLookup?.get?.(toKey(first.name));
+                  oldCardData = normalizeEntry(first, weapon, first.unlockLevel ?? oldLevel, slot);
+                  if (!oldCardData && meta) oldCardData = { ...meta, name: meta.name, unlockLevel: oldLevel };
+                }
+              }
+
+              let oldCard = null;
+              if (oldCardData) {
+                oldCard = createAttachmentCard(oldCardData, { old: true, level: oldLevel });
+                if (oldCard) {
+                  wrapper.appendChild(oldCard);
+                  hasCard = true;
+                }
+              }
+
+              const newCard = createAttachmentCard(change, {
+                changed: true,
+                indented: Boolean(oldCard),
+                level: Number.isFinite(change.unlockLevel) ? change.unlockLevel : undefined
+              });
+              if (newCard) {
+                wrapper.appendChild(newCard);
+                hasCard = true;
+              }
+              if (oldCard && newCard) {
+                pairs.push({ oldEl: oldCard, newEl: newCard, container });
+              }
+            }
+          } else {
+              const currentData = current ? current[slot] : null;
+              if (currentData) {
+                const prevData = previous ? previous[slot] : null;
+                const changed = prevData ? prevData.name !== currentData.name : false;
+                const card = createAttachmentCard(currentData, {
+                  changed,
+                  level: currentData.unlockLevel
+                });
+                if (card) {
+                  wrapper.appendChild(card);
+                  hasCard = true;
+                }
+              }
+          }
+
+          if (hasCard) {
+            container.appendChild(wrapper);
+          }
+        });
+
+        const layer = arrowLayer || document.createElement('div');
+        layer.className = 'arrow-layer';
+        layer.innerHTML = '';
+        container.appendChild(layer);
+        requestAnimationFrame(() => drawArrows(container, layer, pairs));
+      }
+
+      function renderMasteryChanges(container, slotLabelMap, diff, previous, level) {
+        if (!container) return;
+        container.innerHTML = '';
+        const entries = Object.entries(diff || {});
+        if (!entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'changes-empty';
+          empty.textContent = 'No changes unlocked at this level.';
+          container.appendChild(empty);
+          return;
+        }
+        entries.forEach(([slot, change]) => {
+          const row = document.createElement('div');
+          row.className = 'change-row';
+          const heading = document.createElement('div');
+          heading.className = 'change-heading';
+          const slotName = toUpperSafe(slotLabelMap[slot] || `SLOT ${slot}`);
+          const prev = previous ? previous[slot] : null;
+
+          if (change === null) {
+            heading.innerHTML = `<span class="change-slot">${slotName}</span>`;
+            const detail = document.createElement('div');
+            detail.className = 'change-detail';
+            const prevName = prev ? toUpperSafe(prev.name) : 'ATTACHMENT';
+            detail.innerHTML = `REMOVED <span class="change-removed">${prevName}</span>`;
+            row.appendChild(heading);
+            row.appendChild(detail);
+          } else {
+            const lvlText = Number.isFinite(change.unlockLevel) ? change.unlockLevel : level;
+            heading.innerHTML = `<span class="change-slot">${slotName}</span>`;
+            const detail = document.createElement('div');
+            detail.className = 'change-detail';
+
+            const replacedArr = Array.isArray(change.replaced) ? change.replaced : [];
+            const replacedFirst = replacedArr.find((entry) => entry) || null;
+            const replacedName =
+              typeof replacedFirst === 'string'
+                ? replacedFirst
+                : replacedFirst && replacedFirst.name
+                ? replacedFirst.name
+                : '';
+            const prevName = prev?.name || replacedName || '';
+            const nextName = toUpperSafe(change.name || 'ATTACHMENT');
+
+            if (!prevName) {
+              detail.innerHTML = `EQUIPPED <span class="change-next">${nextName}</span>`;
+            } else {
+              const prevLabel = toUpperSafe(prevName);
+              detail.innerHTML = `<span class="change-prev removed">${prevLabel}</span> <span class="change-arrow">\u2192</span> <span class="change-next">${nextName}</span>`;
+            }
+            row.append(heading, detail);
+          }
+          container.appendChild(row);
+        });
+      }
+
+      function drawArrows(container, layer, pairs) {
+        if (!layer) return;
+        layer.innerHTML = '';
+        if (!pairs.length) return;
+        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#00e5ff';
+
+        const offsetWithinContainer = (element) => {
+          if (!element) return 0;
+          let offset = 0;
+          let node = element;
+          while (node && node !== container) {
+            offset += node.offsetTop || 0;
+            node = node.offsetParent;
+          }
+          return offset;
+        };
+        const offsetLeftWithinContainer = (element) => {
+          if (!element) return 0;
+          let offset = 0;
+          let node = element;
+          while (node && node !== container) {
+            offset += node.offsetLeft || 0;
+            node = node.offsetParent;
+          }
+          return offset;
+        };
+
+        for (const pair of pairs) {
+          const { oldEl, newEl } = pair;
+          if (!oldEl || !newEl) continue;
+          const startY = offsetWithinContainer(oldEl) + oldEl.offsetHeight;
+          const endY = offsetWithinContainer(newEl) + newEl.offsetHeight / 2;
+          const vertical = Math.max(0, endY - startY);
+          const height = vertical + 16;
+          const arrowSize = 6;
+          const oldLeft = offsetLeftWithinContainer(oldEl);
+          const newLeft = offsetLeftWithinContainer(newEl);
+          const baseLeft = Math.min(oldLeft, newLeft);
+          const startX = CARD_PAD + 1 + (oldLeft - baseLeft);
+          const rawTargetX = newLeft - baseLeft;
+          const targetX = Math.max(startX, rawTargetX);
+          const horizontal = Math.max(0, targetX - startX);
+          const tipX = startX + horizontal;
+          const width = Math.max(startX, tipX) + arrowSize + 4;
+
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.classList.add('arrow-svg');
+          svg.setAttribute('width', width);
+          svg.setAttribute('height', height);
+          svg.style.left = `${baseLeft}px`;
+          svg.style.top = `${startY}px`;
+
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', `M${startX} 1 v${vertical} h${horizontal}`);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', accent.trim() || '#00e5ff');
+          path.setAttribute('stroke-width', ARROW_STROKE);
+          path.setAttribute('stroke-linejoin', 'round');
+          path.setAttribute('stroke-linecap', 'round');
+
+          const arrowHead = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const tipY = vertical + 1;
+          arrowHead.setAttribute('d', `M${tipX - arrowSize} ${tipY - arrowSize} L${tipX} ${tipY} L${tipX - arrowSize} ${tipY + arrowSize}`);
+          arrowHead.setAttribute('fill', 'none');
+          arrowHead.setAttribute('stroke', accent.trim() || '#00e5ff');
+          arrowHead.setAttribute('stroke-width', ARROW_STROKE);
+          arrowHead.setAttribute('stroke-linecap', 'round');
+          arrowHead.setAttribute('stroke-linejoin', 'round');
+
+          svg.append(path, arrowHead);
+          layer.appendChild(svg);
+        }
+      }
+
+      function renderPills(container, list, weapon) {
+        container.innerHTML = '';
+        (list || []).forEach((name) => {
+          const pill = document.createElement('span');
+          pill.className = 'attachment-chip';
+          pill.textContent = typeof name === 'string' ? name : (name?.name || '');
+          const meta = weapon.attachmentLookup.get(toKey(name));
+          if (meta && meta.pts !== undefined) {
+            const ap = document.createElement('span');
+            ap.className = 'ap';
+            ap.textContent = `${meta.pts} AP`;
+            pill.appendChild(ap);
+          }
+          container.appendChild(pill);
+        });
+        if (!container.childElementCount) {
+          container.innerHTML = '<span class="summary-level" style="color:var(--text-muted);">None</span>';
+        }
+      }
+
+      function renderAttachments(container, weapon, currentLevel = 1) {
+        container.innerHTML = '';
+        const grouped = {};
+        Object.values(weapon.attachments || {}).forEach((att) => {
+          const type = att.type || 'Misc';
+          if (!grouped[type]) grouped[type] = [];
+          grouped[type].push(att);
+        });
+        const types = Object.keys(grouped);
+        if (!types.length) {
+          container.innerHTML = '<div class="summary-level" style="color:var(--text-muted);">No attachment data.</div>';
+          return;
+        }
+        types.sort();
+        types.forEach((type) => {
+          const card = document.createElement('div');
+          card.className = 'attachment-type-card';
+          card.innerHTML = `<div class="attachment-type-title">${type}</div>`;
+          grouped[type].sort((a, b) => (a.unlockLevel || 0) - (b.unlockLevel || 0));
+          const list = document.createElement("div");
+          list.className = "attachment-items";
+          grouped[type].forEach((att) => {
+            const item = document.createElement("div");
+            item.className = "attachment-item";
+            const isUnlocked =
+              att.unlockLevel === undefined ||
+              att.unlockLevel === null ||
+              Number(currentLevel) >= Number(att.unlockLevel);
+            if (isUnlocked) {
+              item.classList.add("attachment-unlocked");
+            } else {
+              item.classList.add("attachment-locked");
+            }
+
+            const header = document.createElement("div");
+            header.className = "item-header";
+
+            const name = document.createElement("div");
+            name.className = "item-name";
+            name.textContent = att.name || "Attachment";
+            header.appendChild(name);
+
+            if (att.pts !== undefined) {
+              const ap = document.createElement("span");
+              ap.className = "ap-inline item-ap";
+              ap.innerHTML = `<span class="ap-icon"><img src="${AP_ICON_URL}" alt="AP"></span><span class="ap-num">${att.pts}</span>`;
+              header.appendChild(ap);
+            }
+
+            item.appendChild(header);
+
+            const metaRow = document.createElement("div");
+            metaRow.className = "item-meta";
+            const unlock = document.createElement("span");
+            unlock.className = "item-unlock";
+            unlock.textContent = att.unlockLevel !== undefined && att.unlockLevel !== null ? `Unlock: Lv ${att.unlockLevel}` : "Unlock: Default";
+            metaRow.appendChild(unlock);
+
+            item.appendChild(metaRow);
+            list.appendChild(item);
+          });
+          card.appendChild(list);
+          container.appendChild(card);
+        });
+      }
+
+      function renderRichText(text) {
+        if (!text) return '';
+        return text
+          .replace(/<c>(.*?)<\/c>/gi, '<span class="note-callout">$1</span>')
+          .replace(/<b>(.*?)<\/b>/gi, '<strong>$1</strong>')
+          .replace(/<i>(.*?)<\/i>/gi, '<em>$1</em>');
+      }
+
+      window.addEventListener('resize', () => {
+        document.querySelectorAll('.weapon-strip').forEach((node) => alignRankEndcap(node));
+      });
+
+      (function setupOptions() {
+        if (!optionsPanel) return;
+        function loadBool(key, fallback) {
+          try {
+            const raw = localStorage.getItem(key);
+            if (raw === null || raw === undefined) return fallback;
+            return raw === '1';
+          } catch (_) {
+            return fallback;
+          }
+        }
+        function loadNumber(key, fallback) {
+          try {
+            const raw = localStorage.getItem(key);
+            const num = Number(raw);
+            if (Number.isFinite(num)) return num;
+            return fallback;
+          } catch (_) {
+            return fallback;
+          }
+        }
+        function save(key, value) {
+          try { localStorage.setItem(key, value); } catch (_) {}
+        }
+        const toggleSwitch = reduceAnimationsToggle ? reduceAnimationsToggle.querySelector('.toggle-switch') : null;
+        function applyScale(value) {
+          const clamped = Math.min(200, Math.max(50, Number(value) || 100));
+          if (uiScaleValue) uiScaleValue.textContent = `${clamped}%`;
+          if (uiScaleSlider) {
+            uiScaleSlider.value = String(clamped);
+            const fill = ((clamped - 50) / (200 - 50)) * 100;
+            uiScaleSlider.style.setProperty('--slider-fill', `${fill}%`);
+          }
+          document.documentElement.style.setProperty('--ui-scale', (clamped / 100).toString());
+          save(UI_SCALE_KEY, clamped);
+        }
+        let pendingScale = loadNumber(UI_SCALE_KEY, 100);
+        function toggleReduceAnimations() {
+          if (!reduceAnimationsToggle) return;
+          const pressed = reduceAnimationsToggle.getAttribute('aria-pressed') === 'true';
+          const next = !pressed;
+          reduceAnimationsToggle.setAttribute('aria-pressed', next ? 'true' : 'false');
+          reduceAnimationsToggle.classList.toggle('active', next);
+          if (toggleSwitch) toggleSwitch.classList.toggle('on', next);
+          document.documentElement.classList.toggle('reduce-animations', next);
+          save(REDUCE_KEY, next ? '1' : '0');
+        }
+        applyScale(pendingScale);
+        const reduceInitial = loadBool(REDUCE_KEY, false);
+        if (reduceInitial && reduceAnimationsToggle) {
+          reduceAnimationsToggle.setAttribute('aria-pressed', 'true');
+          reduceAnimationsToggle.classList.add('active');
+          if (toggleSwitch) toggleSwitch.classList.add('on');
+          document.documentElement.classList.add('reduce-animations');
+        }
+        if (uiScaleSlider) {
+          uiScaleSlider.addEventListener('input', (e) => {
+            pendingScale = Math.min(200, Math.max(50, Number(e.target.value) || pendingScale));
+            if (uiScaleValue) uiScaleValue.textContent = `${pendingScale}%`;
+            const fill = ((pendingScale - 50) / (200 - 50)) * 100;
+            uiScaleSlider.style.setProperty('--slider-fill', `${fill}%`);
+          });
+          const commitScale = () => applyScale(pendingScale);
+          uiScaleSlider.addEventListener('change', commitScale);
+          uiScaleSlider.addEventListener('pointerup', commitScale);
+          uiScaleSlider.addEventListener('keyup', (ev) => {
+            if (ev.key === 'Enter' || ev.key === ' ') commitScale();
+          });
+        }
+        if (reduceAnimationsToggle) {
+          reduceAnimationsToggle.addEventListener('click', toggleReduceAnimations);
+        }
+        const applyOptionsVisibility = (visible) => {
+          if (!optionsPanel || !optionsBody) return;
+          optionsBody.hidden = !visible;
+          optionsPanel.classList.toggle('collapsed', !visible);
+          optionsPanel.hidden = !visible;
+          if (layoutGridEl) layoutGridEl.classList.toggle('options-hidden', !visible);
+          if (optionsGearButton) {
+            optionsGearButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
+            optionsGearButton.setAttribute('aria-label', visible ? 'Hide options' : 'Show options');
+          }
+          if (optionsFloatingButton) {
+            optionsFloatingButton.hidden = visible;
+            optionsFloatingButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
+          }
+          save(OPTIONS_KEY, visible ? '1' : '0');
+        };
+        if (optionsGearButton) {
+          optionsGearButton.addEventListener('click', () => {
+            const visible = optionsBody && !optionsBody.hidden;
+            applyOptionsVisibility(!visible);
+          });
+        }
+        if (optionsFloatingButton) {
+          optionsFloatingButton.addEventListener('click', () => applyOptionsVisibility(true));
+        }
+        applyOptionsVisibility(loadBool(OPTIONS_KEY, true));
+      })();
+
+      function saveTypeFilter(value) {
+        try { localStorage.setItem(TYPE_FILTER_KEY, value); } catch (_) {}
+      }
+      function loadTypeFilter() {
+        try {
+          const raw = localStorage.getItem(TYPE_FILTER_KEY) || '';
+          return raw;
+        } catch (_) {
+          return '';
+        }
+      }
+      function saveFavorites(favSet) {
+        try {
+          const arr = Array.from(favSet);
+          localStorage.setItem(FAVORITES_KEY, JSON.stringify(arr));
+        } catch (_) {}
+      }
+      function saveFavoriteOrder(order) {
+        try {
+          localStorage.setItem(FAVORITE_ORDER_KEY, JSON.stringify(order || []));
+        } catch (_) {}
+      }
+      function loadFavoriteOrder() {
+        try {
+          const raw = localStorage.getItem(FAVORITE_ORDER_KEY);
+          if (!raw) return [];
+          const arr = JSON.parse(raw);
+          return Array.isArray(arr) ? arr.filter(Boolean) : [];
+        } catch (_) {
+          return [];
+        }
+      }
+      function syncFavoriteOrder(validIds) {
+        const validSet = validIds instanceof Set ? validIds : null;
+        const favIds = Array.from(FAVORITES || []).filter(Boolean);
+        favoriteOrder = favoriteOrder.filter((id) => favIds.includes(id) && (!validSet || validSet.has(id)));
+        favIds.forEach((id) => {
+          if ((!validSet || validSet.has(id)) && !favoriteOrder.includes(id)) favoriteOrder.push(id);
+        });
+        saveFavoriteOrder(favoriteOrder);
+      }
+      function mergeFavoriteOrder(visibleOrder) {
+        const favIds = new Set(Array.from(FAVORITES || []));
+        const cleanedVisible = (visibleOrder || []).filter((id) => favIds.has(id));
+        const visibleSet = new Set(cleanedVisible);
+        const remainder = favoriteOrder.filter((id) => favIds.has(id) && !visibleSet.has(id));
+        const missing = Array.from(favIds).filter((id) => !visibleSet.has(id) && !remainder.includes(id));
+        return cleanedVisible.concat(remainder, missing);
+      }
+      function loadFavorites() {
+        try {
+          const raw = localStorage.getItem(FAVORITES_KEY);
+          if (!raw) return new Set();
+          const arr = JSON.parse(raw);
+          if (Array.isArray(arr)) return new Set(arr);
+          return new Set();
+        } catch (_) {
+          return new Set();
+        }
+      }
+      function saveMasteryLevelEntry(id, level) {
+        if (!id) return;
+        masteryLevels.set(id, { level });
+        try {
+          const obj = {};
+          masteryLevels.forEach((val, key) => { obj[key] = val; });
+          localStorage.setItem(MASTERY_LEVEL_KEY, JSON.stringify(obj));
+        } catch (_) {}
+      }
+      function loadMasteryLevels() {
+        try {
+          const raw = localStorage.getItem(MASTERY_LEVEL_KEY);
+          if (!raw) return new Map();
+          const obj = JSON.parse(raw);
+          const map = new Map();
+          if (obj && typeof obj === 'object') {
+            Object.entries(obj).forEach(([key, val]) => {
+              const num = Number(val && val.level);
+              if (Number.isFinite(num)) map.set(key, { level: num });
+            });
+          }
+          return map;
+        } catch (_) {
+          return new Map();
+        }
+      }
+      function saveTabStateEntry(id, tabId) {
+        if (!id || !tabId) return;
+        tabState.set(id, { tab: tabId });
+        try {
+          const obj = {};
+          tabState.forEach((val, key) => { obj[key] = val; });
+          localStorage.setItem(TAB_STATE_KEY, JSON.stringify(obj));
+        } catch (_) {}
+      }
+      function loadTabState() {
+        try {
+          const raw = localStorage.getItem(TAB_STATE_KEY);
+          if (!raw) return new Map();
+          const obj = JSON.parse(raw);
+          const map = new Map();
+          if (obj && typeof obj === 'object') {
+            Object.entries(obj).forEach(([key, val]) => {
+              if (val && typeof val.tab === 'string' && val.tab.trim()) map.set(key, { tab: val.tab });
+            });
+          }
+          return map;
+        } catch (_) {
+          return new Map();
+        }
+      }
+      function saveCardStateEntry(id, open) {
+        if (!id) return;
+        cardState.set(id, { open });
+        try {
+          const obj = {};
+          cardState.forEach((val, key) => { obj[key] = val; });
+          localStorage.setItem(CARD_STATE_KEY, JSON.stringify(obj));
+        } catch (_) {}
+      }
+      function loadCardState() {
+        try {
+          const raw = localStorage.getItem(CARD_STATE_KEY);
+          if (!raw) return new Map();
+          const obj = JSON.parse(raw);
+          const map = new Map();
+          if (obj && typeof obj === 'object') {
+            Object.entries(obj).forEach(([key, val]) => {
+              map.set(key, { open: val && val.open === true });
+            });
+          }
+          return map;
+        } catch (_) {
+          return new Map();
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
