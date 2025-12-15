@@ -2,7 +2,7 @@
 
 Live site: https://erebusares.github.io/BF6-Meta/main.html
 
-A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock paths, and ranking data. The site is fully data-driven from the JSON in `/data` (`builds-main.json`, `builds-mastery.json`, `attachments.json`, `ranking.json`, and `metadata.json`).
+A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock paths, and ranking data. The site is fully data-driven from the JSON in `/data` (`builds-main.json`, `builds-mastery.json`, `attachments.json`, `ranking.json`, and `metadata.json`). Mastery unlocks (baseline/changes) live only in `builds-mastery.json`; `builds-main.json` is reserved for build loadouts, notes, and related metadata.
 
 ## Disclaimer
 - Unofficial, community-maintained reference; use at your own risk.
@@ -21,8 +21,8 @@ A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock pa
    - `{ "Notes": "Short blurb" }` renders in the notes box.
    - `{ "Updated": "MM/DD/YYYY" }` shows a last-updated stamp.
    - `{ "name": "Attachment Name", "level": 12 }` lets you include unlock level metadata (falls back to `attachments.json` data if omitted).
-3. If the weapon is missing mastery unlocks, add a matching entry to `data/builds-mastery.json` (baseline/changes).
-4. To adjust ranking or metadata, update `data/ranking.json` and/or `data/metadata.json`.
+3. If the weapon is missing mastery unlocks, add a matching entry to `data/builds-mastery.json` (baseline/changes). Do not add `baseline` or `changes` to `builds-main.json`; the app pulls them from `builds-mastery.json`.
+4. To adjust ranking or metadata, update `data/ranking.json` and/or `data/metadata.json`. Ranks and type ranks are sourced only from `data/ranking.json` (do not add `rank`/`tr` fields to `builds-main.json`).
 5. Reload `main.html` locally to confirm the build renders as expected.
 
 ## Adding a custom/community build name

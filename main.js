@@ -53,6 +53,25 @@
     }
   };
 
+  const cloneJsonSafe = (value) => {
+    if (value === undefined) return value;
+    if (typeof structuredClone === 'function') {
+      try {
+        return structuredClone(value);
+      } catch (error) {
+        // fall through
+      }
+    }
+    try {
+      return JSON.parse(JSON.stringify(value));
+    } catch (error) {
+      console.warn('Unable to clone JSON payload; returning original reference', error);
+      return value;
+    }
+  };
+
+  const normalizeWeaponKey = (value) => (value == null ? '' : value.toString().trim().toUpperCase());
+
   let metadata = {}, attachments = {}, ranking = [], buildsMastery = {}, buildsMain = [];
   try {
     [metadata, attachments, ranking, buildsMastery, buildsMain] = await Promise.all([
@@ -80,23 +99,78 @@
 
   window.weaponDatabase = mergedWeaponDatabase;
   window.MANUAL_RANKING_GROUPS = ranking || [];
-  window.weapon_baseline = (buildsMastery && (buildsMastery.weapon_baseline || buildsMastery.baseline)) || {};
-  window.weapon_changes = (buildsMastery && (buildsMastery.weapon_changes || buildsMastery.changes)) || {};
-  window.weaponConfigs = Array.isArray(buildsMain) ? buildsMain : [];
-  const weaponConfigs = window.weaponConfigs;
+  const masteryBaseline =
+    (buildsMastery && (buildsMastery.weapon_baseline || buildsMastery.baseline)) || {};
+  const masteryChanges =
+    (buildsMastery && (buildsMastery.weapon_changes || buildsMastery.changes)) || {};
+  const masteryBaselineUpdated =
+    (buildsMastery &&
+      (buildsMastery.baseline_updated || buildsMastery.baselineUpdated || buildsMastery.baselineUpdates)) ||
+    {};
+  const masteryChangesUpdated =
+    (buildsMastery &&
+      (buildsMastery.changes_updated || buildsMastery.changesUpdated || buildsMastery.changeUpdates)) ||
+    {};
+  window.weapon_baseline = masteryBaseline;
+  window.weapon_changes = masteryChanges;
+
+  const masteryBaselineMap = new Map();
+  const masteryChangesMap = new Map();
+  const masteryBaselineUpdatedMap = new Map();
+  const masteryChangesUpdatedMap = new Map();
+  const populateMasteryLookup = (source, target) => {
+    if (!source || typeof source !== 'object') return;
+    for (const [name, payload] of Object.entries(source)) {
+      const key = normalizeWeaponKey(name);
+      if (!key) continue;
+      target.set(key, cloneJsonSafe(payload));
+    }
+  };
+  populateMasteryLookup(masteryBaseline, masteryBaselineMap);
+  populateMasteryLookup(masteryChanges, masteryChangesMap);
+  populateMasteryLookup(masteryBaselineUpdated, masteryBaselineUpdatedMap);
+  populateMasteryLookup(masteryChangesUpdated, masteryChangesUpdatedMap);
+
+  const weaponConfigs =
+    Array.isArray(buildsMain) && buildsMain.length
+      ? buildsMain.map((config) => {
+          const cfg = config || {};
+          const key = normalizeWeaponKey(cfg.dbname || cfg.name || cfg.id);
+          const merged = { ...cfg };
+          if (!merged.baseline && masteryBaselineMap.has(key)) {
+            merged.baseline = cloneJsonSafe(masteryBaselineMap.get(key));
+          }
+          if (!merged.changes && masteryChangesMap.has(key)) {
+            merged.changes = cloneJsonSafe(masteryChangesMap.get(key));
+          }
+          if (masteryBaselineUpdatedMap.has(key)) {
+            merged.baselineUpdated = masteryBaselineUpdatedMap.get(key);
+          }
+          if (masteryChangesUpdatedMap.has(key)) {
+            merged.changesUpdated = masteryChangesUpdatedMap.get(key);
+          }
+          return merged;
+        })
+      : [];
+  window.weaponConfigs = weaponConfigs;
   const rankingIndex = new Map();
   (ranking || []).forEach((group) => {
-    (group.entries || []).forEach((entry) => {
+    (group.entries || []).forEach((entry, idx) => {
       const key = (entry.dbname || entry.id || '').toString().trim().toUpperCase();
-      if (key) rankingIndex.set(key, { rank: entry.rank, type: group.type });
+      if (key) {
+        const typeRankValue =
+          Number.isFinite(entry.tr) && entry.tr > 0 ? entry.tr : Number.isFinite(idx + 1) ? idx + 1 : null;
+        rankingIndex.set(key, { rank: entry.rank, type: group.type, typeRank: typeRankValue });
+      }
     });
   });
   weaponConfigs.forEach((cfg) => {
     const key = (cfg.dbname || cfg.name || cfg.id || '').toString().trim().toUpperCase();
     const info = key ? rankingIndex.get(key) : null;
     if (info) {
-      if (!cfg.rank && info.rank) cfg.rank = info.rank;
-      if (!cfg.type && info.type) cfg.type = info.type;
+      if (info.rank) cfg.rank = info.rank;
+      if (info.type) cfg.type = info.type;
+      if (info.typeRank) cfg.tr = info.typeRank.toString();
     }
   });
 const AP_ICON = 'https://static.wikia.nocookie.net/battlefield/images/0/06/Battlefield_6_Attachment_Point_Icon.png';

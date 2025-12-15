@@ -502,7 +502,12 @@
         const changesMap = mastery.weapon_changes || mastery.changes || {};
         const rankingIndex = new Map();
         (ranking || []).forEach((group) => {
-          (group.entries || []).forEach((entry) => rankingIndex.set(toKey(entry.dbname), { rank: entry.rank, type: group.type }));
+          (group.entries || []).forEach((entry, idx) => {
+            const key = toKey(entry.dbname || entry.id);
+            if (!key) return;
+            const typeRank = Number.isFinite(entry.tr) && entry.tr > 0 ? entry.tr : idx + 1;
+            rankingIndex.set(key, { rank: entry.rank, type: group.type, tr: typeRank });
+          });
         });
 
         const weapons = (builds || []).map((cfg) => {
@@ -514,12 +519,14 @@
             const key = toKey(att.name);
             if (key) attachLookup.set(key, att);
           });
-          const rankInfo = cfg.rank || (rankingIndex.get(toKey(name)) || {}).rank || '';
+          const rankInfo = (rankingIndex.get(toKey(name)) || {}).rank || cfg.rank || '';
+          const typeRankInfo = (rankingIndex.get(toKey(name)) || {}).tr || cfg.tr || cfg.typeRating || cfg.range || null;
+          const resolvedType = meta.type || (rankingIndex.get(toKey(name)) || {}).type || 'Unknown';
           return {
             id: cfg.id || name.replace(/\s+/g, '-').toLowerCase(),
             displayName: meta.name || name,
-            type: meta.type || (rankingIndex.get(toKey(name)) || {}).type || 'Unknown',
-            typeKey: (meta.type || (rankingIndex.get(toKey(name)) || {}).type || 'Unknown').toUpperCase(),
+            type: resolvedType,
+            typeKey: resolvedType.toUpperCase(),
             image: meta.image,
             maxLevel: meta.maxLevel || 40,
             apMax: meta.apMax || meta.apmax || 100,
@@ -527,7 +534,7 @@
             baseline: cfg.baseline || baselineMap[name] || baselineMap[toKey(name)] || [],
             changes: cfg.changes || changesMap[name] || changesMap[toKey(name)] || {},
             rank: rankInfo,
-            tr: cfg.tr || cfg.typeRating || cfg.range || (cfg.tr === 0 ? '0' : null),
+            tr: typeRankInfo ? String(typeRankInfo) : '',
             attachments: attachEntry.attachments || {},
             attachmentLookup: attachLookup
           };
