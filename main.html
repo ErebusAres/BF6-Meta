@@ -1268,6 +1268,11 @@
         const apValueEl = node.querySelector('.mastery-ap-value');
         const apMaxEl = node.querySelector('.mastery-ap-max');
 
+        const formatLevelDisplay = (value) => {
+          const num = Number(value) || 0;
+          return num >= 40 ? '40+' : String(num);
+        };
+
         const slotKeys = collectSlotKeys(weapon);
         const slotLabelMap = slotKeys.reduce((map, key) => {
           map[key] = SLOT_NAME_BY_KEY[key] || key;
@@ -1285,10 +1290,11 @@
 
         function refreshLevel(level) {
           const clamped = Math.min(weapon.maxLevel, Math.max(1, Number(level) || 1));
+          const displayVal = formatLevelDisplay(clamped);
           slider.value = clamped;
-          levelLabel.textContent = `LV. ${clamped}`;
-          summaryLevelEl.textContent = clamped;
-          if (masteryChangesHeader) masteryChangesHeader.textContent = `CHANGES AT LEVEL ${clamped}`;
+          levelLabel.textContent = `LV. ${displayVal}`;
+          summaryLevelEl.textContent = displayVal;
+          if (masteryChangesHeader) masteryChangesHeader.textContent = `CHANGES AT LEVEL ${displayVal}`;
           saveMasteryLevelEntry(weapon.id, clamped);
 
           const current = computeMasteryState(weapon, slotKeys, clamped);
@@ -1316,17 +1322,21 @@
         refreshLevel(initialLevel);
 
         slider.addEventListener('input', () => refreshLevel(Number(slider.value)));
-        if (levelDown) levelDown.addEventListener('click', () => refreshLevel(Number(slider.value) - 1));
-        if (levelUp) levelUp.addEventListener('click', () => refreshLevel(Number(slider.value) + 1));
+        const stepLevel = (ev, delta) => {
+          const step = ev.shiftKey ? delta * 5 : delta;
+          refreshLevel(Number(slider.value) + step);
+        };
+        if (levelDown) levelDown.addEventListener('click', (ev) => stepLevel(ev, -1));
+        if (levelUp) levelUp.addEventListener('click', (ev) => stepLevel(ev, 1));
         if (summaryLevelDown)
           summaryLevelDown.addEventListener('click', (ev) => {
             ev.stopPropagation();
-            refreshLevel(Number(slider.value) - 1);
+            stepLevel(ev, -1);
           });
         if (summaryLevelUp)
           summaryLevelUp.addEventListener('click', (ev) => {
             ev.stopPropagation();
-            refreshLevel(Number(slider.value) + 1);
+            stepLevel(ev, 1);
           });
 
         node.__refreshMastery = () => refreshLevel(Number(slider.value));
