@@ -23,9 +23,19 @@
               <div class="strip-actions">
                 <div class="strip-search-wrap">
                   <div class="strip-search-row">
-                    <label class="sr-only" for="stripSearchInput">Search weapons</label>
-                    <input id="stripSearchInput" class="strip-search" type="search" placeholder="Search weapons..." autocomplete="off" />
+                    <div class="search-input-shell">
+                      <label class="sr-only" for="stripSearchInput">Search weapons</label>
+                      <input id="stripSearchInput" class="strip-search" type="search" placeholder="Search weapons..." autocomplete="off" aria-keyshortcuts="/" />
+                      <button type="button" class="strip-search-clear" id="stripSearchClear" aria-label="Clear search" hidden>&times;</button>
+                      <span class="search-shortcut-hint" aria-hidden="true">/</span>
+                    </div>
                     <button type="button" class="strip-search-help-btn" id="stripSearchHelp" aria-expanded="false" aria-controls="stripSearchHelpPanel" title="Search tips">?</button>
+                  </div>
+                    <div class="strip-search-meta">
+                    <div class="search-tokens" id="searchTokens" aria-live="polite"></div>
+                    <div class="search-meta-actions">
+                      <span class="search-count" id="searchResultCount" aria-live="polite"></span>
+                    </div>
                   </div>
                   <div class="strip-search-help-panel" id="stripSearchHelpPanel" hidden>
                     <div class="strip-search-help-title">Search tips</div>
@@ -35,7 +45,10 @@
                       <li><span class="search-tip-label">Ranks:</span> use #meta, #a, #b, etc. to filter by tier.</li>
                       <li><span class="search-tip-label">Type Ranks:</span> use #1, #2, etc. to show that type rank only.</li>
                       <li><span class="search-tip-label">Levels:</span> LV=10, LV&gt;10, LV&lt;20, LV5-15, LV>=30, LV<=5.</li>
-                      <li><span class="search-tip-label">Mix Terms:</span> "assault #1 LV&gt;10" stacks all filters.</li>
+                      <li><span class="search-tip-label">Favorites:</span> use the Favorites filter chip; results highlight starred items.</li>
+                      <li><span class="search-tip-label">Mix Terms:</span> "assault #1 LV&gt;10" stacks type, rank, and level filters.</li>
+                      <li><span class="search-tip-label">Shortcuts:</span> Press <kbd>/</kbd> to focus search, <kbd>Esc</kbd> to clear.</li>
+                      <li><span class="search-tip-label">Tokens:</span> Filters appear as chips; click a chip to remove that piece of the query.</li>
                     </ul>
                   </div>
                 </div>
@@ -52,7 +65,7 @@
       <div class="options-header">
         <span class="options-title">Options</span>
         <button class="options-gear" id="optionsGearButton" type="button" aria-expanded="true" aria-controls="optionsBody" aria-label="Hide options">
-          <span aria-hidden="true" class="gear-symbol">⚙</span>
+          <span aria-hidden="true" class="gear-symbol">⚙️</span>
           <span class="sr-only">Toggle options</span>
         </button>
       </div>
@@ -75,9 +88,11 @@
       </div>
     </section>
   </div>
+  <div class="options-overlay" id="optionsOverlay" hidden></div>
   <button class="options-floating-gear" id="optionsFloatingButton" type="button" aria-label="Show options" hidden>
     <span class="sr-only">Show options</span>
-    <span aria-hidden="true" class="gear-symbol">⚙</span>
+    <span aria-hidden="true" class="gear-symbol">⚙️</span>
+    <span aria-hidden="true" class="options-label">Options</span>
   </button>
 
   <div class="help-overlay" id="helpOverlay" hidden>
@@ -123,11 +138,17 @@
             <li>
               <span class="help-label">Quick search:</span>
               Names/types, wildcards like *a4, weapon tiers (#meta/#a), type ranks (#1), and level rules (LV&gt;10, LV5-15).
-              <div class="help-subtext">Stack them: “assault #1 LV&gt;10 *a4” filters type, rank, level, and partial name at once.</div>
+              <div class="help-subtext">Stack them: "assault #1 LV&gt;10 *a4" filters type, rank, level, and partial name at once.</div>
+              <div class="help-subtext">Filters show as chips under search; click a chip to remove it.</div>
             </li>
             <li>
               <span class="help-label">Favorites filter:</span>
-              Switch to the Favorites chip to see only starred weapons.
+              Switch to the Favorites chip to see only starred weapons; drag stars to reorder inside Favorites.
+              <div class="help-subtext">If you don’t see any cards in Favorites, add a star first or switch back to All.</div>
+            </li>
+            <li>
+              <span class="help-label">Shortcuts:</span>
+              Press <kbd>/</kbd> to focus search; <kbd>Esc</kbd> clears search if it has text.
             </li>
           </ul>
         </div>
@@ -241,7 +262,10 @@
               <span class="header-level mastery-level-label" aria-live="polite">LV. 0</span>
               <span class="header-sep" aria-hidden="true">&bull;</span>
               <button class="level-button mastery-level-down" type="button" aria-label="Decrease level">-</button>
-              <input class="level-slider mastery-slider" type="range" min="0" max="40" step="1" value="0" aria-label="Set mastery level">
+              <div class="mastery-slider-shell">
+                <input class="level-slider mastery-slider" type="range" min="0" max="40" step="1" value="0" aria-label="Set mastery level">
+                <div class="slider-ticks" aria-hidden="true"></div>
+              </div>
               <button class="level-button mastery-level-up" type="button" aria-label="Increase level">+</button>
             </div>
             <div class="mastery-layout weapon-layout">
@@ -280,6 +304,9 @@
       const navEl = document.getElementById('weaponNav');
       const typeFilterList = document.getElementById('typeFilterList');
       const searchInput = document.getElementById('stripSearchInput');
+      const searchClearBtn = document.getElementById('stripSearchClear');
+      const searchTokensEl = document.getElementById('searchTokens');
+      const searchCountEl = document.getElementById('searchResultCount');
       const searchHelpBtn = document.getElementById('stripSearchHelp');
       const searchHelpPanel = document.getElementById('stripSearchHelpPanel');
       const searchWrap = document.querySelector('.strip-search-wrap');
@@ -293,7 +320,9 @@
       const optionsGearButton = document.getElementById('optionsGearButton');
       const optionsBody = document.getElementById('optionsBody');
       const optionsFloatingButton = document.getElementById('optionsFloatingButton');
+      const optionsOverlay = document.getElementById('optionsOverlay');
       const layoutGridEl = document.querySelector('.layout-grid');
+      let optionsAnimTimeout = null;
 
       const UI_SCALE_KEY = 'bf6-meta-ui-scale';
       const REDUCE_KEY = 'bf6-meta-reduce-animations';
@@ -345,6 +374,7 @@
       let draggingStripNode = null;
       let dragActive = false;
       let searchHelpOpen = false;
+      let lastParsedQuery = { tokens: [], terms: [], patterns: [], rankFilters: [], rankTierFilters: [], levelFilters: [], rawTokens: [] };
 
       async function loadJson(file) {
         const url = new URL('./data/' + file, document.baseURI);
@@ -385,11 +415,17 @@
       const cardState = loadCardState();
       const masteryLevels = loadMasteryLevels();
       const tabState = loadTabState();
+      function applySearchValue(value) {
+        searchQuery = (value || '').toString();
+        if (searchInput) searchInput.value = searchQuery;
+        if (searchClearBtn) searchClearBtn.hidden = !(searchQuery && searchQuery.trim());
+        renderStrips();
+      }
       if (searchInput) {
-        searchInput.addEventListener('input', (ev) => {
-          searchQuery = (ev.target.value || '').toString().trim();
-          renderStrips();
-        });
+        searchInput.addEventListener('input', (ev) => applySearchValue(ev.target.value || ''));
+      }
+      if (searchClearBtn) {
+        searchClearBtn.addEventListener('click', () => applySearchValue(''));
       }
       if (searchHelpBtn) {
         const setVisible = (visible) => {
@@ -409,6 +445,20 @@
           }
         });
       }
+
+      document.addEventListener('keydown', (ev) => {
+        const tag = (ev.target && ev.target.tagName || '').toLowerCase();
+        const isTyping = tag === 'input' || tag === 'textarea';
+        if (ev.key === '/' && !ev.metaKey && !ev.ctrlKey && !ev.altKey) {
+          if (!isTyping) {
+            ev.preventDefault();
+            if (searchInput) searchInput.focus();
+          }
+        }
+        if (ev.key === 'Escape' && searchInput && document.activeElement === searchInput && searchInput.value) {
+          applySearchValue('');
+        }
+      });
 
       (function setupHelpOverlay() {
         if (!helpButton || !helpOverlay) return;
@@ -496,6 +546,11 @@
         return (a.displayName || '').localeCompare(b.displayName || '');
       };
 
+      const formatLevelDisplay = (value) => {
+        const num = Number(value) || 0;
+        return num >= 40 ? '40+' : String(num);
+      };
+
       function getMasteryLevelValue(weapon) {
         const saved = masteryLevels.get(weapon.id)?.level;
         const num = Number(saved);
@@ -507,14 +562,22 @@
       }
 
       function parseSearchQuery(raw) {
-        const result = { terms: [], patterns: [], rankFilters: [], rankTierFilters: [], levelFilters: [] };
+        const result = { terms: [], patterns: [], rankFilters: [], rankTierFilters: [], levelFilters: [], tokens: [], rawTokens: [] };
         if (!raw) return result;
         const tokens = raw.split(/\s+/).filter(Boolean);
+        result.rawTokens = tokens.slice();
         const tierFilters = new Set();
-        tokens.forEach((tok) => {
+        const pushToken = (kind, label, rawToken, index) => {
+          result.tokens.push({ kind, label, raw: rawToken, index });
+        };
+        tokens.forEach((tok, index) => {
           const rankMatch = tok.match(/^#(\d+)$/);
           if (rankMatch) {
-            result.rankFilters.push(parseInt(rankMatch[1], 10));
+            const rankVal = parseInt(rankMatch[1], 10);
+            if (Number.isFinite(rankVal)) {
+              result.rankFilters.push(rankVal);
+              pushToken('type-rank', `#${rankVal}`, tok, index);
+            }
             return;
           }
           const rankTierMatch = tok.match(/^#([a-z]+)$/i);
@@ -527,6 +590,7 @@
               } else {
                 tierFilters.add(tier);
               }
+              pushToken('tier', `#${tier.toUpperCase()}`, tok, index);
             }
             return;
           }
@@ -536,6 +600,7 @@
             const max = parseInt(lvRange[2], 10);
             if (Number.isFinite(min) && Number.isFinite(max)) {
               result.levelFilters.push({ type: 'between', min: Math.min(min, max), max: Math.max(min, max) });
+              pushToken('level', `LV ${Math.min(min, max)}-${Math.max(min, max)}`, tok, index);
               return;
             }
           }
@@ -545,6 +610,7 @@
             const value = parseInt(lvCompare[2], 10);
             if (Number.isFinite(value)) {
               result.levelFilters.push({ type: 'compare', op, value });
+              pushToken('level', `LV${op}${value}`, tok, index);
               return;
             }
           }
@@ -553,6 +619,7 @@
             const value = parseInt(lvExact[1], 10);
             if (Number.isFinite(value)) {
               result.levelFilters.push({ type: 'compare', op: '=', value });
+              pushToken('level', `LV=${value}`, tok, index);
               return;
             }
           }
@@ -561,12 +628,15 @@
             const escaped = lower.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
             try {
               result.patterns.push(new RegExp(escaped, 'i'));
+              pushToken('wildcard', tok, tok, index);
             } catch (_) {
               result.terms.push(lower.replace(/\*/g, ''));
+              pushToken('term', lower.replace(/\*/g, ''), tok, index);
             }
             return;
           }
           result.terms.push(lower);
+          pushToken('term', friendly(tok), tok, index);
         });
         result.rankTierFilters = Array.from(tierFilters);
         return result;
@@ -595,6 +665,53 @@
         });
       }
 
+      function removeSearchToken(index) {
+        const parts = (searchQuery || '').split(/\s+/).filter(Boolean);
+        if (index === undefined || index === null) return;
+        const idx = Number(index);
+        if (idx >= 0 && idx < parts.length) {
+          parts.splice(idx, 1);
+        }
+        applySearchValue(parts.join(' '));
+      }
+
+      function renderSearchTokens(parsed) {
+        if (!searchTokensEl) return;
+        searchTokensEl.innerHTML = '';
+        const tokens = (parsed && parsed.tokens) || [];
+        if (!tokens.length) {
+          const placeholder = document.createElement('span');
+          placeholder.className = 'search-token-placeholder';
+          placeholder.textContent = 'Add filters to see chips.';
+          searchTokensEl.appendChild(placeholder);
+          return;
+        }
+        tokens.forEach((token) => {
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'search-chip';
+          if (token.kind) chip.classList.add(`search-chip-${token.kind}`);
+          const label = document.createElement('span');
+          label.className = 'chip-label';
+          label.textContent = token.label || token.raw || 'filter';
+          const close = document.createElement('span');
+          close.className = 'chip-close';
+          close.setAttribute('aria-hidden', 'true');
+          close.textContent = '×';
+          chip.append(label, close);
+          chip.setAttribute('aria-label', `Remove filter ${token.label || token.raw || ''}`);
+          chip.addEventListener('click', () => removeSearchToken(token.index));
+          searchTokensEl.appendChild(chip);
+        });
+      }
+
+      function updateSearchResultCount(count, total) {
+        if (!searchCountEl) return;
+        const scope = currentTypeFilter === FAVORITES_FILTER ? 'Favorites' : 'All';
+        const poolSize = currentTypeFilter === FAVORITES_FILTER ? FAVORITES.size : total;
+        searchCountEl.textContent = `${count} shown • ${scope} pool: ${poolSize}`;
+      }
+
       function getFilteredWeapons() {
         let filtered = weaponsData.slice();
         if (currentTypeFilter === FAVORITES_FILTER) {
@@ -603,6 +720,7 @@
           filtered = weaponsData.filter((w) => w.typeKey === currentTypeFilter);
         }
         const parsedQuery = parseSearchQuery(searchQuery);
+        lastParsedQuery = parsedQuery;
         const hasTerms = parsedQuery.terms.length > 0;
         const hasPatterns = parsedQuery.patterns.length > 0;
         const hasRankFilters = parsedQuery.rankFilters.length > 0;
@@ -644,30 +762,55 @@
 
       function renderStrips() {
         if (!stripList) return;
-        finishStripDrag();
-        stripList.innerHTML = '';
-        const filtered = getFilteredWeapons();
-        const favoritesView = currentTypeFilter === FAVORITES_FILTER;
-        const hasFavorites = FAVORITES.size > 0;
-        const allowReorder = favoritesView && filtered.length > 0;
-        stripList.classList.toggle('reorder-enabled', allowReorder);
-        if (filtered.length === 0) {
-          if (favoritesView && !hasFavorites) {
-            stripList.appendChild(createFavoritesEmptyCard());
-          } else {
-            const message = favoritesView ? 'No favorites match this search.' : 'No weapons available for this filter.';
-            stripList.innerHTML = `<div class="loading">${message}</div>`;
+        try {
+          finishStripDrag();
+          stripList.innerHTML = '';
+          const filtered = getFilteredWeapons();
+          renderSearchTokens(lastParsedQuery);
+          updateSearchResultCount(filtered.length, weaponsData.length);
+          const favoritesView = currentTypeFilter === FAVORITES_FILTER;
+          const hasFavorites = FAVORITES.size > 0;
+          const allowReorder = favoritesView && filtered.length > 0;
+          stripList.classList.toggle('reorder-enabled', allowReorder);
+          if (filtered.length === 0) {
+            if (favoritesView && !hasFavorites) {
+              stripList.appendChild(createFavoritesEmptyCard());
+            } else {
+              const message = favoritesView ? 'No favorites match this search.' : 'No weapons available for this filter.';
+              stripList.innerHTML = `<div class="loading">${message}</div>`;
+            }
+            renderNav([]);
+            return;
           }
-          renderNav([]);
-          return;
+          const CHUNK_SIZE = 18;
+          const renderChunk = (startIndex = 0) => {
+            const frag = document.createDocumentFragment();
+            const end = Math.min(filtered.length, startIndex + CHUNK_SIZE);
+            for (let i = startIndex; i < end; i++) {
+              const weapon = filtered[i];
+              try {
+                const node = createStrip(weapon, { allowReorder: allowReorder && FAVORITES.has(weapon.id) });
+                frag.appendChild(node);
+                alignRankEndcap(node);
+                requestAnimationFrame(() => alignRankEndcap(node));
+              } catch (err) {
+                console.error('createStrip failed for', weapon?.id, err);
+              }
+            }
+            stripList.appendChild(frag);
+            if (end < filtered.length) {
+              const schedule = () => renderChunk(end);
+              if ('requestIdleCallback' in window) window.requestIdleCallback(schedule);
+              else requestAnimationFrame(schedule);
+            } else {
+              renderNav(filtered);
+            }
+          };
+          renderChunk(0);
+        } catch (err) {
+          console.error('renderStrips failed', err);
+          stripList.innerHTML = `<div class="loading">Render error: ${err?.message || err}</div>`;
         }
-        filtered.forEach((weapon) => {
-          const node = createStrip(weapon, { allowReorder: allowReorder && FAVORITES.has(weapon.id) });
-          stripList.appendChild(node);
-          alignRankEndcap(node);
-          requestAnimationFrame(() => alignRankEndcap(node));
-        });
-        renderNav(filtered);
       }
 
       function attachFavoritesEmptyInteractions(container) {
@@ -1009,13 +1152,13 @@
       }
 
       function renderTypeFilters(weapons) {
-        if (!typeFilterList) return;
         const types = Array.from(new Set(weapons.map((w) => w.typeKey))).sort();
         const validFilters = new Set(['', FAVORITES_FILTER, ...types]);
         if (!validFilters.has(currentTypeFilter)) {
           currentTypeFilter = '';
           saveTypeFilter('');
         }
+        if (!typeFilterList) return;
         typeFilterList.innerHTML = '';
         const addBtn = (label, key = '') => {
           const btn = document.createElement('button');
@@ -1040,6 +1183,7 @@
       function createStrip(weapon, options = {}) {
         const { allowReorder = false } = options;
         const node = template.content.firstElementChild.cloneNode(true);
+        if (allowReorder) node.classList.add('can-drag');
         node.dataset.weaponId = weapon.id;
 
         const rankKey = normalizeRank(weapon.rank);
@@ -1130,8 +1274,6 @@
 
         const summary = node.querySelector('.strip-summary');
         const detail = node.querySelector('.strip-detail');
-        const caret = summary.querySelector('.summary-caret');
-        if (caret) caret.textContent = '^';
         summary.addEventListener('click', () => toggleDetail(node));
         summary.addEventListener('keydown', (ev) => {
           if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggleDetail(node); }
@@ -1170,7 +1312,6 @@
         const open = cardState.get(weapon.id)?.open === true ? true : false;
         detail.hidden = !open;
         summary.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (caret) caret.textContent = open ? 'v' : '^';
         const firstBuildTab = tabsEl?.querySelector('.tab[data-tab^="build-"]');
         const initialTab = resolveInitialTab(weapon, tabsEl, firstBuildTab);
         setActiveTab(initialTab);
@@ -1204,10 +1345,10 @@
       function toggleDetail(node, forceOpen) {
         const detail = node.querySelector('.strip-detail');
         const summary = node.querySelector('.strip-summary');
+        if (!detail || !summary) return;
         const expanded = forceOpen !== undefined ? forceOpen : detail.hidden;
         detail.hidden = !expanded;
         summary.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-        summary.querySelector('.summary-caret').textContent = expanded ? 'v' : '^';
         alignRankEndcap(node);
         saveCardStateEntry(node.dataset.weaponId, expanded);
       }
@@ -1449,6 +1590,7 @@
         const levelDown = node.querySelector('.mastery-level-down');
         const levelUp = node.querySelector('.mastery-level-up');
         const levelLabel = node.querySelector('.mastery-level-label');
+        const sliderTicks = node.querySelector('.slider-ticks');
         const summaryLevelDown = node.querySelector('.summary-level-down');
         const summaryLevelUp = node.querySelector('.summary-level-up');
         const summaryLevelLabel = node.querySelector('.summary-level-label');
@@ -1459,11 +1601,6 @@
         const apMeterEl = node.querySelector('.mastery-ap-meter');
         const apValueEl = node.querySelector('.mastery-ap-value');
         const apMaxEl = node.querySelector('.mastery-ap-max');
-
-        const formatLevelDisplay = (value) => {
-          const num = Number(value) || 0;
-          return num >= 40 ? '40+' : String(num);
-        };
 
         const slotKeys = collectSlotKeys(weapon);
         const slotLabelMap = slotKeys.reduce((map, key) => {
@@ -1480,6 +1617,24 @@
         const savedLevel = masteryLevels.get(weapon.id)?.level;
         const initialLevel = Math.min(weapon.maxLevel, Math.max(0, Number(savedLevel) || 0));
         slider.value = initialLevel;
+        if (sliderTicks) {
+          sliderTicks.innerHTML = '';
+          const max = Number(weapon.maxLevel) || 40;
+          const majorStep = Math.max(10, Math.round(max / 4));
+          const addTick = (value, isMinor = false) => {
+            const tick = document.createElement('span');
+            tick.className = 'slider-tick';
+            if (isMinor) tick.classList.add('slider-tick--minor');
+            tick.style.left = `${(value / max) * 100}%`;
+            if (!isMinor) tick.setAttribute('title', value);
+            sliderTicks.appendChild(tick);
+          };
+          for (let i = 0; i <= max; i += majorStep) addTick(i, false);
+          if (max % majorStep !== 0) addTick(max, false);
+          for (let i = 5; i < max; i += 5) {
+            if (i % majorStep !== 0) addTick(i, true);
+          }
+        }
 
         function refreshLevel(level) {
           const clamped = Math.min(weapon.maxLevel, Math.max(0, Number(level) || 0));
@@ -2048,6 +2203,7 @@
               att.unlockLevel === undefined ||
               att.unlockLevel === null ||
               Number(currentLevel) >= Number(att.unlockLevel);
+            item.dataset.state = isUnlocked ? 'unlocked' : 'locked';
             if (isUnlocked) {
               item.classList.add("attachment-unlocked");
             } else {
@@ -2073,10 +2229,13 @@
 
             const metaRow = document.createElement("div");
             metaRow.className = "item-meta";
+            const lock = document.createElement("span");
+            lock.className = `item-lock ${isUnlocked ? 'unlocked' : 'locked'}`;
+            lock.textContent = isUnlocked ? "Unlocked" : "Locked";
             const unlock = document.createElement("span");
             unlock.className = "item-unlock";
             unlock.textContent = att.unlockLevel !== undefined && att.unlockLevel !== null ? `Unlock: Lv ${att.unlockLevel}` : "Unlock: Default";
-            metaRow.appendChild(unlock);
+            metaRow.append(lock, unlock);
 
             item.appendChild(metaRow);
             list.appendChild(item);
@@ -2172,18 +2331,37 @@
         }
         const applyOptionsVisibility = (visible) => {
           if (!optionsPanel || !optionsBody) return;
-          optionsBody.hidden = !visible;
-          optionsPanel.classList.toggle('collapsed', !visible);
-          optionsPanel.hidden = !visible;
+          const isMobile = window.matchMedia('(max-width: 900px)').matches;
+          optionsBody.hidden = !visible && !isMobile;
+          optionsPanel.classList.toggle('collapsed', !visible && !isMobile);
+          optionsPanel.classList.toggle('drawer-open', visible && isMobile);
+          optionsPanel.hidden = !visible && !isMobile;
           if (layoutGridEl) layoutGridEl.classList.toggle('options-hidden', !visible);
           if (optionsGearButton) {
             optionsGearButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
             optionsGearButton.setAttribute('aria-label', visible ? 'Hide options' : 'Show options');
           }
+          if (optionsOverlay) {
+            const showOverlay = visible && isMobile;
+            optionsOverlay.hidden = !showOverlay;
+            optionsOverlay.classList.toggle('visible', showOverlay);
+          }
           if (optionsFloatingButton) {
             optionsFloatingButton.hidden = visible;
             optionsFloatingButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
           }
+          document.body.classList.toggle('options-open', visible);
+
+          if (optionsAnimTimeout) clearTimeout(optionsAnimTimeout);
+          if (visible && !document.documentElement.classList.contains('reduce-animations')) {
+            optionsPanel.classList.add('options-animating');
+            optionsAnimTimeout = setTimeout(() => {
+              optionsPanel.classList.remove('options-animating');
+            }, 700);
+          } else {
+            optionsPanel.classList.remove('options-animating');
+          }
+
           save(OPTIONS_KEY, visible ? '1' : '0');
         };
         if (optionsGearButton) {
@@ -2195,7 +2373,16 @@
         if (optionsFloatingButton) {
           optionsFloatingButton.addEventListener('click', () => applyOptionsVisibility(true));
         }
-        applyOptionsVisibility(loadBool(OPTIONS_KEY, true));
+        if (optionsOverlay) {
+          optionsOverlay.addEventListener('click', () => applyOptionsVisibility(false));
+        }
+        document.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape' && optionsOverlay && !optionsOverlay.hidden) {
+            applyOptionsVisibility(false);
+          }
+        });
+        const defaultVisible = !window.matchMedia('(max-width: 900px)').matches;
+        applyOptionsVisibility(loadBool(OPTIONS_KEY, defaultVisible));
       })();
 
       function saveTypeFilter(value) {
