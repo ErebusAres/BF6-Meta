@@ -95,14 +95,16 @@
               </div>
             </div>
             <div class="summary-right">
-              <div class="summary-level-block">
-                <div class="summary-level-label" aria-live="polite">
-                  <span class="summary-level-prefix">LV.</span>
-                  <span class="summary-level-value">1</span>
-                </div>
-                <div class="level-stepper summary-level-stepper" role="group" aria-label="Adjust level">
-                  <button class="level-button summary-level-up" type="button" aria-label="Increase level">+</button>
-                  <button class="level-button summary-level-down" type="button" aria-label="Decrease level">-</button>
+              <div class="summary-level-wrap" role="group" aria-label="Set level">
+                <div class="summary-level-block">
+                  <div class="summary-level-label" aria-live="polite">
+                    <span class="summary-level-prefix">LV.</span>
+                    <span class="summary-level-value">1</span>
+                  </div>
+                  <div class="level-stepper summary-level-stepper" role="group" aria-label="Adjust level">
+                    <button class="level-button summary-level-up" type="button" aria-label="Increase level">+</button>
+                    <button class="level-button summary-level-down" type="button" aria-label="Decrease level">-</button>
+                  </div>
                 </div>
               </div>
               <div class="summary-thumb">
@@ -1260,6 +1262,7 @@
         const levelLabel = node.querySelector('.mastery-level-label');
         const summaryLevelDown = node.querySelector('.summary-level-down');
         const summaryLevelUp = node.querySelector('.summary-level-up');
+        const summaryLevelLabel = node.querySelector('.summary-level-label');
         const masterySlotsEl = node.querySelector('.mastery-slots');
         const masteryChangesEl = node.querySelector('.mastery-changes .changes-body');
         const masteryChangesHeader = node.querySelector('.mastery-changes h3');
@@ -1326,6 +1329,15 @@
           const step = ev.shiftKey ? delta * 5 : delta;
           refreshLevel(Number(slider.value) + step);
         };
+        const promptLevel = (ev) => {
+          ev.stopPropagation();
+          const current = Number(slider.value) || 1;
+          const input = window.prompt(`Set mastery level (1-${weapon.maxLevel})`, current);
+          if (input === null) return;
+          const parsed = parseInt(input, 10);
+          const next = Number.isFinite(parsed) ? parsed : current;
+          refreshLevel(next);
+        };
         if (levelDown) levelDown.addEventListener('click', (ev) => stepLevel(ev, -1));
         if (levelUp) levelUp.addEventListener('click', (ev) => stepLevel(ev, 1));
         if (summaryLevelDown)
@@ -1338,6 +1350,9 @@
             ev.stopPropagation();
             stepLevel(ev, 1);
           });
+        if (summaryLevelLabel) summaryLevelLabel.addEventListener('click', promptLevel);
+        if (levelLabel) levelLabel.addEventListener('click', promptLevel);
+        if (summaryLevelEl) summaryLevelEl.addEventListener('click', promptLevel);
 
         node.__refreshMastery = () => refreshLevel(Number(slider.value));
       }
