@@ -227,9 +227,6 @@
           </div>
         </div>
         <div class="fav-endcap">
-          <button class="strip-drag-handle" type="button" title="Drag to reorder favorites" aria-label="Drag to reorder favorites" draggable="true">
-            <span aria-hidden="true">&#9776;</span>
-          </button>
           <button class="favorite-btn" type="button" aria-pressed="false" title="Toggle favorite"><span class="fav-icon">&#9734;</span></button>
         </div>
       </div>
@@ -874,13 +871,13 @@
         }
       }
 
-      function handleStripDrop(event) {
-        if (!currentDragId || currentTypeFilter !== FAVORITES_FILTER || !stripList) return;
-        event.preventDefault();
+      function applyStripDropOrder() {
+        if (!currentDragId || currentTypeFilter !== FAVORITES_FILTER || !stripList) return false;
         const nodes = Array.from(stripList.children).filter((node) => node.classList.contains('weapon-strip') || node === stripDropPlaceholder);
         let insertIndex = nodes.indexOf(stripDropPlaceholder);
         if (insertIndex === -1) insertIndex = nodes.length;
-        const beforeCount = nodes.slice(0, insertIndex).filter((node) => node !== stripDropPlaceholder && node.dataset && node.dataset.weaponId && node.dataset.weaponId !== currentDragId).length;
+        const beforeCount = nodes.slice(0, insertIndex)
+          .filter((node) => node !== stripDropPlaceholder && node.dataset && node.dataset.weaponId && node.dataset.weaponId !== currentDragId).length;
         const order = nodes
           .filter((node) => node !== stripDropPlaceholder && node.dataset && node.dataset.weaponId && node.dataset.weaponId !== currentDragId)
           .map((node) => node.dataset.weaponId);
@@ -888,8 +885,32 @@
         order.splice(safeIndex, 0, currentDragId);
         favoriteOrder = mergeFavoriteOrder(order);
         saveFavoriteOrder(favoriteOrder);
+        return true;
+      }
+
+      function handleStripDrop(event) {
+        if (event) event.preventDefault();
+        const applied = applyStripDropOrder();
         finishStripDrag();
-        renderStrips();
+        if (applied) renderStrips();
+      }
+
+      function handleStripDragEnd(event) {
+        if (!currentDragId || currentTypeFilter !== FAVORITES_FILTER || !stripList) {
+          finishStripDrag();
+          return;
+        }
+        // If the pointer is below the list, force the placeholder to the end so the drop lands there.
+        if (event && stripDropPlaceholder) {
+          const listRect = stripList.getBoundingClientRect();
+          if (event.clientY > listRect.bottom) {
+            if (stripDropPlaceholder.parentNode !== stripList) stripList.appendChild(stripDropPlaceholder);
+            else stripList.appendChild(stripDropPlaceholder); // move to end
+          }
+        }
+        const applied = applyStripDropOrder();
+        finishStripDrag();
+        if (applied) renderStrips();
       }
 
       if (stripList) {
@@ -990,6 +1011,11 @@
       function renderTypeFilters(weapons) {
         if (!typeFilterList) return;
         const types = Array.from(new Set(weapons.map((w) => w.typeKey))).sort();
+        const validFilters = new Set(['', FAVORITES_FILTER, ...types]);
+        if (!validFilters.has(currentTypeFilter)) {
+          currentTypeFilter = '';
+          saveTypeFilter('');
+        }
         typeFilterList.innerHTML = '';
         const addBtn = (label, key = '') => {
           const btn = document.createElement('button');
@@ -1059,8 +1085,6 @@
         img.addEventListener('load', () => { hidePlaceholder(); alignRankEndcap(node); });
 
         const favBtn = node.querySelector('.favorite-btn');
-        const dragHandle = node.querySelector('.strip-drag-handle');
-        if (dragHandle && dragHandle.parentElement) dragHandle.remove();
         const dragRegion = node.querySelector('.strip-top');
         if (dragRegion) {
           dragRegion.draggable = allowReorder;
@@ -1072,7 +1096,7 @@
               }
               beginStripDrag(node, weapon.id, ev);
             });
-            dragRegion.addEventListener('dragend', finishStripDrag);
+            dragRegion.addEventListener('dragend', handleStripDragEnd);
           } else {
             dragRegion.addEventListener('dragstart', (ev) => ev.preventDefault());
           }
