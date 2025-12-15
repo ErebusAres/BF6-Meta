@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style/styles.css" />
 </head>
 <body>
+  <button id="helpButton" class="help-button" type="button" aria-expanded="false" aria-controls="helpOverlay" aria-label="Open help panel">HELP</button>
   <div class="layout-grid">
     <nav id="weaponNav" class="side-nav" aria-label="Weapons"></nav>
     <div class="app-shell">
@@ -29,10 +30,12 @@
                   <div class="strip-search-help-panel" id="stripSearchHelpPanel" hidden>
                     <div class="strip-search-help-title">Search tips</div>
                     <ul>
-                      <li>Type a name or type (e.g., assault) to filter.</li>
-                      <li>Ranks: use #1, #2, etc. to show that rank only.</li>
-                      <li>Levels: LV=10, LV&gt;10, LV&lt;20, LV5-15, LV>=30, LV<=5.</li>
-                      <li>Mix terms: "assault #1 LV&gt;10" stacks all filters.</li>
+                      <li><span class="search-tip-label">Names:</span> Type a name or type (e.g., assault) to filter.</li>
+                      <li><span class="search-tip-label">Wildcards:</span> use * as a wildcard (e.g., *a4 matches B36A4).</li>
+                      <li><span class="search-tip-label">Ranks:</span> use #meta, #a, #b, etc. to filter by tier.</li>
+                      <li><span class="search-tip-label">Type Ranks:</span> use #1, #2, etc. to show that type rank only.</li>
+                      <li><span class="search-tip-label">Levels:</span> LV=10, LV&gt;10, LV&lt;20, LV5-15, LV>=30, LV<=5.</li>
+                      <li><span class="search-tip-label">Mix Terms:</span> "assault #1 LV&gt;10" stacks all filters.</li>
                     </ul>
                   </div>
                 </div>
@@ -76,6 +79,115 @@
     <span class="sr-only">Show options</span>
     <span aria-hidden="true" class="gear-symbol">⚙</span>
   </button>
+
+  <div class="help-overlay" id="helpOverlay" hidden>
+    <div class="help-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" tabindex="-1">
+      <div class="help-panel-header">
+        <h2 id="helpTitle">Site Help</h2>
+        <button type="button" class="help-close" aria-label="Close help">×</button>
+      </div>
+      <div class="help-panel-body">
+        <p class="help-lead">Track weapon mastery, builds, attachments, and favorites. Use the controls below to filter, sort, and adjust levels quickly.</p>
+        <div class="help-section">
+          <div class="help-section-title">General Info</div>
+          <ul class="help-list">
+            <li>
+              <span class="help-label">Weapon cards:</span>
+              Click a summary to open it and see meta builds, leveling builds, and attachments.
+              <div class="help-subtext">Ranks show in-game power. Highest to lowest:
+                <span class="help-rank-chip rank-meta">META</span>
+                <span class="help-rank-chip rank-a">A-TIER</span>
+                <span class="help-rank-chip rank-b">B-TIER</span>
+                <span class="help-rank-chip rank-c">C-TIER</span>
+                <span class="help-rank-chip rank-d">D-TIER</span>
+                <span class="help-rank-chip rank-f">F-TIER</span>
+              </div>
+              <div class="help-subtext">Type ranks sort weapons within each type:
+                <span class="help-range-chip range-1">#1</span>
+                <span class="help-range-chip range-2">#2</span>
+                <span class="help-range-chip range-3">#3</span>
+                <span class="help-range-chip range-4">#4</span>
+              </div>
+            </li>
+            <li>
+              <span class="help-label">Favorites:</span>
+              <span class="help-fav-star">★</span> your weapons, filter to Favorites, and drag to reorder.
+              <div class="help-subtext">Your order and picks are saved locally so they stay put.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Searching & Filtering</div>
+          <ul class="help-list">
+            <li>
+              <span class="help-label">Quick search:</span>
+              Names/types, wildcards like *a4, weapon tiers (#meta/#a), type ranks (#1), and level rules (LV&gt;10, LV5-15).
+              <div class="help-subtext">Stack them: “assault #1 LV&gt;10 *a4” filters type, rank, level, and partial name at once.</div>
+            </li>
+            <li>
+              <span class="help-label">Favorites filter:</span>
+              Switch to the Favorites chip to see only starred weapons.
+            </li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Levels & Unlocks</div>
+          <ul class="help-list">
+            <li>
+              <span class="help-label">Set your level:</span>
+              Click any LV. label to type, tap +/- (shift = ±5), or drag the mastery slider.
+              <div class="help-subtext">Changing levels updates mastery unlocks immediately.</div>
+            </li>
+            <li>
+              <span class="help-label">Unlock cues:</span>
+              Build cards glow blue when your level unlocks them; grey means keep grinding.
+            </li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Tabs</div>
+          <ul class="help-list">
+            <li>
+              <span class="help-label">Mastery tab:</span>
+              Shows unlock steps, changes per level, and attachment point meter.
+            </li>
+            <li>
+              <span class="help-label">Build tabs:</span>
+              Suggested attachment sets with AP meters; watch for overcap.
+            </li>
+            <li>
+              <span class="help-label">Attachments tab:</span>
+              Full attachment list grouped by type and unlock level.
+            </li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Options</div>
+          <ul class="help-list">
+            <li>
+              <span class="help-label">UI tweaks:</span>
+              Gear panel adjusts UI scale and animations; type chips narrow the list.
+              <div class="help-subtext">Use the floating gear if the options panel is hidden; reduce animations for smoother scrolling.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="help-links">
+          <a class="github-link" href="https://github.com/ErebusAres/BF6-Meta" target="_blank" rel="noreferrer noopener" aria-label="View project on GitHub">
+            <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.45.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+            </svg>
+            <span>GitHub</span>
+          </a>
+          <span class="help-link-note">Want to contribute or report an issue?</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <template id="weaponStripTemplate">
     <article class="weapon-strip" data-weapon-id="">
@@ -177,6 +289,9 @@
       const uiScaleSlider = document.getElementById('uiScaleSlider');
       const uiScaleValue = document.getElementById('uiScaleValue');
       const reduceAnimationsToggle = document.getElementById('reduceAnimationsToggle');
+      const helpButton = document.getElementById('helpButton');
+      const helpOverlay = document.getElementById('helpOverlay');
+      const helpClose = helpOverlay ? helpOverlay.querySelector('.help-close') : null;
       const optionsPanel = document.getElementById('uiScalePanel');
       const optionsGearButton = document.getElementById('optionsGearButton');
       const optionsBody = document.getElementById('optionsBody');
@@ -298,6 +413,28 @@
         });
       }
 
+      (function setupHelpOverlay() {
+        if (!helpButton || !helpOverlay) return;
+        const panel = helpOverlay.querySelector('.help-panel');
+        const closeBtn = helpClose;
+        const setHelpVisible = (visible) => {
+          helpOverlay.hidden = !visible;
+          helpOverlay.classList.toggle('is-visible', visible);
+          helpButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
+          if (visible && panel) {
+            panel.focus({ preventScroll: true });
+          }
+        };
+        helpButton.addEventListener('click', () => setHelpVisible(helpOverlay.hidden));
+        if (closeBtn) closeBtn.addEventListener('click', () => setHelpVisible(false));
+        helpOverlay.addEventListener('click', (ev) => {
+          if (ev.target === helpOverlay) setHelpVisible(false);
+        });
+        document.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape' && !helpOverlay.hidden) setHelpVisible(false);
+        });
+      })();
+
       (async () => {
         let metadata = {}, attachmentsDb = {}, ranking = [], mastery = {}, builds = [];
         try {
@@ -373,13 +510,27 @@
       }
 
       function parseSearchQuery(raw) {
-        const result = { terms: [], rankFilters: [], levelFilters: [] };
+        const result = { terms: [], patterns: [], rankFilters: [], rankTierFilters: [], levelFilters: [] };
         if (!raw) return result;
         const tokens = raw.split(/\s+/).filter(Boolean);
+        const tierFilters = new Set();
         tokens.forEach((tok) => {
           const rankMatch = tok.match(/^#(\d+)$/);
           if (rankMatch) {
             result.rankFilters.push(parseInt(rankMatch[1], 10));
+            return;
+          }
+          const rankTierMatch = tok.match(/^#([a-z]+)$/i);
+          if (rankTierMatch) {
+            const tier = normalizeRank(rankTierMatch[1]);
+            if (tier) {
+              if (tier === 'meta' || tier === 's') {
+                tierFilters.add('meta');
+                tierFilters.add('s');
+              } else {
+                tierFilters.add(tier);
+              }
+            }
             return;
           }
           const lvRange = tok.match(/^lv\s*(\d+)\s*-\s*(\d+)$/i);
@@ -408,8 +559,19 @@
               return;
             }
           }
-          result.terms.push(tok.toLowerCase());
+          const lower = tok.toLowerCase();
+          if (lower.includes('*')) {
+            const escaped = lower.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+            try {
+              result.patterns.push(new RegExp(escaped, 'i'));
+            } catch (_) {
+              result.terms.push(lower.replace(/\*/g, ''));
+            }
+            return;
+          }
+          result.terms.push(lower);
         });
+        result.rankTierFilters = Array.from(tierFilters);
         return result;
       }
 
@@ -445,22 +607,25 @@
         }
         const parsedQuery = parseSearchQuery(searchQuery);
         const hasTerms = parsedQuery.terms.length > 0;
+        const hasPatterns = parsedQuery.patterns.length > 0;
         const hasRankFilters = parsedQuery.rankFilters.length > 0;
+        const hasRankTierFilters = parsedQuery.rankTierFilters.length > 0;
         const hasLevelFilters = parsedQuery.levelFilters.length > 0;
-        if (hasTerms || hasRankFilters || hasLevelFilters) {
+        if (hasTerms || hasPatterns || hasRankFilters || hasRankTierFilters || hasLevelFilters) {
           filtered = filtered.filter((w) => {
             if (hasRankFilters) {
               const trNum = Number(w.tr);
               if (!Number.isFinite(trNum) || !parsedQuery.rankFilters.includes(trNum)) return false;
             }
-            if (hasLevelFilters && !matchesLevelFilters(w, parsedQuery.levelFilters)) return false;
-            if (hasTerms) {
-              const name = (w.displayName || '').toLowerCase();
-              const type = (w.type || '').toLowerCase();
-              for (const term of parsedQuery.terms) {
-                if (!(name.includes(term) || type.includes(term))) return false;
-              }
+            if (hasRankTierFilters) {
+              const tier = normalizeRank(w.rank);
+              if (!tier || !parsedQuery.rankTierFilters.includes(tier)) return false;
             }
+            if (hasLevelFilters && !matchesLevelFilters(w, parsedQuery.levelFilters)) return false;
+            const name = (w.displayName || '').toLowerCase();
+            const type = (w.type || '').toLowerCase();
+            if (hasTerms && !parsedQuery.terms.every((term) => name.includes(term) || type.includes(term))) return false;
+            if (hasPatterns && !parsedQuery.patterns.every((re) => re.test(w.displayName || '') || re.test(w.type || ''))) return false;
             return true;
           });
         }
