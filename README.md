@@ -2,7 +2,7 @@
 
 Live site: https://erebusares.github.io/BF6-Meta/main.html
 
-A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock paths, and ranking data. Everything on the site is driven by the data in `manualbuilds.js`.
+A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock paths, and ranking data. The site is fully data-driven from the JSON in `/data` (`builds-main.json`, `builds-mastery.json`, `attachments.json`, `ranking.json`, and `metadata.json`).
 
 ## Disclaimer
 - Unofficial, community-maintained reference; use at your own risk.
@@ -16,20 +16,28 @@ A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock pa
 - Keep formatting consistent with the existing entries and prefer plain ASCII characters.
 
 ## Adding a new build
-1. Open `manualbuilds.js` and duplicate a nearby weapon block inside the `weaponConfigs` array.
-2. Update the basics: `id` (slug), `dbname` (display name), and the build arrays you want to expose (`versatile`, `close`, `long`, `sniper`, etc.), each listing attachments in order.
-3. Add `baseline` and `changes` arrays if you want the unlock-tracking flow like the other weapons.
-4. If you want the weapon ranked, add it to the right group in `MANUAL_RANKING_GROUPS`.
-5. Refresh `main.html` locally to confirm the build renders as expected.
+1. Open `data/builds-main.json` and locate the weapon entry.
+2. Add or edit the build arrays you want to expose (`versatile`, `close`, `long`, `sniper`, `custom`, etc.). Each array is an ordered list of attachments. Optional objects in the list:
+   - `{ "Notes": "Short blurb" }` renders in the notes box.
+   - `{ "Updated": "MM/DD/YYYY" }` shows a last-updated stamp.
+   - `{ "name": "Attachment Name", "level": 12 }` lets you include unlock level metadata (falls back to `attachments.json` data if omitted).
+3. If the weapon is missing mastery unlocks, add a matching entry to `data/builds-mastery.json` (baseline/changes).
+4. To adjust ranking or metadata, update `data/ranking.json` and/or `data/metadata.json`.
+5. Reload `main.html` locally to confirm the build renders as expected.
 
-## Naming a custom build
-- To display a custom/community build title, add a `custom` array to the weapon and start it with an object holding the label, then list the attachments.
+## Adding a custom/community build name
+- Add a `custom` array to the weapon in `data/builds-main.json`. Start with an object that names the build, then optional notes/updated entries, then the attachments.
 - Example:
-```js
-custom: [
-  { custom: 'My Build Name' },
-  'Double-Port Brake',
-  '415MM Prototype',
-  'Stippled Stubby'
+```json
+"custom": [
+  { "custom": "Community" },
+  { "Notes": "Crowdsourced favorite setup." },
+  { "Updated": "12/15/2025" },
+  "Double-Port Brake",
+  "415MM Prototype",
+  "Stippled Stubby",
+  "36RND Magazine",
+  "Frangible",
+  "CQ RDS 1.25X"
 ]
 ```
