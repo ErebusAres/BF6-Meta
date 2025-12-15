@@ -541,15 +541,15 @@
   {
     "id": "sg 553r",
     "dbname": "sg 553r",
-    "lastUpdated": "12/07/2025",
+    "lastUpdated": "12/09/2025",
     "versatile": [
       {
         "Notes": "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
       },
       {
-        "Updated": "12/07/2025"
+        "Updated": "12/09/2025"
       },
-      "Standard Suppressor",
+      "Long Suppressor",
       "303MM LB",
       "5 MW Green",
       "Slim Angled",
@@ -562,7 +562,7 @@
         "Notes": "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
       },
       {
-        "Updated": "12/07/2025"
+        "Updated": "12/09/2025"
       },
       "Long Suppressor",
       "240MM Fluted",
@@ -796,13 +796,13 @@
   {
     "id": "sor-300sc",
     "dbname": "SOR-300SC",
-    "lastUpdated": "12/07/2025",
+    "lastUpdated": "12/09/2025",
     "versatile": [
       {
         "Notes": "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs."
       },
       {
-        "Updated": "12/07/2025"
+        "Updated": "12/09/2025"
       },
       "Long Suppressor",
       "10.5\" Custom",
@@ -817,7 +817,7 @@
         "Notes": "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs."
       },
       {
-        "Updated": "12/07/2025"
+        "Updated": "12/09/2025"
       },
       "Standard Suppressor",
       "9\" Fluted",
@@ -1314,13 +1314,13 @@
   {
     "id": "rpkm",
     "dbname": "RPKM",
-    "lastUpdated": "12/07/2025",
+    "lastUpdated": "12/09/2025",
     "long": [
       {
         "Notes": "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity."
       },
       {
-        "Updated": "11/22/2025"
+        "Updated": "12/09/2025"
       },
       "Compensated Brake",
       "590MM Factory",
@@ -2797,13 +2797,13 @@
   {
     "id": "scw-10",
     "dbname": "scw-10",
-    "lastUpdated": "12/07/2025",
+    "lastUpdated": "12/13/2025",
     "versatile": [
       {
         "Notes": "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
       },
       {
-        "Updated": "12/07/2025"
+        "Updated": "12/13/2025"
       },
       "Lightened Suppressor",
       "200MM Custom-H",
