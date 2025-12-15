@@ -1021,6 +1021,33 @@
         saveCardStateEntry(node.dataset.weaponId, expanded);
       }
 
+      function resolveBuildUnlockLevel(raw) {
+        if (raw === null || raw === undefined || raw === '' || raw === '0') return 0;
+        if (typeof raw === 'string') {
+          const trimmed = raw.trim().toLowerCase();
+          if (!trimmed || trimmed === 'default' || trimmed === 'unlocked') return 0;
+          const match = trimmed.match(/(\d+)/);
+          if (match) {
+            const num = Number(match[1]);
+            if (Number.isFinite(num)) return num;
+          }
+        }
+        const num = Number(raw);
+        return Number.isFinite(num) ? num : 0;
+      }
+
+      function setBuildUnlockState(container, level) {
+        if (!container) return;
+        const currentLevel = Math.max(0, Number(level) || 0);
+        container.querySelectorAll('.build-slot').forEach((slot) => {
+          const req = Number(slot.dataset.unlockLevel);
+          const requiredLevel = Number.isFinite(req) ? req : 0;
+          const unlocked = currentLevel >= requiredLevel;
+          slot.classList.toggle('build-unlocked', unlocked);
+          slot.classList.toggle('build-locked', !unlocked);
+        });
+      }
+
       function renderBuildTabs(tabsEl, panelsEl, weapon, setActiveTab, wireTabs) {
         if (!tabsEl || !panelsEl) return;
         const excludeKeys = new Set(['id', 'dbname', 'baseline', 'changes', 'lastUpdated', 'rank', 'tr']);
@@ -1101,12 +1128,14 @@
               const attLvl = att?.level ?? att?.unlockLevel;
               const attPts = att?.pts;
               const slot = document.createElement('div');
-              slot.className = 'slot-card';
+              slot.className = 'slot-card build-slot';
               const meta = weapon.attachmentLookup.get(toKey(name)) || {};
               const lvlRaw = attLvl ?? meta.unlockLevel;
-              const lvlLabel = (lvlRaw === 0 || lvlRaw === '0' || lvlRaw === null || lvlRaw === undefined)
+              const unlockLevel = resolveBuildUnlockLevel(lvlRaw);
+              slot.dataset.unlockLevel = unlockLevel;
+              const lvlLabel = unlockLevel <= 0
                 ? 'Default'
-                : (lvlRaw === 'Unlocked' ? 'Unlocked' : `Level ${lvlRaw}`);
+                : (typeof lvlRaw === 'string' && lvlRaw.trim().toLowerCase() === 'unlocked' ? 'Unlocked' : `Level ${unlockLevel}`);
               slot.innerHTML = `
                 <div class="card-top">
                   <div class="card-info">
@@ -1155,6 +1184,7 @@
           panelsEl.insertBefore(panel, anchor);
         });
 
+        setBuildUnlockState(panelsEl, getMasteryLevelValue(weapon));
         wireTabs();
       }
 
@@ -1280,6 +1310,7 @@
           );
           renderMasteryChanges(masteryChangesEl, slotLabelMap, diff, previous, clamped);
           if (attachmentsGrid) renderAttachments(attachmentsGrid, weapon, clamped);
+          setBuildUnlockState(node, clamped);
         }
 
         refreshLevel(initialLevel);

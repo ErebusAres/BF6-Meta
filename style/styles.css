@@ -538,6 +538,25 @@
   gap: 10px;
 }
 
+.summary-level-block .summary-level-stepper {
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.summary-level-block .summary-level-stepper .summary-level-down {
+  order: 0;
+}
+
+.summary-level-block .summary-level-stepper .summary-level-up {
+  order: 1;
+}
+
 .summary-level-label {
   display: inline-flex;
   align-items: baseline;
@@ -3458,6 +3477,45 @@
   gap: 10px;
   transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
   overflow: visible;
+}
+
+.build-slot {
+  background: rgba(10, 16, 22, 0.92);
+  border-color: rgba(45, 70, 90, 0.6);
+  box-shadow: none;
+}
+
+.build-slot.build-unlocked {
+  border-color: rgba(0, 229, 255, 0.7);
+  box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.3), 0 4px 14px rgba(0, 229, 255, 0.16);
+  background: linear-gradient(180deg, rgba(10, 18, 25, 0.94), rgba(10, 18, 25, 0.86));
+}
+
+.build-slot.build-locked {
+  opacity: 0.82;
+  border-color: rgba(60, 80, 90, 0.45);
+  background: rgba(8, 12, 16, 0.9);
+  box-shadow: none;
+}
+
+.build-slot.build-unlocked .card-title {
+  color: var(--accent);
+}
+
+.build-slot.build-locked .card-title {
+  color: rgba(150, 164, 178, 0.9);
+}
+
+.build-slot.build-locked .card-level {
+  border-color: rgba(70, 90, 108, 0.5);
+  color: rgba(148, 161, 173, 0.85);
+  background: rgba(12, 18, 24, 0.9);
+}
+
+.build-slot.build-unlocked .card-level {
+  border-color: rgba(0, 229, 255, 0.7);
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--accent);
 }
 
     .slot-card.tooltip-active {
