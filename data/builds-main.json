@@ -12,7 +12,7 @@
       },
       "Long Suppressor",
       "415MM Prototype",
-      "50 MW Green",
+      "50 MW Blue",
       "Slim Angled",
       "30RND Magazine",
       "FMJ",
@@ -83,13 +83,13 @@
   {
     "id": "sor-556 mk2",
     "dbname": "sor-556 mk2",
-    "lastUpdated": "12/07/2025",
+    "lastUpdated": "12/09/2025",
     "versatile": [
       {
         "Notes": "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing."
       },
       {
-        "Updated": "12/07/2025"
+        "Updated": "12/09/2025"
       },
       "Long Suppressor",
       "18\" Custom",
@@ -104,7 +104,7 @@
         "Notes": "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing."
       },
       {
-        "Updated": "12/07/2025"
+        "Updated": "12/09/2025"
       },
       "Long Suppressor",
       "14.5\" Factory",
@@ -538,7 +538,7 @@
   {
     "id": "tr-7",
     "dbname": "TR-7",
-    "lastUpdated": "12/07/2025",
+    "lastUpdated": "12/09/2025",
     "versatile": [
       {
         "Notes": "A close-range slaughterhouse with incredible TTK, but enormous recoil and plenty of spread limits this AR's midrange capability."
@@ -585,7 +585,7 @@
       "Slim Angled",
       "20RND Fast Mag",
       "Match Grade",
-      "PVQ-31.4.00X"
+      "PVQ-31 4.00X"
     ],
     "close": [
       {
@@ -619,7 +619,7 @@
       "Slim Angled",
       "10RND Fast Mag",
       "Match Grade",
-      "PVQ-31.4.00X"
+      "PVQ-31 4.00X"
     ],
     "close": [
       {
@@ -653,7 +653,7 @@
       "Slim Angled",
       "10RND Fast Mag",
       "Match Grade",
-      "PVQ-31.4.00X"
+      "PVQ-31 4.00X"
     ],
     "close": [
       {
@@ -666,7 +666,7 @@
       "457MM Urban",
       "5 MW Green",
       "Slim Angled",
-      "10RND Fast Mag",
+      "10RND Magazine",
       "FMJ",
       "Mini Flex 1.00X"
     ]
@@ -1213,8 +1213,7 @@
       "Flashlight",
       "15RND Magazine",
       "FMJ",
-      "Improved Mag Catch",
-      "Iron Sights"
+      "Improved Mag Catch"
     ]
   },
   {
@@ -1359,6 +1358,7 @@
   {
     "id": "usg-90",
     "dbname": "USG-90",
+    "lastUpdated": "12/07/2025",
     "versatile": [
       {
         "Notes": "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer."
@@ -1574,7 +1574,7 @@
         "Updated": "12/13/2025"
       },
       "Lightened Suppressor",
-      "200MM Custom-H",
+      "200MM Custom",
       "Slim Angled",
       "20RND Magazine",
       "FMJ",
