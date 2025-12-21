@@ -706,6 +706,90 @@
     ]
   },
   {
+    "id": "m2010 esr",
+    "dbname": "M2010 ESR",
+    "lastUpdated": "12/03/2025",
+    "sniper": [
+      {
+        "Notes": "The flagship Sniper Rifle with second-best velocity but best lethality, the M2010 ESR is your first and best choice. Sweet Spot: 75-120m."
+      },
+      {
+        "Updated": "12/03/2025"
+      },
+      "Standard Suppressor",
+      "26\" Carbon",
+      "Slim Angled",
+      "5RND Magazine",
+      "Match Grade",
+      "Anti-Glare Coating",
+      "NFX 8.00X",
+      "Range Finder"
+    ]
+  },
+  {
+    "id": "sv-98",
+    "dbname": "SV-98",
+    "lastUpdated": "11/18/2025",
+    "sniper": [
+      {
+        "Notes": "The SV-98 has an extremely satisfying feel to it, but numerically pales behind other snipers. Sweet Spot: 54-90m."
+      },
+      {
+        "Updated": "11/18/2025"
+      },
+      "Long Suppressor",
+      "730MM 3LR",
+      "Full Angled",
+      "10RND Magazine",
+      "Match Grade",
+      "Anti-Glare Coating",
+      "NFX 8.00X",
+      "Range Finder"
+    ]
+  },
+  {
+    "id": "psr",
+    "dbname": "PSR",
+    "lastUpdated": "12/03/2025",
+    "sniper": [
+      {
+        "Notes": "A hard-hitting bolt-action with a large magazine, ideal for distance sniping in target-rich environment. Sweet Spot: 100-150m."
+      },
+      {
+        "Updated": "12/03/2025"
+      },
+      "Standard Suppressor",
+      "27\" MK22",
+      "Slim Angled",
+      "7RND Magazine",
+      "Match Grade",
+      "Anti-Glare Coating",
+      "NFX 8.00X",
+      "Range Finder"
+    ]
+  },
+  {
+    "id": "mini scout",
+    "dbname": "Mini Scout",
+    "lastUpdated": "11/18/2025",
+    "sniper": [
+      {
+        "Notes": "The only Sniper without a Sweet Spot, the Mini Scout trades damage for a fast rechamber and ballistics, and remains the hardest to use."
+      },
+      {
+        "Updated": "11/18/2025"
+      },
+      "Standard Suppressor",
+      "18\" Extended",
+      "Full Angled",
+      "10RND Magazine",
+      "Frangible",
+      "Anti-Glare Coating",
+      "S-VPS 6.00X",
+      "Range Finder"
+    ]
+  },
+  {
     "id": "drs-iar",
     "dbname": "drs-iar",
     "lastUpdated": "12/07/2025",
