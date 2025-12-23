@@ -376,10 +376,14 @@
       let searchHelpOpen = false;
       let lastParsedQuery = { tokens: [], terms: [], patterns: [], rankFilters: [], rankTierFilters: [], levelFilters: [], rawTokens: [] };
 
-      async function loadJson(file) {
+      async function loadJson(file, options = {}) {
         const url = new URL('./data/' + file, document.baseURI);
+        const fetchOptions = {
+          cache: typeof options.cache === 'string' ? options.cache : 'no-cache',
+          mode: typeof options.mode === 'string' ? options.mode : 'same-origin'
+        };
         try {
-          const res = await fetch(url.toString(), { cache: 'no-cache', mode: 'same-origin' });
+          const res = await fetch(url.toString(), fetchOptions);
           if (!res.ok) throw new Error(res.status);
           return await res.json();
         } catch (err) {
@@ -405,6 +409,136 @@
 
       const loadingError = (msg) => {
         stripList.innerHTML = '<div style="padding:12px;border:1px solid rgba(255,59,59,0.4);border-radius:10px;color:#fff;">' + msg + '</div>';
+      };
+      const UPDATE_CHECK_INTERVAL = 5 * 60 * 1000;
+      const UPDATE_CHECK_DELAY = 60 * 1000;
+      const SCROLL_STATE_KEY = 'bf6-meta-scroll-state';
+      const SCROLL_STATE_MAX_AGE_MS = 5 * 60 * 1000;
+      let updateSignature = null;
+      let updateCheckInFlight = false;
+      let updateAvailable = false;
+      let scrollRestoreApplied = false;
+
+      const hashString = (text) => {
+        let hash = 5381;
+        for (let i = 0; i < text.length; i += 1) {
+          hash = (hash * 33) ^ text.charCodeAt(i);
+        }
+        return (hash >>> 0).toString(36);
+      };
+
+      const hashJson = (payload) => {
+        if (payload == null) return '';
+        try {
+          return hashString(JSON.stringify(payload));
+        } catch (_) {
+          return '';
+        }
+      };
+
+      const saveScrollPosition = (reason) => {
+        try {
+          const top = window.pageYOffset || document.documentElement.scrollTop || 0;
+          sessionStorage.setItem(SCROLL_STATE_KEY, JSON.stringify({
+            top,
+            reason: reason || '',
+            ts: Date.now()
+          }));
+        } catch (_) {}
+      };
+
+      const restoreScrollPosition = () => {
+        if (scrollRestoreApplied) return;
+        scrollRestoreApplied = true;
+        try {
+          const raw = sessionStorage.getItem(SCROLL_STATE_KEY);
+          if (!raw) return;
+          sessionStorage.removeItem(SCROLL_STATE_KEY);
+          const payload = JSON.parse(raw);
+          if (!payload || payload.reason !== 'update') return;
+          if (!Number.isFinite(payload.top)) return;
+          if (Date.now() - payload.ts > SCROLL_STATE_MAX_AGE_MS) return;
+          if (payload.top <= 0) return;
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              window.scrollTo(0, payload.top);
+            });
+          });
+        } catch (_) {}
+      };
+
+      const createUpdateNotice = () => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'update-notice';
+        button.hidden = true;
+        button.setAttribute('aria-live', 'polite');
+        button.setAttribute('aria-label', 'Update available. Refresh to apply.');
+        const label = document.createElement('span');
+        label.className = 'update-notice-label';
+        label.textContent = 'Update available';
+        const action = document.createElement('span');
+        action.className = 'update-notice-action';
+        action.textContent = 'Refresh';
+        button.append(label, action);
+        button.addEventListener('click', () => {
+          saveScrollPosition('update');
+          window.location.reload();
+        });
+        document.body.appendChild(button);
+        return button;
+      };
+
+      const updateNotice = createUpdateNotice();
+
+      const UPDATE_FILES = [
+        { key: 'metadata', file: 'metadata.json' },
+        { key: 'ranking', file: 'ranking.json' },
+        { key: 'mastery', file: 'builds-mastery.json' },
+        { key: 'builds', file: 'builds-main.json' }
+      ];
+
+      const showUpdateNotice = () => {
+        if (updateAvailable || !updateNotice) return;
+        updateAvailable = true;
+        updateNotice.hidden = false;
+        requestAnimationFrame(() => {
+          updateNotice.classList.add('visible');
+        });
+      };
+
+      const loadJsonFresh = (file) => loadJson(file, { cache: 'no-store' });
+
+      const checkForUpdates = async () => {
+        if (updateAvailable || updateCheckInFlight || !updateSignature) return;
+        if (document.hidden) return;
+        updateCheckInFlight = true;
+        try {
+          const results = await Promise.all(UPDATE_FILES.map((entry) => loadJsonFresh(entry.file)));
+          let changed = false;
+          for (let i = 0; i < UPDATE_FILES.length; i += 1) {
+            const key = UPDATE_FILES[i].key;
+            const nextHash = hashJson(results[i]);
+            if (nextHash && updateSignature[key] && nextHash !== updateSignature[key]) {
+              changed = true;
+              break;
+            }
+          }
+          if (changed) showUpdateNotice();
+        } catch (error) {
+          console.warn('Update check failed', error);
+        } finally {
+          updateCheckInFlight = false;
+        }
+      };
+
+      const startUpdatePolling = () => {
+        if (!updateNotice) return;
+        setTimeout(checkForUpdates, UPDATE_CHECK_DELAY);
+        setInterval(checkForUpdates, UPDATE_CHECK_INTERVAL);
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) checkForUpdates();
+        });
       };
 
       let weaponsData = [];
@@ -544,6 +678,14 @@
         syncFavoriteOrder(new Set(weapons.map((w) => w.id)));
         renderTypeFilters(weaponsData);
         renderStrips();
+        restoreScrollPosition();
+        updateSignature = {
+          metadata: hashJson(metadata),
+          ranking: hashJson(ranking),
+          mastery: hashJson(mastery),
+          builds: hashJson(builds)
+        };
+        startUpdatePolling();
       })();
 
       const defaultWeaponSort = (a, b) => {

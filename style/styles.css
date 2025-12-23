@@ -3295,6 +3295,58 @@
       color: inherit;
     }
 
+    .update-notice {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 1900;
+      border-radius: 999px;
+      border: 1px solid rgba(80, 120, 140, 0.45);
+      background: rgba(8, 12, 16, 0.92);
+      color: #e5f1fb;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 229, 255, 0.08);
+      transition: opacity var(--transition), transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .update-notice.visible {
+      opacity: 0.92;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .update-notice:hover,
+    .update-notice:focus-visible {
+      border-color: rgba(0, 229, 255, 0.65);
+      background: rgba(0, 229, 255, 0.12);
+      box-shadow: 0 12px 28px rgba(0, 229, 255, 0.16), 0 0 0 1px rgba(0, 229, 255, 0.2);
+      outline: none;
+    }
+
+    .update-notice-label {
+      color: rgba(184, 198, 210, 0.9);
+      font-weight: 600;
+    }
+
+    .update-notice-action {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    :root.reduce-animations .update-notice {
+      transition: none;
+    }
+
     .options-body {
       display: flex;
       flex-direction: column;
