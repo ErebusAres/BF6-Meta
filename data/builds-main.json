@@ -18,24 +18,38 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Standard Suppressor",
-      "415MM Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND FAST MAG",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ],
-    "custom": [
-      {
-        "custom": "Community"
+      "close": [
+        {
+          "Notes": "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Standard Suppressor",
+        "415MM Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND FAST MAG",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "415MM Prototype",
+        "Classic Vertical",
+        "30RND FAST MAG",
+        "FMJ",
+        "Baker 3.00X"
+      ],
+      "custom": [
+        {
+          "custom": "Community"
       },
       "Double-Port Brake",
       "415MM Prototype",
@@ -64,22 +78,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A decent, versatile AR that performs well over range with careful burst firing."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "480MM Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A decent, versatile AR that performs well over range with careful burst firing."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "480MM Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "A decent, versatile AR that performs well over range with careful burst firing."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "510MM DMR",
+        "Classic Vertical",
+        "30RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "sor-556 mk2",
     "dbname": "sor-556 mk2",
@@ -99,22 +127,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing."
-      },
-      {
-        "Updated": "12/09/2025"
-      },
-      "Long Suppressor",
-      "14.5\" Factory",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing."
+        },
+        {
+          "Updated": "12/09/2025"
+        },
+        "Long Suppressor",
+        "14.5\" Factory",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "A hard-hitting powerhouse that boasts increadible accuracy, but is extremely sensitive to player movement. Be sure not to move when firing."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "18\" Custom",
+        "Classic Vertical",
+        "30RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "nvo-228e",
     "dbname": "nvo-228e",
@@ -134,22 +176,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "409MM Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "409MM Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "458MM Custom",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "m433",
     "dbname": "M433",
@@ -169,22 +225,36 @@
       "FMJ",
       "Iron Sights"
     ],
-    "close": [
-      {
-        "Notes": "An inconsistent, difficult-to-control AR that leads the AR category in TTK but struggles with any engagement beyond midrange."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "16.5\" Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "An inconsistent, difficult-to-control AR that leads the AR category in TTK but struggles with any engagement beyond midrange."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "16.5\" Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "An inconsistent, difficult-to-control AR that leads the AR category in TTK but struggles with any engagement beyond midrange."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "18.9\" Prototype",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "m4a1",
     "dbname": "m4a1",
@@ -204,22 +274,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "12.5\" Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "12.5\" Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "With curvaceous but controllable recoil, the <c>M4A1</c> rewards competent recoil management with a very fast TTK."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "14.5\" Carbine",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "grt-bc",
     "dbname": "GRT-BC",
@@ -238,22 +322,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Standard Suppressor",
-      "10\" Factory",
-      "5 MW Green",
-      "Ribbed Stubby",
-      "30RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Standard Suppressor",
+        "10\" Factory",
+        "5 MW Green",
+        "Ribbed Stubby",
+        "30RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "A satisfying-feeling bullpup with reliable accuracy and easily controllable recoil."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "14.5\" ALT",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "sg 553r",
     "dbname": "sg 553r",
@@ -273,22 +371,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
-      },
-      {
-        "Updated": "12/09/2025"
-      },
-      "Long Suppressor",
-      "240MM Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
+        },
+        {
+          "Updated": "12/09/2025"
+        },
+        "Long Suppressor",
+        "240MM Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "A decently-fast fire rate mixed with moderate recoil and spread make the <c>SG</c> difficult to wield at distance, but undeniable in close quarters."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "303MM LB",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "qbz-192",
     "dbname": "QBZ-192",
@@ -308,22 +420,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Standard Suppressor",
-      "10.5\" Factory",
-      "50 MW Blue",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Standard Suppressor",
+        "10.5\" Factory",
+        "50 MW Blue",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "The <c>QBZ</c> offers a fast fire rate and great accuracy, giving it a high ceiling with good recoil management."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Standard Suppressor",
+        "14.5\" Common",
+        "Classic Vertical",
+        "36RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "m277",
     "dbname": "M277",
@@ -344,22 +470,36 @@
       "Improved Mag Catch",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "While entirely unimpressive in full-auto, the <c>M277</c>'s true potential lies in its DMR-like performance in semi-auto."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "13\" Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "20RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "While entirely unimpressive in full-auto, the <c>M277</c>'s true potential lies in its DMR-like performance in semi-auto."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "13\" Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "20RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "While entirely unimpressive in full-auto, the <c>M277</c>'s true potential lies in its DMR-like performance in semi-auto."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "16\" Custom",
+        "Classic Vertical",
+        "20RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "sor-300sc",
     "dbname": "SOR-300SC",
@@ -379,22 +519,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs."
-      },
-      {
-        "Updated": "12/09/2025"
-      },
-      "Standard Suppressor",
-      "9\" Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs."
+        },
+        {
+          "Updated": "12/09/2025"
+        },
+        "Standard Suppressor",
+        "9\" Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "The <c>SOR</c> is extremely accurate, but has some of the most punishing damage drop-offs at range. Expect great accuracy, but long TTKs."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "10.5\" Custom",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "ak-205",
     "dbname": "AK-205",
@@ -414,22 +568,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "One of the most accurate weapons counterbalanced by having some of the least damage and most punishing range dropoffs. Guaranteed to hit its shots, but not guaranteed to win the gunfights."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Standard Suppressor",
-      "314MM Factory",
-      "50 MW Blue",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "One of the most accurate weapons counterbalanced by having some of the least damage and most punishing range dropoffs. Guaranteed to hit its shots, but not guaranteed to win the gunfights."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Standard Suppressor",
+        "314MM Factory",
+        "50 MW Blue",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "One of the most accurate weapons counterbalanced by having some of the least damage and most punishing range dropoffs. Guaranteed to hit its shots, but not guaranteed to win the gunfights."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Standard Suppressor",
+        "314MM Prototype",
+        "6H64 Vertical",
+        "40RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "m417 a2",
     "dbname": "M417 A2",
@@ -449,22 +617,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A hard-hitting but spiky and magazine-limited weapon that has potential that is difficult to unearth. Handle with care."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "12\" Assaulter",
-      "5 MW Green",
-      "Slim Angled",
-      "25RND Magazine",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A hard-hitting but spiky and magazine-limited weapon that has potential that is difficult to unearth. Handle with care."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "12\" Assaulter",
+        "5 MW Green",
+        "Slim Angled",
+        "25RND Magazine",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "A hard-hitting but spiky and magazine-limited weapon that has potential that is difficult to unearth. Handle with care."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "16.5\" Rifle",
+        "Classic Vertical",
+        "20RND Magazine",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "l85a3",
     "dbname": "L85A3",
@@ -484,22 +666,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A middle of the pack AR that does not excel in any particular area, but tends to hit its shots."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "518MM Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A middle of the pack AR that does not excel in any particular area, but tends to hit its shots."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "518MM Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "A middle of the pack AR that does not excel in any particular area, but tends to hit its shots."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "646MM LSW",
+        "Classic Vertical",
+        "30RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "ak4d",
     "dbname": "AK4D",
@@ -519,22 +715,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A low-capacity, high-damage AR that performs moderately well. Requires constant reload maintenance."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Lightened Suppressor",
-      "409MM US",
-      "5 MW Green",
-      "Slim Angled",
-      "20RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A low-capacity, high-damage AR that performs moderately well. Requires constant reload maintenance."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Lightened Suppressor",
+        "409MM US",
+        "5 MW Green",
+        "Slim Angled",
+        "20RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "A low-capacity, high-damage AR that performs moderately well. Requires constant reload maintenance."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "600MM DMR",
+        "Classic Vertical",
+        "20RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "tr-7",
     "dbname": "TR-7",
@@ -553,22 +763,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "A close-range slaughterhouse with incredible TTK, but enormous recoil and plenty of spread limits this AR's midrange capability."
-      },
-      {
-        "Updated": "12/09/2025"
-      },
-      "Long Suppressor",
-      "432MM Fluted",
-      "5 MW Green",
-      "6H64 Vertical",
-      "20RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A close-range slaughterhouse with incredible TTK, but enormous recoil and plenty of spread limits this AR's midrange capability."
+        },
+        {
+          "Updated": "12/09/2025"
+        },
+        "Long Suppressor",
+        "432MM Fluted",
+        "5 MW Green",
+        "6H64 Vertical",
+        "20RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "A close-range slaughterhouse with incredible TTK, but enormous recoil and plenty of spread limits this AR's midrange capability."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Linear Comp",
+        "20\" Long",
+        "Classic Vertical",
+        "25RND Fast Mag",
+        "FMJ",
+        "CCO 2.00X"
+      ]
+    },
   {
     "id": "m39 emr",
     "dbname": "m39 emr",
@@ -587,22 +811,36 @@
       "Match Grade",
       "PVQ-31 4.00X"
     ],
-    "close": [
-      {
-        "Notes": "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "18\" EBR",
-      "50 MW Blue",
-      "Slim Angled",
-      "20RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "18\" EBR",
+        "50 MW Blue",
+        "Slim Angled",
+        "20RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "Any operator that can control the spiky, jumpy vertical recoil will be rewarded for their accuracy. <i>high potential</i>."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "22\" Factory",
+        "6H64 Vertical",
+        "15RND Fast Mag",
+        "Match Grade",
+        "PVQ-31 4.00X"
+      ]
+    },
   {
     "id": "svdm",
     "dbname": "svdm",
@@ -621,22 +859,36 @@
       "Match Grade",
       "PVQ-31 4.00X"
     ],
-    "close": [
-      {
-        "Notes": "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "565MM Fluted",
-      "5 MW Green",
-      "Slim Angled",
-      "10RND Fast Mag",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "565MM Fluted",
+        "5 MW Green",
+        "Slim Angled",
+        "10RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "Capable of two-tapping and dropping enemies before they can react, the <c>SVDM</c> is highly rewarding in the right hands."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "620MM Classic",
+        "6H64 Vertical",
+        "10RND Fast Mag",
+        "Match Grade",
+        "PVQ-31 4.00X"
+      ]
+    },
   {
     "id": "svk-8.6",
     "dbname": "svk-8.6",
@@ -655,22 +907,36 @@
       "Match Grade",
       "PVQ-31 4.00X"
     ],
-    "close": [
-      {
-        "Notes": "Capable of one-shot headshot kills with Hollow Point rounds, the <c>SVK</c> stays true to its role as a light, lean marksman's tool."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "457MM Urban",
-      "5 MW Green",
-      "Slim Angled",
-      "10RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "Capable of one-shot headshot kills with Hollow Point rounds, the <c>SVK</c> stays true to its role as a light, lean marksman's tool."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "457MM Urban",
+        "5 MW Green",
+        "Slim Angled",
+        "10RND Fast Mag",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "Capable of one-shot headshot kills with Hollow Point rounds, the <c>SVK</c> stays true to its role as a light, lean marksman's tool."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "560MM Factory",
+        "6H64 Vertical",
+        "10RND Fast Mag",
+        "Match Grade",
+        "PVQ-31 4.00X"
+      ]
+    },
   {
     "id": "lmr27",
     "dbname": "LMR27",
@@ -689,22 +955,36 @@
       "FMJ",
       "RO-M 1.75X"
     ],
-    "close": [
-      {
-        "Notes": "With a fast fire rate, low damage, small magazine, and a punishing reload, the <c>LMR27</c> is high risk for low reward. Difficult."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "21.5\" Fluted",
-      "Factory Angled",
-      "10RND Fast Mag",
-      "FMJ",
-      "Improved Mag Catch",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "With a fast fire rate, low damage, small magazine, and a punishing reload, the <c>LMR27</c> is high risk for low reward. Difficult."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "21.5\" Fluted",
+        "Factory Angled",
+        "10RND Fast Mag",
+        "FMJ",
+        "Improved Mag Catch",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "With a fast fire rate, low damage, small magazine, and a punishing reload, the <c>LMR27</c> is high risk for low reward. Difficult."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "24\" Extended",
+        "6H64 Vertical",
+        "10RND Fast Mag",
+        "FMJ",
+        "PVQ-31 4.00X"
+      ]
+    },
   {
     "id": "m2010 esr",
     "dbname": "M2010 ESR",
@@ -793,20 +1073,20 @@
     "id": "drs-iar",
     "dbname": "drs-iar",
     "lastUpdated": "12/07/2025",
-    "long": [
-      {
-        "Notes": "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance."
-      },
-      {
-        "Updated": "11/22/2025"
-      },
-      "Compensated Brake",
-      "20\" SDM-R",
-      "Low-Profile Stubby",
-      "30RND Fast Mag",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "20\" SDM-R",
+        "Classic Vertical",
+        "30RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "A modular and extremely lethal, versatile battle piece. Shreds over range and single-fires anything over long distance."
@@ -842,20 +1122,20 @@
     "id": "kts100 mk8",
     "dbname": "kts100 mk8",
     "lastUpdated": "12/07/2025",
-    "long": [
-      {
-        "Notes": "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity."
-      },
-      {
-        "Updated": "11/22/2025"
-      },
-      "Compensated Brake",
-      "508MM MK8",
-      "Low-Profile Stubby",
-      "45RND Fast Mag",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "508MM MK8",
+        "Classic Vertical",
+        "45RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "The ultimate reliable & dependable weapon that maintains accuracy over range with outstanding velocity."
@@ -891,20 +1171,20 @@
     "id": "m250",
     "dbname": "m250",
     "lastUpdated": "12/07/2025",
-    "long": [
-      {
-        "Notes": "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK."
-      },
-      {
-        "Updated": "11/22/2025"
-      },
-      "Compensated Brake",
-      "556MM Prototype",
-      "Low-Profile Stubby",
-      "50RND Belt Pouch",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "556MM Prototype",
+        "Classic Vertical",
+        "50RND Belt Pouch",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "With no damage dropoff at all, the <c>M250</c> carries the same TTK at any distance - it's just up to the operator to hit their shots to achieve the breakneck TTK."
@@ -940,20 +1220,20 @@
     "id": "rpkm",
     "dbname": "RPKM",
     "lastUpdated": "12/09/2025",
-    "long": [
-      {
-        "Notes": "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity."
-      },
-      {
-        "Updated": "12/09/2025"
-      },
-      "Compensated Brake",
-      "590MM Factory",
-      "Low-Profile Stubby",
-      "30RND Fast Mag",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "590MM Factory",
+        "Classic Vertical",
+        "30RND Fast Mag",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "An extremely accurate LMG that packs marksman-level accuracy with decent magazine capacity."
@@ -997,20 +1277,20 @@
     "id": "l110",
     "dbname": "L110",
     "lastUpdated": "12/07/2025",
-    "long": [
-      {
-        "Notes": "A classic 100-round suppressive monster with moderate accuracy."
-      },
-      {
-        "Updated": "11/22/2025"
-      },
-      "Compensated Brake",
-      "465MM LB",
-      "Low-Profile Stubby",
-      "100RND Belt Pouch",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "A classic 100-round suppressive monster with moderate accuracy."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "465MM LB",
+        "Classic Vertical",
+        "100RND Belt Pouch",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "A classic 100-round suppressive monster with moderate accuracy."
@@ -1046,20 +1326,20 @@
     "id": "m240l",
     "dbname": "M240L",
     "lastUpdated": "12/07/2025",
-    "long": [
-      {
-        "Notes": "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category."
-      },
-      {
-        "Updated": "11/22/2025"
-      },
-      "Compensated Brake",
-      "24\" Bravo",
-      "Low-Profile Stubby",
-      "75RND Belt Box",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "24\" Bravo",
+        "Classic Vertical",
+        "75RND Belt Box",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "Hard-hitting but shaky, the <c>M240L</c> requires handling with care. Does not excel in any category."
@@ -1095,20 +1375,20 @@
     "id": "m60",
     "dbname": "M60",
     "lastUpdated": "12/07/2025",
-    "long": [
-      {
-        "Notes": "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil."
-      },
-      {
-        "Updated": "11/22/2025"
-      },
-      "Compensated Brake",
-      "22\" E3 Long",
-      "Low-Profile Stubby",
-      "50RND Loose Belt",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "22\" E3 Long",
+        "Classic Vertical",
+        "50RND Loose Belt",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "Heavy, bulky, and powerful, the <c>M/60</c> can shine when fired carefully with an operator who can control the recoil."
@@ -1144,20 +1424,20 @@
     "id": "m123k",
     "dbname": "M123K",
     "lastUpdated": "12/07/2025",
-    "long": [
-      {
-        "Notes": "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements."
-      },
-      {
-        "Updated": "11/22/2025"
-      },
-      "Compensated Brake",
-      "612MM VMW",
-      "Low-Profile Stubby",
-      "100RND Belt Pouch",
-      "FMJ",
-      "CCO 2.00X"
-    ],
+      "long": [
+        {
+          "Notes": "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "612MM VMW",
+        "Classic Vertical",
+        "100RND Belt Pouch",
+        "FMJ",
+        "Baker 3.00X"
+      ],
     "versatile": [
       {
         "Notes": "A close-range powerhouse that shreds anything up to midrange, but struggles at long-range engagements."
@@ -1304,90 +1584,118 @@
     "id": "db-12",
     "dbname": "db-12",
     "lastUpdated": "12/07/2025",
-    "versatile": [
-      {
-        "Notes": "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
-      },
-      {
-        "Updated": "11/18/2025"
-      },
-      "CQB Suppressor",
-      "18.9\" Factory",
-      "50 MW Green",
-      "7 Shell Dual Tubes",
-      "Buckshot",
-      "OSA-7 1.00X"
-    ],
-    "close": [
-      {
-        "Notes": "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "CQB Suppressor",
-      "18.9\" Factory",
-      "50 MW Blue",
-      "7 Shell Dual Tubes",
-      "Buckshot",
-      "Mini Flex 1.00X"
-    ]
+      "long": [
+        {
+          "Notes": "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Flash Hider",
+        "18.9\" Factory",
+        "Slim Angled",
+        "7 Shell Dual Tubes",
+        "Slugs",
+        "Baker 3.00X"
+      ],
+      "close": [
+        {
+          "Notes": "An extremely strong semi-auto shotgun that is able to deal significant damage with two rapid shots before pumping."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "CQB Suppressor",
+        "18.9\" Factory",
+        "50 MW Blue",
+        "Slim Handstop",
+        "7 Shell Dual Tubes",
+        "Buckshot",
+        "Mini Flex 1.00X"
+      ]
   },
   {
     "id": "m1014",
     "dbname": "m1014",
     "lastUpdated": "12/07/2025",
-    "close": [
-      {
-        "Notes": "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "CQB Suppressor",
-      "18.5\" Factory",
-      "50 MW Blue",
-      "Slim Handstop",
-      "6 Shell Tube",
-      "Buckshot",
-      "Mini Flex 1.00X"
-    ]
-  },
-  {
-    "id": "18.5ks-k",
-    "dbname": "18.5ks-k",
-    "lastUpdated": "12/07/2025",
-    "close": [
-      {
-        "Updated": "12/07/2025"
-      },
-      "Flash Hider",
-      "430MM Factory",
-      "Slim Handstop",
-      "8RND Fast Mag",
-      "Slugs",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "CQB Suppressor",
+        "18.5\" Factory",
+        "50 MW Blue",
+        "Slim Handstop",
+        "6 Shell Tube",
+        "Buckshot",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "A shotgun enthusiast's choice, the <c>M1014</c> delivers devastating semi-auto performance."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "18.5\" Factory",
+        "6 Shell Tube",
+        "Slugs",
+        "Baker 3.00X"
+      ]
+    },
+    {
+      "id": "18.5ks-k",
+      "dbname": "18.5ks-k",
+      "lastUpdated": "12/07/2025",
+      "close": [
+        {
+          "Notes": "A challenging mini-DMR best used ADS with Slugs, the 18.5KS-K requires a distinct, highly-enjoyable playstyle for those that may prefer it."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Flash Hider",
+        "430MM Factory",
+        "Slim Handstop",
+        "8RND Fast Mag",
+        "Slugs",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "A challenging mini-DMR best used ADS with Slugs, the 18.5KS-K requires a distinct, highly-enjoyable playstyle for those that may prefer it."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "430MM Factory",
+        "8RND Magazine",
+        "Slugs",
+        "Baker 3.00X"
+      ]
+    },
   {
     "id": "m87a1",
     "dbname": "M87A1",
     "lastUpdated": "12/07/2025",
-    "versatile": [
-      {
-        "Notes": "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "CQB Suppressor",
-      "20\" Factory",
-      "50 MW Green",
-      "Adjustable Angled",
-      "5 Shell Tube",
-      "Buckshot",
-      "Mini Flex 1.00X"
-    ],
+      "long": [
+        {
+          "Notes": "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "20\" Factory",
+        "7 Shell Tube",
+        "Slugs",
+        "Baker 3.00X"
+      ],
     "close": [
       {
         "Notes": "A highly consistent pump-action room clearer, guaranteed to drop enemies over impressive range in ADS."
@@ -1423,22 +1731,36 @@
       "FMJ",
       "Mini Flex 1.00X"
     ],
-    "close": [
-      {
-        "Notes": "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "6\" Fluted",
-      "50 MW Blue",
-      "Slim Angled",
-      "30RND Magazine",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "6\" Fluted",
+        "50 MW Blue",
+        "Slim Angled",
+        "30RND Magazine",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "An extremely easy-to-use powerhouse that excels in <b>CQC</b> but packs enough accuracy to perform well at midrange."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "8\" Extended",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    },
   {
     "id": "usg-90",
     "dbname": "USG-90",
@@ -1458,22 +1780,36 @@
       "Improved Mag Catch",
       "Mini Flex 1.00X"
     ],
-    "close": [
-      {
-        "Notes": "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "264MM Fluted",
-      "120 MW Blue",
-      "50RND MAGAZINE",
-      "FMJ",
-      "Improved Mag Catch",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "264MM Fluted",
+        "120 MW Blue",
+        "50RND Magazine",
+        "FMJ",
+        "Improved Mag Catch",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "With a 50-round base magazine and excellent accuracy, the <c>USG</c> is an incredibly capable and versatile slayer."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "407MM CIV-S",
+        "120 MW Blue",
+        "50RND Magazine",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    },
   {
     "id": "pw5a3",
     "dbname": "PW5A3",
@@ -1493,22 +1829,36 @@
       "FMJ",
       "Iron Sights"
     ],
-    "close": [
-      {
-        "Notes": "The familiar-feeling <c>MP5</c> packs excellent accuracy with a midrange TTK, making it extremely dependable even in midrange."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Standard Suppressor",
-      "225MM Factory",
-      "120 MW Blue",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "The familiar-feeling <c>MP5</c> packs excellent accuracy with a midrange TTK, making it extremely dependable even in midrange."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Standard Suppressor",
+        "225MM Factory",
+        "120 MW Blue",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "The familiar-feeling <c>MP5</c> packs excellent accuracy with a midrange TTK, making it extremely dependable even in midrange."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "245MM Custom",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    },
   {
     "id": "pw7a2",
     "dbname": "PW7A2",
@@ -1528,23 +1878,37 @@
       "FMJ",
       "Mini Flex 1.00X"
     ],
-    "close": [
-      {
-        "Notes": "The <c>PW7A2</c> makes up for its extremely low damage with an incredible fire rate and competitive TTK. You'll constantly be reloading, but constantly piling bodies."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Long Suppressor",
-      "180MM Prototype",
-      "50 MW Blue",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "Improved Mag Catch",
-      "Iron Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "The <c>PW7A2</c> makes up for its extremely low damage with an incredible fire rate and competitive TTK. You'll constantly be reloading, but constantly piling bodies."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Long Suppressor",
+        "180MM Prototype",
+        "50 MW Blue",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "Improved Mag Catch",
+        "Iron Sights"
+      ],
+      "long": [
+        {
+          "Notes": "The <c>PW7A2</c> makes up for its extremely low damage with an incredible fire rate and competitive TTK. You'll constantly be reloading, but constantly piling bodies."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "180MM Prototype",
+        "Classic Vertical",
+        "30RND Fast Mag",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    },
   {
     "id": "sl9",
     "dbname": "sl9",
@@ -1564,20 +1928,34 @@
       "FMJ",
       "Mini Flex 1.00X"
     ],
-    "close": [
-      {
-        "Notes": "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Standard Suppressor",
-      "9\" Factory",
-      "60RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Standard Suppressor",
+        "9\" Factory",
+        "60RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "An ultra-accurate <b>SMG</b> that barely spreads at distance over sustained fire, but has the slowest <b>SMG TTK</b>. Configurable to pack 60 rounds, the <c>SL9</c> has great potential per reload."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "11\" Heavy",
+        "Classic Vertical",
+        "30RND Magazine",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    },
   {
     "id": "kv9",
     "dbname": "KV9",
@@ -1596,21 +1974,35 @@
       "FMJ",
       "Mini Flex 1.00X"
     ],
-    "close": [
-      {
-        "Notes": "With a Mach-5 fire rate but so little magazine capacity, the <c>KV9</c> can shred exactly one or two opponents before forcing a reload. Requires very thoughtful and tactical use."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Flash Hider",
-      "5.5\" Factory",
-      "Slim Angled",
-      "27RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "With a Mach-5 fire rate but so little magazine capacity, the <c>KV9</c> can shred exactly one or two opponents before forcing a reload. Requires very thoughtful and tactical use."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Flash Hider",
+        "5.5\" Factory",
+        "Slim Angled",
+        "27RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "With a Mach-5 fire rate but so little magazine capacity, the <c>KV9</c> can shred exactly one or two opponents before forcing a reload. Requires very thoughtful and tactical use."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "6.5\" Extended",
+        "Classic Vertical",
+        "17RND Magazine",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    },
   {
     "id": "umg40",
     "dbname": "UMG-40",
@@ -1630,22 +2022,36 @@
       "FMJ",
       "CQB Sights"
     ],
-    "close": [
-      {
-        "Notes": "The classic UMP boasts impressive accuracy, but one of the slowest TTKs in the SMG category, which is fine - because sometimes hitting your shots is a lot better than missing due to spread."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Standard Suppressor",
-      "200MM Fluted",
-      "50 MW Blue",
-      "Slim Angled",
-      "30RND Fast Mag",
-      "FMJ",
-      "CQB Sights"
-    ]
-  },
+      "close": [
+        {
+          "Notes": "The classic UMP boasts impressive accuracy, but one of the slowest TTKs in the SMG category, which is fine - because sometimes hitting your shots is a lot better than missing due to spread."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Standard Suppressor",
+        "200MM Fluted",
+        "50 MW Blue",
+        "Slim Angled",
+        "30RND Fast Mag",
+        "FMJ",
+        "CQB Sights"
+      ],
+      "long": [
+        {
+          "Notes": "The classic UMP boasts impressive accuracy, but one of the slowest TTKs in the SMG category, which is fine - because sometimes hitting your shots is a lot better than missing due to spread."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "305MM Custom-H",
+        "Classic Vertical",
+        "30RND Fast Mag",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    },
   {
     "id": "scw-10",
     "dbname": "scw-10",
@@ -1664,19 +2070,33 @@
       "FMJ",
       "Mini Flex 1.00X"
     ],
-    "close": [
-      {
-        "Notes": "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Flash Hider",
-      "6.8\" Factory",
-      "Slim Angled",
-      "25RND Magazine",
-      "FMJ",
-      "Mini Flex 1.00X"
-    ]
-  }
-]
+      "close": [
+        {
+          "Notes": "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
+        },
+        {
+          "Updated": "12/07/2025"
+        },
+        "Flash Hider",
+        "6.8\" Factory",
+        "Slim Angled",
+        "25RND Magazine",
+        "FMJ",
+        "Mini Flex 1.00X"
+      ],
+      "long": [
+        {
+          "Notes": "The <c>SCW</c> may pack a tiny magazine, but makes up for it with an excellent TTK and outstanding accuracy."
+        },
+        {
+          "Updated": "12/22/2025"
+        },
+        "Lightened Suppressor",
+        "200MM Custom",
+        "6H64 Vertical",
+        "15RND Fast Mag",
+        "FMJ",
+        "RO-M 1.75X"
+      ]
+    }
+  ]

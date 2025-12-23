@@ -23,12 +23,12 @@
         "rank": "a"
       },
       {
-        "dbname": "NVO-228E",
+        "dbname": "SOR-556 MK2",
         "rank": "a"
       },
       {
-        "dbname": "SOR-556 MK2",
-        "rank": "b"
+        "dbname": "NVO-228E",
+        "rank": "a"
       },
       {
         "dbname": "L85A3",
@@ -56,6 +56,10 @@
         "rank": "a"
       },
       {
+        "dbname": "AK-205",
+        "rank": "b"
+      },
+      {
         "dbname": "M417 A2",
         "rank": "b"
       },
@@ -64,12 +68,8 @@
         "rank": "b"
       },
       {
-        "dbname": "AK-205",
-        "rank": "c"
-      },
-      {
         "dbname": "SOR-300SC",
-        "rank": "c"
+        "rank": "b"
       }
     ]
   },
@@ -81,12 +81,12 @@
         "rank": "s"
       },
       {
-        "dbname": "M250",
+        "dbname": "KTS100 MK8",
         "rank": "s"
       },
       {
-        "dbname": "KTS100 MK8",
-        "rank": "a"
+        "dbname": "M250",
+        "rank": "s"
       },
       {
         "dbname": "L110",
@@ -172,20 +172,20 @@
     "type": "DMR",
     "entries": [
       {
-        "dbname": "SVDM",
-        "rank": "b"
+        "dbname": "M39 EMR",
+        "rank": "s"
       },
       {
         "dbname": "SVK-8.6",
-        "rank": "b"
+        "rank": "a"
       },
       {
-        "dbname": "M39 EMR",
-        "rank": "b"
+        "dbname": "SVDM",
+        "rank": "a"
       },
       {
         "dbname": "LMR27",
-        "rank": "d"
+        "rank": "c"
       }
     ]
   },
