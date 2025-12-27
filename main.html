@@ -415,6 +415,10 @@
       const UPDATE_CHECK_DELAY = 60 * 1000;
       const SCROLL_STATE_KEY = 'bf6-meta-scroll-state';
       const SCROLL_STATE_MAX_AGE_MS = 5 * 60 * 1000;
+      const SCROLL_RESTORE_MAX_ATTEMPTS = 12;
+      const SCROLL_RESTORE_RETRY_MS = 140;
+      const SCROLL_RESTORE_TOLERANCE = 4;
+      const SCROLL_RESTORE_REASONS = new Set(['update', 'reload']);
       let updateSignature = null;
       let updateCheckInFlight = false;
       let updateAvailable = false;
@@ -437,15 +441,45 @@
         }
       };
 
+      const getScrollTop = () => window.pageYOffset || document.documentElement.scrollTop || 0;
+
       const saveScrollPosition = (reason) => {
         try {
-          const top = window.pageYOffset || document.documentElement.scrollTop || 0;
+          const top = getScrollTop();
           sessionStorage.setItem(SCROLL_STATE_KEY, JSON.stringify({
             top,
             reason: reason || '',
-            ts: Date.now()
+            ts: Date.now(),
+            path: location.pathname + location.search
           }));
         } catch (_) {}
+      };
+
+      const startScrollRestore = (targetTop) => {
+        if (!Number.isFinite(targetTop) || targetTop <= 0) return;
+        let attempts = 0;
+        let blocked = false;
+        const blockOnInput = () => { blocked = true; };
+        const blockers = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+        blockers.forEach((eventName) => {
+          window.addEventListener(eventName, blockOnInput, { passive: true, once: true });
+        });
+
+        const tryRestore = () => {
+          if (blocked) return;
+          window.scrollTo(0, targetTop);
+          attempts += 1;
+          const delta = Math.abs(getScrollTop() - targetTop);
+          if (attempts < SCROLL_RESTORE_MAX_ATTEMPTS && delta > SCROLL_RESTORE_TOLERANCE) {
+            setTimeout(() => requestAnimationFrame(tryRestore), SCROLL_RESTORE_RETRY_MS);
+          }
+        };
+
+        requestAnimationFrame(tryRestore);
+        window.addEventListener('load', () => {
+          if (blocked) return;
+          setTimeout(() => requestAnimationFrame(tryRestore), 0);
+        }, { once: true });
       };
 
       const restoreScrollPosition = () => {
@@ -456,16 +490,22 @@
           if (!raw) return;
           sessionStorage.removeItem(SCROLL_STATE_KEY);
           const payload = JSON.parse(raw);
-          if (!payload || payload.reason !== 'update') return;
+          if (!payload || !SCROLL_RESTORE_REASONS.has(payload.reason)) return;
           if (!Number.isFinite(payload.top)) return;
+          if (payload.path && payload.path !== location.pathname + location.search) return;
           if (Date.now() - payload.ts > SCROLL_STATE_MAX_AGE_MS) return;
           if (payload.top <= 0) return;
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              window.scrollTo(0, payload.top);
-            });
-          });
+          startScrollRestore(payload.top);
         } catch (_) {}
+      };
+
+      const setupScrollPersistence = () => {
+        const persist = () => saveScrollPosition('reload');
+        window.addEventListener('pagehide', persist);
+        window.addEventListener('beforeunload', persist);
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) saveScrollPosition('reload');
+        });
       };
 
       const createUpdateNotice = () => {
@@ -541,6 +581,8 @@
           if (!document.hidden) checkForUpdates();
         });
       };
+
+      setupScrollPersistence();
 
       let weaponsData = [];
       let currentTypeFilter = loadTypeFilter();

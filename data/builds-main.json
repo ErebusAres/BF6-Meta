@@ -2,7 +2,7 @@
   {
     "id": "kord-6p67",
     "dbname": "KORD 6P67",
-    "lastUpdated": "12/07/2025",
+    "lastUpdated": "12/22/2025",
     "versatile": [
       {
         "Notes": "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>."
@@ -23,7 +23,7 @@
           "Notes": "Despite it's blistering fire rate, the <c>Kord</c> is a highly dependable lethal <b>AR</b> that shines <i>even without attachments</i>."
         },
         {
-          "Updated": "12/07/2025"
+          "Updated": "12/09/2025"
         },
         "Standard Suppressor",
         "415MM Fluted",
@@ -161,27 +161,27 @@
     "id": "nvo-228e",
     "dbname": "nvo-228e",
     "lastUpdated": "12/07/2025",
-    "versatile": [
-      {
-        "Notes": "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
-      },
-      {
-        "Updated": "12/07/2025"
-      },
-      "Lightened Suppressor",
-      "458MM Custom",
-      "5 MW Green",
-      "Slim Angled",
-      "30RND Magazine",
-      "FMJ",
-      "RO-M 1.75X"
-    ],
+      "versatile": [
+        {
+          "Notes": "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
+        },
+        {
+          "Updated": "12/09/2025"
+        },
+        "Lightened Suppressor",
+        "458MM Custom",
+        "5 MW Green",
+        "Slim Angled",
+        "30RND Magazine",
+        "FMJ",
+        "RO-M 1.75X"
+      ],
       "close": [
         {
           "Notes": "A high-damage AR with tons of potential, but extremely prone to spread. <b>Fire Carefully</b>."
         },
         {
-          "Updated": "12/07/2025"
+          "Updated": "12/09/2025"
         },
         "Long Suppressor",
         "409MM Fluted",
