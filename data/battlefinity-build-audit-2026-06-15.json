@@ -1,0 +1,142 @@
+{
+  "source": "https://battlefinity.gg/battlefield",
+  "sourceName": "Battlefinity Battlefield 6 Meta & Loadouts",
+  "sourceLastUpdated": "06/15/2026",
+  "recordedOn": "2026-06-19",
+  "purpose": "Source snapshot for syncing BF6-Meta rankings and build loadouts against Battlefinity official pages.",
+  "notes": [
+    "Category ranks were synced into data/ranking.json for weapons already present in metadata.json.",
+    "New Battlefinity weapons that are not yet present in metadata/build data are recorded here, but were not added to ranking.json to avoid rendering incomplete cards.",
+    "Per-weapon build arrays in builds-main.json should be updated from weaponBuilds mappings after validating attachment names against attachments.json."
+  ],
+  "categoryPages": {
+    "Assault": {
+      "url": "https://battlefinity.gg/best-weapons/assault-rifle",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "A": ["M16A4", "KORD 6P67", "B36A4", "SOR-556 MK2", "L85A3"],
+        "B": ["VCR-2", "NVO-228E"],
+        "C": ["AK4D", "M433"],
+        "D": ["TR-7"]
+      },
+      "missingFromRepoMetadata": ["M16A4", "VCR-2"]
+    },
+    "SMG": {
+      "url": "https://battlefinity.gg/best-weapons/smg",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "S": ["SCW-10"],
+        "A": ["SGX", "USG-90", "PP-19", "PW5A3", "UMG-40"],
+        "B": ["SL9", "CZ3A1", "PW7A2"],
+        "C": ["KV9"]
+      },
+      "missingFromRepoMetadata": ["PP-19", "CZ3A1"]
+    },
+    "Carbine": {
+      "url": "https://battlefinity.gg/best-weapons/carbine",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "S": ["SG 553R"],
+        "A": ["M4A1"],
+        "B": ["GRT-BC", "QBZ-192"],
+        "C": ["M277", "AK-205", "M417 A2", "SOR-300SC"]
+      },
+      "missingFromRepoMetadata": []
+    },
+    "DMR": {
+      "url": "https://battlefinity.gg/best-weapons/dmr",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "S": ["SVDM"],
+        "A": ["GRT-CPS", "M39 EMR"],
+        "C": ["SVK-8.6"],
+        "D": ["LMR27"]
+      },
+      "missingFromRepoMetadata": ["GRT-CPS"]
+    },
+    "Sniper Rifle": {
+      "url": "https://battlefinity.gg/best-weapons/sniper-rifle",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "S": ["PSR"],
+        "A": ["M2010 ESR", "L115"],
+        "B": ["SV-98"],
+        "C": ["Mini Scout"]
+      },
+      "missingFromRepoMetadata": ["L115"]
+    },
+    "LMG": {
+      "url": "https://battlefinity.gg/best-weapons/lmg",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "S": ["KTS100 MK8"],
+        "A": ["DRS-IAR", "RPK-74M", "L110", "M250"],
+        "B": ["RPKM"],
+        "C": ["M/60", "M240L", "M121 A2", "M123K"]
+      },
+      "missingFromRepoMetadata": ["RPK-74M", "M121 A2"]
+    },
+    "Pistol": {
+      "url": "https://battlefinity.gg/best-weapons/pistol",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "A": ["VZ. 61", "M357 Trait"],
+        "C": ["M44"],
+        "D": ["P18", "ES 5.7", "GGH-22", "M45A1"]
+      },
+      "missingFromRepoMetadata": ["VZ. 61"]
+    },
+    "Shotgun": {
+      "url": "https://battlefinity.gg/best-weapons/shotgun",
+      "lastUpdated": "06/15/2026",
+      "ranking": {
+        "D": ["DB-12", "M87A1", "M1014", "18.5KS-K"]
+      },
+      "missingFromRepoMetadata": []
+    }
+  },
+  "weaponBuilds": {
+    "KORD 6P67": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/kord-6p67",
+      "sourceLastUpdated": "06/15/2026",
+      "sourceLoadoutCount": 2,
+      "repoMapping": [
+        {
+          "sourceBuild": "Sniper Support",
+          "suggestedRepoKey": "versatile",
+          "status": "differs-from-current-repo-build",
+          "lastUpdated": "06/15/2026",
+          "attachments": [
+            "Long Suppressor",
+            "415MM Prototype",
+            "Classic Vertical",
+            "36RND Magazine",
+            "FMJ",
+            "RO-M 1.75x"
+          ]
+        },
+        {
+          "sourceBuild": "Long Range",
+          "suggestedRepoKey": "long",
+          "status": "differs-from-current-repo-build",
+          "lastUpdated": "06/15/2026",
+          "attachments": [
+            "Long Suppressor",
+            "415MM Prototype",
+            "Classic Vertical",
+            "36RND Magazine",
+            "FMJ",
+            "Baker 3.00x"
+          ]
+        },
+        {
+          "sourceBuild": null,
+          "suggestedRepoKey": "close",
+          "status": "not-present-on-current-battlefinity-official-kord-page",
+          "lastUpdated": null,
+          "attachments": []
+        }
+      ]
+    }
+  }
+}
