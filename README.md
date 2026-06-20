@@ -4,6 +4,19 @@ Live site: https://erebusares.github.io/BF6-Meta/main.html
 
 A lightweight GitHub Pages reference for BF6 weapon builds, attachment unlock paths, and ranking data. The site is fully data-driven from the JSON in `/data` (`builds-main.json`, `builds-mastery.json`, `attachments.json`, `ranking.json`, and `metadata.json`). Mastery unlocks (baseline/changes) live only in `builds-mastery.json`; `builds-main.json` is reserved for build loadouts, notes, and related metadata.
 
+## Battlefinity sync
+
+- Current Battlefinity category rankings are stored in `data/ranking.json`.
+- New Battlefinity weapons from the 06/15/2026 source pass have been added to `data/metadata.json`.
+- Verified official Battlefinity build payloads are stored in `data/battlefinity-official-builds-2026-06-15.json`.
+- To merge the verified overlay into `data/builds-main.json`, run:
+
+```bash
+node scripts/apply-battlefinity-official-builds.mjs
+```
+
+The overlay intentionally excludes creator/user loadouts and only records the official Battlefinity "Best Loadouts" sections that were verified from individual weapon pages.
+
 ## Disclaimer
 - Unofficial, community-maintained reference; use at your own risk.
 - Attachment values, unlock paths, and ranks can change with patches, so info may be stale at any time.
