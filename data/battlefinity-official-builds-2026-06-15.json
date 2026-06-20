@@ -1,0 +1,296 @@
+{
+  "source": "https://battlefinity.gg/battlefield",
+  "sourceName": "Battlefinity Battlefield 6 official weapon loadouts",
+  "recordedOn": "2026-06-19",
+  "scope": "Official Battlefinity best loadouts observed from weapon pages; creator/user loadouts excluded.",
+  "weapons": {
+    "M16A4": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/m16a4",
+      "type": "Assault",
+      "lastUpdated": "06/15/2026",
+      "notes": "A highly competent and modular weapon in a familiar frame and feel - spam the burst fire to your heart's content to accelerate DPS at the cost of accuracy.",
+      "builds": {
+        "versatile": [
+          { "custom": "Sniper Support" },
+          { "Notes": "A highly competent and modular weapon in a familiar frame and feel - spam the burst fire to your heart's content to accelerate DPS at the cost of accuracy." },
+          { "Updated": "06/15/2026" },
+          "Lightened Suppressor",
+          "20\" HBAR",
+          "Classic Vertical",
+          "30RND Magazine",
+          "FMJ",
+          "Aftermarket Buffer",
+          "RO-M 1.75X"
+        ],
+        "long": [
+          { "custom": "Long Range" },
+          { "Notes": "A highly competent and modular weapon in a familiar frame and feel - spam the burst fire to your heart's content to accelerate DPS at the cost of accuracy." },
+          { "Updated": "06/15/2026" },
+          "Lightened Suppressor",
+          "20\" HBAR",
+          "Classic Vertical",
+          "30RND Magazine",
+          "FMJ",
+          "Aftermarket Buffer",
+          "Baker 3.00X"
+        ]
+      }
+    },
+    "VCR-2": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/vcr-2",
+      "type": "Assault",
+      "lastUpdated": "06/12/2026",
+      "notes": "A high-intensity close quarters machine with a blistering fire rate that performs surprisingly well over distance with proper control.",
+      "builds": {
+        "versatile": [
+          { "custom": "Sniper Support" },
+          { "Notes": "A high-intensity close quarters machine with a blistering fire rate that performs surprisingly well over distance with proper control." },
+          { "Updated": "06/12/2026" },
+          "Lightened Suppressor",
+          "20\" Marksman",
+          "Classic Vertical",
+          "30RND Fast Mag",
+          "FMJ",
+          "Aftermarket Buffer",
+          "RO-M 1.75X"
+        ],
+        "long": [
+          { "custom": "Long Range" },
+          { "Notes": "A high-intensity close quarters machine with a blistering fire rate that performs surprisingly well over distance with proper control." },
+          { "Updated": "06/12/2026" },
+          "Lightened Suppressor",
+          "20\" Marksman",
+          "Classic Vertical",
+          "30RND Fast Mag",
+          "FMJ",
+          "Aftermarket Buffer",
+          "Baker 3.00X"
+        ]
+      }
+    },
+    "PP-19": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/pp-19",
+      "type": "SMG",
+      "lastUpdated": "06/15/2026",
+      "notes": "The PP-19 has a rather restricting attachment set which makes it difficult to gear, but makes up for it in raw slaying power, smooth recoil, and great accuracy.",
+      "builds": {
+        "close": [
+          { "custom": "Close Range" },
+          { "Notes": "The PP-19 has a rather restricting attachment set which makes it difficult to gear, but makes up for it in raw slaying power, smooth recoil, and great accuracy." },
+          { "Updated": "06/15/2026" },
+          "CQB Suppressor",
+          "367mm CIV",
+          "53RND Drum",
+          "FMJ",
+          "Iron Sights",
+          "5 MW Green"
+        ]
+      }
+    },
+    "CZ3A1": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/cz3a1",
+      "type": "SMG",
+      "lastUpdated": "06/12/2026",
+      "builds": {
+        "versatile": [
+          { "custom": "Sniper Support" },
+          { "Updated": "06/12/2026" },
+          "Lightened Suppressor",
+          "16.2\" Cut",
+          "Classic Vertical",
+          "35RND Magazine",
+          "FMJ",
+          "Mini Flex 1.00X"
+        ],
+        "close": [
+          { "custom": "Close Range" },
+          { "Updated": "06/12/2026" },
+          "Lightened Suppressor",
+          "16.2\" Cut",
+          "Classic Vertical",
+          "35RND Magazine",
+          "FMJ",
+          "Mini Flex 1.00X"
+        ]
+      }
+    },
+    "GRT-CPS": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/grt-cps",
+      "type": "DMR",
+      "lastUpdated": "06/12/2026",
+      "notes": "Feeling-wise, the GRT-CPS lands between an LMR27 and SVDM, bringing the best of both worlds. Exceptionally smooth and with minimal vertical climb, criminally easy to control.",
+      "builds": {
+        "long": [
+          { "custom": "Long Range" },
+          { "Notes": "Feeling-wise, the GRT-CPS lands between an LMR27 and SVDM, bringing the best of both worlds. Exceptionally smooth and with minimal vertical climb, criminally easy to control." },
+          { "Updated": "06/12/2026" },
+          "Lightened Suppressor",
+          "20\" Factory",
+          "Ribbed Vertical",
+          "20RND Magazine",
+          "Synthetic Tip",
+          "PVQ-31 4.00X"
+        ]
+      }
+    },
+    "L115": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/l115",
+      "type": "Sniper Rifle",
+      "lastUpdated": "06/12/2026",
+      "notes": "An ultra-long-range sniper with a Sweet Spot between 120m-175m yet puzzlingly low velocity is certainly capable of sniping at long range, but just because you can - does that also mean you should?",
+      "builds": {
+        "sniper": [
+          { "custom": "Sniper" },
+          { "Notes": "An ultra-long-range sniper with a Sweet Spot between 120m-175m yet puzzlingly low velocity is certainly capable of sniping at long range, but just because you can - does that also mean you should?" },
+          { "Updated": "06/12/2026" },
+          "Standard Suppressor",
+          "32\" Custom",
+          "Full Angled",
+          "5RND Magazine",
+          "Match Grade",
+          "DLC Bolt",
+          "NFX 8.00X",
+          "Range Finder"
+        ]
+      }
+    },
+    "RPK-74M": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/rpk-74m",
+      "type": "LMG",
+      "lastUpdated": "06/15/2026",
+      "notes": "Another addition to the niche of high accuracy, low damage, the RPK-74M performs similarly to the AK-205 and RPKM. Ultra-accurate, but with its low damage, expect to lose head-on gunfights.",
+      "builds": {
+        "long": [
+          { "custom": "Long Range" },
+          { "Notes": "Another addition to the niche of high accuracy, low damage, the RPK-74M performs similarly to the AK-205 and RPKM. Ultra-accurate, but with its low damage, expect to lose head-on gunfights." },
+          { "Updated": "06/15/2026" },
+          "Lightened Suppressor",
+          "590MM Factory",
+          "Folding Stubby",
+          "30RND Magazine",
+          "Synthetic Tip",
+          "Baker 3.00X"
+        ]
+      }
+    },
+    "M121 A2": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/m121-a2",
+      "type": "LMG",
+      "lastUpdated": "06/12/2026",
+      "notes": "The M121 A2 feels as powerful as it looks, with each shot carrying a hefty, reverberating kick. Tends to shoot circles when fired too long, but can perform well with conscious trigger discipline.",
+      "builds": {
+        "long": [
+          { "custom": "Long Range" },
+          { "Notes": "The M121 A2 feels as powerful as it looks, with each shot carrying a hefty, reverberating kick. Tends to shoot circles when fired too long, but can perform well with conscious trigger discipline." },
+          { "Updated": "06/12/2026" },
+          "Lightened Suppressor",
+          "660MM VMW",
+          "Classic Vertical",
+          "50RND Belt Pouch",
+          "FMJ",
+          "Baker 3.00X"
+        ]
+      }
+    },
+    "VZ. 61": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/vz-61",
+      "type": "Secondary",
+      "lastUpdated": "06/15/2026",
+      "builds": {
+        "versatile": [
+          { "custom": "Starting Pistol" },
+          { "Updated": "06/15/2026" },
+          "115mm Factory",
+          "20RND Magazine",
+          "FMJ",
+          "Iron Sights"
+        ]
+      }
+    },
+    "KORD 6P67": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/kord-6p67",
+      "type": "Assault",
+      "lastUpdated": "06/15/2026",
+      "builds": {
+        "versatile": [
+          { "custom": "Sniper Support" },
+          { "Updated": "06/15/2026" },
+          "Long Suppressor",
+          "415MM Prototype",
+          "Classic Vertical",
+          "36RND Magazine",
+          "FMJ",
+          "RO-M 1.75X"
+        ],
+        "long": [
+          { "custom": "Long Range" },
+          { "Updated": "06/15/2026" },
+          "Long Suppressor",
+          "415MM Prototype",
+          "Classic Vertical",
+          "36RND Magazine",
+          "FMJ",
+          "Baker 3.00X"
+        ]
+      }
+    },
+    "B36A4": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/b36a4",
+      "type": "Assault",
+      "lastUpdated": "05/14/2026",
+      "builds": {
+        "versatile": [
+          { "custom": "Sniper Support" },
+          { "Updated": "05/14/2026" },
+          "Lightened Suppressor",
+          "510MM DMR",
+          "6H64 Vertical",
+          "36RND Magazine",
+          "FMJ",
+          "Aftermarket Buffer",
+          "RO-M 1.75X"
+        ],
+        "long": [
+          { "custom": "Long Range" },
+          { "Updated": "05/14/2026" },
+          "Lightened Suppressor",
+          "510MM DMR",
+          "6H64 Vertical",
+          "36RND Magazine",
+          "FMJ",
+          "Aftermarket Buffer",
+          "Baker 3.00X"
+        ]
+      }
+    },
+    "SOR-556 MK2": {
+      "sourceUrl": "https://battlefinity.gg/weapon/BF6/sor-556-mk2",
+      "type": "Assault",
+      "lastUpdated": "06/15/2026",
+      "builds": {
+        "versatile": [
+          { "custom": "Sniper Support" },
+          { "Updated": "06/15/2026" },
+          "Lightened Suppressor",
+          "18\" Custom",
+          "6H64 Vertical",
+          "36RND Magazine",
+          "FMJ",
+          "Aftermarket Buffer",
+          "RO-M 1.75X"
+        ],
+        "long": [
+          { "custom": "Long Range" },
+          { "Updated": "06/15/2026" },
+          "Lightened Suppressor",
+          "18\" Custom",
+          "6H64 Vertical",
+          "36RND Magazine",
+          "FMJ",
+          "Aftermarket Buffer",
+          "Baker 3.00X"
+        ]
+      }
+    }
+  }
+}
