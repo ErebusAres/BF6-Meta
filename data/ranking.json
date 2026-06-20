@@ -2,100 +2,100 @@
   {
     "type": "Assault",
     "entries": [
-      { "dbname": "M16A4", "rank": "a" },
-      { "dbname": "KORD 6P67", "rank": "a" },
-      { "dbname": "B36A4", "rank": "a" },
-      { "dbname": "SOR-556 MK2", "rank": "a" },
-      { "dbname": "L85A3", "rank": "a" },
-      { "dbname": "VCR-2", "rank": "b" },
-      { "dbname": "NVO-228E", "rank": "b" },
-      { "dbname": "AK4D", "rank": "c" },
-      { "dbname": "M433", "rank": "c" },
-      { "dbname": "TR-7", "rank": "d" }
+      { "dbname": "M16A4", "rank": "a", "tr": 1 },
+      { "dbname": "KORD 6P67", "rank": "a", "tr": 2 },
+      { "dbname": "B36A4", "rank": "a", "tr": 3 },
+      { "dbname": "SOR-556 MK2", "rank": "a", "tr": 4 },
+      { "dbname": "L85A3", "rank": "a", "tr": 5 },
+      { "dbname": "VCR-2", "rank": "b", "tr": 6 },
+      { "dbname": "NVO-228E", "rank": "b", "tr": 7 },
+      { "dbname": "AK4D", "rank": "c", "tr": 8 },
+      { "dbname": "M433", "rank": "c", "tr": 9 },
+      { "dbname": "TR-7", "rank": "d", "tr": 10 }
     ]
   },
   {
     "type": "Carbine",
     "entries": [
-      { "dbname": "SG 553R", "rank": "s" },
-      { "dbname": "M4A1", "rank": "a" },
-      { "dbname": "GRT-BC", "rank": "b" },
-      { "dbname": "QBZ-192", "rank": "b" },
-      { "dbname": "M277", "rank": "c" },
-      { "dbname": "AK-205", "rank": "c" },
-      { "dbname": "M417 A2", "rank": "c" },
-      { "dbname": "SOR-300SC", "rank": "c" }
+      { "dbname": "SG 553R", "rank": "s", "tr": 1 },
+      { "dbname": "M4A1", "rank": "a", "tr": 2 },
+      { "dbname": "GRT-BC", "rank": "b", "tr": 3 },
+      { "dbname": "QBZ-192", "rank": "b", "tr": 4 },
+      { "dbname": "M277", "rank": "c", "tr": 5 },
+      { "dbname": "AK-205", "rank": "c", "tr": 6 },
+      { "dbname": "M417 A2", "rank": "c", "tr": 7 },
+      { "dbname": "SOR-300SC", "rank": "c", "tr": 8 }
     ]
   },
   {
     "type": "LMG",
     "entries": [
-      { "dbname": "KTS100 MK8", "rank": "s" },
-      { "dbname": "DRS-IAR", "rank": "a" },
-      { "dbname": "RPK-74M", "rank": "a" },
-      { "dbname": "L110", "rank": "a" },
-      { "dbname": "M250", "rank": "a" },
-      { "dbname": "RPKM", "rank": "b" },
-      { "dbname": "M60", "rank": "c" },
-      { "dbname": "M240L", "rank": "c" },
-      { "dbname": "M121 A2", "rank": "c" },
-      { "dbname": "M123K", "rank": "c" }
+      { "dbname": "KTS100 MK8", "rank": "s", "tr": 1 },
+      { "dbname": "DRS-IAR", "rank": "a", "tr": 2 },
+      { "dbname": "RPK-74M", "rank": "a", "tr": 3 },
+      { "dbname": "L110", "rank": "a", "tr": 4 },
+      { "dbname": "M250", "rank": "a", "tr": 5 },
+      { "dbname": "RPKM", "rank": "b", "tr": 6 },
+      { "dbname": "M60", "rank": "c", "tr": 7 },
+      { "dbname": "M240L", "rank": "c", "tr": 8 },
+      { "dbname": "M121 A2", "rank": "c", "tr": 9 },
+      { "dbname": "M123K", "rank": "c", "tr": 10 }
     ]
   },
   {
     "type": "SMG",
     "entries": [
-      { "dbname": "SCW-10", "rank": "s" },
-      { "dbname": "SGX", "rank": "a" },
-      { "dbname": "USG-90", "rank": "a" },
-      { "dbname": "PP-19", "rank": "a" },
-      { "dbname": "PW5A3", "rank": "a" },
-      { "dbname": "UMG-40", "rank": "a" },
-      { "dbname": "SL9", "rank": "b" },
-      { "dbname": "CZ3A1", "rank": "b" },
-      { "dbname": "PW7A2", "rank": "b" },
-      { "dbname": "KV9", "rank": "c" }
+      { "dbname": "SCW-10", "rank": "s", "tr": 1 },
+      { "dbname": "SGX", "rank": "a", "tr": 2 },
+      { "dbname": "USG-90", "rank": "a", "tr": 3 },
+      { "dbname": "PP-19", "rank": "a", "tr": 4 },
+      { "dbname": "PW5A3", "rank": "a", "tr": 5 },
+      { "dbname": "UMG-40", "rank": "a", "tr": 6 },
+      { "dbname": "SL9", "rank": "b", "tr": 7 },
+      { "dbname": "CZ3A1", "rank": "b", "tr": 8 },
+      { "dbname": "PW7A2", "rank": "b", "tr": 9 },
+      { "dbname": "KV9", "rank": "c", "tr": 10 }
     ]
   },
   {
     "type": "Sniper Rifle",
     "entries": [
-      { "dbname": "PSR", "rank": "s" },
-      { "dbname": "M2010 ESR", "rank": "a" },
-      { "dbname": "L115", "rank": "a" },
-      { "dbname": "SV-98", "rank": "b" },
-      { "dbname": "Mini Scout", "rank": "c" }
+      { "dbname": "PSR", "rank": "s", "tr": 1 },
+      { "dbname": "M2010 ESR", "rank": "a", "tr": 2 },
+      { "dbname": "L115", "rank": "a", "tr": 3 },
+      { "dbname": "SV-98", "rank": "b", "tr": 4 },
+      { "dbname": "Mini Scout", "rank": "c", "tr": 5 }
     ]
   },
   {
     "type": "DMR",
     "entries": [
-      { "dbname": "SVDM", "rank": "s" },
-      { "dbname": "GRT-CPS", "rank": "a" },
-      { "dbname": "M39 EMR", "rank": "a" },
-      { "dbname": "SVK-8.6", "rank": "c" },
-      { "dbname": "LMR27", "rank": "d" }
+      { "dbname": "SVDM", "rank": "s", "tr": 1 },
+      { "dbname": "GRT-CPS", "rank": "a", "tr": 2 },
+      { "dbname": "M39 EMR", "rank": "a", "tr": 3 },
+      { "dbname": "SVK-8.6", "rank": "c", "tr": 4 },
+      { "dbname": "LMR27", "rank": "d", "tr": 5 }
     ]
   },
   {
     "type": "Shotgun",
     "entries": [
-      { "dbname": "DB-12", "rank": "d" },
-      { "dbname": "M87A1", "rank": "d" },
-      { "dbname": "M1014", "rank": "d" },
-      { "dbname": "18.5KS-K", "rank": "d" }
+      { "dbname": "DB-12", "rank": "d", "tr": 1 },
+      { "dbname": "M87A1", "rank": "d", "tr": 2 },
+      { "dbname": "M1014", "rank": "d", "tr": 3 },
+      { "dbname": "18.5KS-K", "rank": "d", "tr": 4 }
     ]
   },
   {
     "type": "Secondary",
     "entries": [
-      { "dbname": "VZ. 61", "rank": "a" },
-      { "dbname": "M357 TRAIT", "rank": "a" },
-      { "dbname": "M44", "rank": "c" },
-      { "dbname": "P18", "rank": "d" },
-      { "dbname": "ES 5.7", "rank": "d" },
-      { "dbname": "GGH-22", "rank": "d" },
-      { "dbname": "M45A1", "rank": "d" }
+      { "dbname": "VZ. 61", "rank": "a", "tr": 1 },
+      { "dbname": "M357 TRAIT", "rank": "a", "tr": 2 },
+      { "dbname": "M44", "rank": "c", "tr": 3 },
+      { "dbname": "P18", "rank": "d", "tr": 4 },
+      { "dbname": "ES 5.7", "rank": "d", "tr": 5 },
+      { "dbname": "GGH-22", "rank": "d", "tr": 6 },
+      { "dbname": "M45A1", "rank": "d", "tr": 7 }
     ]
   }
 ]
