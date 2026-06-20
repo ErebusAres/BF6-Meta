@@ -17,6 +17,24 @@ node scripts/apply-battlefinity-official-builds.mjs
 
 The overlay intentionally excludes creator/user loadouts and only records the official Battlefinity "Best Loadouts" sections that were verified from individual weapon pages.
 
+## Maintenance scripts
+
+Apply the safer UI/UX patch for the strip page:
+
+```bash
+node scripts/fix-main-sort.mjs
+```
+
+This patches `main.html` so All Weapons sorts by tier first, type second, and per-class rank third. It also adds tier section headers while preserving the existing `#` pill as the weapon's class/type rank.
+
+Validate data health after syncing or editing builds:
+
+```bash
+node scripts/validate-data.mjs
+```
+
+The validation script checks ranking/metadata/build consistency, duplicate type ranks, missing build entries, missing mastery data, missing attachment lookup data, and attachment-name mismatches. It writes `reports/data-validation-report.json`.
+
 ## Disclaimer
 - Unofficial, community-maintained reference; use at your own risk.
 - Attachment values, unlock paths, and ranks can change with patches, so info may be stale at any time.
