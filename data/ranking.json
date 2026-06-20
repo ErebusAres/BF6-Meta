@@ -4,22 +4,10 @@
     "entries": [
       {
         "dbname": "KORD 6P67",
-        "rank": "s"
-      },
-      {
-        "dbname": "B36A4",
-        "rank": "s"
-      },
-      {
-        "dbname": "TR-7",
-        "rank": "s"
-      },
-      {
-        "dbname": "M433",
         "rank": "a"
       },
       {
-        "dbname": "AK4D",
+        "dbname": "B36A4",
         "rank": "a"
       },
       {
@@ -27,12 +15,24 @@
         "rank": "a"
       },
       {
-        "dbname": "NVO-228E",
+        "dbname": "L85A3",
         "rank": "a"
       },
       {
-        "dbname": "L85A3",
+        "dbname": "NVO-228E",
         "rank": "b"
+      },
+      {
+        "dbname": "AK4D",
+        "rank": "c"
+      },
+      {
+        "dbname": "M433",
+        "rank": "c"
+      },
+      {
+        "dbname": "TR-7",
+        "rank": "d"
       }
     ]
   },
@@ -40,27 +40,15 @@
     "type": "Carbine",
     "entries": [
       {
-        "dbname": "M4A1",
+        "dbname": "SG 553R",
         "rank": "s"
       },
       {
-        "dbname": "M277",
-        "rank": "a"
-      },
-      {
-        "dbname": "SG 553R",
+        "dbname": "M4A1",
         "rank": "a"
       },
       {
         "dbname": "GRT-BC",
-        "rank": "a"
-      },
-      {
-        "dbname": "AK-205",
-        "rank": "b"
-      },
-      {
-        "dbname": "M417 A2",
         "rank": "b"
       },
       {
@@ -68,8 +56,20 @@
         "rank": "b"
       },
       {
+        "dbname": "M277",
+        "rank": "c"
+      },
+      {
+        "dbname": "AK-205",
+        "rank": "c"
+      },
+      {
+        "dbname": "M417 A2",
+        "rank": "c"
+      },
+      {
         "dbname": "SOR-300SC",
-        "rank": "b"
+        "rank": "c"
       }
     ]
   },
@@ -77,36 +77,36 @@
     "type": "LMG",
     "entries": [
       {
-        "dbname": "DRS-IAR",
-        "rank": "s"
-      },
-      {
         "dbname": "KTS100 MK8",
         "rank": "s"
       },
       {
-        "dbname": "M250",
-        "rank": "s"
+        "dbname": "DRS-IAR",
+        "rank": "a"
       },
       {
         "dbname": "L110",
         "rank": "a"
       },
       {
-        "dbname": "M240L",
-        "rank": "b"
+        "dbname": "M250",
+        "rank": "a"
       },
       {
         "dbname": "RPKM",
         "rank": "b"
       },
       {
-        "dbname": "M123K",
-        "rank": "b"
+        "dbname": "M60",
+        "rank": "c"
       },
       {
-        "dbname": "M60",
-        "rank": "b"
+        "dbname": "M240L",
+        "rank": "c"
+      },
+      {
+        "dbname": "M123K",
+        "rank": "c"
       }
     ]
   },
@@ -114,19 +114,27 @@
     "type": "SMG",
     "entries": [
       {
-        "dbname": "PW5A3",
+        "dbname": "SCW-10",
         "rank": "s"
       },
       {
         "dbname": "SGX",
-        "rank": "s"
-      },
-      {
-        "dbname": "SCW-10",
         "rank": "a"
       },
       {
-        "dbname": "KV9",
+        "dbname": "USG-90",
+        "rank": "a"
+      },
+      {
+        "dbname": "PW5A3",
+        "rank": "a"
+      },
+      {
+        "dbname": "UMG-40",
+        "rank": "a"
+      },
+      {
+        "dbname": "SL9",
         "rank": "b"
       },
       {
@@ -134,15 +142,7 @@
         "rank": "b"
       },
       {
-        "dbname": "UMG-40",
-        "rank": "b"
-      },
-      {
-        "dbname": "USG-90",
-        "rank": "c"
-      },
-      {
-        "dbname": "SL9",
+        "dbname": "KV9",
         "rank": "c"
       }
     ]
@@ -151,16 +151,16 @@
     "type": "Sniper Rifle",
     "entries": [
       {
-        "dbname": "M2010 ESR",
+        "dbname": "PSR",
         "rank": "s"
+      },
+      {
+        "dbname": "M2010 ESR",
+        "rank": "a"
       },
       {
         "dbname": "SV-98",
         "rank": "b"
-      },
-      {
-        "dbname": "PSR",
-        "rank": "c"
       },
       {
         "dbname": "Mini Scout",
@@ -172,20 +172,20 @@
     "type": "DMR",
     "entries": [
       {
-        "dbname": "M39 EMR",
+        "dbname": "SVDM",
         "rank": "s"
       },
       {
-        "dbname": "SVK-8.6",
+        "dbname": "M39 EMR",
         "rank": "a"
       },
       {
-        "dbname": "SVDM",
-        "rank": "a"
+        "dbname": "SVK-8.6",
+        "rank": "c"
       },
       {
         "dbname": "LMR27",
-        "rank": "c"
+        "rank": "d"
       }
     ]
   },
@@ -193,20 +193,20 @@
     "type": "Shotgun",
     "entries": [
       {
-        "dbname": "M1014",
-        "rank": "b"
+        "dbname": "DB-12",
+        "rank": "d"
       },
       {
         "dbname": "M87A1",
-        "rank": "b"
+        "rank": "d"
+      },
+      {
+        "dbname": "M1014",
+        "rank": "d"
       },
       {
         "dbname": "18.5KS-K",
-        "rank": "c"
-      },
-      {
-        "dbname": "DB-12",
-        "rank": "c"
+        "rank": "d"
       }
     ]
   },
@@ -214,28 +214,28 @@
     "type": "Secondary",
     "entries": [
       {
-        "dbname": "M44",
+        "dbname": "M357 TRAIT",
         "rank": "a"
       },
       {
-        "dbname": "M45A1",
-        "rank": "b"
-      },
-      {
-        "dbname": "ES 5.7",
-        "rank": "c"
-      },
-      {
-        "dbname": "GGH-22",
+        "dbname": "M44",
         "rank": "c"
       },
       {
         "dbname": "P18",
-        "rank": "c"
+        "rank": "d"
       },
       {
-        "dbname": "M357 TRAIT",
-        "rank": "c"
+        "dbname": "ES 5.7",
+        "rank": "d"
+      },
+      {
+        "dbname": "GGH-22",
+        "rank": "d"
+      },
+      {
+        "dbname": "M45A1",
+        "rank": "d"
       }
     ]
   }
